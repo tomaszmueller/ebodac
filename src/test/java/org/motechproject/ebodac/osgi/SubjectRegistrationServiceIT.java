@@ -32,19 +32,19 @@ public class SubjectRegistrationServiceIT extends BasePaxIT {
     private SubjectRegistrationService subcjectRegistrationService;
 
     @Test
-    public void testHelloWorldRecordService() throws Exception {
+    public void testSubjectRegistrationService() throws Exception {
         SubjectRegistration testRecord = new SubjectRegistration("123", "test 1st name",
                 "test last name", 22, "Gdynia", Language.ENGLISH, PhoneType.PERSONAL);
         subcjectRegistrationService.add(testRecord);
 
-        SubjectRegistration record = subcjectRegistrationService.findRecordByName(testRecord.getFirstName());
+        SubjectRegistration record = subcjectRegistrationService.findRegistrationByFirstName(testRecord.getFirstName());
         assertEquals(testRecord, record);
 
-        List<SubjectRegistration> records = subcjectRegistrationService.getRecords();
+        List<SubjectRegistration> records = subcjectRegistrationService.getAll();
         assertTrue(records.contains(testRecord));
 
         subcjectRegistrationService.delete(testRecord);
-        record = subcjectRegistrationService.findRecordByName(testRecord.getFirstName());
+        record = subcjectRegistrationService.findRegistrationByFirstName(testRecord.getFirstName());
         assertNull(record);
     }
 }

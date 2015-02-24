@@ -7,7 +7,7 @@ import org.motechproject.ebodac.domain.SubjectRegistration;
 import java.util.List;
 
 /**
- * Service interface for CRUD on simple repository records.
+ * Service interface for CRUD on SubjectRegistration
  */
 public interface SubjectRegistrationService {
 
@@ -16,9 +16,9 @@ public interface SubjectRegistrationService {
 
     void add(SubjectRegistration record);
 
-    SubjectRegistration findRecordByName(String recordName);
+    SubjectRegistration findRegistrationByFirstName(String firstName);
 
-    List<SubjectRegistration> getRecords();
+    List<SubjectRegistration> getAll();
 
     void delete(SubjectRegistration record);
 

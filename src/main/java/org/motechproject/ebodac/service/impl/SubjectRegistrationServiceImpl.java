@@ -34,8 +34,8 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public SubjectRegistration findRecordByName(String recordName) {
-        SubjectRegistration record = subjectRegistrationDataService.findRegistrationByFirstName(recordName);
+    public SubjectRegistration findRegistrationByFirstName(String FirstName) {
+        SubjectRegistration record = subjectRegistrationDataService.findRegistrationByFirstName(FirstName);
         if (null == record) {
             return null;
         }
@@ -43,7 +43,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public List<SubjectRegistration> getRecords() {
+    public List<SubjectRegistration> getAll() {
         return subjectRegistrationDataService.retrieveAll();
     }
 

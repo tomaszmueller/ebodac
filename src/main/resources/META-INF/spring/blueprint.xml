@@ -16,6 +16,7 @@
 
     <osgi:service ref="ebodacSettingsService"
         interface="org.motechproject.ebodac.service.EbodacSettingsService" />
+
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
 </beans>
