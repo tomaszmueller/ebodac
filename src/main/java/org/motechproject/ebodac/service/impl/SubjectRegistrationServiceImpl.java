@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.service.impl;
 
+import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.PhoneType;
 import org.motechproject.ebodac.service.SubjectRegistrationService;
 import org.motechproject.ebodac.repository.SubjectRegistrationDataService;
 import org.motechproject.ebodac.domain.SubjectRegistration;
@@ -20,10 +22,10 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     private SubjectRegistrationDataService subjectRegistrationDataService;
 
     @Override
-    public void create(String name, String message) {
+    public void create(String phoneNumber, String firstName, String lastName, Integer age, String address,
+                       Language language, PhoneType phoneType) {
         subjectRegistrationDataService.create(
-                new SubjectRegistration(name, message)
-        );
+                new SubjectRegistration(phoneNumber, firstName, lastName, age, address, language, phoneType));
     }
 
     @Override

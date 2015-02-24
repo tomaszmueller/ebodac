@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.osgi;
 
+import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.PhoneType;
 import org.motechproject.ebodac.domain.SubjectRegistration;
 import org.motechproject.ebodac.service.SubjectRegistrationService;
 import org.junit.Test;
@@ -31,7 +33,8 @@ public class SubjectRegistrationServiceIT extends BasePaxIT {
 
     @Test
     public void testHelloWorldRecordService() throws Exception {
-        SubjectRegistration testRecord = new SubjectRegistration("testName", "test message");
+        SubjectRegistration testRecord = new SubjectRegistration("123", "test 1st name",
+                "test last name", 22, "Gdynia", Language.ENGLISH, PhoneType.PERSONAL);
         subcjectRegistrationService.add(testRecord);
 
         SubjectRegistration record = subcjectRegistrationService.findRecordByName(testRecord.getFirstName());
