@@ -3,7 +3,7 @@ package org.motechproject.ebodac.service;
 /**
  * Simple example of a service interface.
  */
-public interface HelloWorldService {
+public interface EbodacService {
 
     String sayHello();
 

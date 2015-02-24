@@ -5,17 +5,17 @@
 
     <import resource="classpath*:META-INF/motech/*.xml" />
 
-    <osgi:service ref="helloWorldService"
-        interface="org.motechproject.ebodac.service.HelloWorldService" />
+    <osgi:service ref="ebodacService"
+        interface="org.motechproject.ebodac.service.EbodacService" />
 
-    <osgi:service ref="helloWorldRecordService"
-        interface="org.motechproject.ebodac.service.HelloWorldRecordService" />
+    <osgi:service ref="subjectRegistrationService"
+        interface="org.motechproject.ebodac.service.SubjectRegistrationService" />
 
-    <osgi:reference id="helloWorldRecordsDataService"
-                    interface="org.motechproject.ebodac.repository.HelloWorldRecordsDataService" />
+    <osgi:reference id="subjectRegistrationDataService"
+                    interface="org.motechproject.ebodac.repository.SubjectRegistrationDataService" />
 
-    <osgi:service ref="helloWorldSettingsService"
-        interface="org.motechproject.ebodac.service.HelloWorldSettingsService" />
+    <osgi:service ref="ebodacSettingsService"
+        interface="org.motechproject.ebodac.service.EbodacSettingsService" />
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
 </beans>

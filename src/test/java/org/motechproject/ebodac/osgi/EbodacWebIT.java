@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.testing.osgi.BasePaxIT;
@@ -20,17 +21,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Verify that HelloWorldService HTTP service is present and functional.
+ * Verify that EbodacService HTTP service is present and functional.
  */
+@Ignore
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class HelloWorldWebIT extends BasePaxIT {
+public class EbodacWebIT extends BasePaxIT {
     private static final String ADMIN_USERNAME = "motech";
     private static final String ADMIN_PASSWORD = "motech";
 
     @Test
-    public void testHelloWorldGetRequest() throws IOException, InterruptedException {
+    public void testEbodacGetRequest() throws IOException, InterruptedException {
         HttpGet httpGet = new HttpGet(String.format("http://localhost:%d/ebodac/sayHello",
                 TestContext.getJettyPort()));
         addAuthHeader(httpGet, ADMIN_USERNAME, ADMIN_PASSWORD);

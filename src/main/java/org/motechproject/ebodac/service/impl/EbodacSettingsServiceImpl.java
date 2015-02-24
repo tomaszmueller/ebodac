@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.service.impl;
 
-import org.motechproject.ebodac.service.HelloWorldSettingsService;
+import org.motechproject.ebodac.service.EbodacSettingsService;
 
 import org.motechproject.server.config.SettingsFacade;
 import org.slf4j.Logger;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of the {@link HelloWorldSettingsService} uses {@link SettingsFacade}.
+ * Implementation of the {@link org.motechproject.ebodac.service.EbodacSettingsService} uses {@link SettingsFacade}.
  */
-@Service("helloWorldSettingsService")
-public class HelloWorldSettingsServiceImpl implements HelloWorldSettingsService {
+@Service("ebodacSettingsService")
+public class EbodacSettingsServiceImpl implements EbodacSettingsService {
 
-    private Logger logger = LoggerFactory.getLogger(HelloWorldSettingsServiceImpl.class.toString());
+    private Logger logger = LoggerFactory.getLogger(EbodacSettingsServiceImpl.class.toString());
 
     @Autowired
     private SettingsFacade settingsFacade;

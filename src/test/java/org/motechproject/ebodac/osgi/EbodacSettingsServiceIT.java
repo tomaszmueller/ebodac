@@ -1,8 +1,8 @@
 package org.motechproject.ebodac.osgi;
 
-import org.motechproject.ebodac.service.HelloWorldService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.motechproject.ebodac.service.EbodacSettingsService;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
@@ -15,19 +15,20 @@ import javax.inject.Inject;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Verify that HelloWorldService present, functional.
+ * Verify that EbodacSettingsService is present, functional.
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class HelloWorldServiceIT extends BasePaxIT {
+public class EbodacSettingsServiceIT extends BasePaxIT {
 
     @Inject
-    private HelloWorldService helloService;
+    private EbodacSettingsService ebodacSettingsService;
 
     @Test
-    public void testHelloWorldServicePresent() throws Exception {
-        assertNotNull(helloService);
-        assertNotNull(helloService.sayHello());
+    public void testEbodacSettingsServicePresent() throws Exception {
+        assertNotNull(ebodacSettingsService.getSettingsValue("org.motechproject.ebodac.sample.setting"));
+        assertNotNull(ebodacSettingsService.getSettingsValue("org.motechproject.ebodac.bundle.name"));
+        ebodacSettingsService.logInfoWithModuleSettings("test info message");
     }
 }

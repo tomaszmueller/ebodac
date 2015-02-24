@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.osgi;
 
-import org.motechproject.ebodac.domain.HelloWorldRecord;
-import org.motechproject.ebodac.service.HelloWorldRecordService;
+import org.motechproject.ebodac.domain.SubjectRegistration;
+import org.motechproject.ebodac.service.SubjectRegistrationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.testing.osgi.BasePaxIT;
@@ -19,29 +19,29 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Verify that HelloWorldRecordService present, functional.
+ * Verify that SubjectRegistrationService present, functional.
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class HelloWorldRecordServiceIT extends BasePaxIT {
+public class SubjectRegistrationServiceIT extends BasePaxIT {
 
     @Inject
-    private HelloWorldRecordService helloRecordService;
+    private SubjectRegistrationService subcjectRegistrationService;
 
     @Test
     public void testHelloWorldRecordService() throws Exception {
-        HelloWorldRecord testRecord = new HelloWorldRecord("testName", "test message");
-        helloRecordService.add(testRecord);
+        SubjectRegistration testRecord = new SubjectRegistration("testName", "test message");
+        subcjectRegistrationService.add(testRecord);
 
-        HelloWorldRecord record = helloRecordService.findRecordByName(testRecord.getName());
+        SubjectRegistration record = subcjectRegistrationService.findRecordByName(testRecord.getFirstName());
         assertEquals(testRecord, record);
 
-        List<HelloWorldRecord> records = helloRecordService.getRecords();
+        List<SubjectRegistration> records = subcjectRegistrationService.getRecords();
         assertTrue(records.contains(testRecord));
 
-        helloRecordService.delete(testRecord);
-        record = helloRecordService.findRecordByName(testRecord.getName());
+        subcjectRegistrationService.delete(testRecord);
+        record = subcjectRegistrationService.findRecordByName(testRecord.getFirstName());
         assertNull(record);
     }
 }

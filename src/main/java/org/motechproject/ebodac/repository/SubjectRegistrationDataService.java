@@ -1,12 +1,10 @@
 package org.motechproject.ebodac.repository;
 
-import org.motechproject.ebodac.domain.HelloWorldRecord;
+import org.motechproject.ebodac.domain.SubjectRegistration;
 
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;
-
-import java.util.List;
 
 /**
  * Interface for repository that persists simple records and allows CRUD.
@@ -14,7 +12,7 @@ import java.util.List;
  * as methods for adding, deleting, saving and finding all instances.  In this class we
  * define and custom lookups we may need.
  */
-public interface HelloWorldRecordsDataService extends MotechDataService<HelloWorldRecord> {
+public interface SubjectRegistrationDataService extends MotechDataService<SubjectRegistration> {
     @Lookup
-    HelloWorldRecord findRecordByName(@LookupField(name = "name") String recordName);
+    SubjectRegistration findRegistrationByFirstName(@LookupField(name = "firstName") String firstName);
 }

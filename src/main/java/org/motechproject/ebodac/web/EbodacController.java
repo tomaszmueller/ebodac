@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.motechproject.ebodac.service.HelloWorldService;
+import org.motechproject.ebodac.service.EbodacService;
 
 /**
- * Controller for HelloWorld message and bundle status.
+ * Controller for EbodacController message and bundle status.
  */
 @Controller
-public class HelloWorldController {
+public class EbodacController {
 
     @Autowired
-    private HelloWorldService helloWorldService;
+    private EbodacService ebodacService;
 
     private static final String OK = "OK";
 
@@ -27,6 +27,6 @@ public class HelloWorldController {
     @RequestMapping("/sayHello")
     @ResponseBody
     public String sayHello() {
-        return String.format("{\"message\":\"%s\"}", helloWorldService.sayHello());
+        return String.format("{\"message\":\"%s\"}", ebodacService.sayHello());
     }
 }

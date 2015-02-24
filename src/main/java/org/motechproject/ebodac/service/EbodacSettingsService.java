@@ -3,7 +3,7 @@ package org.motechproject.ebodac.service;
 /**
  * Service interface for getting and logging module settings.
  */
-public interface HelloWorldSettingsService {
+public interface EbodacSettingsService {
 
     String getSettingsValue(String key);
 

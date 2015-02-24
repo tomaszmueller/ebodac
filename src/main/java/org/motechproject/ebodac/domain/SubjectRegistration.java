@@ -3,36 +3,35 @@ package org.motechproject.ebodac.domain;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Models data for simple records in a portable manner.
+ * Models data for registration of Subject in EBODAC
  */
 @Entity
-public class HelloWorldRecord {
+public class SubjectRegistration {
 
     @Field
-    private String name;
+    private String firstName;
 
     @Field
     private String message;
 
-    public HelloWorldRecord() {
+    public SubjectRegistration() {
     }
 
 
-    public HelloWorldRecord(String name, String message) {
-        this.name = name;
+    public SubjectRegistration(String firstName, String message) {
+        this.firstName = firstName;
         this.message = message;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getMessage() {
@@ -45,7 +44,7 @@ public class HelloWorldRecord {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, message);
+        return Objects.hash(firstName, message);
     }
 
     @Override
@@ -58,13 +57,13 @@ public class HelloWorldRecord {
             return false;
         }
 
-        final HelloWorldRecord other = (HelloWorldRecord) obj;
+        final SubjectRegistration other = (SubjectRegistration) obj;
 
-        return Objects.equals(this.name, other.name) && Objects.equals(this.message, other.message);
+        return Objects.equals(this.firstName, other.firstName) && Objects.equals(this.message, other.message);
     }
 
     @Override
     public String toString() {
-        return String.format("HelloWorldRecord{name='%s', message='%s'}", name, message);
+        return String.format("SubjectRegistration{firstName='%s', message='%s'}", firstName, message);
     }
 }
