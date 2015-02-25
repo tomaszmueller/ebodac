@@ -23,8 +23,11 @@ public class SubjectRegistration {
     private String lastName;
 
     @Column(length = 3)
-    @Field(required = true)
+    @Field
     private Integer age;
+
+    @Field
+    private Gender gender;
 
     @Field
     private String address;
@@ -41,7 +44,8 @@ public class SubjectRegistration {
     }
 
 
-    public SubjectRegistration(String phoneNumber, String firstName, String lastName, Integer age, String address, Language language, PhoneType phoneType) {
+    public SubjectRegistration(String phoneNumber, String firstName, String lastName, Integer age, String address,
+                               Language language, PhoneType phoneType) {
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,6 +53,12 @@ public class SubjectRegistration {
         this.address = address;
         this.language = language;
         this.phoneType = phoneType;
+    }
+
+    public SubjectRegistration(String phoneNumber, String firstName, String lastName, Integer age, Gender gender,
+                               String address, Language language, PhoneType phoneType) {
+        this(phoneNumber, firstName, lastName, age, address, language, phoneType);
+        this.gender = gender;
     }
 
     public SubjectRegistration(String firstName, String lastName) {
@@ -86,6 +96,14 @@ public class SubjectRegistration {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getAddress() {
@@ -129,7 +147,8 @@ public class SubjectRegistration {
 
         final SubjectRegistration other = (SubjectRegistration) obj;
 
-        return Objects.equals(this.getFirstName(), other.getFirstName()) && Objects.equals(this.lastName, other.lastName) &&
+        return Objects.equals(this.getFirstName(), other.getFirstName()) &&
+                Objects.equals(this.getLastName(), other.getLastName()) &&
                 Objects.equals(this.getPhoneNumber(), other.getPhoneNumber());
     }
 
