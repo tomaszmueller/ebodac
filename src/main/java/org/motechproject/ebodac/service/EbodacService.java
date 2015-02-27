@@ -5,6 +5,4 @@ package org.motechproject.ebodac.service;
  */
 public interface EbodacService {
 
-    String sayHello();
-
 }

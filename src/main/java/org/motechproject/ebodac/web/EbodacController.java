@@ -23,10 +23,4 @@ public class EbodacController {
     public String status() {
         return OK;
     }
-
-    @RequestMapping("/sayHello")
-    @ResponseBody
-    public String sayHello() {
-        return String.format("{\"message\":\"%s\"}", ebodacService.sayHello());
-    }
 }

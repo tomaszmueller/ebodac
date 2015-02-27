@@ -28,6 +28,5 @@ public class EbodacServiceIT extends BasePaxIT {
     @Test
     public void testEbodacServicePresent() throws Exception {
         assertNotNull(ebodacService);
-        assertNotNull(ebodacService.sayHello());
     }
 }

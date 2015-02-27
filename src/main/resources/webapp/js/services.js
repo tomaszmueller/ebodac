@@ -3,9 +3,9 @@
 
     /* Services */
 
-    var services = angular.module('helloWorld.services', ['ngResource']);
+    var services = angular.module('ebodac.services', ['ngResource']);
 
-    services.factory('HelloWorld', function($resource) {
+    services.factory('Ebodac', function($resource) {
         return $resource('../ebodac/sayHello');
     });
 }());

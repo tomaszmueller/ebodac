@@ -1,6 +1,6 @@
 (function () {
     'use strict';
 
-    var directives = angular.module('helloWorld.directives', []);
+    var directives = angular.module('ebodac.directives', []);
 
 }());

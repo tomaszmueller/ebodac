@@ -3,10 +3,11 @@
 
     /* App Module */
 
-    angular.module('helloWorld', ['motech-dashboard', 'helloWorld.controllers', 'helloWorld.directives', 'helloWorld.services', 'ngCookies'])
-        .config(['$routeProvider',
-        function ($routeProvider) {
+    var ebodac = angular.module('ebodac', ['motech-dashboard', 'ebodac.controllers', 'ebodac.directives',
+    'ebodac.services', 'ngCookies' , 'ui.bootstrap']);
+
+    ebodac.config(function ($routeProvider) {
             $routeProvider.
-                when('/helloWorld/', {templateUrl: '../ebodac/resources/partials/say-hello.html', controller: 'HelloWorldController'});
-    }]);
+                when('/ebodac/registration', {templateUrl: '../ebodac/resources/partials/registration-form.html', controller: 'EbodacController'});
+    });
 }());

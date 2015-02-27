@@ -9,9 +9,4 @@ import org.springframework.stereotype.Service;
 @Service("ebodacService")
 public class EbodacServiceImpl implements EbodacService {
 
-    @Override
-    public String sayHello() {
-        return "Hello World";
-    }
-
 }
