@@ -1,0 +1,73 @@
+[
+  {
+    "name": "EBODAC IVR reminder",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Week 1",
+        "formats": [
+          "IVR"
+        ],
+        "languages": [
+          "en",
+          "kri"
+        ],
+        "messageKey": "reminder-week-1",
+        "timeOffset": "1 Week",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Week 2",
+        "formats": [
+          "IVR"
+        ],
+        "languages": [
+          "en",
+          "kri"
+        ],
+        "messageKey": "reminder-week-2",
+        "timeOffset": "2 Weeks",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Week 3",
+        "formats": [
+          "IVR"
+        ],
+        "languages": [
+          "en",
+          "kri"
+        ],
+        "messageKey": "reminder-week-3",
+        "timeOffset": "3 Weeks",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Day 27",
+        "formats": [
+          "IVR"
+        ],
+        "languages": [
+          "en",
+          "kri"
+        ],
+        "messageKey": "reminder-day-27",
+        "timeOffset": "27 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Week 4",
+        "formats": [
+          "IVR"
+        ],
+        "languages": [
+          "en",
+          "kri"
+        ],
+        "messageKey": "reminder-week-4",
+        "timeOffset": "4 Weeks",
+        "startTime": "9:00"
+      }
+    ]
+  }
+]
