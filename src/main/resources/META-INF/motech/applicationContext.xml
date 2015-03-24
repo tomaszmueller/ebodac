@@ -25,6 +25,12 @@
             </map>
         </constructor-arg>
         <property name="defaultURL" value="/ebodac/registration"/>
+        <property name="roleForAccess">
+            <list>
+                <value>registrationSubmission</value>
+                <value>manageBundles</value>
+            </list>
+        </property>
     </bean>
 
 

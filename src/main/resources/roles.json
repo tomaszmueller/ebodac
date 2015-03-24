@@ -1,0 +1,6 @@
+[
+    {
+        "roleName": "Clinician",
+        "permissionNames": ["registrationSubmission"]
+    }
+]
