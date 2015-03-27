@@ -11,12 +11,12 @@ import java.util.List;
  */
 public interface SubjectService {
 
-    void create(String phoneNumber, String firstName, String lastName, Integer age, String address,
-                Language language, PhoneType phoneType);
+    void create(String phoneNumber, String name, String householdName, String zetesId,
+                String siteId, String address, Language language, String community);
 
     void add(Subject record);
 
-    Subject findRegistrationByFirstName(String firstName);
+    Subject findSubjectByName(String name);
 
     List<Subject> getAll();
 

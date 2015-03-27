@@ -5,7 +5,9 @@ package org.motechproject.ebodac.domain;
  */
 public enum Language {
     ENGLISH("English"),
-    KRIO("Krio");
+    KRIO("Krio"),
+    LIMBA("Limba"),
+    SUSU("Susu");
 
     private String value;
 

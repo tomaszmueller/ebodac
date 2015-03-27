@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.osgi;
 
 import org.motechproject.ebodac.domain.Language;
-import org.motechproject.ebodac.domain.PhoneType;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
 import org.junit.Test;
@@ -33,18 +32,18 @@ public class SubjectServiceIT extends BasePaxIT {
 
     @Test
     public void testSubjectService() throws Exception {
-        Subject testRecord = new Subject("123", "test 1st name",
-                "test last name", 22, "Gdynia", Language.ENGLISH, PhoneType.PERSONAL);
+        Subject testRecord = new Subject("123", "test 1st name", "test household name",
+                "ASD-22", "entity-facility-id", "Sesame Street", Language.ENGLISH, "Jason Bourne");
         subjectService.add(testRecord);
 
-        Subject record = subjectService.findRegistrationByFirstName(testRecord.getFirstName());
+        Subject record = subjectService.findSubjectByName(testRecord.getName());
         assertEquals(testRecord, record);
 
         List<Subject> records = subjectService.getAll();
         assertTrue(records.contains(testRecord));
 
         subjectService.delete(testRecord);
-        record = subjectService.findRegistrationByFirstName(testRecord.getFirstName());
+        record = subjectService.findSubjectByName(testRecord.getName());
         assertNull(record);
     }
 }

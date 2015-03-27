@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.service.impl;
 
 import org.motechproject.ebodac.domain.Language;
-import org.motechproject.ebodac.domain.PhoneType;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.domain.Subject;
@@ -22,10 +21,10 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectDataService subjectDataService;
 
     @Override
-    public void create(String phoneNumber, String firstName, String lastName, Integer age, String address,
-                       Language language, PhoneType phoneType) {
+    public void create(String phoneNumber, String name, String householdName, String zetesId,
+                       String siteId, String address, Language language, String community) {
         subjectDataService.create(
-                new Subject(phoneNumber, firstName, lastName, age, address, language, phoneType));
+                new Subject(phoneNumber, name, householdName, zetesId, siteId, address, language, community));
     }
 
     @Override
@@ -34,8 +33,8 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject findRegistrationByFirstName(String FirstName) {
-        Subject record = subjectDataService.findRegistrationByFirstName(FirstName);
+    public Subject findSubjectByName(String FirstName) {
+        Subject record = subjectDataService.findSubjectByName(FirstName);
         if (null == record) {
             return null;
         }

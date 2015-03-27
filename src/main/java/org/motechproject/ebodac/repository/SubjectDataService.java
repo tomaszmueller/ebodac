@@ -14,5 +14,5 @@ import org.motechproject.mds.service.MotechDataService;
  */
 public interface SubjectDataService extends MotechDataService<Subject> {
     @Lookup
-    Subject findRegistrationByFirstName(@LookupField(name = "firstName") String firstName);
+    Subject findSubjectByName(@LookupField(name = "name") String name);
 }

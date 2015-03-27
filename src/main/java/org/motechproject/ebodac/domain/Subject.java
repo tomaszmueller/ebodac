@@ -12,58 +12,65 @@ import java.util.Objects;
 @Entity
 public class Subject {
 
+    /**
+     *  Fields captured in ZETES
+     */
+
     @Column(length = 20)
-    @Field
+    @Field(required = true)
     private String phoneNumber;
 
-    @Field
-    private String firstName;
+    @Field(required = true)
+    private String name;
 
     @Field(required = true)
-    private String lastName;
+    private String householdName;
 
-    @Column(length = 3)
-    @Field
-    private Integer age;
+    @Field(required = true)
+    private String externalId;
 
-    @Field
-    private Gender gender;
-
-    @Field
-    private String address;
+    @Field(required = true)
+    private String siteId;
 
     @Column(length = 20)
     @Field(required = true)
     private Language language;
 
-    @Column(length = 20)
     @Field(required = true)
-    private PhoneType phoneType;
+    private String address;
+
+    @Field(required = true)
+    private String community;
+
+    @Field
+    private String headOfHousehold;
+
+    /**
+     *  Fields captured in RAVE
+     */
+
+    @Field
+    private Gender gender;
 
     public Subject() {
     }
 
-
-    public Subject(String phoneNumber, String firstName, String lastName, Integer age, String address,
-                   Language language, PhoneType phoneType) {
+    public Subject(String phoneNumber, String name, String householdName, String externalId,
+                   String siteId, String address, Language language, String community) {
         this.phoneNumber = phoneNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
+        this.name = name;
+        this.householdName = householdName;
+        this.externalId = externalId;
+        this.siteId = siteId;
         this.address = address;
         this.language = language;
-        this.phoneType = phoneType;
+        this.community = community;
     }
 
-    public Subject(String phoneNumber, String firstName, String lastName, Integer age, Gender gender,
-                   String address, Language language, PhoneType phoneType) {
-        this(phoneNumber, firstName, lastName, age, address, language, phoneType);
-        this.gender = gender;
-    }
-
-    public Subject(String firstName, String lastName) {
-        this.setFirstName(firstName);
-        this.lastName = lastName;
+    public Subject(String phoneNumber, String name, String householdName, String externalId,
+                   String siteId, String address, Language language, String community, String headOfHousehold) {
+        this(phoneNumber, name, householdName, externalId, siteId, address, language, community);
+        this.headOfHousehold = headOfHousehold;
     }
 
     public String getPhoneNumber() {
@@ -74,44 +81,36 @@ public class Subject {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getHouseholdName() {
+        return householdName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setHouseholdName(String householdName) {
+        this.householdName = householdName;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getExternalId() {
+        return externalId;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
-    public Gender getGender() {
-        return gender;
+    public String getSiteId() {
+        return siteId;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
     }
 
     public Language getLanguage() {
@@ -122,17 +121,41 @@ public class Subject {
         this.language = language;
     }
 
-    public PhoneType getPhoneType() {
-        return phoneType;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPhoneType(PhoneType phoneType) {
-        this.phoneType = phoneType;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
+
+    public String getHeadOfHousehold() {
+        return headOfHousehold;
+    }
+
+    public void setHeadOfHousehold(String headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPhoneNumber(), getFirstName(), lastName);
+        return Objects.hash(getPhoneNumber(), getName(), householdName);
     }
 
     @Override
@@ -147,14 +170,14 @@ public class Subject {
 
         final Subject other = (Subject) obj;
 
-        return Objects.equals(this.getFirstName(), other.getFirstName()) &&
-                Objects.equals(this.getLastName(), other.getLastName()) &&
+        return Objects.equals(this.getName(), other.getName()) &&
+                Objects.equals(this.getHouseholdName(), other.getHouseholdName()) &&
                 Objects.equals(this.getPhoneNumber(), other.getPhoneNumber());
     }
 
     @Override
     public String toString() {
-        return String.format("Subject{firstName='%s', lastName='%s', phoneNumber='%s'}",
-                getFirstName(), lastName, getPhoneNumber());
+        return String.format("Subject{name='%s', householdName='%s', phoneNumber='%s'}",
+                getName(), getHouseholdName(), getPhoneNumber());
     }
 }
