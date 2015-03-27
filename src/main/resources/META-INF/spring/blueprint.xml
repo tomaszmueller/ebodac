@@ -14,11 +14,11 @@
     <osgi:service ref="ebodacService"
         interface="org.motechproject.ebodac.service.EbodacService" />
 
-    <osgi:service ref="subjectRegistrationService"
-        interface="org.motechproject.ebodac.service.SubjectRegistrationService" />
+    <osgi:service ref="subjectService"
+        interface="org.motechproject.ebodac.service.SubjectService" />
 
-    <osgi:reference id="subjectRegistrationDataService"
-                    interface="org.motechproject.ebodac.repository.SubjectRegistrationDataService" />
+    <osgi:reference id="subjectDataService"
+                    interface="org.motechproject.ebodac.repository.SubjectDataService" />
 
     <osgi:service ref="ebodacSettingsService"
         interface="org.motechproject.ebodac.service.EbodacSettingsService" />

@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.web;
 
-import org.motechproject.ebodac.domain.SubjectRegistration;
-import org.motechproject.ebodac.service.SubjectRegistrationService;
+import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequestMapping("/registration")
 @Controller
-public class SubjectRegistrationController {
+public class SubjectController {
 
     @Autowired
-    SubjectRegistrationService subjectRegistrationService;
+    SubjectService subjectService;
 
     @PreAuthorize("hasAnyRole('manageBundles', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addSubject (@RequestBody SubjectRegistration subjectRegistration) {
+    public ResponseEntity<String> addSubject (@RequestBody Subject subject) {
 
         try {
-            subjectRegistrationService.add(subjectRegistration);
+            subjectService.add(subject);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         EbodacServiceIT.class,
         EbodacWebIT.class,
-        SubjectRegistrationServiceIT.class,
+        SubjectServiceIT.class,
         EbodacSettingsServiceIT.class
 })
 public class EbodacIntegrationTests {

@@ -10,7 +10,7 @@ import java.util.Objects;
  * Models data for registration of Subject in EBODAC
  */
 @Entity
-public class SubjectRegistration {
+public class Subject {
 
     @Column(length = 20)
     @Field
@@ -40,12 +40,12 @@ public class SubjectRegistration {
     @Field(required = true)
     private PhoneType phoneType;
 
-    public SubjectRegistration() {
+    public Subject() {
     }
 
 
-    public SubjectRegistration(String phoneNumber, String firstName, String lastName, Integer age, String address,
-                               Language language, PhoneType phoneType) {
+    public Subject(String phoneNumber, String firstName, String lastName, Integer age, String address,
+                   Language language, PhoneType phoneType) {
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,13 +55,13 @@ public class SubjectRegistration {
         this.phoneType = phoneType;
     }
 
-    public SubjectRegistration(String phoneNumber, String firstName, String lastName, Integer age, Gender gender,
-                               String address, Language language, PhoneType phoneType) {
+    public Subject(String phoneNumber, String firstName, String lastName, Integer age, Gender gender,
+                   String address, Language language, PhoneType phoneType) {
         this(phoneNumber, firstName, lastName, age, address, language, phoneType);
         this.gender = gender;
     }
 
-    public SubjectRegistration(String firstName, String lastName) {
+    public Subject(String firstName, String lastName) {
         this.setFirstName(firstName);
         this.lastName = lastName;
     }
@@ -145,7 +145,7 @@ public class SubjectRegistration {
             return false;
         }
 
-        final SubjectRegistration other = (SubjectRegistration) obj;
+        final Subject other = (Subject) obj;
 
         return Objects.equals(this.getFirstName(), other.getFirstName()) &&
                 Objects.equals(this.getLastName(), other.getLastName()) &&
@@ -154,7 +154,7 @@ public class SubjectRegistration {
 
     @Override
     public String toString() {
-        return String.format("SubjectRegistration{firstName='%s', lastName='%s', phoneNumber='%s'}",
+        return String.format("Subject{firstName='%s', lastName='%s', phoneNumber='%s'}",
                 getFirstName(), lastName, getPhoneNumber());
     }
 }
