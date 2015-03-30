@@ -7,7 +7,8 @@ public enum Language {
     ENGLISH("English"),
     KRIO("Krio"),
     LIMBA("Limba"),
-    SUSU("Susu");
+    SUSU("Susu"),
+    TEMNE("Temne");
 
     private String value;
 
