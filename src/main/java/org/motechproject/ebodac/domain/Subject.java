@@ -45,6 +45,9 @@ public class Subject {
     @Field
     private String headOfHousehold;
 
+    @Field
+    private Boolean changed;
+
     /**
      *  Fields captured in RAVE
      */
@@ -151,6 +154,14 @@ public class Subject {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Boolean getChanged() {
+        return changed;
+    }
+
+    public void setChanged(Boolean changed) {
+        this.changed = changed;
     }
 
     @Override
