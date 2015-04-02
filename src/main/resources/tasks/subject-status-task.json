@@ -27,7 +27,32 @@
   },
   "enabled" : true,
   "taskConfig" : {
-    "steps" : [ ]
+    "steps" : [ {
+      "@type" : "DataSource",
+      "order" : 0,
+      "providerName" : "data-services",
+      "providerId" : 1,
+      "objectId" : 0,
+      "type" : "org.motechproject.ebodac.domain.Subject",
+      "name" : "mds.dataprovider.byinstanceid",
+      "lookup" : [ {
+        "field" : "mds.dataprovider.instanceid",
+        "value" : "{{trigger.object_id}}"
+      } ],
+      "failIfDataNotFound" : true
+    }, {
+      "@type" : "FilterSet",
+      "order" : 1,
+      "filters" : [ {
+        "displayName" : "ad.data-services.org.motechproject.ebodac.domain.Subject#0.changed",
+        "key" : "ad.1.org.motechproject.ebodac.domain.Subject#0.changed",
+        "type" : "UNICODE",
+        "negationOperator" : false,
+        "operator" : "task.equals",
+        "expression" : "true"
+      } ],
+      "operator" : "AND"
+    } ]
   },
   "hasRegisteredChannel" : true
 }

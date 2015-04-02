@@ -45,7 +45,7 @@ public class Subject {
     @Field
     private String headOfHousehold;
 
-    @Field
+    @Field(defaultValue = "false")
     private Boolean changed;
 
     /**
