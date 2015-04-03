@@ -46,7 +46,7 @@ public class Subject {
     private String headOfHousehold;
 
     @Field(defaultValue = "false")
-    private Boolean changed;
+    private boolean changed;
 
     /**
      *  Fields captured in RAVE
