@@ -25,4 +25,14 @@
 
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
+    <osgi:reference id="messageCampaignService"
+                    interface="org.motechproject.messagecampaign.service.MessageCampaignService">
+        <osgi:reference-listener ref="messageCampaignImporter"/>
+    </osgi:reference>
+
+    <osgi:reference id="taskService"
+                    interface="org.motechproject.tasks.service.TaskService">
+        <osgi:reference-listener ref="taskImporter"/>
+    </osgi:reference>
+
 </beans>
