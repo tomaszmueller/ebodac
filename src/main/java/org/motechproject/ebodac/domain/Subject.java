@@ -2,6 +2,7 @@ package org.motechproject.ebodac.domain;
 
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Column;
 import java.util.Objects;
@@ -16,44 +17,59 @@ public class Subject {
      *  Fields captured in ZETES
      */
 
+    @UIDisplayable(position = 0)
+    @Field(required = true)
+    private String enrolmentId;
+
+    @UIDisplayable(position = 1)
+    @Field(required = true)
+    private String name;
+
+    @UIDisplayable(position = 2)
+    @Field(required = true)
+    private String householdName;
+
+    @UIDisplayable(position = 3)
+    @Field
+    private String headOfHousehold;
+
+    @UIDisplayable(position = 4)
     @Column(length = 20)
     @Field(required = true)
     private String phoneNumber;
 
+    @UIDisplayable(position = 5)
     @Field(required = true)
-    private String name;
+    private String address;
 
-    @Field(required = true)
-    private String householdName;
-
-    @Field(required = true)
-    private String enrolmentId;
-
-    @Field(required = true)
-    private String siteId;
-
+    @UIDisplayable(position = 7)
     @Column(length = 20)
     @Field(required = true)
     private Language language;
 
+    @UIDisplayable(position = 8)
     @Field(required = true)
-    private String address;
+    private String siteId;
 
+    @UIDisplayable(position = 9)
     @Field(required = true)
     private String community;
-
-    @Field
-    private String headOfHousehold;
-
-    @Field(defaultValue = "false")
-    private boolean changed;
 
     /**
      *  Fields captured in RAVE
      */
-
+    @UIDisplayable(position = 6)
     @Field
     private Gender gender;
+
+    /**
+     *  Motech internal fields
+     */
+
+    @UIDisplayable(position = 10)
+    @Field(defaultValue = "false")
+    private boolean changed;
+
 
     public Subject() {
     }
