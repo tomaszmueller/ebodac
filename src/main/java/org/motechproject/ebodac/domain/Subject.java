@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Models data for registration of Subject in EBODAC
  */
-@Entity
+@Entity(recordHistory = true)
 public class Subject {
 
     /**
