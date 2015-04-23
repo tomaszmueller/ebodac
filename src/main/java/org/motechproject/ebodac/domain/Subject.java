@@ -2,6 +2,7 @@ package org.motechproject.ebodac.domain;
 
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Column;
@@ -58,6 +59,7 @@ public class Subject {
     /**
      *  Fields captured in RAVE
      */
+
     @UIDisplayable(position = 6)
     @Field
     private Gender gender;
@@ -66,6 +68,7 @@ public class Subject {
      *  Motech internal fields
      */
 
+    @NonEditable
     @UIDisplayable(position = 10)
     @Field(defaultValue = "false")
     private boolean changed;
