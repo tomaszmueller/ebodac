@@ -27,7 +27,7 @@ public class Subject {
     private String householdName;
 
     @Field(required = true)
-    private String externalId;
+    private String enrolmentId;
 
     @Field(required = true)
     private String siteId;
@@ -58,21 +58,21 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(String phoneNumber, String name, String householdName, String externalId,
+    public Subject(String phoneNumber, String name, String householdName, String enrolmentId,
                    String siteId, String address, Language language, String community) {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.householdName = householdName;
-        this.externalId = externalId;
+        this.enrolmentId = enrolmentId;
         this.siteId = siteId;
         this.address = address;
         this.language = language;
         this.community = community;
     }
 
-    public Subject(String phoneNumber, String name, String householdName, String externalId,
+    public Subject(String phoneNumber, String name, String householdName, String enrolmentId,
                    String siteId, String address, Language language, String community, String headOfHousehold) {
-        this(phoneNumber, name, householdName, externalId, siteId, address, language, community);
+        this(phoneNumber, name, householdName, enrolmentId, siteId, address, language, community);
         this.headOfHousehold = headOfHousehold;
     }
 
@@ -100,12 +100,12 @@ public class Subject {
         this.householdName = householdName;
     }
 
-    public String getExternalId() {
-        return externalId;
+    public String getEnrolmentId() {
+        return enrolmentId;
     }
 
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
+    public void setEnrolmentId(String enrolmentId) {
+        this.enrolmentId = enrolmentId;
     }
 
     public String getSiteId() {
