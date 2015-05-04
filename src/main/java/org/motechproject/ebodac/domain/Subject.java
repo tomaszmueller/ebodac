@@ -18,6 +18,7 @@ public class Subject {
      *  Fields captured in ZETES
      */
 
+    @NonEditable
     @UIDisplayable(position = 0)
     @Field(required = true)
     private String subjectId;
