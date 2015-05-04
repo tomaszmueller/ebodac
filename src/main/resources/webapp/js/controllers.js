@@ -18,20 +18,8 @@
         });
     };
 
+    controllers.controller('EbodacController', function($scope, $http) {
 
-    controllers.controller('EbodacController', function($scope, $http, Ebodac) {
-        $scope.subject = {};
-
-        $scope.clearForm = function () {
-            $('#regForm')[0].reset();
-        };
-
-        $scope.submitReg = function() {
-            $.postJSON('../ebodac/registration/submit', $scope.subject, function() {
-                alert("Registration has been completed!");
-                $scope.subject = {};
-                $scope.clearForm();
-            });
-        }
     });
+
 }());
