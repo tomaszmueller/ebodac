@@ -33,7 +33,7 @@ public class SubjectServiceIT extends BasePaxIT {
     @Test
     public void testSubjectService() throws Exception {
         Subject testRecord = new Subject("123", "test 1st name", "test household name",
-                "ASD-22", "entity-facility-id", "Sesame Street", Language.ENGLISH, "Jason Bourne");
+                "ASD-22", "entity-facility-id", "Sesame Street", Language.English, "Jason Bourne");
         subjectService.add(testRecord);
 
         Subject record = subjectService.findSubjectByName(testRecord.getName());
