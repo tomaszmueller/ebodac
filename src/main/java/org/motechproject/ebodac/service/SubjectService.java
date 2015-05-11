@@ -1,7 +1,5 @@
 package org.motechproject.ebodac.service;
 
-import org.motechproject.ebodac.domain.Language;
-import org.motechproject.ebodac.domain.PhoneType;
 import org.motechproject.ebodac.domain.Subject;
 
 import java.util.List;
@@ -11,10 +9,7 @@ import java.util.List;
  */
 public interface SubjectService {
 
-    void create(String phoneNumber, String name, String householdName, String zetesId,
-                String siteId, String address, Language language, String community);
-
-    void add(Subject record);
+    void createOrUpdate(Subject newSubject);
 
     Subject findSubjectByName(String name);
 

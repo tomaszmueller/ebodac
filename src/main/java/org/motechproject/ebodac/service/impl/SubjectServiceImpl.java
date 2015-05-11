@@ -1,10 +1,8 @@
 package org.motechproject.ebodac.service.impl;
 
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.SubjectService;
-import org.motechproject.ebodac.domain.Subject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +19,24 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectDataService subjectDataService;
 
     @Override
-    public void create(String phoneNumber, String name, String householdName, String zetesId,
-                       String siteId, String address, Language language, String community) {
-        subjectDataService.create(
-                new Subject(phoneNumber, name, householdName, zetesId, siteId, address, language, community));
-    }
+    public void createOrUpdate(Subject newSubject) {
 
-    @Override
-    public void add(Subject record) {
-        subjectDataService.create(record);
+        Subject subjectInDb = subjectDataService.findSubjectBySubjectId(newSubject.getSubjectId());
+
+        if (subjectInDb != null) {
+            subjectInDb.setName(newSubject.getName());
+            subjectInDb.setHouseholdName(newSubject.getHouseholdName());
+            subjectInDb.setPhoneNumber(newSubject.getPhoneNumber());
+            subjectInDb.setHeadOfHousehold(newSubject.getHeadOfHousehold());
+            subjectInDb.setAddress(newSubject.getAddress());
+            subjectInDb.setLanguage(newSubject.getLanguage());
+            subjectInDb.setCommunity(newSubject.getCommunity());
+            subjectInDb.setSiteId(newSubject.getSiteId());
+
+            subjectDataService.update(subjectInDb);
+        } else {
+            subjectDataService.create(newSubject);
+        }
     }
 
     @Override
