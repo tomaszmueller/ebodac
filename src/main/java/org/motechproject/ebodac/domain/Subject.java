@@ -1,12 +1,14 @@
 package org.motechproject.ebodac.domain;
 
+import org.apache.commons.lang.StringUtils;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Column;
-import java.util.Objects;
+import javax.jdo.annotations.Unique;
 
 /**
  * Models data for registration of Subject in EBODAC
@@ -18,6 +20,7 @@ public class Subject {
      *  Fields captured in ZETES
      */
 
+    @Unique
     @NonEditable
     @UIDisplayable(position = 0)
     @Field(required = true)
@@ -28,7 +31,7 @@ public class Subject {
     private String name;
 
     @UIDisplayable(position = 2)
-    @Field(required = true)
+    @Field
     private String householdName;
 
     @UIDisplayable(position = 3)
@@ -37,11 +40,11 @@ public class Subject {
 
     @UIDisplayable(position = 4)
     @Column(length = 20)
-    @Field(required = true)
+    @Field
     private String phoneNumber;
 
     @UIDisplayable(position = 5)
-    @Field(required = true)
+    @Field
     private String address;
 
     @UIDisplayable(position = 7)
@@ -49,12 +52,13 @@ public class Subject {
     @Field(required = true)
     private Language language;
 
+    @NonEditable
     @UIDisplayable(position = 8)
     @Field(required = true)
     private String siteId;
 
     @UIDisplayable(position = 9)
-    @Field(required = true)
+    @Field
     private String community;
 
     /**
@@ -68,32 +72,32 @@ public class Subject {
     /**
      *  Motech internal fields
      */
-
-    @NonEditable
-    @UIDisplayable(position = 10)
+    @NonEditable(display = false)
     @Field(defaultValue = "false")
     private boolean changed;
 
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public Subject() {
     }
 
-    public Subject(String phoneNumber, String name, String householdName, String subjectId,
-                   String siteId, String address, Language language, String community) {
-        this.phoneNumber = phoneNumber;
+    public Subject(String subjectId, String name, String householdName, String headOfHousehold,
+                   String phoneNumber, String address, Language language, String community, String siteId) {
+        this.subjectId = subjectId;
         this.name = name;
         this.householdName = householdName;
-        this.subjectId = subjectId;
-        this.siteId = siteId;
+        this.headOfHousehold = headOfHousehold;
+        this.phoneNumber = phoneNumber;
         this.address = address;
         this.language = language;
         this.community = community;
-    }
-
-    public Subject(String phoneNumber, String name, String householdName, String subjectId,
-                   String siteId, String address, Language language, String community, String headOfHousehold) {
-        this(phoneNumber, name, householdName, subjectId, siteId, address, language, community);
-        this.headOfHousehold = headOfHousehold;
+        if (StringUtils.isBlank(siteId)) {
+            this.siteId = EbodacConstants.SITE_ID_FOR_STAGE_I;
+        } else {
+            this.siteId = siteId;
+        }
     }
 
     public String getPhoneNumber() {
@@ -133,7 +137,11 @@ public class Subject {
     }
 
     public void setSiteId(String siteId) {
-        this.siteId = siteId;
+        if (StringUtils.isBlank(siteId)) {
+            this.siteId = EbodacConstants.SITE_ID_FOR_STAGE_I;
+        } else {
+            this.siteId = siteId;
+        }
     }
 
     public Language getLanguage() {
@@ -184,26 +192,12 @@ public class Subject {
         this.changed = changed;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPhoneNumber(), getName(), householdName);
+    public String getOwner() {
+        return owner;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        final Subject other = (Subject) obj;
-
-        return Objects.equals(this.getName(), other.getName()) &&
-                Objects.equals(this.getHouseholdName(), other.getHouseholdName()) &&
-                Objects.equals(this.getPhoneNumber(), other.getPhoneNumber());
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override
