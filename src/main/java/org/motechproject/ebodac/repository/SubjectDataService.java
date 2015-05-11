@@ -6,6 +6,8 @@ import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;
 
+import java.util.List;
+
 /**
  * Interface for repository that persists simple records and allows CRUD.
  * MotechDataService base class will provide the implementation of this class as well
@@ -19,4 +21,7 @@ public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
+
+    @Lookup
+    List<Subject> findSubjectsByModified(@LookupField(name = "changed") Boolean modified);
 }

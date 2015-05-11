@@ -25,7 +25,7 @@
     "subject" : "mds.crud.ebodacmodule.Subject.UPDATE",
     "triggerListenerSubject" : "mds.crud.ebodacmodule.Subject.UPDATE"
   },
-  "enabled" : true,
+  "enabled" : false,
   "taskConfig" : {
     "steps" : [ {
       "@type" : "DataSource",

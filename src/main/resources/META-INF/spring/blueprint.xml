@@ -20,8 +20,7 @@
     <osgi:reference id="subjectDataService"
                     interface="org.motechproject.ebodac.repository.SubjectDataService" />
 
-    <osgi:service ref="ebodacSettingsService"
-        interface="org.motechproject.ebodac.service.EbodacSettingsService" />
+    <osgi:service ref="configService" interface="org.motechproject.ebodac.service.ConfigService" />
 
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
@@ -34,5 +33,7 @@
                     interface="org.motechproject.tasks.service.TaskService">
         <osgi:reference-listener ref="taskImporter"/>
     </osgi:reference>
+
+    <osgi:reference id="schedulerService" interface="org.motechproject.scheduler.service.MotechSchedulerService" />
 
 </beans>

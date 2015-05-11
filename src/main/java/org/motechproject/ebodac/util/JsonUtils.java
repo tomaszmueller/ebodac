@@ -1,0 +1,29 @@
+package org.motechproject.ebodac.util;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+
+public class JsonUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
+
+    public static String convertSubjectForZetes(Subject s) {
+        ObjectMapper mapper = new ObjectMapper();
+        SerializationConfig serializationConfig = mapper.getSerializationConfig().withView(Views.Zetes.class);
+        serializationConfig.addMixInAnnotations(Subject.class, SubjectMixin.class);
+        mapper.setSerializationConfig(serializationConfig);
+
+        mapper.configure(SerializationConfig.Feature.DEFAULT_VIEW_INCLUSION, false);
+        try {
+            return mapper.writeValueAsString(s);
+        } catch (IOException e) {
+            LOGGER.error("IOException while converting Subject to JSON: " + e.getMessage());
+        }
+        return null;
+    }
+}

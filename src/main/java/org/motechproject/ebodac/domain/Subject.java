@@ -20,6 +20,8 @@ public class Subject {
      *  Fields captured in ZETES
      */
 
+    private Long id;
+
     @Unique
     @NonEditable
     @UIDisplayable(position = 0)
@@ -190,6 +192,14 @@ public class Subject {
 
     public void setChanged(Boolean changed) {
         this.changed = changed;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getOwner() {

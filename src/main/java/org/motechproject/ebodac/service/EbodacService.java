@@ -5,4 +5,6 @@ package org.motechproject.ebodac.service;
  */
 public interface EbodacService {
 
+    void sendUpdatedSubjects(String zetesUrl, String username, String password);
+
 }
