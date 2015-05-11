@@ -165,7 +165,14 @@
             <artifactId>motech-platform-server-config</artifactId>
             <version>${motech.version}</version>
         </dependency>
+        <!-- Others -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
     </dependencies>
+
 
     <repositories>
         <repository>
@@ -201,7 +208,10 @@
                             org.motechproject.ebodac.service;version=${project.version},
                             org.motechproject.ebodac.repository;version=${project.version},
                             org.motechproject.ebodac.domain;version=${project.version},
-                            org.motechproject.ebodac.importer;version=${project.version}
+                            org.motechproject.ebodac.importer;version=${project.version},
+                            org.motechproject.ebodac.constants;version=${project.version},
+                            org.motechproject.ebodac.validation;version=${project.version},
+                            org.motechproject.ebodac.web;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             org.motechproject.osgi.web,
