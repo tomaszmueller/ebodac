@@ -144,7 +144,7 @@ public class SubmitSubjectRequest {
             if (!StringUtils.isNumeric(subjectId)) {
                 validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_NUMERIC));
             } else {
-                if (!isSubjectIdVerified(subjectId)) {
+                if (!isSubjectIdValid(subjectId)) {
                     validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
                 }
             }
@@ -193,7 +193,7 @@ public class SubmitSubjectRequest {
         return validationErrors;
     }
 
-    private Boolean isSubjectIdVerified(String subjectId) {
+    private Boolean isSubjectIdValid(String subjectId) {
 
         String lastTwoDigits = subjectId.substring(subjectId.length() - 2);
         String idWithoutLastTwoDigits = subjectId.substring(0, subjectId.length() - 2);

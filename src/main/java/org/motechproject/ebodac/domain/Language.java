@@ -1,13 +1,15 @@
 package org.motechproject.ebodac.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableSet;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents language of Subject
  */
 public enum Language {
-    English("en"),
+    English("eng"),
     Krio("kri"),
     Limba("lma"),
     Susu("sus"),
@@ -16,21 +18,21 @@ public enum Language {
     private String code;
 
     public static Language getByCode(String code) {
-        for(Language e: Language.values()) {
-            if(e.getCode().equals(code)) {
-                return e;
+        for(Language language: Language.values()) {
+            if(language.getCode().equals(code)) {
+                return language;
             }
         }
         return null;
     }
 
-    public static List<String> getListOfCodes() {
-        List<String> codes = new ArrayList<>();
+    public static Set<String> getListOfCodes() {
+        Set<String> codes = new HashSet<>();
 
         for (Language language : values()) {
             codes.add(language.getCode());
         }
-        return codes;
+        return ImmutableSet.copyOf(codes);
     }
 
     private Language(String code) {

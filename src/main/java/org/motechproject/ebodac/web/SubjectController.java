@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.web;
 
-import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
@@ -17,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
+
+import static ch.lambdaj.Lambda.extract;
+import static ch.lambdaj.Lambda.on;
 
 /**
  * Web API for Subject Registration
@@ -34,7 +37,7 @@ public class SubjectController {
     @PreAuthorize("hasAnyRole('manageBundles', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> submitSubjectRequest (@RequestBody SubmitSubjectRequest submitSubjectRequest) {
+    public ResponseEntity<List<String>> submitSubjectRequest (@RequestBody SubmitSubjectRequest submitSubjectRequest) {
 
         List<ValidationError> errorList;
 
@@ -50,12 +53,14 @@ public class SubjectController {
                 subjectService.createOrUpdate(subject);
             } catch (Exception ex) {
                 LOGGER.error("Error raised during creating subject: " + ex.getMessage(), ex);
-                return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(Arrays.asList(ex.getMessage()),
+                        HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(StringUtils.join(errorList, System.getProperty("line.separator")),
-                    HttpStatus.BAD_REQUEST);
+            List<String> validationMessages = extract(errorList, on(ValidationError.class).getMessage());
+            LOGGER.info(validationMessages.toString());
+            return new ResponseEntity<>(validationMessages, HttpStatus.BAD_REQUEST);
         }
     }
 }
