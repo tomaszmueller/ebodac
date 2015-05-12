@@ -13,6 +13,10 @@ import org.motechproject.mds.service.MotechDataService;
  * define and custom lookups we may need.
  */
 public interface SubjectDataService extends MotechDataService<Subject> {
+
     @Lookup
     Subject findSubjectByName(@LookupField(name = "name") String name);
+
+    @Lookup
+    Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
 }

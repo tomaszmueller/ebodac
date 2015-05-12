@@ -1,22 +1,47 @@
 package org.motechproject.ebodac.domain;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents language of Subject
  */
 public enum Language {
-    ENGLISH("English"),
-    KRIO("Krio"),
-    LIMBA("Limba"),
-    SUSU("Susu"),
-    TEMNE("Temne");
+    English("eng"),
+    Krio("kri"),
+    Limba("lma"),
+    Susu("sus"),
+    Temne("tem");
 
-    private String value;
+    private String code;
 
-    private Language(String value) {
-        this.value = value;
+    public static Language getByCode(String code) {
+        for(Language language: Language.values()) {
+            if(language.getCode().equals(code)) {
+                return language;
+            }
+        }
+        return null;
     }
 
-    public String getValue() {
-        return value;
+    public static Set<String> getListOfCodes() {
+        Set<String> codes = new HashSet<>();
+
+        for (Language language : values()) {
+            codes.add(language.getCode());
+        }
+        return ImmutableSet.copyOf(codes);
     }
+
+    private Language(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+
 }
