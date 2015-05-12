@@ -6,6 +6,7 @@ import org.motechproject.ebodac.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectDataService subjectDataService;
+
+    private List<Long> idsToPreserveModified = new ArrayList<>();
 
     @Override
     public void createOrUpdate(Subject newSubject) {
@@ -49,17 +52,35 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<Subject> findModifiedSubjects() {
+        return subjectDataService.findSubjectsByModified(true);
+    }
+
+    @Override
     public List<Subject> getAll() {
         return subjectDataService.retrieveAll();
     }
 
     @Override
-    public void update(Subject record) {
+    public void update(Subject record, Boolean preserveModified) {
+        if (preserveModified) {
+            idsToPreserveModified.add(record.getId());
+        }
         subjectDataService.update(record);
     }
 
     @Override
     public void delete(Subject record) {
         subjectDataService.delete(record);
+    }
+
+    @Override
+    public void subjectChanged(Subject subject) {
+        Long subjectId = subject.getId();
+        if (idsToPreserveModified.contains(subjectId)) {
+            idsToPreserveModified.remove(subjectId);
+        } else {
+            subject.setChanged(true);
+        }
     }
 }

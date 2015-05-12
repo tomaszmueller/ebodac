@@ -16,6 +16,7 @@
     ebodac.config(function ($routeProvider) {
         $routeProvider
             .when('/ebodac/registration', { redirectTo: '/mds/dataBrowser/' + subjectId + '/ebodac' })
+            .when('/ebodac/settings', {templateUrl: '../ebodac/resources/partials/settings.html', controller: 'EbodacSettingsCtrl'});
     });
 
 }());

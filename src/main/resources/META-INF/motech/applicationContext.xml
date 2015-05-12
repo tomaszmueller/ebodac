@@ -24,6 +24,7 @@
                 <entry key="messages" value="../ebodac/resources/messages/" />
             </map>
         </constructor-arg>
+        <property name="settingsURL" value="/ebodac/settings" />
         <property name="defaultURL" value="/ebodac/registration"/>
         <property name="roleForAccess">
             <list>
@@ -33,8 +34,7 @@
         </property>
     </bean>
 
-    <bean id="ebodacSettings" class="org.motechproject.server.config.SettingsFacade"
-        autowire="byType">
+    <bean id="ebodacSettings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
         <property name="configFiles">
             <list>
                 <value>classpath:ebodac.properties</value>
@@ -42,6 +42,7 @@
         </property>
         <property name="rawConfigFiles">
             <list>
+                <value>classpath:ebodac-config.json</value>
                 <value>classpath:custom-ui.js</value>
             </list>
         </property>
