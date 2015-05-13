@@ -78,7 +78,7 @@ public class ValidationTest {
 
         List<ValidationError> requestErrors = request.validate();
 
-        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.SUBJECT_ID_NOT_NUMERIC)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.SUBJECT_ID_NOT_VERIFIED)));
         Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.NAME_HAS_DIGITS)));
         Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.HOUSEHOLD_NAME_HAS_DIGITS)));
         Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.HEAD_OF_HOUSEHOLD_HAS_DIGITS)));

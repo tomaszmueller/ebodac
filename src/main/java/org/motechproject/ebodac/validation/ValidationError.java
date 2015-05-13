@@ -6,7 +6,6 @@ public class ValidationError {
 
     public static final String PHONE_NUMBER_NULL = "Error: phoneNumber property can't be null";
     public static final String SUBJECT_ID_NULL = "Error: subjectId property can't be null";
-    public static final String SUBJECT_ID_NOT_NUMERIC = "Error: subjectId property has to be numeric";
     public static final String SUBJECT_ID_NOT_VERIFIED = "Error: subjectId property format verification failed";
     public static final String NAME_NULL  = "Error: name property can't be null";
     public static final String NAME_HAS_DIGITS  = "Error: name property cannot contain digits";

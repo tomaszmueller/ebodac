@@ -142,7 +142,7 @@ public class SubmitSubjectRequest {
             validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NULL));
         } else {
             if (!StringUtils.isNumeric(subjectId)) {
-                validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_NUMERIC));
+                validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
             } else {
                 if (!isSubjectIdValid(subjectId)) {
                     validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
