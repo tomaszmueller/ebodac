@@ -15,7 +15,7 @@ import static com.google.common.collect.Iterables.any;
  */
 public class ValidationTest {
 
-    private Predicate<ValidationError> hasError(final String errorMessage)  {
+    private Predicate<ValidationError> hasErrorPredicate(final String errorMessage)  {
         return new Predicate<ValidationError>() {
             @Override
             public boolean apply(ValidationError err) {
@@ -36,8 +36,8 @@ public class ValidationTest {
         List<ValidationError> request1Errors = submitRequestWithCorrectId.validate();
         List<ValidationError> request2Errors = submitRequestWithWrongId.validate();
 
-        Assert.assertTrue(!any(request1Errors, hasError(ValidationError.SUBJECT_ID_NOT_VERIFIED)));
-        Assert.assertFalse(!any(request2Errors, hasError(ValidationError.SUBJECT_ID_NOT_VERIFIED)));
+        Assert.assertTrue(!any(request1Errors, hasErrorPredicate(ValidationError.SUBJECT_ID_NOT_VERIFIED)));
+        Assert.assertFalse(!any(request2Errors, hasErrorPredicate(ValidationError.SUBJECT_ID_NOT_VERIFIED)));
     }
 
     @Test
@@ -46,9 +46,10 @@ public class ValidationTest {
 
         List<ValidationError> requestErrors = request.validate();
 
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.LANGUAGE_NULL)));
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.SUBJECT_ID_NULL)));
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.NAME_NULL)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.LANGUAGE_NULL)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.SUBJECT_ID_NULL)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.NAME_NULL)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.PHONE_NUMBER_NULL)));
     }
 
     @Test
@@ -62,8 +63,8 @@ public class ValidationTest {
         List<ValidationError> requestErrors = request.validate();
         List<ValidationError> request2Errors = request2.validate();
 
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.LANGUAGE_NOT_CORRECT)));
-        Assert.assertFalse(any(request2Errors, hasError(ValidationError.LANGUAGE_NOT_CORRECT)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.LANGUAGE_NOT_CORRECT)));
+        Assert.assertFalse(any(request2Errors, hasErrorPredicate(ValidationError.LANGUAGE_NOT_CORRECT)));
     }
 
     @Test
@@ -77,9 +78,9 @@ public class ValidationTest {
 
         List<ValidationError> requestErrors = request.validate();
 
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.SUBJECT_ID_NOT_NUMERIC)));
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.NAME_HAS_DIGITS)));
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.HOUSEHOLD_NAME_HAS_DIGITS)));
-        Assert.assertTrue(any(requestErrors, hasError(ValidationError.HEAD_OF_HOUSEHOLD_HAS_DIGITS)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.SUBJECT_ID_NOT_NUMERIC)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.NAME_HAS_DIGITS)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.HOUSEHOLD_NAME_HAS_DIGITS)));
+        Assert.assertTrue(any(requestErrors, hasErrorPredicate(ValidationError.HEAD_OF_HOUSEHOLD_HAS_DIGITS)));
     }
 }

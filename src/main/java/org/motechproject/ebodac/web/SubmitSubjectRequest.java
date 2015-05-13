@@ -130,8 +130,8 @@ public class SubmitSubjectRequest {
          *  phoneNumber validations
          */
 
-        if (StringUtils.isNotBlank(phoneNumber) && (phoneNumber.length() != 9 || !phoneNumber.startsWith("0"))) {
-                validationErrors.add(new ValidationError(ValidationError.PHONE_NUMBER_NOT_CORRECT));
+        if (StringUtils.isBlank(phoneNumber)) {
+                validationErrors.add(new ValidationError(ValidationError.PHONE_NUMBER_NULL));
         }
 
         /**

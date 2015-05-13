@@ -4,7 +4,7 @@ import org.motechproject.ebodac.domain.Language;
 
 public class ValidationError {
 
-    public static final String PHONE_NUMBER_NOT_CORRECT = "Error: phoneNumber property is not in correct format";
+    public static final String PHONE_NUMBER_NULL = "Error: phoneNumber property can't be null";
     public static final String SUBJECT_ID_NULL = "Error: subjectId property can't be null";
     public static final String SUBJECT_ID_NOT_NUMERIC = "Error: subjectId property has to be numeric";
     public static final String SUBJECT_ID_NOT_VERIFIED = "Error: subjectId property format verification failed";
