@@ -22,7 +22,7 @@ public class SubjectServiceImpl implements SubjectService {
     private List<Long> idsToPreserveModified = new ArrayList<>();
 
     @Override
-    public void createOrUpdate(Subject newSubject) {
+    public Subject createOrUpdate(Subject newSubject) {
 
         Subject subjectInDb = subjectDataService.findSubjectBySubjectId(newSubject.getSubjectId());
 
@@ -36,9 +36,9 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setCommunity(newSubject.getCommunity());
             subjectInDb.setSiteId(newSubject.getSiteId());
 
-            subjectDataService.update(subjectInDb);
+            return update(subjectInDb, true);
         } else {
-            subjectDataService.create(newSubject);
+            return subjectDataService.create(newSubject);
         }
     }
 
@@ -62,11 +62,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void update(Subject record, Boolean preserveModified) {
+    public Subject update(Subject record, Boolean preserveModified) {
         if (preserveModified) {
             idsToPreserveModified.add(record.getId());
         }
-        subjectDataService.update(record);
+        return subjectDataService.update(record);
     }
 
     @Override

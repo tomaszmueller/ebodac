@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface SubjectService {
 
-    void createOrUpdate(Subject newSubject);
+    Subject createOrUpdate(Subject newSubject);
 
     Subject findSubjectByName(String name);
 
@@ -21,7 +21,7 @@ public interface SubjectService {
 
     void delete(Subject record);
 
-    void update(Subject record, Boolean preserveModified);
+    Subject update(Subject record, Boolean preserveModified);
 
     @InstanceLifecycleListener(InstanceLifecycleListenerType.PRE_STORE)
     void subjectChanged(Subject subject);

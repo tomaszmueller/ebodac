@@ -1,11 +1,12 @@
 package org.motechproject.ebodac.osgi;
 
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
@@ -16,7 +17,7 @@ import org.ops4j.pax.exam.spi.reactors.PerSuite;
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +32,7 @@ public class SubjectServiceIT extends BasePaxIT {
     @Inject
     private SubjectService subjectService;
 
+    @Ignore
     @Test
     public void testSubjectService() throws Exception {
         Subject testRecord = new Subject("123", "test 1st name", "test household name",

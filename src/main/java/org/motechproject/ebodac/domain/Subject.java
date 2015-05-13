@@ -211,46 +211,6 @@ public class Subject {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Subject subject = (Subject) o;
-
-        if (changed != subject.changed) return false;
-        if (address != null ? !address.equals(subject.address) : subject.address != null) return false;
-        if (community != null ? !community.equals(subject.community) : subject.community != null) return false;
-        if (gender != subject.gender) return false;
-        if (headOfHousehold != null ? !headOfHousehold.equals(subject.headOfHousehold) : subject.headOfHousehold != null)
-            return false;
-        if (householdName != null ? !householdName.equals(subject.householdName) : subject.householdName != null)
-            return false;
-        if (language != subject.language) return false;
-        if (name != null ? !name.equals(subject.name) : subject.name != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(subject.phoneNumber) : subject.phoneNumber != null) return false;
-        if (!siteId.equals(subject.siteId)) return false;
-        if (!subjectId.equals(subject.subjectId)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = subjectId.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (householdName != null ? householdName.hashCode() : 0);
-        result = 31 * result + (headOfHousehold != null ? headOfHousehold.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (language != null ? language.hashCode() : 0);
-        result = 31 * result + siteId.hashCode();
-        result = 31 * result + (community != null ? community.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (changed ? 1 : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return String.format("Subject{name='%s', householdName='%s', phoneNumber='%s'}",
                 getName(), getHouseholdName(), getPhoneNumber());
