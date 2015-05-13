@@ -24,7 +24,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject createOrUpdate(Subject newSubject) {
 
-        Subject subjectInDb = subjectDataService.findSubjectBySubjectId(newSubject.getSubjectId());
+        Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
 
         if (subjectInDb != null) {
             subjectInDb.setName(newSubject.getName());
@@ -45,6 +45,15 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject findSubjectByName(String FirstName) {
         Subject record = subjectDataService.findSubjectByName(FirstName);
+        if (null == record) {
+            return null;
+        }
+        return record;
+    }
+
+    @Override
+    public Subject findSubjectBySubjectId(String subjectId) {
+        Subject record = subjectDataService.findSubjectBySubjectId(subjectId);
         if (null == record) {
             return null;
         }

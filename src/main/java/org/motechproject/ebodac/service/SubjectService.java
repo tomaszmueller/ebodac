@@ -15,6 +15,8 @@ public interface SubjectService {
 
     Subject findSubjectByName(String name);
 
+    Subject findSubjectBySubjectId(String subjectId);
+
     List<Subject> findModifiedSubjects();
 
     List<Subject> getAll();
