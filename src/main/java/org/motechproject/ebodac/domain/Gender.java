@@ -1,10 +1,10 @@
 package org.motechproject.ebodac.domain;
 
 public enum Gender {
-    MALE("M"),
-    FEMALE("F"),
-    UNKNOWN("U"),
-    UNDIFFERENTIATED("UN");
+    Male("M"),
+    Female("F"),
+    Unknown("U"),
+    Undifferentiated("UN");
 
     private String value;
 
