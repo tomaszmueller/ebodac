@@ -30,7 +30,7 @@ public class ValidationTest {
         SubmitSubjectRequest submitRequestWithCorrectId = new SubmitSubjectRequest();
         SubmitSubjectRequest submitRequestWithWrongId = new SubmitSubjectRequest();
 
-        submitRequestWithCorrectId.setSubjectId("1010000172");
+        submitRequestWithCorrectId.setSubjectId("1000000452");
         submitRequestWithWrongId.setSubjectId("1010000173");
 
         List<ValidationError> request1Errors = submitRequestWithCorrectId.validate();

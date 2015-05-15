@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.validation.ValidationError;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +143,7 @@ public class SubmitSubjectRequest {
             if (!StringUtils.isNumeric(subjectId)) {
                 validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
             } else {
-                if (!isSubjectIdValid(subjectId)) {
+                if (!Double.valueOf(Double.valueOf(subjectId) % 97D).equals(1D)) {
                     validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
                 }
             }
@@ -191,17 +190,5 @@ public class SubmitSubjectRequest {
         }
 
         return validationErrors;
-    }
-
-    private Boolean isSubjectIdValid(String subjectId) {
-
-        String lastTwoDigits = subjectId.substring(subjectId.length() - 2);
-        String idWithoutLastTwoDigits = subjectId.substring(0, subjectId.length() - 2);
-        String identificationCalculationResult = BigDecimal.valueOf(Double.valueOf(idWithoutLastTwoDigits) / 97D).toString();
-        String expectedIdentificationDigits = identificationCalculationResult.
-                substring(identificationCalculationResult.lastIndexOf(".") + 1, identificationCalculationResult.lastIndexOf(".") + 3);
-
-        return lastTwoDigits.equals(expectedIdentificationDigits);
-
     }
 }
