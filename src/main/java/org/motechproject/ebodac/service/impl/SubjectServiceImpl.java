@@ -38,26 +38,18 @@ public class SubjectServiceImpl implements SubjectService {
 
             return update(subjectInDb, true);
         } else {
-            return subjectDataService.create(newSubject);
+            return create(newSubject, true);
         }
     }
 
     @Override
-    public Subject findSubjectByName(String FirstName) {
-        Subject record = subjectDataService.findSubjectByName(FirstName);
-        if (null == record) {
-            return null;
-        }
-        return record;
+    public Subject findSubjectByName(String name) {
+        return subjectDataService.findSubjectByName(name);
     }
 
     @Override
     public Subject findSubjectBySubjectId(String subjectId) {
-        Subject record = subjectDataService.findSubjectBySubjectId(subjectId);
-        if (null == record) {
-            return null;
-        }
-        return record;
+        return subjectDataService.findSubjectBySubjectId(subjectId);
     }
 
     @Override
@@ -68,6 +60,14 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> getAll() {
         return subjectDataService.retrieveAll();
+    }
+
+    @Override
+    public Subject create(Subject record, Boolean preserveModified) {
+        if (preserveModified) {
+            idsToPreserveModified.add(record.getId());
+        }
+        return subjectDataService.create(record);
     }
 
     @Override
