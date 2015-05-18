@@ -225,6 +225,8 @@
                             org.motechproject.config.service,
                             org.motechproject.messagecampaign.service,
                             org.motechproject.tasks.service,
+                            org.motechproject.mds.service,
+                            org.springframework.web.multipart.commons,
                             *
                         </Import-Package>
                     </instructions>

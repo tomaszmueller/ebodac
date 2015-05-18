@@ -23,6 +23,8 @@ public interface SubjectService {
 
     void delete(Subject record);
 
+    Subject create(Subject record, Boolean preserveModified);
+
     Subject update(Subject record, Boolean preserveModified);
 
     @InstanceLifecycleListener(InstanceLifecycleListenerType.PRE_STORE)
