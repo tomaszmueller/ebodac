@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.client;
 
 import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -20,11 +21,11 @@ import java.io.InputStream;
 public class EbodacHttpClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacHttpClient.class);
 
-    public JsonResponse sendJson(String url, String jsonString) {
+    public HttpResponse sendJson(String url, String jsonString) {
         return sendJson(url, jsonString, null, null);
     }
 
-    public JsonResponse sendJson(String url, String jsonString, String username, String password) {
+    public HttpResponse sendJson(String url, String jsonString, String username, String password) {
         HttpClient client = new HttpClient();
         PostMethod method = new PostMethod(url);
 
@@ -36,15 +37,19 @@ public class EbodacHttpClient {
             StringRequestEntity input = new StringRequestEntity(jsonString, "application/json", "UTF-8");
             method.setRequestEntity(input);
 
-            JsonResponse jsonResponse = new JsonResponse();
+            HttpResponse httpResponse = new HttpResponse();
             int status = client.executeMethod(method);
-            jsonResponse.setStatus(status);
+            httpResponse.setStatus(status);
 
+            Header contentType = method.getResponseHeader("Content-Type");
+            if (contentType != null) {
+                httpResponse.setContentType(contentType.getValue());
+            }
             InputStream responseStream = method.getResponseBodyAsStream();
-            jsonResponse.setJson(
+            httpResponse.setResponseBody(
                     IOUtils.toString(responseStream));
             responseStream.close();
-            return jsonResponse;
+            return httpResponse;
         } catch (HttpException e) {
             LOGGER.error("HttpException occurred while sending request: " + e.getMessage());
         } catch (IOException e) {

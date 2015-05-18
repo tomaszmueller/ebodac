@@ -1,9 +1,14 @@
 package org.motechproject.ebodac.service.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.motechproject.ebodac.client.EbodacHttpClient;
-import org.motechproject.ebodac.client.JsonResponse;
+import org.motechproject.ebodac.client.HttpResponse;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.ebodac.service.SubjectService;
@@ -40,12 +45,12 @@ public class EbodacServiceImpl implements EbodacService {
         for (Subject s : modifiedSubjects) {
             String json = JsonUtils.convertSubjectForZetes(s);
             if (json != null) {
-                JsonResponse response = ebodacHttpClient.sendJson(zetesUrl, json, username, password);
+                HttpResponse response = ebodacHttpClient.sendJson(zetesUrl, json, username, password);
                 if (response == null) {
                     LOGGER.error("Skipping subject due to HttpClient failure. Subject id: {}", s.getSubjectId());
                 } else if (response.getStatus() != HttpStatus.SC_OK) {
-                    LOGGER.error("Failed to update the subject. Subject id: {}, response from Zetes (status {}):\n{}",
-                            s.getSubjectId(), response.getStatus(), response.getJson());
+                    LOGGER.error("Failed to update the subject with id: {}. Response from Zetes (status {}):\n{}",
+                            s.getSubjectId(), response.getStatus(), parseZetesResponse(response));
                 } else {
                     // the subject has been updated successfully
                     s.setChanged(false);
@@ -56,6 +61,36 @@ public class EbodacServiceImpl implements EbodacService {
             }
         }
         LOGGER.info("Zetes update job finished at {}", DateTime.now());
+    }
+
+    private String parseZetesResponse(HttpResponse httpResponse) {
+        int status = httpResponse.getStatus();
+        if (status == HttpStatus.SC_NOT_FOUND) {
+            return "Invalid reverse proxy url";
+        } else if (status == HttpStatus.SC_UNAUTHORIZED) {
+            return "Bad authentication";
+        } else {
+            String response = httpResponse.getResponseBody();
+            if (StringUtils.isEmpty(response)) {
+                return "Empty response body";
+            }
+            if (httpResponse.getContentType().equals("application/json")) {
+                try {
+                    JsonElement jsonElement = new JsonParser().parse(response);
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    if (jsonObject.has("message")) {
+                        return jsonObject.get("message").getAsString();
+                    } else {
+                        return jsonObject.getAsString();
+                    }
+                } catch (JsonSyntaxException e) {
+                    LOGGER.error("Could not parse JSON response from Zetes");
+                }
+            } else if (response.contains("JsonParseException")) {
+                return "Invalid JSON syntax";
+            }
+            return response;
+        }
     }
 
 }
