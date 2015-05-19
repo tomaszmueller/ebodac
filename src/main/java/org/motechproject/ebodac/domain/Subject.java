@@ -29,7 +29,7 @@ public class Subject {
     private String subjectId;
 
     @UIDisplayable(position = 1)
-    @Field(required = true)
+    @Field
     private String name;
 
     @UIDisplayable(position = 2)
@@ -51,7 +51,7 @@ public class Subject {
 
     @UIDisplayable(position = 7)
     @Column(length = 20)
-    @Field(required = true)
+    @Field
     private Language language;
 
     @NonEditable
@@ -95,11 +95,7 @@ public class Subject {
         this.address = address;
         this.language = language;
         this.community = community;
-        if (StringUtils.isBlank(siteId)) {
-            this.siteId = EbodacConstants.SITE_ID_FOR_STAGE_I;
-        } else {
-            this.siteId = siteId;
-        }
+        setSiteId(siteId);
     }
 
     public String getPhoneNumber() {

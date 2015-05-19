@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
+import javax.jdo.JDOException;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.extract;
@@ -37,30 +37,33 @@ public class SubjectController {
     @PreAuthorize("hasAnyRole('manageBundles', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<List<String>> submitSubjectRequest (@RequestBody SubmitSubjectRequest submitSubjectRequest) {
+    public ResponseEntity<String> submitSubjectRequest (@RequestBody SubmitSubjectRequest submitSubjectRequest) {
 
         List<ValidationError> errorList;
 
         errorList = submitSubjectRequest.validate();
 
-        if (errorList.isEmpty()) {
+        if (!errorList.isEmpty()) {
+            List<String> validationMessages = extract(errorList, on(ValidationError.class).getMessage());
+            LOGGER.warn(validationMessages.toString());
+        }
+
+        try {
             Subject subject = new Subject(submitSubjectRequest.getSubjectId(), submitSubjectRequest.getName(),
                     submitSubjectRequest.getHouseholdName(), submitSubjectRequest.getHeadOfHousehold(),
                     submitSubjectRequest.getPhoneNumber(), submitSubjectRequest.getAddress(),
-                    Language.getByCode(submitSubjectRequest.getLanguage()), submitSubjectRequest.getCommunity(),
+                    Language.getByCode(submitSubjectRequest.getLanguage()),
+                    submitSubjectRequest.getCommunity(),
                     submitSubjectRequest.getSiteId());
-            try {
-                subjectService.createOrUpdate(subject);
-            } catch (Exception ex) {
-                LOGGER.error("Error raised during creating subject: " + ex.getMessage(), ex);
-                return new ResponseEntity<>(Arrays.asList(ex.getMessage()),
-                        HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            List<String> validationMessages = extract(errorList, on(ValidationError.class).getMessage());
-            LOGGER.info(validationMessages.toString());
-            return new ResponseEntity<>(validationMessages, HttpStatus.BAD_REQUEST);
+
+            subjectService.createOrUpdate(subject);
+        } catch (JDOException ex) {
+            LOGGER.warn("Error raised during creating subject: " + ex.getMessage(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception ex ) {
+            LOGGER.error("Fatal error raised during creating subject: " + ex.getMessage(), ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
