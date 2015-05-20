@@ -45,15 +45,19 @@ public class EbodacHttpClient {
             if (contentType != null) {
                 httpResponse.setContentType(contentType.getValue());
             }
-            InputStream responseStream = method.getResponseBodyAsStream();
-            httpResponse.setResponseBody(
-                    IOUtils.toString(responseStream));
-            responseStream.close();
+            if (method.getResponseBodyAsStream() != null) {
+                InputStream responseStream = method.getResponseBodyAsStream();
+                httpResponse.setResponseBody(IOUtils.toString(responseStream));
+                responseStream.close();
+            }
+
             return httpResponse;
         } catch (HttpException e) {
-            LOGGER.error("HttpException occurred while sending request: " + e.getMessage());
+            LOGGER.error("HttpException occurred while sending request: " + e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.error("IOException occurred while sending request: " + e.getMessage());
+            LOGGER.error("IOException occurred while sending request: " + e.getMessage(), e);
+        } catch (Exception e) {
+            LOGGER.error("Fatal exception occurred while sending request: " + e.getMessage(), e);
         } finally {
             method.releaseConnection();
         }

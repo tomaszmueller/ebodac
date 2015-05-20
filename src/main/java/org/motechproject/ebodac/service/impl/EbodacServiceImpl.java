@@ -48,13 +48,14 @@ public class EbodacServiceImpl implements EbodacService {
                 HttpResponse response = ebodacHttpClient.sendJson(zetesUrl, json, username, password);
                 if (response == null) {
                     LOGGER.error("Skipping subject due to HttpClient failure. Subject id: {}", s.getSubjectId());
-                } else if (response.getStatus() != HttpStatus.SC_OK) {
+                } else if (response.getStatus() != HttpStatus.SC_NO_CONTENT) {
                     LOGGER.error("Failed to update the subject with id: {}. Response from Zetes (status {}):\n{}",
                             s.getSubjectId(), response.getStatus(), parseZetesResponse(response));
                 } else {
                     // the subject has been updated successfully
                     s.setChanged(false);
                     subjectService.update(s, true);
+                    LOGGER.debug("Update to Zetes was successful. Subject id: {}", s.getSubjectId());
                 }
             } else {
                 LOGGER.error("Skipping subject due to json processing exception. Subject id: {}", s.getSubjectId());
@@ -72,7 +73,7 @@ public class EbodacServiceImpl implements EbodacService {
         } else {
             String response = httpResponse.getResponseBody();
             if (StringUtils.isEmpty(response)) {
-                return "Empty response body";
+                return "Empty response body with status different than 204";
             }
             if (httpResponse.getContentType().equals("application/json")) {
                 try {
