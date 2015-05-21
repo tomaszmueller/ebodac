@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.util;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonView;
-import org.motechproject.ebodac.domain.Language;
 
 // View definitions:
 class Views {
@@ -28,8 +28,9 @@ abstract class SubjectMixin {
     @JsonView(Views.Zetes.class)
     String address;
 
+    @JsonProperty("language")
     @JsonView(Views.Zetes.class)
-    Language language;
+    abstract String getLanguageCode();
 
     @JsonView(Views.Zetes.class)
     String community;

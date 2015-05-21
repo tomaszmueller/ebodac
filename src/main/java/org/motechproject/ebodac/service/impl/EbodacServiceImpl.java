@@ -55,7 +55,7 @@ public class EbodacServiceImpl implements EbodacService {
                     // the subject has been updated successfully
                     s.setChanged(false);
                     subjectService.update(s, true);
-                    LOGGER.debug("Update to Zetes was successful. Subject id: {}", s.getSubjectId());
+                    LOGGER.debug("Update to Zetes was successful. Subject id: {}: \n", s.getSubjectId(), s.toString());
                 }
             } else {
                 LOGGER.error("Skipping subject due to json processing exception. Subject id: {}", s.getSubjectId());

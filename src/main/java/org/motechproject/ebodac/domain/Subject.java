@@ -206,6 +206,10 @@ public class Subject {
         this.owner = owner;
     }
 
+    public String getLanguageCode() {
+        return language.getCode();
+    }
+
     @Override
     public String toString() {
         return String.format("Subject{name='%s', householdName='%s', phoneNumber='%s'}",
