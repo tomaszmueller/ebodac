@@ -29,3 +29,21 @@ $scope.closeImportSubjectModal = function () {
     $('#importSubjectForm').resetForm();
     $('#importSubjectModal').modal('hide');
 };
+
+$scope.addEntityInstance = function () {
+    blockUI();
+
+    var values = $scope.currentRecord.fields;
+    angular.forEach (values, function(value, key) {
+        value.value = value.value === 'null' ? null : value.value;
+
+        if (value.name === "changed") {
+            value.value = true;
+        }
+    });
+
+    $scope.currentRecord.$save(function() {
+        $scope.unselectInstance();
+        unblockUI();
+    }, angularHandler('mds.error', 'mds.error.cannotAddInstance'));
+};
