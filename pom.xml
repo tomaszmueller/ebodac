@@ -39,6 +39,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-platform-osgi-extender-fragment</artifactId>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.gemini</groupId>
             <artifactId>org.eclipse.gemini.blueprint.core</artifactId>
             <version>1.0.2.RELEASE</version>

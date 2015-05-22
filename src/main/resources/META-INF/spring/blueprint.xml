@@ -19,6 +19,12 @@
     <osgi:service ref="subjectService"
         interface="org.motechproject.ebodac.service.SubjectService" />
 
+    <osgi:service ref="raveImportService"
+                  interface="org.motechproject.ebodac.service.RaveImportService" />
+
+    <osgi:reference id="visitDataService"
+                    interface="org.motechproject.ebodac.repository.VisitDataService" />
+
     <osgi:reference id="subjectDataService"
                     interface="org.motechproject.ebodac.repository.SubjectDataService" />
 

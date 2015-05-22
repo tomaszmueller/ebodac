@@ -8,6 +8,15 @@ public enum Gender {
 
     private String value;
 
+    public static Gender getByValue(String value) {
+        for (Gender gender: Gender.values()) {
+            if (gender.getValue().equals(value)) {
+                return gender;
+            }
+        }
+        return null;
+    }
+
     private Gender(String value) {
         this.value = value;
     }

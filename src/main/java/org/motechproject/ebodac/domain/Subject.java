@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.domain;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
@@ -71,6 +72,24 @@ public class Subject {
     @UIDisplayable(position = 6)
     @Field
     private Gender gender;
+
+    @Field
+    private Long stageId;
+
+    @Field
+    private DateTime dateOfBirth;
+
+    @Field
+    private DateTime primerVaccinationDate;
+
+    @Field
+    private DateTime boosterVaccinationDate;
+
+    @Field
+    private DateTime dateOfDisconVac;
+
+    @Field
+    private DateTime dateOfDisconStd;
 
     /**
      *  Motech internal fields
@@ -181,6 +200,54 @@ public class Subject {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Long getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(Long stageId) {
+        this.stageId = stageId;
+    }
+
+    public DateTime getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(DateTime dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public DateTime getPrimerVaccinationDate() {
+        return primerVaccinationDate;
+    }
+
+    public void setPrimerVaccinationDate(DateTime primerVaccinationDate) {
+        this.primerVaccinationDate = primerVaccinationDate;
+    }
+
+    public DateTime getBoosterVaccinationDate() {
+        return boosterVaccinationDate;
+    }
+
+    public void setBoosterVaccinationDate(DateTime boosterVaccinationDate) {
+        this.boosterVaccinationDate = boosterVaccinationDate;
+    }
+
+    public DateTime getDateOfDisconVac() {
+        return dateOfDisconVac;
+    }
+
+    public void setDateOfDisconVac(DateTime dateOfDisconVac) {
+        this.dateOfDisconVac = dateOfDisconVac;
+    }
+
+    public DateTime getDateOfDisconStd() {
+        return dateOfDisconStd;
+    }
+
+    public void setDateOfDisconStd(DateTime dateOfDisconStd) {
+        this.dateOfDisconStd = dateOfDisconStd;
     }
 
     public Boolean getChanged() {
