@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.web;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.validation.ValidationError;
 
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  *  DTO for request coming from Zetes
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubmitSubjectRequest {
 
     private String subjectId;
