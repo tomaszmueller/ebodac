@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.Ignore;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
 
@@ -206,8 +207,14 @@ public class Subject {
         this.owner = owner;
     }
 
+    @Ignore
     public String getLanguageCode() {
-        return language.getCode();
+        if (language != null) {
+            return language.getCode();
+        } else {
+            return null;
+        }
+
     }
 
     @Override
