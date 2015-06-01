@@ -17,11 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-platform-osgi-extender-fragment</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
             <artifactId>message-campaign</artifactId>
             <version>${motech.version}</version>
         </dependency>
