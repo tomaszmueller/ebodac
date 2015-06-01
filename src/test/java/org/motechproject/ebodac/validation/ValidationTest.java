@@ -1,4 +1,4 @@
-package org.motechproject.ebodac.osgi;
+package org.motechproject.ebodac.validation;
 
 import com.google.common.base.Predicate;
 import org.junit.Assert;
