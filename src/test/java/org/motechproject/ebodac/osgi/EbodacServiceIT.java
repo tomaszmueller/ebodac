@@ -1,5 +1,18 @@
 package org.motechproject.ebodac.osgi;
 
+import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.motechproject.ebodac.client.EbodacFtpsClient;
+import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Config;
+import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.server.FtpsServer;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +25,17 @@ import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertNotNull;
+import java.io.File;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Verify that EbodacService present, functional.
- */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
@@ -25,8 +44,75 @@ public class EbodacServiceIT extends BasePaxIT {
     @Inject
     private EbodacService ebodacService;
 
+    @Inject
+    private SubjectDataService subjectDataService;
+
+    @Inject
+    private VisitDataService visitDataService;
+
+    @Inject
+    private ConfigService configService;
+
+    private static final String HOST = "localhost";
+    private static final String CSV_DIR = "target/csv/";
+    private static final String USER = "test";
+
+    private FtpsServer ftpsServer = new FtpsServer();
+    private EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
+
+    private File csvDir = new File(CSV_DIR);
+    private Config config;
+    
+    @Before
+    public void setUp() throws Exception {
+        ftpsServer.start();
+        ftpsClient.connect(HOST, ftpsServer.getPort(), USER, USER);
+
+        config = configService.getConfig();
+        csvDir = new File(CSV_DIR);
+        csvDir.mkdirs();
+        assertTrue(csvDir.exists());
+
+        visitDataService.deleteAll();
+        subjectDataService.deleteAll();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        ftpsClient.disconnect();
+        ftpsServer.stop();
+
+        configService.updateConfig(config);
+        FileUtils.deleteDirectory(csvDir);
+
+        visitDataService.deleteAll();
+        subjectDataService.deleteAll();
+    }
+
     @Test
-    public void testEbodacServicePresent() throws Exception {
-        assertNotNull(ebodacService);
+    public void shouldFetchCSVUpdates() throws Exception {
+        DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
+        String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
+        InputStream in = getClass().getResourceAsStream("/sample.csv");
+        assertNotNull(in);
+
+        ftpsClient.sendFile(filename, in);
+        in.close();
+
+        DateTime afterDate = DateTime.now().plusDays(1);
+        ebodacService.fetchCSVUpdates(HOST, ftpsServer.getPort(), USER, USER, CSV_DIR, afterDate);
+
+        List<Subject> subjects = subjectDataService.retrieveAll();
+        assertEquals(0, subjects.size());
+        List<Visit> visits = visitDataService.retrieveAll();
+        assertEquals(0, visits.size());
+
+        afterDate = DateTime.now().minusDays(1);
+        ebodacService.fetchCSVUpdates(HOST, ftpsServer.getPort(), USER, USER, CSV_DIR, afterDate);
+
+        subjects = subjectDataService.retrieveAll();
+        assertEquals(7, subjects.size());
+        visits = visitDataService.retrieveAll();
+        assertEquals(26, visits.size());
     }
 }

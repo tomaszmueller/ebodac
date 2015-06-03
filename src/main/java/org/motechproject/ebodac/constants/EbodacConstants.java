@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.constants;
 
+import java.util.regex.Pattern;
+
 public final class EbodacConstants {
 
     public static final String UI_CONFIG = "custom-ui.js";
@@ -14,4 +16,7 @@ public final class EbodacConstants {
     public static final String ZETES_USERNAME = "zetes_username";
     public static final String ZETES_PASSWORD = "zetes_password";
     public static final String START_TIME = "start_time";
+
+    public static final Pattern CSV_FILENAME_PATTERN = Pattern.compile(".*_(.*_.*)\\.csv");
+    public static final String CSV_DATE_FORMAT = "yyyyMMdd_HHmmss";
 }

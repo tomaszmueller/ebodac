@@ -16,8 +16,8 @@
             <h5 class="margin-before2">{{msg('ebodac.web.settings.zetes')}}</h5>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="zetesUrl">{{msg('ebodac.web.settings.zetes.url')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.zetes.url.tooltip')}}">
+                <label class="col-md-2 control-label" for="zetesUrl">{{msg('ebodac.web.settings.zetes.updateUrl')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.zetes.updateUrl.tooltip')}}">
                     <input class="form-control" id="zetesUrl" type="text" ng-model="config.zetesUrl" required>
                 </div>
             </div>
@@ -40,6 +40,43 @@
                 <label class="col-md-2 control-label" for="startTime">{{msg('ebodac.web.settings.zetes.startTime')}}</label>
                 <div class="col-md-10">
                     <input class="form-control" id="startTime" type="text" ng-model="config.startTime" time-picker required>
+                </div>
+            </div>
+
+            <h5 class="margin-before2">{{msg('ebodac.web.settings.rave')}}</h5>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sftpHost">{{msg('ebodac.web.settings.rave.sftpHost')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.sftpHost.tooltip')}}">
+                    <input class="form-control" id="sftpHost" type="text" ng-model="config.sftpHost" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sftpPort">{{msg('ebodac.web.settings.rave.sftpPort')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.sftpPort.tooltip')}}">
+                    <input class="form-control" id="sftpPort" type="text" ng-model="config.sftpPort" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sftpDirectory">{{msg('ebodac.web.settings.rave.directory')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.directory.tooltip')}}">
+                    <input class="form-control" id="sftpDirectory" type="text" ng-model="config.sftpDirectory" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sftpUsername">{{msg('ebodac.web.settings.rave.username')}}</label>
+                <div class="col-md-10">
+                    <input class="form-control" id="sftpUsername" type="text" ng-model="config.sftpUsername" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sftpPassword">{{msg('ebodac.web.settings.rave.password')}}</label>
+                <div class="col-md-10">
+                    <input class="form-control" id="sftpPassword" type="text" ng-model="config.sftpPassword" required>
                 </div>
             </div>
 

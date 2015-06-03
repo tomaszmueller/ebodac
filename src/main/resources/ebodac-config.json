@@ -2,5 +2,11 @@
   "zetesUrl": "",
   "zetesUsername": "",
   "zetesPassword": "",
-  "startTime": ""
+  "startTime": "",
+  "sftpHost": "",
+  "sftpPort": "",
+  "sftpDirectory": "",
+  "sftpUsername": "",
+  "sftpPassword": "",
+  "lastCsvUpdate": ""
 }
