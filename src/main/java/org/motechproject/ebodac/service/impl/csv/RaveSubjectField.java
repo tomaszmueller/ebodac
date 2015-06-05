@@ -5,7 +5,7 @@ public enum RaveSubjectField {
     SiteNumber("siteId"),
     Subject("subjectId"),
     BRTHDT("dateOfBirth"),
-    SEX_STD("gender"),
+    SEX("gender"),
     STAGE("stageId"),
     PRMDT("primerVaccinationDate"),
     BOOSTDT("boosterVaccinationDate"),

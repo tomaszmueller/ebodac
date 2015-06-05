@@ -60,7 +60,7 @@ public class RaveImportServiceImpl implements RaveImportService {
             String header = subjectField.name();
             String fieldName = subjectField.getValue();
             String csvValue = getValue(row, header);
-            if (subjectField.equals(RaveSubjectField.SEX_STD)) {
+            if (subjectField.equals(RaveSubjectField.SEX)) {
                 Gender gender = Gender.getByValue(csvValue);
                 subject.setGender(gender);
             } else {
