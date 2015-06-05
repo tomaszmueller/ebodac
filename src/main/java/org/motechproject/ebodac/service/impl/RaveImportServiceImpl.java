@@ -41,18 +41,18 @@ public class RaveImportServiceImpl implements RaveImportService {
             final String headers[] = csvMapReader.getHeader(true);
 
             while ((row = csvMapReader.read(headers)) != null) {
-                importRow(row);
+                importRow(row, csvMapReader.getRowNumber());
             }
         } catch (IOException e) {
             throw new CsvImportException("IO Error when importing CSV", e);
         }
     }
 
-    private void importRow(Map<String, String> row) {
+    private void importRow(Map<String, String> row, Integer rowNumber) {
         Subject subject = new Subject();
         if (row.containsKey(RaveSubjectField.Subject.name())) {
             String subjectId = row.get(RaveSubjectField.Subject.name());
-            if (subjectId.matches("\\-+")) {
+            if (rowNumber == 2 && subjectId.matches("\\-+")) {
                 return;
             }
             Subject existingSubject = subjectService.findSubjectBySubjectId(subjectId);
