@@ -51,7 +51,11 @@ public class RaveImportServiceImpl implements RaveImportService {
     private void importRow(Map<String, String> row) {
         Subject subject = new Subject();
         if (row.containsKey(RaveSubjectField.Subject.name())) {
-            Subject existingSubject = subjectService.findSubjectBySubjectId(row.get(RaveSubjectField.Subject.name()));
+            String subjectId = row.get(RaveSubjectField.Subject.name());
+            if (subjectId.matches("\\-+")) {
+                return;
+            }
+            Subject existingSubject = subjectService.findSubjectBySubjectId(subjectId);
             if (existingSubject != null) {
                 subject = existingSubject;
             }
@@ -72,7 +76,7 @@ public class RaveImportServiceImpl implements RaveImportService {
             String header = visitField.name();
             String fieldName = visitField.getValue();
             String csvValue = getValue(row, header);
-            if (visitField.equals(RaveVisitField.Visit)) {
+            if (visitField.equals(RaveVisitField.VISIT)) {
                 VisitType visitType = VisitType.getByValue(csvValue);
                 visit.setType(visitType);
             } else {

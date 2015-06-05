@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service.impl.csv;
 
 public enum RaveVisitField {
-    Visit("type"),
+    VISIT("type"),
     VISITDT("date"),
     VISITDTPRJ("dateProjected");
 
