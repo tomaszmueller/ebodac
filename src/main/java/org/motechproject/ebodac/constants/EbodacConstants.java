@@ -24,4 +24,8 @@ public final class EbodacConstants {
     public static final String FETCHED_EMAIL_FLAG = "fetched";
     public static final String JOB_SUCCESS_STATUS = "COMPLETION";
     public static final String JOB_FAILURE_STATUS = "FAILURE";
+
+    public static final String DAILY_REPORT_EVENT = "daily_report_event";
+    public static final String DAILY_REPORT_EVENT_START_DATE = "daily_report_event_start_date";
+    public static final String DAILY_REPORT_EVENT_START_HOUR = "00:01";
 }

@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.scheduler;
 
+import org.joda.time.DateTime;
 import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
@@ -40,5 +41,11 @@ public class EbodacEventListener {
         if (ebodacEmailClient.hasNewJobCompletionMessage(host, user, password)) {
             ebodacService.fetchCSVUpdates();
         }
+    }
+
+    @MotechListener(subjects = {EbodacConstants.DAILY_REPORT_EVENT})
+    public void generateDailyReport(MotechEvent event) {
+        DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
+        ebodacService.generateDailyReport();
     }
 }

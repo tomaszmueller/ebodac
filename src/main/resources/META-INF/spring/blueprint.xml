@@ -42,6 +42,9 @@
         <osgi:reference-listener ref="taskImporter"/>
     </osgi:reference>
 
-    <osgi:reference id="schedulerService" interface="org.motechproject.scheduler.service.MotechSchedulerService" />
+    <osgi:reference id="schedulerService"
+                    interface="org.motechproject.scheduler.service.MotechSchedulerService">
+        <osgi:reference-listener ref="jobImporter"/>
+    </osgi:reference>
 
 </beans>

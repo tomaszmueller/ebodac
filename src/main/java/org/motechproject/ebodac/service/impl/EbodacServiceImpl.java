@@ -144,6 +144,10 @@ public class EbodacServiceImpl implements EbodacService {
         LOGGER.info("Finished fetching CSV files from {}", hostname);
     }
 
+    @Override
+    public void generateDailyReport() {
+    }
+
     private String parseZetesResponse(HttpResponse httpResponse) {
         int status = httpResponse.getStatus();
         if (status == HttpStatus.SC_NOT_FOUND) {
