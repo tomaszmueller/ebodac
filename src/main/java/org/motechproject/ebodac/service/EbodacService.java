@@ -8,4 +8,6 @@ public interface EbodacService {
     void sendUpdatedSubjects(String zetesUrl, String username, String password);
 
     void fetchCSVUpdates();
+
+    void generateDailyReport();
 }
