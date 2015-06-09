@@ -87,18 +87,18 @@ public class EbodacServiceImpl implements EbodacService {
         } else {
             afterDate = new DateTime(new Date(0));
         }
-        String hostname = config.getSftpHost();
-        String username = config.getSftpUsername();
-        String password = config.getSftpPassword();
-        String directory = config.getSftpDirectory();
-        Integer port = Integer.parseInt(config.getSftpPort());
+        String hostname = config.getFtpsHost();
+        String username = config.getFtpsUsername();
+        String password = config.getFtpsPassword();
+        String directory = config.getFtpsDirectory();
+        Integer port = Integer.parseInt(config.getFtpsPort());
 
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);
         EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
         try {
             ftpsClient.connect(hostname, port, username, password);
         } catch (FtpException e) {
-            LOGGER.error("Could not connect to RAVE sFTP: " + e.getMessage(), e);
+            LOGGER.error("Could not connect to RAVE FTPS: " + e.getMessage(), e);
             return;
         }
         List<String> filenames;

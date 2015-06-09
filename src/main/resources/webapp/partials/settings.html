@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label class="col-md-2 control-label" for="zetesPassword">{{msg('ebodac.web.settings.zetes.password')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="zetesPassword" type="text" ng-model="config.zetesPassword" required>
+                    <input class="form-control" id="zetesPassword" type="password" ng-model="config.zetesPassword" required>
                 </div>
             </div>
 
@@ -46,37 +46,37 @@
             <h5 class="margin-before2">{{msg('ebodac.web.settings.rave')}}</h5>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="sftpHost">{{msg('ebodac.web.settings.rave.sftpHost')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.sftpHost.tooltip')}}">
-                    <input class="form-control" id="sftpHost" type="text" ng-model="config.sftpHost" required>
+                <label class="col-md-2 control-label" for="ftpsHost">{{msg('ebodac.web.settings.rave.ftpsHost')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsHost.tooltip')}}">
+                    <input class="form-control" id="ftpsHost" type="text" ng-model="config.ftpsHost" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="sftpPort">{{msg('ebodac.web.settings.rave.sftpPort')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.sftpPort.tooltip')}}">
-                    <input class="form-control" id="sftpPort" type="text" ng-model="config.sftpPort" required>
+                <label class="col-md-2 control-label" for="ftpsPort">{{msg('ebodac.web.settings.rave.ftpsPort')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsPort.tooltip')}}">
+                    <input class="form-control" id="ftpsPort" type="number" ng-model="config.ftpsPort" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="sftpDirectory">{{msg('ebodac.web.settings.rave.directory')}}</label>
+                <label class="col-md-2 control-label" for="ftpsDirectory">{{msg('ebodac.web.settings.rave.directory')}}</label>
                 <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.directory.tooltip')}}">
-                    <input class="form-control" id="sftpDirectory" type="text" ng-model="config.sftpDirectory" required>
+                    <input class="form-control" id="ftpsDirectory" type="text" ng-model="config.ftpsDirectory" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="sftpUsername">{{msg('ebodac.web.settings.rave.username')}}</label>
+                <label class="col-md-2 control-label" for="ftpsUsername">{{msg('ebodac.web.settings.rave.username')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="sftpUsername" type="text" ng-model="config.sftpUsername" required>
+                    <input class="form-control" id="ftpsUsername" type="text" ng-model="config.ftpsUsername" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="sftpPassword">{{msg('ebodac.web.settings.rave.password')}}</label>
+                <label class="col-md-2 control-label" for="ftpsPassword">{{msg('ebodac.web.settings.rave.password')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="sftpPassword" type="text" ng-model="config.sftpPassword" required>
+                    <input class="form-control" id="ftpsPassword" type="password" ng-model="config.ftpsPassword" required>
                 </div>
             </div>
 
@@ -99,14 +99,14 @@
             <div class="form-group">
                 <label class="col-md-2 control-label" for="emailPassword">{{msg('ebodac.web.settings.rave.email.password')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="emailPassword" type="text" ng-model="config.emailPassword" required>
+                    <input class="form-control" id="emailPassword" type="password" ng-model="config.emailPassword" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="emailCheckInterval">{{msg('ebodac.web.settings.rave.email.interval')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="emailCheckInterval" type="text" ng-model="config.emailCheckInterval" required>
+                    <input class="form-control" id="emailCheckInterval" type="number" ng-model="config.emailCheckInterval" required>
                 </div>
             </div>
 

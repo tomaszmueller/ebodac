@@ -12,15 +12,15 @@ public class Config {
 
     private String startTime;
 
-    private String sftpHost;
+    private String ftpsHost;
 
-    private String sftpPort;
+    private String ftpsPort;
 
-    private String sftpDirectory;
+    private String ftpsDirectory;
 
-    private String sftpUsername;
+    private String ftpsUsername;
 
-    private String sftpPassword;
+    private String ftpsPassword;
 
     private String lastCsvUpdate;
 
@@ -67,44 +67,44 @@ public class Config {
         this.startTime = startTime;
     }
 
-    public String getSftpHost() {
-        return sftpHost;
+    public String getFtpsHost() {
+        return ftpsHost;
     }
 
-    public void setSftpHost(String sftpHost) {
-        this.sftpHost = sftpHost;
+    public void setFtpsHost(String ftpsHost) {
+        this.ftpsHost = ftpsHost;
     }
 
-    public String getSftpPort() {
-        return sftpPort;
+    public String getFtpsPort() {
+        return ftpsPort;
     }
 
-    public void setSftpPort(String sftpPort) {
-        this.sftpPort = sftpPort;
+    public void setFtpsPort(String ftpsPort) {
+        this.ftpsPort = ftpsPort;
     }
 
-    public String getSftpDirectory() {
-        return sftpDirectory;
+    public String getFtpsDirectory() {
+        return ftpsDirectory;
     }
 
-    public void setSftpDirectory(String sftpDirectory) {
-        this.sftpDirectory = sftpDirectory;
+    public void setFtpsDirectory(String ftpsDirectory) {
+        this.ftpsDirectory = ftpsDirectory;
     }
 
-    public String getSftpUsername() {
-        return sftpUsername;
+    public String getFtpsUsername() {
+        return ftpsUsername;
     }
 
-    public void setSftpUsername(String sftpUsername) {
-        this.sftpUsername = sftpUsername;
+    public void setFtpsUsername(String ftpsUsername) {
+        this.ftpsUsername = ftpsUsername;
     }
 
-    public String getSftpPassword() {
-        return sftpPassword;
+    public String getFtpsPassword() {
+        return ftpsPassword;
     }
 
-    public void setSftpPassword(String sftpPassword) {
-        this.sftpPassword = sftpPassword;
+    public void setFtpsPassword(String ftpsPassword) {
+        this.ftpsPassword = ftpsPassword;
     }
 
     public String getLastCsvUpdate() {

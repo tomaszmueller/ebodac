@@ -99,11 +99,11 @@ public class EbodacServiceIT extends BasePaxIT {
         in.close();
 
         Config config = configService.getConfig();
-        config.setSftpPort(ftpsServer.getPort().toString());
-        config.setSftpHost(HOST);
-        config.setSftpUsername(USER);
-        config.setSftpPassword(USER);
-        config.setSftpDirectory(CSV_DIR);
+        config.setFtpsPort(ftpsServer.getPort().toString());
+        config.setFtpsHost(HOST);
+        config.setFtpsUsername(USER);
+        config.setFtpsPassword(USER);
+        config.setFtpsDirectory(CSV_DIR);
         DateTime afterDate = DateTime.now().plusDays(1);
         String lastCsvUpdate = afterDate.toString(EbodacConstants.CSV_DATE_FORMAT);
         config.setLastCsvUpdate(lastCsvUpdate);

@@ -5,12 +5,14 @@
             <li><a role="menu" href="#/ebodac/">{{msg('ebodac')}}</a></li>
             <li ng-show="active('#/ebodac/subjects')" ng-class="active('#/ebodac/subjects')">{{msg('ebodac.subjects')}}</li>
             <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.visits')}}</li>
+            <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')">{{msg('ebodac.settings')}}</li>
         </ul>
     </div>
     <div class="header-footer">
         <ul id="content-tabs" class="nav nav-tabs">
-            <li ng-class="active('#/ebodac/subjects')"><a href="#/ebodac/subjects">{{msg('ebodac.subjects')}}</a></li>
-            <li ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/subjects')"><a href="#/ebodac/subjects">{{msg('ebodac.subjects')}}</a></li>
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
+            <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')"><a href="#/ebodac/settings">{{msg('ebodac.web.settings.title')}}</a></li>
         </ul>
     </div>
     <div class="ui-layout-content">
