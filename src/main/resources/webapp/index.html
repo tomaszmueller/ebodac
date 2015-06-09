@@ -1,20 +1,21 @@
-
-
 <div id="inner-center" class="inner-center ui-layout-center ui-layout-pane ui-layout-pane-center">
     <div class="header-footer-breadcrumb">
         <ul class="breadcrumb" role="navigation">
             <li><a role="menu" href=".">{{msg('server.home')}}</a></li>
-            <li class="active"><a role="menu" href="#/ebodac/settings">{{msg('ebodac')}}</a></li>
+            <li><a role="menu" href="#/ebodac/">{{msg('ebodac')}}</a></li>
+            <li ng-show="active('#/ebodac/subjects')" ng-class="active('#/ebodac/subjects')">{{msg('ebodac.subjects')}}</li>
+            <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.visits')}}</li>
         </ul>
     </div>
-    <!--<div class="header-footer">-->
-        <!--<ul id="content-tabs" class="nav nav-tabs">-->
-            <!--<li ng-class="active('#/ebodac/settings')"><a ng-href="#/ebodac/settings" >{{msg('ebodac.web.settings.title')}}</a></li>-->
-        <!--</ul>-->
-    <!--</div>-->
+    <div class="header-footer">
+        <ul id="content-tabs" class="nav nav-tabs">
+            <li ng-class="active('#/ebodac/subjects')"><a href="#/ebodac/subjects">{{msg('ebodac.subjects')}}</a></li>
+            <li ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
+        </ul>
+    </div>
     <div class="ui-layout-content">
         <div class="tab-content" id="tab-content">
-            <div id="main-content" class="tab-pane active">
+            <div id="main-content" class="active">
                 <div ng-view></div>
             </div>
         </div>
@@ -22,6 +23,8 @@
 </div>
 
 <div id="inner-east" class="metrics inner-east ui-layout-pane ui-layout-pane-east">
-    <div class="header-toolbar header-footer"><i id="tbarCloseEast" class="button icon-caret-right pull-right"></i></div>
-    <div class="ui-layout-content"></div>
+    <div class="filter-header"></div>
+    <div class="ui-layout-content">
+        <div class="inside"></div>
+    </div>
 </div>

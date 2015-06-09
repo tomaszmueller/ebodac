@@ -1,7 +1,24 @@
 [
   {
     "active": true,
-    "pattern": "/**/ebodac/registration/**",
+    "pattern": "/**/ebodac/subjects/**",
+    "supportedSchemes": [
+      "BASIC",
+      "USERNAME_PASSWORD"
+    ],
+    "protocol": "HTTPS",
+    "priority": 3,
+    "rest": true,
+    "origin": "SYSTEM_MODULE_EBODAC",
+    "version": "0.26",
+    "methodsRequired": [
+      "POST"
+    ]
+  },
+
+  {
+    "active": true,
+    "pattern": "/**/ebodac/visits/**",
     "supportedSchemes": [
       "BASIC",
       "USERNAME_PASSWORD"
