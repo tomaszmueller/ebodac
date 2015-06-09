@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.jcraft.jsch.JSchException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -29,14 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Matcher;
 
 /**
@@ -82,10 +77,24 @@ public class EbodacServiceImpl implements EbodacService {
     }
 
     @Override
-    public void fetchCSVUpdates(String hostname, Integer port, String username, String password, String directory, DateTime afterDate) {
+    public void fetchCSVUpdates() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(EbodacConstants.CSV_DATE_FORMAT);
+        Config config = configService.getConfig();
+        String lastCsvUpdate = config.getLastCsvUpdate();
+        DateTime afterDate;
+        if (StringUtils.isNotBlank(lastCsvUpdate)) {
+            afterDate = dateTimeFormatter.parseDateTime(config.getLastCsvUpdate());
+        } else {
+            afterDate = new DateTime(new Date(0));
+        }
+        String hostname = config.getSftpHost();
+        String username = config.getSftpUsername();
+        String password = config.getSftpPassword();
+        String directory = config.getSftpDirectory();
+        Integer port = Integer.parseInt(config.getSftpPort());
+
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);
         EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
-        Config config = configService.getConfig();
         try {
             ftpsClient.connect(hostname, port, username, password);
         } catch (FtpException e) {
@@ -99,8 +108,6 @@ public class EbodacServiceImpl implements EbodacService {
             LOGGER.error("Could not list files: " + e.getMessage(), e);
             return;
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(EbodacConstants.CSV_DATE_FORMAT);
-        String lastCsvUpdate = config.getLastCsvUpdate();
         DateTime lastUpdated;
         if (StringUtils.isNotBlank(lastCsvUpdate)) {
             lastUpdated = dateTimeFormatter.parseDateTime(config.getLastCsvUpdate());

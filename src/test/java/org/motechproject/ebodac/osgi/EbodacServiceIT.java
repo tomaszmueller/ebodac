@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.motechproject.ebodac.client.EbodacFtpsClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
@@ -14,8 +16,6 @@ import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.server.FtpsServer;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
@@ -24,7 +24,6 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
-
 import java.io.File;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -61,14 +60,14 @@ public class EbodacServiceIT extends BasePaxIT {
     private EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
 
     private File csvDir = new File(CSV_DIR);
-    private Config config;
+    private Config savedConfig;
     
     @Before
     public void setUp() throws Exception {
         ftpsServer.start();
         ftpsClient.connect(HOST, ftpsServer.getPort(), USER, USER);
 
-        config = configService.getConfig();
+        savedConfig = configService.getConfig();
         csvDir = new File(CSV_DIR);
         csvDir.mkdirs();
         assertTrue(csvDir.exists());
@@ -82,7 +81,7 @@ public class EbodacServiceIT extends BasePaxIT {
         ftpsClient.disconnect();
         ftpsServer.stop();
 
-        configService.updateConfig(config);
+        configService.updateConfig(savedConfig);
         FileUtils.deleteDirectory(csvDir);
 
         visitDataService.deleteAll();
@@ -99,8 +98,18 @@ public class EbodacServiceIT extends BasePaxIT {
         ftpsClient.sendFile(filename, in);
         in.close();
 
+        Config config = configService.getConfig();
+        config.setSftpPort(ftpsServer.getPort().toString());
+        config.setSftpHost(HOST);
+        config.setSftpUsername(USER);
+        config.setSftpPassword(USER);
+        config.setSftpDirectory(CSV_DIR);
         DateTime afterDate = DateTime.now().plusDays(1);
-        ebodacService.fetchCSVUpdates(HOST, ftpsServer.getPort(), USER, USER, CSV_DIR, afterDate);
+        String lastCsvUpdate = afterDate.toString(EbodacConstants.CSV_DATE_FORMAT);
+        config.setLastCsvUpdate(lastCsvUpdate);
+        configService.updateConfig(config);
+
+        ebodacService.fetchCSVUpdates();
 
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(0, subjects.size());
@@ -108,7 +117,11 @@ public class EbodacServiceIT extends BasePaxIT {
         assertEquals(0, visits.size());
 
         afterDate = DateTime.now().minusDays(1);
-        ebodacService.fetchCSVUpdates(HOST, ftpsServer.getPort(), USER, USER, CSV_DIR, afterDate);
+        lastCsvUpdate = afterDate.toString(EbodacConstants.CSV_DATE_FORMAT);
+        config.setLastCsvUpdate(lastCsvUpdate);
+        configService.updateConfig(config);
+
+        ebodacService.fetchCSVUpdates();
 
         subjects = subjectDataService.retrieveAll();
         assertEquals(7, subjects.size());

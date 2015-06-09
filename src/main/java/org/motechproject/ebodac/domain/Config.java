@@ -24,6 +24,14 @@ public class Config {
 
     private String lastCsvUpdate;
 
+    private String emailHost;
+
+    private String email;
+
+    private String emailPassword;
+
+    private Integer emailCheckInterval;
+
     public Config() {
     }
 
@@ -105,5 +113,37 @@ public class Config {
 
     public void setLastCsvUpdate(String lastCsvUpdate) {
         this.lastCsvUpdate = lastCsvUpdate;
+    }
+
+    public String getEmailHost() {
+        return emailHost;
+    }
+
+    public void setEmailHost(String emailHost) {
+        this.emailHost = emailHost;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmailPassword() {
+        return emailPassword;
+    }
+
+    public void setEmailPassword(String emailPassword) {
+        this.emailPassword = emailPassword;
+    }
+
+    public Integer getEmailCheckInterval() {
+        return emailCheckInterval;
+    }
+
+    public void setEmailCheckInterval(Integer emailCheckInterval) {
+        this.emailCheckInterval = emailCheckInterval;
     }
 }
