@@ -19,6 +19,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.ebodac.service.RaveImportService;
+import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.util.JsonUtils;
 import org.motechproject.mds.ex.csv.CsvImportException;
@@ -48,6 +49,8 @@ public class EbodacServiceImpl implements EbodacService {
     private RaveImportService raveImportService;
 
     private ConfigService configService;
+
+    private ReportService reportService;
 
     @Override
     public void sendUpdatedSubjects(String zetesUrl, String username, String password) {
@@ -146,6 +149,28 @@ public class EbodacServiceImpl implements EbodacService {
 
     @Override
     public void generateDailyReport() {
+        DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
+
+        Config config = configService.getConfig();
+
+        String lastReportDateString = config.getLastReportDate();
+        DateTime lastReportDate;
+
+        if (StringUtils.isNotBlank(lastReportDateString)) {
+            lastReportDate = formatter.parseDateTime(config.getLastReportDate());
+        } else {
+            lastReportDate = formatter.parseDateTime(EbodacConstants.LAST_REPORT_DEFAULT_DATE);
+        }
+
+        for(DateTime date = lastReportDate.plusDays(1); date.isBefore(now); date = date.plusDays(1)) {
+            reportService.generatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
+            reportService.generateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
+        }
+
+
+        config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
+        configService.updateConfig(config);
     }
 
     private String parseZetesResponse(HttpResponse httpResponse) {
@@ -196,5 +221,10 @@ public class EbodacServiceImpl implements EbodacService {
     @Autowired
     public void setConfigService(ConfigService configService) {
         this.configService = configService;
+    }
+
+    @Autowired
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
     }
 }

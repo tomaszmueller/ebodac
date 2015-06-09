@@ -30,6 +30,14 @@
 
     <osgi:service ref="configService" interface="org.motechproject.ebodac.service.ConfigService" />
 
+    <osgi:service ref="reportService" interface="org.motechproject.ebodac.service.ReportService" />
+
+    <osgi:reference id="reportPrimerVaccinationDataService"
+                    interface="org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService" />
+
+    <osgi:reference id="reportBoosterVaccinationDataService"
+                    interface="org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService" />
+
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
     <osgi:reference id="messageCampaignService"

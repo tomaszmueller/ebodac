@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.service;
 
+import org.joda.time.DateTime;
 import org.motechproject.ebodac.domain.Subject;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface SubjectService {
     Subject create(Subject record, Boolean preserveModified);
 
     Subject update(Subject record, Boolean preserveModified);
+
+    List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date);
+
+    List<Subject> findSubjectsBoosterVaccinatedAtDay(DateTime date);
 }

@@ -32,6 +32,8 @@ public class Config {
 
     private Integer emailCheckInterval;
 
+    private String lastReportDate;
+
     public Config() {
     }
 
@@ -145,5 +147,13 @@ public class Config {
 
     public void setEmailCheckInterval(Integer emailCheckInterval) {
         this.emailCheckInterval = emailCheckInterval;
+    }
+
+    public String getLastReportDate() {
+        return lastReportDate;
+    }
+
+    public void setLastReportDate(String lastReportDate) {
+        this.lastReportDate = lastReportDate;
     }
 }
