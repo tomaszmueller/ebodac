@@ -45,7 +45,7 @@ public class SubjectController {
 
         if (!errorList.isEmpty()) {
             List<String> validationMessages = extract(errorList, on(ValidationError.class).getMessage());
-            LOGGER.warn(validationMessages.toString());
+            LOGGER.warn("Subject : {} - {}", submitSubjectRequest.getSubjectId(), validationMessages.toString());
         }
 
         try {
