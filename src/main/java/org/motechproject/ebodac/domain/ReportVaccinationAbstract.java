@@ -3,25 +3,32 @@ package org.motechproject.ebodac.domain;
 import org.joda.time.DateTime;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.UIDisplayable;
 
 @Entity
 public abstract class ReportVaccinationAbstract {
 
+    @UIDisplayable(position = 0)
     @Field
     private DateTime date;
 
+    @UIDisplayable(position = 2)
     @Field
     private Integer adultMales;
 
+    @UIDisplayable(position = 3)
     @Field
     private Integer adultFemales;
 
+    @UIDisplayable(position = 6)
     @Field
     private Integer children_0_5;
 
+    @UIDisplayable(position = 5)
     @Field
     private Integer children_6_11;
 
+    @UIDisplayable(position = 4)
     @Field
     private Integer children_12_17;
 
