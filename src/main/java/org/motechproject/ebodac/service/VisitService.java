@@ -2,8 +2,6 @@ package org.motechproject.ebodac.service;
 
 import org.motechproject.ebodac.domain.Visit;
 
-import java.util.List;
-
 /**
  * Service interface for CRUD on Visit
  */

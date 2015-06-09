@@ -5,11 +5,12 @@ import org.codehaus.jackson.map.annotate.JsonView;
 
 // View definitions:
 class Views {
-    static class Zetes { }
+    static class Zetes {
+    }
 }
 
 abstract class SubjectMixin {
-    
+
     @JsonView(Views.Zetes.class)
     String subjectId;
 
@@ -27,11 +28,11 @@ abstract class SubjectMixin {
 
     @JsonView(Views.Zetes.class)
     String address;
+    
+    @JsonView(Views.Zetes.class)
+    String community;
 
     @JsonProperty("language")
     @JsonView(Views.Zetes.class)
     abstract String getLanguageCode();
-
-    @JsonView(Views.Zetes.class)
-    String community;
 }

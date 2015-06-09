@@ -40,6 +40,10 @@ import static org.junit.Assert.assertTrue;
 @ExamFactory(MotechNativeTestContainerFactory.class)
 public class EbodacServiceIT extends BasePaxIT {
 
+    private static final String HOST = "localhost";
+    private static final String CSV_DIR = "target/csv/";
+    private static final String USER = "test";
+
     @Inject
     private EbodacService ebodacService;
 
@@ -52,16 +56,12 @@ public class EbodacServiceIT extends BasePaxIT {
     @Inject
     private ConfigService configService;
 
-    private static final String HOST = "localhost";
-    private static final String CSV_DIR = "target/csv/";
-    private static final String USER = "test";
-
     private FtpsServer ftpsServer = new FtpsServer();
     private EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
 
     private File csvDir = new File(CSV_DIR);
     private Config savedConfig;
-    
+
     @Before
     public void setUp() throws Exception {
         ftpsServer.start();

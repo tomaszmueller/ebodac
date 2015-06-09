@@ -17,7 +17,6 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;

@@ -29,15 +29,15 @@ import static ch.lambdaj.Lambda.on;
 @Controller
 public class SubjectController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
+
     @Autowired
     SubjectService subjectService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
 
     @PreAuthorize("hasAnyRole('manageBundles', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> submitSubjectRequest (@RequestBody SubmitSubjectRequest submitSubjectRequest) {
+    public ResponseEntity<String> submitSubjectRequest(@RequestBody SubmitSubjectRequest submitSubjectRequest) {
 
         List<ValidationError> errorList;
 
@@ -60,7 +60,7 @@ public class SubjectController {
         } catch (JDOException ex) {
             LOGGER.warn("Error raised during creating subject: " + ex.getMessage(), ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception ex ) {
+        } catch (Exception ex) {
             LOGGER.error("Fatal error raised during creating subject: " + ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

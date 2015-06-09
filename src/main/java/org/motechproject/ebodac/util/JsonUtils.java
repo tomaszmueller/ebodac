@@ -2,7 +2,6 @@ package org.motechproject.ebodac.util;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,17 +15,17 @@ public enum VisitType {
 
     private String value;
 
+    private VisitType(String value) {
+        this.value = value;
+    }
+
     public static VisitType getByValue(String value) {
-        for (VisitType visitType: VisitType.values()) {
+        for (VisitType visitType : VisitType.values()) {
             if (visitType.getValue().equals(value)) {
                 return visitType;
             }
         }
         return null;
-    }
-
-    private VisitType(String value) {
-        this.value = value;
     }
 
     public String getValue() {

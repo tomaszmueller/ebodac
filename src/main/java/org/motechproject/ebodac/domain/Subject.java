@@ -19,7 +19,7 @@ import javax.jdo.annotations.Unique;
 public class Subject {
 
     /**
-     *  Fields captured in ZETES
+     * Fields captured in ZETES
      */
 
     private Long id;
@@ -66,7 +66,7 @@ public class Subject {
     private String community;
 
     /**
-     *  Fields captured in RAVE
+     * Fields captured in RAVE
      */
 
     @UIDisplayable(position = 6)
@@ -92,7 +92,7 @@ public class Subject {
     private DateTime dateOfDisconStd;
 
     /**
-     *  Motech internal fields
+     * Motech internal fields
      */
     @NonEditable(display = false)
     @Field(defaultValue = "false")

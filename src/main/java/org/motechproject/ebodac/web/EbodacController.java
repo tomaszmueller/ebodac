@@ -26,6 +26,8 @@ import java.io.IOException;
 @Controller
 public class EbodacController {
 
+    private static final String OK = "OK";
+
     @Autowired
     private EbodacService ebodacService;
 
@@ -35,8 +37,6 @@ public class EbodacController {
 
     @Autowired
     private ConfigService configService;
-
-    private static final String OK = "OK";
 
     @RequestMapping("/web-api/status")
     @ResponseBody

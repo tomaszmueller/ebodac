@@ -1,11 +1,7 @@
 package org.motechproject.ebodac.repository;
 
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.mds.annotations.Lookup;
-import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;
-
-import java.util.List;
 
 /**
  * Interface for repository that persists simple records and allows CRUD.

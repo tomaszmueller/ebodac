@@ -1,6 +1,6 @@
 [
-    {
-        "roleName": "Clinician",
-        "permissionNames": ["registrationSubmission"]
-    }
+  {
+    "roleName": "Clinician",
+    "permissionNames": ["registrationSubmission"]
+  }
 ]

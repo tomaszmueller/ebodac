@@ -1,13 +1,13 @@
 package org.motechproject.ebodac.server;
 
-import java.io.File;
-import java.net.ServerSocket;
-
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.ssl.SslConfigurationFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
+
+import java.io.File;
+import java.net.ServerSocket;
 
 public class FtpsServer {
 

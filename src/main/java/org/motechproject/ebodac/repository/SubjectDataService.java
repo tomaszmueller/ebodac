@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.repository;
 
 import org.motechproject.ebodac.domain.Subject;
-
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;

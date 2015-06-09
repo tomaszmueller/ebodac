@@ -6,8 +6,6 @@ import org.motechproject.ebodac.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Implementation of the {@link org.motechproject.ebodac.service.VisitService} interface. Uses
  * {@link org.motechproject.ebodac.repository.VisitDataService} in order to retrieve and persist records.

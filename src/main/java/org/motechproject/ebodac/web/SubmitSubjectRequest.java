@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  DTO for request coming from Zetes
+ * DTO for request coming from Zetes
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubmitSubjectRequest {
@@ -132,7 +132,7 @@ public class SubmitSubjectRequest {
          */
 
         if (StringUtils.isBlank(phoneNumber)) {
-                validationErrors.add(new ValidationError(ValidationError.PHONE_NUMBER_NULL));
+            validationErrors.add(new ValidationError(ValidationError.PHONE_NUMBER_NULL));
         }
 
         /**
@@ -168,7 +168,7 @@ public class SubmitSubjectRequest {
          */
 
         if (StringUtils.isNotBlank(householdName) && householdName.matches(".*\\d.*")) {
-                validationErrors.add(new ValidationError(ValidationError.HOUSEHOLD_NAME_HAS_DIGITS));
+            validationErrors.add(new ValidationError(ValidationError.HOUSEHOLD_NAME_HAS_DIGITS));
         }
 
         /**
@@ -188,7 +188,7 @@ public class SubmitSubjectRequest {
          */
 
         if (StringUtils.isNotBlank(headOfHousehold) && headOfHousehold.matches(".*\\d.*")) {
-                validationErrors.add(new ValidationError(ValidationError.HEAD_OF_HOUSEHOLD_HAS_DIGITS));
+            validationErrors.add(new ValidationError(ValidationError.HEAD_OF_HOUSEHOLD_HAS_DIGITS));
         }
 
         return validationErrors;

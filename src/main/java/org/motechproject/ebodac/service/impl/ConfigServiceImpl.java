@@ -29,6 +29,12 @@ public class ConfigServiceImpl implements ConfigService {
     private SettingsFacade settingsFacade;
     private Config config;
 
+    @Autowired
+    public ConfigServiceImpl(@Qualifier("ebodacSettings") SettingsFacade settingsFacade) {
+        this.settingsFacade = settingsFacade;
+        loadConfig();
+    }
+
     private synchronized void loadConfig() {
         try (InputStream is = settingsFacade.getRawConfig(EBODAC_CONFIG_FILE_NAME)) {
             String jsonText = IOUtils.toString(is);
@@ -39,13 +45,7 @@ public class ConfigServiceImpl implements ConfigService {
         }
     }
 
-    @Autowired
-    public ConfigServiceImpl(@Qualifier("ebodacSettings") SettingsFacade settingsFacade) {
-        this.settingsFacade = settingsFacade;
-        loadConfig();
-    }
-
-    @MotechListener(subjects = { ConfigurationConstants.FILE_CHANGED_EVENT_SUBJECT })
+    @MotechListener(subjects = {ConfigurationConstants.FILE_CHANGED_EVENT_SUBJECT})
     public void handleFileChanged(MotechEvent event) {
         String filePath = (String) event.getParameters().get(ConfigurationConstants.FILE_PATH);
         if (!StringUtils.isBlank(filePath) && filePath.endsWith(EBODAC_CONFIG_FILE_PATH)) {

@@ -17,9 +17,13 @@ public enum Language {
 
     private String code;
 
+    private Language(String code) {
+        this.code = code;
+    }
+
     public static Language getByCode(String code) {
-        for(Language language: Language.values()) {
-            if(language.getCode().equals(code)) {
+        for (Language language : Language.values()) {
+            if (language.getCode().equals(code)) {
                 return language;
             }
         }
@@ -33,10 +37,6 @@ public enum Language {
             codes.add(language.getCode());
         }
         return ImmutableSet.copyOf(codes);
-    }
-
-    private Language(String code) {
-        this.code = code;
     }
 
     public String getCode() {

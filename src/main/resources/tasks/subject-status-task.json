@@ -1,58 +1,67 @@
 {
-  "description" : "Indicates whether a Subject has been updated recently.",
-  "name" : "EBODAC Subject status",
-  "actions" : [ {
-    "name" : "org.motechproject.ebodac.domain.Subject.update",
-    "displayName" : "UPDATE Subject",
-    "channelName" : "data-services",
-    "moduleName" : "org.motechproject.motech-platform-dataservices-entities",
-    "moduleVersion" : "0.26.0.SNAPSHOT",
-    "subject" : null,
-    "serviceInterface" : "org.motechproject.mds.service.ActionHandlerService",
-    "serviceMethod" : "update",
-    "values" : {
-      "id" : "{{trigger.object_id}}",
-      "@ENTITY" : "org.motechproject.ebodac.domain.Subject",
-      "changed" : "true"
+  "description": "Indicates whether a Subject has been updated recently.",
+  "name": "EBODAC Subject status",
+  "actions": [
+    {
+      "name": "org.motechproject.ebodac.domain.Subject.update",
+      "displayName": "UPDATE Subject",
+      "channelName": "data-services",
+      "moduleName": "org.motechproject.motech-platform-dataservices-entities",
+      "moduleVersion": "0.26.0.SNAPSHOT",
+      "subject": null,
+      "serviceInterface": "org.motechproject.mds.service.ActionHandlerService",
+      "serviceMethod": "update",
+      "values": {
+        "id": "{{trigger.object_id}}",
+        "@ENTITY": "org.motechproject.ebodac.domain.Subject",
+        "changed": "true"
+      }
     }
-  } ],
-  "trigger" : {
-    "name" : null,
-    "displayName" : "UPDATE Subject",
-    "channelName" : "data-services",
-    "moduleName" : "org.motechproject.motech-platform-dataservices-entities",
-    "moduleVersion" : "0.26.0.SNAPSHOT",
-    "subject" : "mds.crud.ebodacmodule.Subject.UPDATE",
-    "triggerListenerSubject" : "mds.crud.ebodacmodule.Subject.UPDATE"
+  ],
+  "trigger": {
+    "name": null,
+    "displayName": "UPDATE Subject",
+    "channelName": "data-services",
+    "moduleName": "org.motechproject.motech-platform-dataservices-entities",
+    "moduleVersion": "0.26.0.SNAPSHOT",
+    "subject": "mds.crud.ebodacmodule.Subject.UPDATE",
+    "triggerListenerSubject": "mds.crud.ebodacmodule.Subject.UPDATE"
   },
-  "enabled" : false,
-  "taskConfig" : {
-    "steps" : [ {
-      "@type" : "DataSource",
-      "order" : 0,
-      "providerName" : "data-services",
-      "providerId" : 1,
-      "objectId" : 0,
-      "type" : "org.motechproject.ebodac.domain.Subject",
-      "name" : "mds.dataprovider.byinstanceid",
-      "lookup" : [ {
-        "field" : "mds.dataprovider.instanceid",
-        "value" : "{{trigger.object_id}}"
-      } ],
-      "failIfDataNotFound" : true
-    }, {
-      "@type" : "FilterSet",
-      "order" : 1,
-      "filters" : [ {
-        "displayName" : "ad.data-services.org.motechproject.ebodac.domain.Subject#0.changed",
-        "key" : "ad.1.org.motechproject.ebodac.domain.Subject#0.changed",
-        "type" : "UNICODE",
-        "negationOperator" : false,
-        "operator" : "task.equals",
-        "expression" : "true"
-      } ],
-      "operator" : "AND"
-    } ]
+  "enabled": false,
+  "taskConfig": {
+    "steps": [
+      {
+        "@type": "DataSource",
+        "order": 0,
+        "providerName": "data-services",
+        "providerId": 1,
+        "objectId": 0,
+        "type": "org.motechproject.ebodac.domain.Subject",
+        "name": "mds.dataprovider.byinstanceid",
+        "lookup": [
+          {
+            "field": "mds.dataprovider.instanceid",
+            "value": "{{trigger.object_id}}"
+          }
+        ],
+        "failIfDataNotFound": true
+      },
+      {
+        "@type": "FilterSet",
+        "order": 1,
+        "filters": [
+          {
+            "displayName": "ad.data-services.org.motechproject.ebodac.domain.Subject#0.changed",
+            "key": "ad.1.org.motechproject.ebodac.domain.Subject#0.changed",
+            "type": "UNICODE",
+            "negationOperator": false,
+            "operator": "task.equals",
+            "expression": "true"
+          }
+        ],
+        "operator": "AND"
+      }
+    ]
   },
-  "hasRegisteredChannel" : true
+  "hasRegisteredChannel": true
 }

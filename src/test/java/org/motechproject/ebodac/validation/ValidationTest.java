@@ -3,7 +3,6 @@ package org.motechproject.ebodac.validation;
 import com.google.common.base.Predicate;
 import org.junit.Assert;
 import org.junit.Test;
-import org.motechproject.ebodac.validation.ValidationError;
 import org.motechproject.ebodac.web.SubmitSubjectRequest;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import static com.google.common.collect.Iterables.any;
  */
 public class ValidationTest {
 
-    private Predicate<ValidationError> hasErrorPredicate(final String errorMessage)  {
+    private Predicate<ValidationError> hasErrorPredicate(final String errorMessage) {
         return new Predicate<ValidationError>() {
             @Override
             public boolean apply(ValidationError err) {
