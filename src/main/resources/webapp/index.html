@@ -13,7 +13,7 @@
         <ul id="content-tabs" class="nav nav-tabs">
             <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/subjects')"><a href="#/ebodac/subjects">{{msg('ebodac.subjects')}}</a></li>
             <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
-            <li ng-class="active('#/ebodac/reports')"><a ng-href="#/ebodac/reports" >{{msg('ebodac.web.reports.title')}}</a></li>
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/reports')"><a ng-href="#/ebodac/reports" >{{msg('ebodac.web.reports.title')}}</a></li>
             <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')"><a href="#/ebodac/settings">{{msg('ebodac.web.settings.title')}}</a></li>
         </ul>
     </div>
