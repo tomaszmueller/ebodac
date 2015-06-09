@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.scheduler;
 
+import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.event.MotechEvent;
@@ -36,7 +37,21 @@ public class EbodacScheduler {
         motechSchedulerService.safeScheduleRepeatingPeriodJob(job);
     }
 
+    public void scheduleEmailCheckJob(Integer interval) {
+        MotechEvent event = new MotechEvent(EbodacConstants.EMAIL_CHECK_EVENT);
+
+        Period period = Period.minutes(interval);
+
+        DateTime startDate = DateTime.now().plusMinutes(1);
+        RepeatingPeriodSchedulableJob job = new RepeatingPeriodSchedulableJob(event, startDate.toDate(), null, period, true);
+        motechSchedulerService.safeScheduleRepeatingPeriodJob(job);
+    }
+
     public void unscheduleZetesUpdateJob() {
         motechSchedulerService.safeUnscheduleAllJobs(EbodacConstants.ZETES_UPDATE_EVENT);
+    }
+
+    public void unscheduleEmailCheckJob() {
+        motechSchedulerService.safeUnscheduleAllJobs(EbodacConstants.EMAIL_CHECK_EVENT);
     }
 }

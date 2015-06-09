@@ -50,7 +50,8 @@ public class ConfigController {
         configService.updateConfig(config);
 
         ebodacScheduler.unscheduleZetesUpdateJob();
-        schedule();
+        ebodacScheduler.unscheduleEmailCheckJob();
+        scheduleJobs();
 
         return configService.getConfig();
     }
@@ -63,7 +64,7 @@ public class ConfigController {
         return e.getMessage();
     }
 
-    private void schedule() {
+    private void scheduleJobs() {
         String zetesUrl = configService.getConfig().getZetesUrl();
         String zetesUsername = configService.getConfig().getZetesUsername();
         String zetesPassword = configService.getConfig().getZetesPassword();
@@ -75,5 +76,8 @@ public class ConfigController {
         Date startDate = startTime.toDateTimeToday().toDate();
 
         ebodacScheduler.scheduleZetesUpdateJob(startDate, zetesUrl, zetesUsername, zetesPassword);
+
+        Integer interval = configService.getConfig().getEmailCheckInterval();
+        ebodacScheduler.scheduleEmailCheckJob(interval);
     }
 }
