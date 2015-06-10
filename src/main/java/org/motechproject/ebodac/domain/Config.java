@@ -14,7 +14,7 @@ public class Config {
 
     private String ftpsHost;
 
-    private String ftpsPort;
+    private Integer ftpsPort;
 
     private String ftpsDirectory;
 
@@ -77,11 +77,11 @@ public class Config {
         this.ftpsHost = ftpsHost;
     }
 
-    public String getFtpsPort() {
+    public Integer getFtpsPort() {
         return ftpsPort;
     }
 
-    public void setFtpsPort(String ftpsPort) {
+    public void setFtpsPort(Integer ftpsPort) {
         this.ftpsPort = ftpsPort;
     }
 

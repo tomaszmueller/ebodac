@@ -45,7 +45,6 @@
 
         $scope.reset = function () {
             $scope.config = angular.copy($scope.originalConfig);
-            $scope.scrollTop();
         };
 
         function hideMsgLater(index) {
