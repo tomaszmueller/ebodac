@@ -28,4 +28,10 @@ public class ReportPrimerVaccination extends ReportVaccinationAbstract {
     public void setPeopleVaccinated(Integer peopleVaccinated) {
         this.peopleVaccinated = peopleVaccinated;
     }
+
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5,
+                                 Integer children_6_11, Integer children_12_17, Integer peopleVaccinated) {
+        updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17);
+        this.peopleVaccinated = peopleVaccinated;
+    }
 }

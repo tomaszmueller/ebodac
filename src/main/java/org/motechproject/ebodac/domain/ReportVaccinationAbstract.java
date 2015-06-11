@@ -5,9 +5,12 @@ import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.UIDisplayable;
 
+import javax.jdo.annotations.Unique;
+
 @Entity
 public abstract class ReportVaccinationAbstract {
 
+    @Unique
     @UIDisplayable(position = 0)
     @Field
     private DateTime date;
@@ -21,15 +24,15 @@ public abstract class ReportVaccinationAbstract {
     private Integer adultFemales;
 
     @UIDisplayable(position = 6)
-    @Field
+    @Field(displayName = "Children 0-5")
     private Integer children_0_5;
 
     @UIDisplayable(position = 5)
-    @Field
+    @Field(displayName = "Children 6-11")
     private Integer children_6_11;
 
     @UIDisplayable(position = 4)
-    @Field
+    @Field(displayName = "Children 12-17")
     private Integer children_12_17;
 
     public ReportVaccinationAbstract() {
@@ -90,6 +93,15 @@ public abstract class ReportVaccinationAbstract {
     }
 
     public void setChildren_12_17(Integer children_12_17) {
+        this.children_12_17 = children_12_17;
+    }
+
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5,
+                                 Integer children_6_11, Integer children_12_17) {
+        this.adultMales = adultMales;
+        this.adultFemales = adultFemales;
+        this.children_0_5 = children_0_5;
+        this.children_6_11 = children_6_11;
         this.children_12_17 = children_12_17;
     }
 }

@@ -150,7 +150,6 @@ public class EbodacServiceImpl implements EbodacService {
     @Override
     public void generateDailyReport() {
         DateTimeFormatter formatter = DateTimeFormat.mediumDate();
-        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
 
         Config config = configService.getConfig();
 
@@ -163,14 +162,21 @@ public class EbodacServiceImpl implements EbodacService {
             lastReportDate = formatter.parseDateTime(EbodacConstants.LAST_REPORT_DEFAULT_DATE);
         }
 
-        for(DateTime date = lastReportDate.plusDays(1); date.isBefore(now); date = date.plusDays(1)) {
-            reportService.generatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
-            reportService.generateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
-        }
-
+        generateDailyReport(lastReportDate.plusDays(1));
 
         config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
         configService.updateConfig(config);
+    }
+
+    @Override
+    public void generateDailyReport(DateTime startDate) {
+        DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
+
+        for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
+            reportService.generatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
+            reportService.generateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
+        }
     }
 
     private String parseZetesResponse(HttpResponse httpResponse) {
