@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Service("raveImportService")
 public class RaveImportServiceImpl implements RaveImportService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EbodacServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RaveImportServiceImpl.class);
 
     @Autowired
     private SubjectService subjectService;
