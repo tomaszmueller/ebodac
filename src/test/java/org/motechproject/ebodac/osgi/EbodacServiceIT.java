@@ -99,7 +99,7 @@ public class EbodacServiceIT extends BasePaxIT {
         in.close();
 
         Config config = configService.getConfig();
-        config.setFtpsPort(ftpsServer.getPort().toString());
+        config.setFtpsPort(ftpsServer.getPort());
         config.setFtpsHost(HOST);
         config.setFtpsUsername(USER);
         config.setFtpsPassword(USER);

@@ -94,7 +94,7 @@ public class EbodacServiceImpl implements EbodacService {
         String username = config.getFtpsUsername();
         String password = config.getFtpsPassword();
         String directory = config.getFtpsDirectory();
-        Integer port = Integer.parseInt(config.getFtpsPort());
+        Integer port = config.getFtpsPort();
 
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);
         EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
