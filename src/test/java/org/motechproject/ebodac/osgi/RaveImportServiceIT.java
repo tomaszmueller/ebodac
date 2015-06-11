@@ -66,6 +66,6 @@ public class RaveImportServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(7, subjects.size());
         visits = visitDataService.retrieveAll();
-        assertEquals(26, visits.size());
+        assertEquals(25, visits.size());
     }
 }

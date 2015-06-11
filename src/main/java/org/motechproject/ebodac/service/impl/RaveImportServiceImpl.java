@@ -14,6 +14,8 @@ import org.motechproject.ebodac.service.impl.csv.RaveVisitField;
 import org.motechproject.mds.ex.csv.CsvImportException;
 import org.motechproject.mds.util.PropertyUtil;
 import org.motechproject.mds.util.TypeHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.supercsv.io.CsvMapReader;
@@ -27,6 +29,7 @@ import java.util.Map;
 
 @Service("raveImportService")
 public class RaveImportServiceImpl implements RaveImportService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EbodacServiceImpl.class);
 
     @Autowired
     private SubjectService subjectService;
@@ -41,20 +44,27 @@ public class RaveImportServiceImpl implements RaveImportService {
             final String headers[] = csvMapReader.getHeader(true);
 
             while ((row = csvMapReader.read(headers)) != null) {
-                importRow(row, csvMapReader.getRowNumber());
+                String subjectId = null;
+                if (row.containsKey(RaveSubjectField.Subject.name())) {
+                    subjectId = row.get(RaveSubjectField.Subject.name());
+                    if (csvMapReader.getRowNumber() == 2 && subjectId.matches("\\-+")) {
+                        continue;
+                    }
+                }
+                try {
+                    importRow(row, csvMapReader.getRowNumber(), subjectId);
+                } catch (CsvImportException e) {
+                    LOGGER.error("Skipping subject with id " + subjectId + ": " + e.getMessage(),  e);
+                }
             }
         } catch (IOException e) {
             throw new CsvImportException("IO Error when importing CSV", e);
         }
     }
 
-    private void importRow(Map<String, String> row, Integer rowNumber) {
+    private void importRow(Map<String, String> row, Integer rowNumber, String subjectId) {
         Subject subject = new Subject();
-        if (row.containsKey(RaveSubjectField.Subject.name())) {
-            String subjectId = row.get(RaveSubjectField.Subject.name());
-            if (rowNumber == 2 && subjectId.matches("\\-+")) {
-                return;
-            }
+        if (subjectId != null) {
             Subject existingSubject = subjectService.findSubjectBySubjectId(subjectId);
             if (existingSubject != null) {
                 subject = existingSubject;
@@ -97,7 +107,8 @@ public class RaveImportServiceImpl implements RaveImportService {
             Field f = o.getClass().getDeclaredField(fieldName);
             Object parsedValue = TypeHelper.parse(csvValue, f.getType());
             PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);
-        } catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+                | IllegalArgumentException e) {
             String msg = String.format("Error when processing field: %s, value in CSV file is %s",
                     fieldName, csvValue);
             throw new CsvImportException(msg, e);
