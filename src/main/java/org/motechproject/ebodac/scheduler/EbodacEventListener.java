@@ -8,11 +8,15 @@ import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EbodacEventListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEventListener.class);
 
     @Autowired
     private EbodacService ebodacService;
@@ -47,5 +51,6 @@ public class EbodacEventListener {
     public void generateDailyReport(MotechEvent event) {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
         ebodacService.generateDailyReport();
+        LOGGER.info("Daily Reports generation completed");
     }
 }

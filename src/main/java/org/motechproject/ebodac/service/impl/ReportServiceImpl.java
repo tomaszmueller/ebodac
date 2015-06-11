@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.service.impl;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
@@ -49,6 +50,8 @@ public class ReportServiceImpl implements ReportService {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
                 adultFemales++;
+            } else {
+                LOGGER.warn("Subject with id: {} has no gender", subject.getSubjectId());
             }
         }
 
@@ -59,11 +62,15 @@ public class ReportServiceImpl implements ReportService {
         if (existingReport != null) {
             existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleBoostered);
             boosterVaccinationDataService.update(existingReport);
+
+            LOGGER.debug("Booster Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
         } else {
             ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
                     children_0_5, children_6_11, children_12_17, peopleBoostered);
 
             boosterVaccinationDataService.create(reportBoosterVaccination);
+
+            LOGGER.debug("Booster Vaccination Daily Report for date: {} created", date.toString(DateTimeFormat.mediumDate()));
         }
     }
 
@@ -92,6 +99,8 @@ public class ReportServiceImpl implements ReportService {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
                 adultFemales++;
+            } else {
+                LOGGER.warn("Subject with id: {} has no gender", subject.getSubjectId());
             }
         }
 
@@ -102,11 +111,15 @@ public class ReportServiceImpl implements ReportService {
         if (existingReport != null) {
             existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleVaccinated);
             primerVaccinationDataService.update(existingReport);
+
+            LOGGER.debug("Primer Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
         } else {
             ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
                     children_0_5, children_6_11, children_12_17, peopleVaccinated);
 
             primerVaccinationDataService.create(reportPrimerVaccination);
+
+            LOGGER.debug("Primer Vaccination Daily Report for date: {} created", date.toString(DateTimeFormat.mediumDate()));
         }
     }
 
