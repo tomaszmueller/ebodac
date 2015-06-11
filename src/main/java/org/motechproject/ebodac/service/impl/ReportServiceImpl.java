@@ -8,6 +8,8 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.service.ReportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +18,17 @@ import java.util.List;
 @Service("reportService")
 public class ReportServiceImpl implements ReportService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportServiceImpl.class);
+
     ReportPrimerVaccinationDataService primerVaccinationDataService;
 
     ReportBoosterVaccinationDataService boosterVaccinationDataService;
 
     @Override
     public void generateBoosterVaccinationReport(List<Subject> subjects, DateTime date) {
-        DateTime now = DateTime.now();
-        DateTime age_6 = now.minusYears(6);
-        DateTime age_12 = now.minusYears(12);
-        DateTime age_18 = now.minusYears(18);
+        DateTime age_6 = date.minusYears(6);
+        DateTime age_12 = date.minusYears(12);
+        DateTime age_18 = date.minusYears(18);
 
         int children_0_5 = 0;
         int children_6_11 = 0;
@@ -34,33 +37,41 @@ public class ReportServiceImpl implements ReportService {
         int adultFemales = 0;
 
         for (Subject subject : subjects) {
-            if (subject.getDateOfBirth().isAfter(age_6)) {
+            if (subject.getDateOfBirth() == null) {
+                LOGGER.warn("Subject with id: {} has no birth date", subject.getSubjectId());
+            } else if (subject.getDateOfBirth().isAfter(age_6)) {
                 children_0_5++;
             } else if (subject.getDateOfBirth().isAfter(age_12)) {
                 children_6_11++;
             } else if (subject.getDateOfBirth().isAfter(age_18)) {
                 children_12_17++;
-            } else {
-                if (subject.getGender().equals(Gender.Male)) {
-                    adultMales++;
-                } else {
-                    adultFemales++;
-                }
+            } else if (Gender.Male.equals(subject.getGender())) {
+                adultMales++;
+            } else if (Gender.Female.equals(subject.getGender())) {
+                adultFemales++;
             }
         }
 
-        ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
-                children_0_5, children_6_11, children_12_17, subjects.size());
+        int peopleBoostered = children_0_5 + children_6_11 + children_12_17 + adultMales + adultFemales;
 
-        boosterVaccinationDataService.create(reportBoosterVaccination);
+        ReportBoosterVaccination existingReport = boosterVaccinationDataService.findReportByDate(date);
+
+        if (existingReport != null) {
+            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleBoostered);
+            boosterVaccinationDataService.update(existingReport);
+        } else {
+            ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
+                    children_0_5, children_6_11, children_12_17, peopleBoostered);
+
+            boosterVaccinationDataService.create(reportBoosterVaccination);
+        }
     }
 
     @Override
     public void generatePrimerVaccinationReport(List<Subject> subjects, DateTime date) {
-        DateTime now = DateTime.now();
-        DateTime age_6 = now.minusYears(6);
-        DateTime age_12 = now.minusYears(12);
-        DateTime age_18 = now.minusYears(18);
+        DateTime age_6 = date.minusYears(6);
+        DateTime age_12 = date.minusYears(12);
+        DateTime age_18 = date.minusYears(18);
 
         int children_0_5 = 0;
         int children_6_11 = 0;
@@ -69,25 +80,34 @@ public class ReportServiceImpl implements ReportService {
         int adultFemales = 0;
 
         for (Subject subject : subjects) {
-            if (subject.getDateOfBirth().isAfter(age_6)) {
+            if (subject.getDateOfBirth() == null) {
+                LOGGER.warn("Subject with id: {} has no birth date", subject.getSubjectId());
+            } else if (subject.getDateOfBirth().isAfter(age_6)) {
                 children_0_5++;
             } else if (subject.getDateOfBirth().isAfter(age_12)) {
                 children_6_11++;
             } else if (subject.getDateOfBirth().isAfter(age_18)) {
                 children_12_17++;
-            } else {
-                if (subject.getGender().equals(Gender.Male)) {
-                    adultMales++;
-                } else {
-                    adultFemales++;
-                }
+            } else if (Gender.Male.equals(subject.getGender())) {
+                adultMales++;
+            } else if (Gender.Female.equals(subject.getGender())) {
+                adultFemales++;
             }
         }
 
-        ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
-                children_0_5, children_6_11, children_12_17, subjects.size());
+        int peopleVaccinated = children_0_5 + children_6_11 + children_12_17 + adultMales + adultFemales;
 
-        primerVaccinationDataService.create(reportPrimerVaccination);
+        ReportPrimerVaccination existingReport = primerVaccinationDataService.findReportByDate(date);
+
+        if (existingReport != null) {
+            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleVaccinated);
+            primerVaccinationDataService.update(existingReport);
+        } else {
+            ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
+                    children_0_5, children_6_11, children_12_17, peopleVaccinated);
+
+            primerVaccinationDataService.create(reportPrimerVaccination);
+        }
     }
 
     @Autowired
