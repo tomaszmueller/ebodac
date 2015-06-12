@@ -11,6 +11,7 @@ import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Unique;
+import javax.validation.constraints.Pattern;
 
 /**
  * Models data for registration of Subject in EBODAC
@@ -31,19 +32,23 @@ public class Subject {
     private String subjectId;
 
     @UIDisplayable(position = 1)
-    @Field
+    @Pattern(regexp = "^\\D*$")
+    @Field(required = true)
     private String name;
 
     @UIDisplayable(position = 2)
+    @Pattern(regexp = "^\\D*$")
     @Field
     private String householdName;
 
     @UIDisplayable(position = 3)
+    @Pattern(regexp = "^\\D*$")
     @Field
     private String headOfHousehold;
 
     @UIDisplayable(position = 4)
     @Column(length = 20)
+    @Pattern(regexp = "^[0-9\\s]*$")
     @Field
     private String phoneNumber;
 
