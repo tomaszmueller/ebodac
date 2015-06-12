@@ -107,8 +107,7 @@ public class RaveImportServiceImpl implements RaveImportService {
             Field f = o.getClass().getDeclaredField(fieldName);
             Object parsedValue = TypeHelper.parse(csvValue, f.getType());
             PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);
-        } catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
-                | IllegalArgumentException e) {
+        } catch (Exception e) {
             String msg = String.format("Error when processing field: %s, value in CSV file is %s",
                     fieldName, csvValue);
             throw new CsvImportException(msg, e);
