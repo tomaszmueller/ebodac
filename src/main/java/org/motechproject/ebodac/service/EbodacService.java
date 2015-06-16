@@ -14,4 +14,6 @@ public interface EbodacService {
     void generateDailyReport();
 
     void generateDailyReport(DateTime startDate);
+
+    void updateReportsForSubject(Long id);
 }

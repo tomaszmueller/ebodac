@@ -8,6 +8,7 @@ import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.mds.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,12 @@ public class EbodacEventListener {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
         ebodacService.generateDailyReport();
         LOGGER.info("Daily Reports generation completed");
+    }
+
+    @MotechListener(subjects = {EbodacConstants.SUBJECT_UPDATED})
+    public void updateReportWhenSubjectChanged(MotechEvent event) {
+        Long id = (Long) event.getParameters().get(Constants.MDSEvents.OBJECT_ID);
+        ebodacService.updateReportsForSubject(id);
+        LOGGER.info("Reports updated for Subject with id: {}", id);
     }
 }

@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -176,6 +177,27 @@ public class EbodacServiceImpl implements EbodacService {
         for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
             reportService.generatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
             reportService.generateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
+        }
+    }
+
+    @Override
+    public void updateReportsForSubject(Long id) {
+        Subject subject = subjectService.findSubjectById(id);
+        if (subject != null) {
+            DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+            DateTime primerVaccinationDate = subject.getPrimerVaccinationDate();
+            DateTime boosterVaccinationDate = subject.getBoosterVaccinationDate();
+
+            if (primerVaccinationDate != null) {
+                reportService.generatePrimerVaccinationReport(Arrays.asList(subject),
+                        formatter.parseDateTime(primerVaccinationDate.toString(formatter)));
+            }
+            if (boosterVaccinationDate != null) {
+                reportService.generateBoosterVaccinationReport(Arrays.asList(subject),
+                        formatter.parseDateTime(boosterVaccinationDate.toString(formatter)));
+            }
+        } else {
+            LOGGER.warn("Could not find Subject with id: {}", id);
         }
     }
 

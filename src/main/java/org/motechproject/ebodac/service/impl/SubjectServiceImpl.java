@@ -56,6 +56,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public Subject findSubjectById(Long id) {
+        return subjectDataService.findById(id);
+    }
+
+    @Override
     public List<Subject> findModifiedSubjects() {
         return subjectDataService.findSubjectsByModified(true);
     }
