@@ -36,6 +36,8 @@ public class ReportServiceImpl implements ReportService {
         int children_12_17 = 0;
         int adultMales = 0;
         int adultFemales = 0;
+        int adultUndifferentiated = 0;
+        int adultUnidentified = 0;
 
         for (Subject subject : subjects) {
             if (subject.getDateOfBirth() == null) {
@@ -50,8 +52,10 @@ public class ReportServiceImpl implements ReportService {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
                 adultFemales++;
+            } else if (Gender.Undifferentiated.equals(subject.getGender())) {
+                adultUndifferentiated++;
             } else {
-                LOGGER.warn("Subject with id: {} has no gender", subject.getSubjectId());
+                adultUnidentified++;
             }
         }
 
@@ -60,13 +64,14 @@ public class ReportServiceImpl implements ReportService {
         ReportBoosterVaccination existingReport = boosterVaccinationDataService.findReportByDate(date);
 
         if (existingReport != null) {
-            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleBoostered);
+            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17,
+                    adultUnidentified, adultUndifferentiated, peopleBoostered);
             boosterVaccinationDataService.update(existingReport);
 
             LOGGER.debug("Booster Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
         } else {
             ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
-                    children_0_5, children_6_11, children_12_17, peopleBoostered);
+                    children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleBoostered);
 
             boosterVaccinationDataService.create(reportBoosterVaccination);
 
@@ -85,6 +90,8 @@ public class ReportServiceImpl implements ReportService {
         int children_12_17 = 0;
         int adultMales = 0;
         int adultFemales = 0;
+        int adultUndifferentiated = 0;
+        int adultUnidentified = 0;
 
         for (Subject subject : subjects) {
             if (subject.getDateOfBirth() == null) {
@@ -99,8 +106,10 @@ public class ReportServiceImpl implements ReportService {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
                 adultFemales++;
+            } else if (Gender.Undifferentiated.equals(subject.getGender())) {
+                adultUndifferentiated++;
             } else {
-                LOGGER.warn("Subject with id: {} has no gender", subject.getSubjectId());
+                adultUnidentified++;
             }
         }
 
@@ -109,13 +118,14 @@ public class ReportServiceImpl implements ReportService {
         ReportPrimerVaccination existingReport = primerVaccinationDataService.findReportByDate(date);
 
         if (existingReport != null) {
-            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, peopleVaccinated);
+            existingReport.updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17,
+                    adultUnidentified, adultUndifferentiated, peopleVaccinated);
             primerVaccinationDataService.update(existingReport);
 
             LOGGER.debug("Primer Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
         } else {
             ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
-                    children_0_5, children_6_11, children_12_17, peopleVaccinated);
+                    children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleVaccinated);
 
             primerVaccinationDataService.create(reportPrimerVaccination);
 

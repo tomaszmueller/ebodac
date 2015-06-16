@@ -15,9 +15,9 @@ public class ReportPrimerVaccination extends ReportVaccinationAbstract {
     public ReportPrimerVaccination() {
     }
 
-    public ReportPrimerVaccination(DateTime date, Integer adultMales, Integer adultFemales, Integer children_0_5,
-                                   Integer children_6_11, Integer children_12_17, Integer peopleVaccinated) {
-        super(date, adultMales, adultFemales, children_0_5, children_6_11, children_12_17);
+    public ReportPrimerVaccination(DateTime date, Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+                                   Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleVaccinated) {
+        super(date, adultMales, adultFemales, children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated);
         this.peopleVaccinated = peopleVaccinated;
     }
 
@@ -29,9 +29,9 @@ public class ReportPrimerVaccination extends ReportVaccinationAbstract {
         this.peopleVaccinated = peopleVaccinated;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5,
-                                 Integer children_6_11, Integer children_12_17, Integer peopleVaccinated) {
-        updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17);
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+                                 Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleVaccinated) {
+        updateReportData(adultMales, adultFemales, children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated);
         this.peopleVaccinated = peopleVaccinated;
     }
 }
