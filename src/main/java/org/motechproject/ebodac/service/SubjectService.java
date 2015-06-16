@@ -29,4 +29,6 @@ public interface SubjectService {
     List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date);
 
     List<Subject> findSubjectsBoosterVaccinatedAtDay(DateTime date);
+
+    DateTime findOldestPrimerVaccinationDate();
 }
