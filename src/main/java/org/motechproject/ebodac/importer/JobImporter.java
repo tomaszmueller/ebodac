@@ -31,7 +31,8 @@ public class JobImporter implements OsgiServiceLifecycleListener {
 
     private void importDailyReportJob() {
         Period period = Period.days(1);
-        DateTime startDate = DateTime.parse(DateTime.now().plusDays(1).toString(DateTimeFormat.mediumDate()) + "T" + EbodacConstants.DAILY_REPORT_EVENT_START_HOUR);
+        DateTime startDate = DateTime.parse(DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT))
+                + EbodacConstants.DAILY_REPORT_EVENT_START_HOUR, DateTimeFormat.forPattern(EbodacConstants.REPORT_START_DATE_FORMAT));
 
         Map<String, Object> eventParameters = new HashMap<>();
         eventParameters.put(EbodacConstants.DAILY_REPORT_EVENT_START_DATE, startDate);

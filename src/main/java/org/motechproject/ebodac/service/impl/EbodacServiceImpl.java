@@ -150,7 +150,7 @@ public class EbodacServiceImpl implements EbodacService {
 
     @Override
     public void generateDailyReport() {
-        DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
         Config config = configService.getConfig();
 
@@ -171,7 +171,7 @@ public class EbodacServiceImpl implements EbodacService {
 
     @Override
     public void generateDailyReport(DateTime startDate) {
-        DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
         DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
 
         for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
@@ -184,7 +184,7 @@ public class EbodacServiceImpl implements EbodacService {
     public void updateReportsForSubject(Long id) {
         Subject subject = subjectService.findSubjectById(id);
         if (subject != null) {
-            DateTimeFormatter formatter = DateTimeFormat.mediumDate();
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
             DateTime primerVaccinationDate = subject.getPrimerVaccinationDate();
             DateTime boosterVaccinationDate = subject.getBoosterVaccinationDate();
 
