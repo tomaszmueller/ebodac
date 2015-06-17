@@ -7,6 +7,8 @@ import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.SubjectService;
+import org.motechproject.mds.query.QueryParams;
+import org.motechproject.mds.util.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +89,20 @@ public class SubjectServiceImpl implements SubjectService {
         DateTime to = from.plusDays(1).minusSeconds(1);
         Range<DateTime> range = new Range<>(from, to);
         return subjectDataService.findSubjectsByBoosterVaccinationDate(range);
+    }
+
+    @Override
+    public DateTime findOldestPrimerVaccinationDate() {
+        QueryParams queryParams = new QueryParams(new Order("primerVaccinationDate", Order.Direction.ASC));
+        List<Subject> subjects = subjectDataService.retrieveAll(queryParams);
+        if (subjects != null && !subjects.isEmpty()) {
+            for(Subject subject : subjects) {
+                if (subject.getPrimerVaccinationDate() != null) {
+                    return subject.getPrimerVaccinationDate();
+                }
+            }
+        }
+        return DateTime.now().minusDays(2);
     }
 
     @Override

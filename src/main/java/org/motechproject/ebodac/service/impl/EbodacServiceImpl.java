@@ -159,7 +159,7 @@ public class EbodacServiceImpl implements EbodacService {
         if (StringUtils.isNotBlank(lastReportDateString)) {
             lastReportDate = formatter.parseDateTime(config.getLastReportDate());
         } else {
-            lastReportDate = formatter.parseDateTime(EbodacConstants.LAST_REPORT_DEFAULT_DATE);
+            lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
         }
 
         generateDailyReport(lastReportDate.plusDays(1));
