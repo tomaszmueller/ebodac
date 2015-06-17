@@ -35,17 +35,27 @@ public abstract class ReportVaccinationAbstract {
     @Field(displayName = "Children 12-17")
     private Integer children_12_17;
 
+    @UIDisplayable(position = 8)
+    @Field
+    private Integer adultUnidentified;
+
+    @UIDisplayable(position = 7)
+    @Field
+    private Integer adultUndifferentiated;
+
     public ReportVaccinationAbstract() {
     }
 
-    public ReportVaccinationAbstract(DateTime date, Integer adultMales, Integer adultFemales, Integer children_0_5,
-                                     Integer children_6_11, Integer children_12_17) {
+    public ReportVaccinationAbstract(DateTime date, Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+                                     Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.date = date;
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
         this.children_0_5 = children_0_5;
         this.children_6_11 = children_6_11;
         this.children_12_17 = children_12_17;
+        this.adultUnidentified = adultUnidentified;
+        this.adultUndifferentiated = adultUndifferentiated;
     }
 
     public DateTime getDate() {
@@ -96,12 +106,30 @@ public abstract class ReportVaccinationAbstract {
         this.children_12_17 = children_12_17;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5,
-                                 Integer children_6_11, Integer children_12_17) {
+    public Integer getAdultUnidentified() {
+        return adultUnidentified;
+    }
+
+    public void setAdultUnidentified(Integer adultUnidentified) {
+        this.adultUnidentified = adultUnidentified;
+    }
+
+    public Integer getAdultUndifferentiated() {
+        return adultUndifferentiated;
+    }
+
+    public void setAdultUndifferentiated(Integer adultUndifferentiated) {
+        this.adultUndifferentiated = adultUndifferentiated;
+    }
+
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+                                 Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
         this.children_0_5 = children_0_5;
         this.children_6_11 = children_6_11;
         this.children_12_17 = children_12_17;
+        this.adultUnidentified = adultUnidentified;
+        this.adultUndifferentiated = adultUndifferentiated;
     }
 }
