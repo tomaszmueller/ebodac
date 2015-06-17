@@ -2,6 +2,7 @@ package org.motechproject.ebodac.service.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
@@ -68,14 +69,16 @@ public class ReportServiceImpl implements ReportService {
                     adultUnidentified, adultUndifferentiated, peopleBoostered);
             boosterVaccinationDataService.update(existingReport);
 
-            LOGGER.debug("Booster Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
+            LOGGER.debug("Booster Vaccination Daily Report for date: {} updated",
+                    date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         } else {
             ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
                     children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleBoostered);
 
             boosterVaccinationDataService.create(reportBoosterVaccination);
 
-            LOGGER.debug("Booster Vaccination Daily Report for date: {} created", date.toString(DateTimeFormat.mediumDate()));
+            LOGGER.debug("Booster Vaccination Daily Report for date: {} created",
+                    date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         }
     }
 
@@ -122,14 +125,16 @@ public class ReportServiceImpl implements ReportService {
                     adultUnidentified, adultUndifferentiated, peopleVaccinated);
             primerVaccinationDataService.update(existingReport);
 
-            LOGGER.debug("Primer Vaccination Daily Report for date: {} updated", date.toString(DateTimeFormat.mediumDate()));
+            LOGGER.debug("Primer Vaccination Daily Report for date: {} updated",
+                    date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         } else {
             ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
                     children_0_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleVaccinated);
 
             primerVaccinationDataService.create(reportPrimerVaccination);
 
-            LOGGER.debug("Primer Vaccination Daily Report for date: {} created", date.toString(DateTimeFormat.mediumDate()));
+            LOGGER.debug("Primer Vaccination Daily Report for date: {} created",
+                    date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         }
     }
 

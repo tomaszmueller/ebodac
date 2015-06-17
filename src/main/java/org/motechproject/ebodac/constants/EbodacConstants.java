@@ -25,6 +25,8 @@ public final class EbodacConstants {
     public static final String JOB_SUCCESS_STATUS = "COMPLETION";
     public static final String JOB_FAILURE_STATUS = "FAILURE";
 
+    public static final String REPORT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String REPORT_START_DATE_FORMAT = "yyyy-MM-ddHH:mm";
     public static final String DAILY_REPORT_EVENT = "daily_report_event";
     public static final String DAILY_REPORT_EVENT_START_DATE = "daily_report_event_start_date";
     public static final String DAILY_REPORT_EVENT_START_HOUR = "00:01";

@@ -3,7 +3,9 @@ package org.motechproject.ebodac.service.impl;
 import org.dom4j.datatype.DatatypeAttribute;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.api.Range;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.SubjectService;
@@ -82,7 +84,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date) {
-        DateTime from = DateTime.parse(date.toString(DateTimeFormat.mediumDate()));
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+        DateTime from = formatter.parseDateTime(date.toString(formatter));
         DateTime to = from.plusDays(1).minusSeconds(1);
         Range<DateTime> range = new Range<>(from, to);
         return subjectDataService.findSubjectsByPrimerVaccinationDate(range);
@@ -90,7 +93,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findSubjectsBoosterVaccinatedAtDay(DateTime date) {
-        DateTime from = DateTime.parse(date.toString(DateTimeFormat.mediumDate()));
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+        DateTime from = formatter.parseDateTime(date.toString(formatter));
         DateTime to = from.plusDays(1).minusSeconds(1);
         Range<DateTime> range = new Range<>(from, to);
         return subjectDataService.findSubjectsByBoosterVaccinationDate(range);
