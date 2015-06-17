@@ -1,4 +1,11 @@
-$scope.showBackToEntityListButton = false;
+if ($scope.selectedEntity.name === "Subject" || $scope.selectedEntity.name === "Visit") {
+    $scope.showBackToEntityListButton = false;
+} else {
+    $scope.showImportButton = false;
+    $scope.backToEntityList = function() {
+        window.location.replace('#/ebodac/reports');
+    };
+}
 $scope.showAddInstanceButton = false;
 $scope.showDeleteInstanceButton = false;
 var importCsvModal = '../ebodac/resources/partials/modals/import-csv.html';
