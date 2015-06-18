@@ -24,7 +24,6 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 @Service("raveImportService")
@@ -105,7 +104,10 @@ public class RaveImportServiceImpl implements RaveImportService {
     private void setProperty(Object o, String fieldName, String csvValue) {
         try {
             Field f = o.getClass().getDeclaredField(fieldName);
-            Object parsedValue = TypeHelper.parse(csvValue, f.getType());
+            Object parsedValue = null;
+            if (csvValue != null && !csvValue.equalsIgnoreCase("null")) {
+                parsedValue = TypeHelper.parse(csvValue, f.getType());
+            }
             PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);
         } catch (Exception e) {
             String msg = String.format("Error when processing field: %s, value in CSV file is %s",
