@@ -33,7 +33,7 @@ public class Subject {
 
     @UIDisplayable(position = 1)
     @Pattern(regexp = "^\\D*$")
-    @Field(required = true)
+    @Field
     private String name;
 
     @UIDisplayable(position = 2)
