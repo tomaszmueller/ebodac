@@ -69,5 +69,505 @@
         "startTime": "9:00"
       }
     ]
+  },
+  {
+    "name": "EBODAC",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Welcome message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "welcome-message",
+        "timeOffset": "2 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 1: Medical Assistance Message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-1-medical-assistance-message",
+        "timeOffset": "5 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-day-day-7",
+        "timeOffset": "7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-9",
+        "timeOffset": "9 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-11",
+        "timeOffset": "11 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 2: More info",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-2-more-info-day-14",
+        "timeOffset": "14 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 2: More info",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-2-more-info-day-21",
+        "timeOffset": "21 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 3: Targeted Engagement Message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-3-targeted-engagement-message",
+        "timeOffset": "28 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 4: Mid-point message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-4-mid-point-message",
+        "timeOffset": "35 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly Message 5: Targeted Engagement Message 2",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-5-targeted-engagement-message-2",
+        "timeOffset": "42 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Weekly message 6: Ebola Reminder",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-6-ebola-reminder",
+        "timeOffset": "49 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "50 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week",
+        "timeOffset": "56 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "58 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "60 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-day-day-63",
+        "timeOffset": "63 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-65",
+        "timeOffset": "65 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-67",
+        "timeOffset": "67 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-week-day-71",
+        "timeOffset": "71 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-day-day-77",
+        "timeOffset": "77 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-79",
+        "timeOffset": "79 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-81",
+        "timeOffset": "81 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-week-day-149",
+        "timeOffset": "149 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-day-day-155",
+        "timeOffset": "155 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-157",
+        "timeOffset": "157 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-159",
+        "timeOffset": "159 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-174",
+        "timeOffset": "174 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-179",
+        "timeOffset": "179 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-181",
+        "timeOffset": "181 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-183",
+        "timeOffset": "183 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-233",
+        "timeOffset": "233 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-239",
+        "timeOffset": "239 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-241",
+        "timeOffset": "241 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-243",
+        "timeOffset": "243 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-353",
+        "timeOffset": "353 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-359",
+        "timeOffset": "359 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-361",
+        "timeOffset": "361 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-day-363",
+        "timeOffset": "363 Days",
+        "startTime": "9:00"
+      }
+    ]
   }
 ]
