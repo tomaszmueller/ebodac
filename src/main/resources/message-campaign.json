@@ -4,77 +4,6 @@
     "type": "OFFSET",
     "messages": [
       {
-        "name": "Week 1",
-        "formats": [
-          "IVR"
-        ],
-        "languages": [
-          "en",
-          "kri"
-        ],
-        "messageKey": "reminder-week-1",
-        "timeOffset": "1 Week",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Week 2",
-        "formats": [
-          "IVR"
-        ],
-        "languages": [
-          "en",
-          "kri"
-        ],
-        "messageKey": "reminder-week-2",
-        "timeOffset": "2 Weeks",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Week 3",
-        "formats": [
-          "IVR"
-        ],
-        "languages": [
-          "en",
-          "kri"
-        ],
-        "messageKey": "reminder-week-3",
-        "timeOffset": "3 Weeks",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Day 27",
-        "formats": [
-          "IVR"
-        ],
-        "languages": [
-          "en",
-          "kri"
-        ],
-        "messageKey": "reminder-day-27",
-        "timeOffset": "27 Days",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Week 4",
-        "formats": [
-          "IVR"
-        ],
-        "languages": [
-          "en",
-          "kri"
-        ],
-        "messageKey": "reminder-week-4",
-        "timeOffset": "4 Weeks",
-        "startTime": "9:00"
-      }
-    ]
-  },
-  {
-    "name": "EBODAC",
-    "type": "OFFSET",
-    "messages": [
-      {
         "name": "Welcome message",
         "formats": [
           "IVR",
@@ -84,7 +13,7 @@
           "en"
         ],
         "messageKey": "welcome-message",
-        "timeOffset": "2 Days",
+        "timeOffset": "1 Days",
         "startTime": "9:00"
       },
       {
@@ -97,7 +26,7 @@
           "en"
         ],
         "messageKey": "weekly-message-1-medical-assistance-message",
-        "timeOffset": "5 Days",
+        "timeOffset": "4 Days",
         "startTime": "9:00"
       },
       {
@@ -110,7 +39,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-day-day-7",
-        "timeOffset": "7 Days",
+        "timeOffset": "6 Days",
         "startTime": "9:00"
       },
       {
@@ -123,7 +52,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-9",
-        "timeOffset": "9 Days",
+        "timeOffset": "8 Days",
         "startTime": "9:00"
       },
       {
@@ -136,7 +65,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-11",
-        "timeOffset": "11 Days",
+        "timeOffset": "10 Days",
         "startTime": "9:00"
       },
       {
@@ -149,7 +78,7 @@
           "en"
         ],
         "messageKey": "weekly-message-2-more-info-day-14",
-        "timeOffset": "14 Days",
+        "timeOffset": "13 Days",
         "startTime": "9:00"
       },
       {
@@ -162,7 +91,7 @@
           "en"
         ],
         "messageKey": "weekly-message-2-more-info-day-21",
-        "timeOffset": "21 Days",
+        "timeOffset": "20 Days",
         "startTime": "9:00"
       },
       {
@@ -175,7 +104,7 @@
           "en"
         ],
         "messageKey": "weekly-message-3-targeted-engagement-message",
-        "timeOffset": "28 Days",
+        "timeOffset": "27 Days",
         "startTime": "9:00"
       },
       {
@@ -188,7 +117,7 @@
           "en"
         ],
         "messageKey": "weekly-message-4-mid-point-message",
-        "timeOffset": "35 Days",
+        "timeOffset": "34 Days",
         "startTime": "9:00"
       },
       {
@@ -201,7 +130,7 @@
           "en"
         ],
         "messageKey": "weekly-message-5-targeted-engagement-message-2",
-        "timeOffset": "42 Days",
+        "timeOffset": "41 Days",
         "startTime": "9:00"
       },
       {
@@ -214,7 +143,7 @@
           "en"
         ],
         "messageKey": "weekly-message-6-ebola-reminder",
-        "timeOffset": "49 Days",
+        "timeOffset": "48 Days",
         "startTime": "9:00"
       },
       {
@@ -227,7 +156,7 @@
           "en"
         ],
         "messageKey": "booster-reminder-1-week",
-        "timeOffset": "50 Days",
+        "timeOffset": "49 Days",
         "startTime": "9:00"
       },
       {
@@ -240,7 +169,7 @@
           "en"
         ],
         "messageKey": "booster-reminder-less-than-a-week",
-        "timeOffset": "56 Days",
+        "timeOffset": "55 Days",
         "startTime": "9:00"
       },
       {
@@ -253,7 +182,7 @@
           "en"
         ],
         "messageKey": "missed-dose-1-day",
-        "timeOffset": "58 Days",
+        "timeOffset": "57 Days",
         "startTime": "9:00"
       },
       {
@@ -266,7 +195,7 @@
           "en"
         ],
         "messageKey": "missed-dose-2nd",
-        "timeOffset": "60 Days",
+        "timeOffset": "59 Days",
         "startTime": "9:00"
       },
       {
@@ -279,7 +208,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-day-day-63",
-        "timeOffset": "63 Days",
+        "timeOffset": "62 Days",
         "startTime": "9:00"
       },
       {
@@ -292,7 +221,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-65",
-        "timeOffset": "65 Days",
+        "timeOffset": "64 Days",
         "startTime": "9:00"
       },
       {
@@ -305,7 +234,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-67",
-        "timeOffset": "67 Days",
+        "timeOffset": "66 Days",
         "startTime": "9:00"
       },
       {
@@ -318,7 +247,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-week-day-71",
-        "timeOffset": "71 Days",
+        "timeOffset": "70 Days",
         "startTime": "9:00"
       },
       {
@@ -331,7 +260,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-day-day-77",
-        "timeOffset": "77 Days",
+        "timeOffset": "76 Days",
         "startTime": "9:00"
       },
       {
@@ -344,7 +273,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-79",
-        "timeOffset": "79 Days",
+        "timeOffset": "78 Days",
         "startTime": "9:00"
       },
       {
@@ -357,7 +286,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-81",
-        "timeOffset": "81 Days",
+        "timeOffset": "80 Days",
         "startTime": "9:00"
       },
       {
@@ -370,7 +299,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-week-day-149",
-        "timeOffset": "149 Days",
+        "timeOffset": "148 Days",
         "startTime": "9:00"
       },
       {
@@ -383,7 +312,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-1-day-day-155",
-        "timeOffset": "155 Days",
+        "timeOffset": "154 Days",
         "startTime": "9:00"
       },
       {
@@ -396,7 +325,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-157",
-        "timeOffset": "157 Days",
+        "timeOffset": "156 Days",
         "startTime": "9:00"
       },
       {
@@ -409,7 +338,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-159",
-        "timeOffset": "159 Days",
+        "timeOffset": "158 Days",
         "startTime": "9:00"
       },
       {
@@ -422,7 +351,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week-day-174",
-        "timeOffset": "174 Days",
+        "timeOffset": "173 Days",
         "startTime": "9:00"
       },
       {
@@ -435,7 +364,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day-day-179",
-        "timeOffset": "179 Days",
+        "timeOffset": "178 Days",
         "startTime": "9:00"
       },
       {
@@ -448,7 +377,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-181",
-        "timeOffset": "181 Days",
+        "timeOffset": "180 Days",
         "startTime": "9:00"
       },
       {
@@ -461,7 +390,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-183",
-        "timeOffset": "183 Days",
+        "timeOffset": "182 Days",
         "startTime": "9:00"
       },
       {
@@ -474,7 +403,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week-day-233",
-        "timeOffset": "233 Days",
+        "timeOffset": "232 Days",
         "startTime": "9:00"
       },
       {
@@ -487,7 +416,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day-day-239",
-        "timeOffset": "239 Days",
+        "timeOffset": "238 Days",
         "startTime": "9:00"
       },
       {
@@ -500,7 +429,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-241",
-        "timeOffset": "241 Days",
+        "timeOffset": "240 Days",
         "startTime": "9:00"
       },
       {
@@ -513,7 +442,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-243",
-        "timeOffset": "243 Days",
+        "timeOffset": "242 Days",
         "startTime": "9:00"
       },
       {
@@ -526,7 +455,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week-day-353",
-        "timeOffset": "353 Days",
+        "timeOffset": "352 Days",
         "startTime": "9:00"
       },
       {
@@ -539,7 +468,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day-day-359",
-        "timeOffset": "359 Days",
+        "timeOffset": "358 Days",
         "startTime": "9:00"
       },
       {
@@ -552,7 +481,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-361",
-        "timeOffset": "361 Days",
+        "timeOffset": "360 Days",
         "startTime": "9:00"
       },
       {
@@ -565,7 +494,7 @@
           "en"
         ],
         "messageKey": "clinic-visit-missed-appointment-day-363",
-        "timeOffset": "363 Days",
+        "timeOffset": "362 Days",
         "startTime": "9:00"
       }
     ]
