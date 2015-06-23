@@ -7,16 +7,16 @@ import org.motechproject.mds.annotations.Field;
 public class VotoLanguage {
 
     @Field
-    private Long votoId;
+    private String votoId;
 
     @Field
     private Language language;
 
-    public Long getVotoId() {
+    public String getVotoId() {
         return votoId;
     }
 
-    public void setVotoId(Long votoId) {
+    public void setVotoId(String votoId) {
         this.votoId = votoId;
     }
 
