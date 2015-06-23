@@ -7,27 +7,27 @@ import org.motechproject.mds.annotations.Field;
 public class VotoMessage {
 
     @Field
-    private Long votoIvrId;
+    private String votoIvrId;
 
     @Field
-    private Long votoSmsId;
+    private String votoSmsId;
 
     @Field
     private String messageKey;
 
-    public Long getVotoIvrId() {
+    public String getVotoIvrId() {
         return votoIvrId;
     }
 
-    public void setVotoIvrId(Long votoIvrId) {
+    public void setVotoIvrId(String votoIvrId) {
         this.votoIvrId = votoIvrId;
     }
 
-    public Long getVotoSmsId() {
+    public String getVotoSmsId() {
         return votoSmsId;
     }
 
-    public void setVotoSmsId(Long votoSmsId) {
+    public void setVotoSmsId(String votoSmsId) {
         this.votoSmsId = votoSmsId;
     }
 

@@ -17,8 +17,8 @@ public interface VotoMessageDataService extends MotechDataService<VotoMessage> {
     VotoMessage findVotoMessageByMessageKey(@LookupField(name = "messageKey") String messageKey);
 
     @Lookup
-    VotoMessage findVotoMessageByIvrId(@LookupField(name = "votoIvrId") Long votoIvrId);
+    VotoMessage findVotoMessageByIvrId(@LookupField(name = "votoIvrId") String votoIvrId);
 
     @Lookup
-    VotoMessage findVotoMessageBySmsId(@LookupField(name = "votoSmsId") Long votoSmsId);
+    VotoMessage findVotoMessageBySmsId(@LookupField(name = "votoSmsId") String votoSmsId);
 }
