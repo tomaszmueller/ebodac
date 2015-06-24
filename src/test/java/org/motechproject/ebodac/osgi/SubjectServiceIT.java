@@ -38,7 +38,7 @@ public class SubjectServiceIT extends BasePaxIT {
         Subject testRecord = new Subject("123", "test 1st name", "test household name",
                 "ASD-22", "entity-facility-id", "Sesame Street", Language.English, "Jason Bourne",
                 EbodacConstants.SITE_ID_FOR_STAGE_I);
-        subjectService.createOrUpdate(testRecord);
+        subjectService.createOrUpdateForZetes(testRecord);
 
         Subject record = subjectService.findSubjectByName(testRecord.getName());
         assertEquals(testRecord, record);

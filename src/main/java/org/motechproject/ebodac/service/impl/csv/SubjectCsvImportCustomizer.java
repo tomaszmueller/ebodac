@@ -29,11 +29,11 @@ public class SubjectCsvImportCustomizer implements CsvImportCustomizer {
 
     @Override
     public Object doCreate(Object instance, MotechDataService motechDataService) {
-        return subjectService.create((Subject) instance, true);
+        return subjectService.create((Subject) instance);
     }
 
     @Override
     public Object doUpdate(Object instance, MotechDataService motechDataService) {
-        return subjectService.update((Subject) instance, true);
+        return subjectService.update((Subject) instance);
     }
 }

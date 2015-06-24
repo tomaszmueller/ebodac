@@ -70,7 +70,7 @@ public class EbodacServiceImpl implements EbodacService {
                 } else {
                     // the subject has been updated successfully
                     s.setChanged(false);
-                    subjectService.update(s, true);
+                    subjectService.update(s);
                     LOGGER.debug("Update to Zetes was successful. Subject id: {}: \n", s.getSubjectId(), s.toString());
                 }
             } else {

@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.service.impl;
 
-import org.dom4j.datatype.DatatypeAttribute;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -8,6 +7,7 @@ import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Order;
@@ -26,8 +26,11 @@ public class SubjectServiceImpl implements SubjectService {
     @Autowired
     private SubjectDataService subjectDataService;
 
+    @Autowired
+    private ReportService reportService;
+
     @Override
-    public Subject createOrUpdate(Subject newSubject) {
+    public Subject createOrUpdateForZetes(Subject newSubject) {
 
         Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
 
@@ -41,9 +44,29 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setCommunity(newSubject.getCommunity());
             subjectInDb.setSiteId(newSubject.getSiteId());
 
-            return update(subjectInDb, true);
+            return update(subjectInDb);
         } else {
-            return create(newSubject, true);
+            return create(newSubject);
+        }
+    }
+
+    @Override
+    public Subject createOrUpdateForRave(Subject newSubject) {
+
+        Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
+
+        if (subjectInDb != null) {
+            subjectInDb.setGender(newSubject.getGender());
+            subjectInDb.setStageId(newSubject.getStageId());
+            subjectInDb.setDateOfBirth(newSubject.getDateOfBirth());
+            subjectInDb.setPrimerVaccinationDate(newSubject.getPrimerVaccinationDate());
+            subjectInDb.setBoosterVaccinationDate(newSubject.getBoosterVaccinationDate());
+            subjectInDb.setDateOfDisconVac(newSubject.getDateOfDisconVac());
+            subjectInDb.setDateOfDisconStd(newSubject.getDateOfDisconStd());
+
+            return update(subjectInDb);
+        } else {
+            return create(newSubject);
         }
     }
 
@@ -73,12 +96,12 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject create(Subject record, Boolean preserveModified) {
+    public Subject create(Subject record) {
         return subjectDataService.create(record);
     }
 
     @Override
-    public Subject update(Subject record, Boolean preserveModified) {
+    public Subject update(Subject record) {
         return subjectDataService.update(record);
     }
 

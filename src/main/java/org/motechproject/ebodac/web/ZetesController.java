@@ -27,9 +27,9 @@ import static ch.lambdaj.Lambda.on;
  */
 @RequestMapping("/registration")
 @Controller
-public class SubjectController {
+public class ZetesController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZetesController.class);
 
     @Autowired
     SubjectService subjectService;
@@ -56,7 +56,7 @@ public class SubjectController {
                     submitSubjectRequest.getCommunity(),
                     submitSubjectRequest.getSiteId());
 
-            subjectService.createOrUpdate(subject);
+            subjectService.createOrUpdateForZetes(subject);
         } catch (JDOException ex) {
             LOGGER.warn("Error raised during creating subject: " + ex.getMessage(), ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

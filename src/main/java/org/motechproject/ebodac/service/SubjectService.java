@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface SubjectService {
 
-    Subject createOrUpdate(Subject newSubject);
+    Subject createOrUpdateForZetes(Subject newSubject);
+
+    Subject createOrUpdateForRave(Subject newSubject);
 
     Subject findSubjectByName(String name);
 
@@ -24,9 +26,9 @@ public interface SubjectService {
 
     void delete(Subject record);
 
-    Subject create(Subject record, Boolean preserveModified);
+    Subject create(Subject record);
 
-    Subject update(Subject record, Boolean preserveModified);
+    Subject update(Subject record);
 
     List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date);
 

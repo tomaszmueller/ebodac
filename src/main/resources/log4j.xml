@@ -14,7 +14,7 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.motechproject.ebodac.web.SubjectController">
+    <logger name="org.motechproject.ebodac.web.ZetesController">
         <level value="WARN"/>
     </logger>
 
