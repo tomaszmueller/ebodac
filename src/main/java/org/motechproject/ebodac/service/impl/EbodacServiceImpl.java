@@ -19,7 +19,6 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.ebodac.service.RaveImportService;
-import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.util.JsonUtils;
 import org.motechproject.mds.ex.csv.CsvImportException;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,8 +48,6 @@ public class EbodacServiceImpl implements EbodacService {
     private RaveImportService raveImportService;
 
     private ConfigService configService;
-
-    private ReportService reportService;
 
     @Override
     public void sendUpdatedSubjects(String zetesUrl, String username, String password) {
@@ -148,59 +144,6 @@ public class EbodacServiceImpl implements EbodacService {
         LOGGER.info("Finished fetching CSV files from {}", hostname);
     }
 
-    @Override
-    public void generateDailyReport() {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-
-        Config config = configService.getConfig();
-
-        String lastReportDateString = config.getLastReportDate();
-        DateTime lastReportDate;
-
-        if (StringUtils.isNotBlank(lastReportDateString)) {
-            lastReportDate = formatter.parseDateTime(config.getLastReportDate());
-        } else {
-            lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
-        }
-
-        generateDailyReport(lastReportDate.plusDays(1));
-
-        config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
-        configService.updateConfig(config);
-    }
-
-    @Override
-    public void generateDailyReport(DateTime startDate) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
-
-        for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
-            reportService.generatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
-            reportService.generateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
-        }
-    }
-
-    @Override
-    public void updateReportsForSubject(Long id) {
-        Subject subject = subjectService.findSubjectById(id);
-        if (subject != null) {
-            DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-            DateTime primerVaccinationDate = subject.getPrimerVaccinationDate();
-            DateTime boosterVaccinationDate = subject.getBoosterVaccinationDate();
-
-            if (primerVaccinationDate != null) {
-                reportService.generatePrimerVaccinationReport(Arrays.asList(subject),
-                        formatter.parseDateTime(primerVaccinationDate.toString(formatter)));
-            }
-            if (boosterVaccinationDate != null) {
-                reportService.generateBoosterVaccinationReport(Arrays.asList(subject),
-                        formatter.parseDateTime(boosterVaccinationDate.toString(formatter)));
-            }
-        } else {
-            LOGGER.warn("Could not find Subject with id: {}", id);
-        }
-    }
-
     private String parseZetesResponse(HttpResponse httpResponse) {
         int status = httpResponse.getStatus();
         if (status == HttpStatus.SC_NOT_FOUND) {
@@ -249,10 +192,5 @@ public class EbodacServiceImpl implements EbodacService {
     @Autowired
     public void setConfigService(ConfigService configService) {
         this.configService = configService;
-    }
-
-    @Autowired
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
     }
 }

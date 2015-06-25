@@ -1,33 +1,98 @@
 package org.motechproject.ebodac.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.ReportService;
+import org.motechproject.ebodac.service.ReportUpdateService;
+import org.motechproject.ebodac.service.SubjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service("reportService")
 public class ReportServiceImpl implements ReportService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportServiceImpl.class);
 
-    ReportPrimerVaccinationDataService primerVaccinationDataService;
+    private ReportPrimerVaccinationDataService primerVaccinationDataService;
 
-    ReportBoosterVaccinationDataService boosterVaccinationDataService;
+    private ReportBoosterVaccinationDataService boosterVaccinationDataService;
+
+    private ConfigService configService;
+
+    private SubjectService subjectService;
+
+    private ReportUpdateService reportUpdateService;
 
     @Override
-    public void generateBoosterVaccinationReport(List<Subject> subjects, DateTime date) {
+    public void generateDailyReports() {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+
+        Config config = configService.getConfig();
+
+        String lastReportDateString = config.getLastReportDate();
+        DateTime lastReportDate;
+
+        if (StringUtils.isNotBlank(lastReportDateString)) {
+            lastReportDate = formatter.parseDateTime(config.getLastReportDate());
+        } else {
+            lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
+        }
+
+        updateBoosterVaccinationReportsForDates(reportUpdateService.getBoosterVaccinationReportsToUpdate());
+        updatePrimerVaccinationReportsForDates(reportUpdateService.getPrimerVaccinationReportsToUpdate());
+
+        generateDailyReportsFromDate(lastReportDate.plusDays(1));
+
+        config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
+        configService.updateConfig(config);
+    }
+
+    @Override
+    public void generateDailyReportsFromDate(DateTime startDate) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
+
+        for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
+            generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
+            generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
+        }
+    }
+
+    private void updateBoosterVaccinationReportsForDates(Set<String> dates) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+
+        for (String dateString : dates) {
+            DateTime date = DateTime.parse(dateString, formatter);
+            generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
+        }
+    }
+
+    private void updatePrimerVaccinationReportsForDates(Set<String> dates) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+
+        for (String dateString : dates) {
+            DateTime date = DateTime.parse(dateString, formatter);
+            generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
+        }
+    }
+
+    private void generateOrUpdateBoosterVaccinationReport(List<Subject> subjects, DateTime date) {
         DateTime age_6 = date.minusYears(6);
         DateTime age_12 = date.minusYears(12);
         DateTime age_18 = date.minusYears(18);
@@ -82,8 +147,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    @Override
-    public void generatePrimerVaccinationReport(List<Subject> subjects, DateTime date) {
+    private void generateOrUpdatePrimerVaccinationReport(List<Subject> subjects, DateTime date) {
         DateTime age_6 = date.minusYears(6);
         DateTime age_12 = date.minusYears(12);
         DateTime age_18 = date.minusYears(18);
@@ -146,5 +210,20 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     public void setBoosterVaccinationDataService(ReportBoosterVaccinationDataService boosterVaccinationDataService) {
         this.boosterVaccinationDataService = boosterVaccinationDataService;
+    }
+
+    @Autowired
+    public void setConfigService(ConfigService configService) {
+        this.configService = configService;
+    }
+
+    @Autowired
+    public void setSubjectService(SubjectService subjectService) {
+        this.subjectService = subjectService;
+    }
+
+    @Autowired
+    public void setReportUpdateService(ReportUpdateService reportUpdateService) {
+        this.reportUpdateService = reportUpdateService;
     }
 }

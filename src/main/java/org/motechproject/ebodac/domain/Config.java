@@ -1,5 +1,8 @@
 package org.motechproject.ebodac.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Config {
 
     public static final String TIME_PICKER_FORMAT = "HH:mm";
@@ -33,6 +36,10 @@ public class Config {
     private Integer emailCheckInterval;
 
     private String lastReportDate;
+
+    private Set<String> primerVaccinationReportsToUpdate;
+
+    private Set<String> boosterVaccinationReportsToUpdate;
 
     public Config() {
     }
@@ -155,5 +162,27 @@ public class Config {
 
     public void setLastReportDate(String lastReportDate) {
         this.lastReportDate = lastReportDate;
+    }
+
+    public Set<String> getPrimerVaccinationReportsToUpdate() {
+        if (primerVaccinationReportsToUpdate == null) {
+            primerVaccinationReportsToUpdate = new HashSet<>();
+        }
+        return primerVaccinationReportsToUpdate;
+    }
+
+    public void setPrimerVaccinationReportsToUpdate(Set<String> primerVaccinationReportsToUpdate) {
+        this.primerVaccinationReportsToUpdate = primerVaccinationReportsToUpdate;
+    }
+
+    public Set<String> getBoosterVaccinationReportsToUpdate() {
+        if (boosterVaccinationReportsToUpdate == null) {
+            boosterVaccinationReportsToUpdate = new HashSet<>();
+        }
+        return boosterVaccinationReportsToUpdate;
+    }
+
+    public void setBoosterVaccinationReportsToUpdate(Set<String> boosterVaccinationReportsToUpdate) {
+        this.boosterVaccinationReportsToUpdate = boosterVaccinationReportsToUpdate;
     }
 }

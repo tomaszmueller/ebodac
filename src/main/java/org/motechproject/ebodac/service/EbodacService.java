@@ -10,10 +10,4 @@ public interface EbodacService {
     void sendUpdatedSubjects(String zetesUrl, String username, String password);
 
     void fetchCSVUpdates();
-
-    void generateDailyReport();
-
-    void generateDailyReport(DateTime startDate);
-
-    void updateReportsForSubject(Long id);
 }

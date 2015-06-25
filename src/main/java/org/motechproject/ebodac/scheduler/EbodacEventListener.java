@@ -6,9 +6,9 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
+import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.mds.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,9 @@ public class EbodacEventListener {
 
     @Autowired
     private ConfigService configService;
+
+    @Autowired
+    private ReportService reportService;
 
     @MotechListener(subjects = {EbodacConstants.ZETES_UPDATE_EVENT})
     public void zetesUpdate(MotechEvent event) {
@@ -51,14 +54,7 @@ public class EbodacEventListener {
     @MotechListener(subjects = {EbodacConstants.DAILY_REPORT_EVENT})
     public void generateDailyReport(MotechEvent event) {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
-        ebodacService.generateDailyReport();
+        reportService.generateDailyReports();
         LOGGER.info("Daily Reports generation completed");
-    }
-
-    @MotechListener(subjects = {EbodacConstants.SUBJECT_UPDATED})
-    public void updateReportWhenSubjectChanged(MotechEvent event) {
-        Long id = (Long) event.getParameters().get(Constants.MDSEvents.OBJECT_ID);
-        ebodacService.updateReportsForSubject(id);
-        LOGGER.info("Reports updated for Subject with id: {}", id);
     }
 }

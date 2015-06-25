@@ -7,7 +7,7 @@ import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
-import org.motechproject.ebodac.service.ReportService;
+import org.motechproject.ebodac.service.ReportUpdateService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Order;
@@ -27,12 +27,14 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectDataService subjectDataService;
 
     @Autowired
-    private ReportService reportService;
+    private ReportUpdateService reportUpdateService;
 
     @Override
     public Subject createOrUpdateForZetes(Subject newSubject) {
 
         Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
+
+        reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
 
         if (subjectInDb != null) {
             subjectInDb.setName(newSubject.getName());
@@ -54,6 +56,8 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject createOrUpdateForRave(Subject newSubject) {
 
         Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
+
+        reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
 
         if (subjectInDb != null) {
             subjectInDb.setGender(newSubject.getGender());
