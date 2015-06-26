@@ -37,6 +37,8 @@ public class Config {
 
     private String lastReportDate;
 
+    private Boolean generateReports;
+
     private Set<String> primerVaccinationReportsToUpdate;
 
     private Set<String> boosterVaccinationReportsToUpdate;
@@ -162,6 +164,14 @@ public class Config {
 
     public void setLastReportDate(String lastReportDate) {
         this.lastReportDate = lastReportDate;
+    }
+
+    public Boolean getGenerateReports() {
+        return generateReports;
+    }
+
+    public void setGenerateReports(Boolean generateReports) {
+        this.generateReports = generateReports;
     }
 
     public Set<String> getPrimerVaccinationReportsToUpdate() {
