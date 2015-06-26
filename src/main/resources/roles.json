@@ -1,6 +1,10 @@
 [
   {
-    "roleName": "Clinician",
+    "roleName": "EBODAC Send Subject via API",
     "permissionNames": ["registrationSubmission"]
+  },
+  {
+    "roleName": "EBODAC Management",
+    "permissionNames": ["manageEbodac"]
   }
 ]

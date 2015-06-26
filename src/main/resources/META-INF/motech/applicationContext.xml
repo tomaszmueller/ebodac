@@ -28,7 +28,7 @@
         <property name="defaultURL" value="/ebodac/subjects"/>
         <property name="roleForAccess">
             <list>
-                <value>registrationSubmission</value>
+                <value>manageEbodac</value>
                 <value>manageBundles</value>
             </list>
         </property>
