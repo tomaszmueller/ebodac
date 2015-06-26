@@ -7,6 +7,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.service.RaveImportService;
+import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.service.VisitService;
 import org.motechproject.ebodac.service.impl.csv.RaveSubjectField;
@@ -36,6 +37,9 @@ public class RaveImportServiceImpl implements RaveImportService {
     @Autowired
     private VisitService visitService;
 
+    @Autowired
+    private ReportService reportService;
+
     @Override
     public void importCsv(Reader reader) {
         try (CsvMapReader csvMapReader = new CsvMapReader(reader, CsvPreference.STANDARD_PREFERENCE)) {
@@ -56,6 +60,8 @@ public class RaveImportServiceImpl implements RaveImportService {
                     LOGGER.error("Skipping subject with id " + subjectId + ": " + e.getMessage(),  e);
                 }
             }
+
+            reportService.shouldGenerateReports();
         } catch (IOException e) {
             throw new CsvImportException("IO Error when importing CSV", e);
         }

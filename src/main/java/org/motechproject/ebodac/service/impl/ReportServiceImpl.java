@@ -45,22 +45,25 @@ public class ReportServiceImpl implements ReportService {
 
         Config config = configService.getConfig();
 
-        String lastReportDateString = config.getLastReportDate();
-        DateTime lastReportDate;
+        if (config.getGenerateReports() != null && config.getGenerateReports()) {
+            String lastReportDateString = config.getLastReportDate();
+            DateTime lastReportDate;
 
-        if (StringUtils.isNotBlank(lastReportDateString)) {
-            lastReportDate = formatter.parseDateTime(config.getLastReportDate());
-        } else {
-            lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
+            if (StringUtils.isNotBlank(lastReportDateString)) {
+                lastReportDate = formatter.parseDateTime(config.getLastReportDate());
+            } else {
+                lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
+            }
+
+            updateBoosterVaccinationReportsForDates(reportUpdateService.getBoosterVaccinationReportsToUpdate());
+            updatePrimerVaccinationReportsForDates(reportUpdateService.getPrimerVaccinationReportsToUpdate());
+
+            generateDailyReportsFromDate(lastReportDate.plusDays(1));
+
+            config.setGenerateReports(false);
+            config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
+            configService.updateConfig(config);
         }
-
-        updateBoosterVaccinationReportsForDates(reportUpdateService.getBoosterVaccinationReportsToUpdate());
-        updatePrimerVaccinationReportsForDates(reportUpdateService.getPrimerVaccinationReportsToUpdate());
-
-        generateDailyReportsFromDate(lastReportDate.plusDays(1));
-
-        config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
-        configService.updateConfig(config);
     }
 
     @Override
@@ -72,6 +75,14 @@ public class ReportServiceImpl implements ReportService {
             generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
             generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
         }
+    }
+
+    @Override
+    public void shouldGenerateReports() {
+        Config config = configService.getConfig();
+
+        config.setGenerateReports(true);
+        configService.updateConfig(config);
     }
 
     private void updateBoosterVaccinationReportsForDates(Set<String> dates) {
