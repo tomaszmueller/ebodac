@@ -93,6 +93,9 @@ public class RaveImportServiceImpl implements RaveImportService {
             String csvValue = getValue(row, header);
             if (visitField.equals(RaveVisitField.VISIT)) {
                 VisitType visitType = VisitType.getByValue(csvValue);
+                if (visitType == null) {
+                    throw new CsvImportException("Unknown visit type \"" + csvValue + "\"");
+                }
                 visit.setType(visitType);
             } else {
                 setProperty(visit, fieldName, csvValue);
@@ -101,7 +104,7 @@ public class RaveImportServiceImpl implements RaveImportService {
         Subject updatedSubject = subjectService.createOrUpdateForRave(subject);
         if (updatedSubject != null) {
             visit.setSubject(updatedSubject);
-            visitService.create(visit);
+            visitService.createOrUpdate(visit);
         } else {
             throw new CsvImportException("Could not store subject imported from row " + row);
         }

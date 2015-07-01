@@ -11,5 +11,7 @@ public interface VisitService {
 
     Visit update(Visit visit);
 
+    Visit createOrUpdate(Visit visit);
+
     void delete(Visit visit);
 }

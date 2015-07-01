@@ -3,6 +3,7 @@ package org.motechproject.ebodac.domain;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
@@ -10,8 +11,11 @@ import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Unique;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Models data for registration of Subject in EBODAC
@@ -106,6 +110,11 @@ public class Subject {
     @NonEditable(display = false)
     @Field
     private String owner;
+
+    @Field
+    @Persistent(mappedBy = "subject")
+    @Cascade(delete = true)
+    private List<Visit> visits = new ArrayList<>();
 
     public Subject() {
     }
@@ -277,6 +286,14 @@ public class Subject {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public List<Visit> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<Visit> visits) {
+        this.visits = visits;
     }
 
     @Ignore

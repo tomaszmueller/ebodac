@@ -6,6 +6,8 @@ import org.motechproject.ebodac.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Implementation of the {@link org.motechproject.ebodac.service.VisitService} interface. Uses
  * {@link org.motechproject.ebodac.repository.VisitDataService} in order to retrieve and persist records.
@@ -24,6 +26,20 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public Visit update(Visit visit) {
         return visitDataService.update(visit);
+    }
+
+    @Override
+    public Visit createOrUpdate(Visit visit) {
+        if (visit.getSubject() != null) {
+            List<Visit> visits = visit.getSubject().getVisits();
+            if (visits.contains(visit)) {
+                Visit existingVisit = visits.get(visits.indexOf(visit));
+                existingVisit.setDate(visit.getDate());
+                existingVisit.setDateProjected(visit.getDateProjected());
+                return visitDataService.update(existingVisit);
+            }
+        }
+        return visitDataService.create(visit);
     }
 
     @Override
