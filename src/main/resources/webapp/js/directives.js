@@ -28,4 +28,88 @@
         };
     });
 
+    directives.directive('dailyClinicVisitScheduleReportGrid', function($http) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var elem = angular.element(element), filters;
+
+                elem.jqGrid({
+                    url: '../ebodac/visitsRecords',
+                    headers: {
+                        'Accept': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    datatype: 'json',
+                    mtype: "POST",
+                    jsonReader:{
+                        repeatitems: false
+                    },
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
+                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress'),
+                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitType')],
+                    colModel: [{
+                       name: 'rowId',
+                       index: 'rowId',
+                       hidden: true,
+                       key: true
+                    }, {
+                        name: 'subject',
+                        index: 'subject',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.subjectId;
+                                   }
+                    }, {
+                        name: 'subjectName',
+                        jsonmap: 'subject',
+                        index: 'subjectName',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.name;
+                                   }
+                    }, {
+                        name: 'subjectAddress',
+                        jsonmap: 'subject',
+                        index: 'subjectAddress',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.address;
+                                   }
+                    }, {
+                        name: 'type',
+                        index: 'type',
+                        align: 'center',
+                    }],
+                    pager: '#' + attrs.dailyClinicVisitScheduleReportGrid,
+                    viewrecords: true,
+                    loadonce: false,
+                    resizeStop: function() {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                    },
+                    gridComplete: function () {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                    }
+                });
+            }
+        };
+    });
+
 }());
