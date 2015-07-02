@@ -68,4 +68,16 @@
         };
     });
 
+    /*
+     *
+     * Reports
+     *
+     */
+    controllers.controller('EbodacReportsCtrl', function ($scope) {
+
+        $scope.backToEntityList = function() {
+            window.location.replace('#/ebodac/reports');
+        };
+    });
+
 }());
