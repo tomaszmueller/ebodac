@@ -32,6 +32,13 @@ $scope.importSubject = function () {
     });
 };
 
+$scope.exportEntityInstances = function() {
+    $http.get("../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances")
+    .success(function (data) {
+         window.location.replace("../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances");
+    });
+};
+
 $scope.closeImportSubjectModal = function () {
     $('#importSubjectForm').resetForm();
     $('#importSubjectModal').modal('hide');
