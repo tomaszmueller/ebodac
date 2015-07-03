@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.web;
 
+import org.motechproject.ebodac.domain.ReportBoosterVaccination;
+import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
@@ -72,6 +74,10 @@ public class InstanceController {
         if (className.equals(Visit.class.getName())) {
             csvImportExportService.exportCsv(entityId, response.getWriter(), visitCsvExportCustomizer);
         } else if (className.equals(Subject.class.getName())) {
+            csvImportExportService.exportCsv(entityId, response.getWriter());
+        } else if (className.equals(ReportBoosterVaccination.class.getName())){
+            csvImportExportService.exportCsv(entityId, response.getWriter());
+        } else if (className.equals(ReportPrimerVaccination.class.getName())) {
             csvImportExportService.exportCsv(entityId, response.getWriter());
         }
     }
