@@ -100,11 +100,11 @@ public class Subject {
     private DateTime boosterVaccinationDate;
 
     @NonEditable
-    @Field
+    @Field(displayName = "Date of Discontinuation Vac.")
     private DateTime dateOfDisconVac;
 
     @NonEditable
-    @Field
+    @Field(displayName = "Withdrawal Date")
     private DateTime dateOfDisconStd;
 
     /**
