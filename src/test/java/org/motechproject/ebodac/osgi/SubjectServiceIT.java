@@ -40,8 +40,8 @@ public class SubjectServiceIT extends BasePaxIT {
                 EbodacConstants.SITE_ID_FOR_STAGE_I);
         subjectService.createOrUpdateForZetes(testRecord);
 
-        Subject record = subjectService.findSubjectByName(testRecord.getName());
-        assertEquals(testRecord, record);
+        List<Subject> record = subjectService.findSubjectByName(testRecord.getName());
+        assertEquals(testRecord, record.get(0));
 
         List<Subject> records = subjectService.getAll();
         assertTrue(records.contains(testRecord));
