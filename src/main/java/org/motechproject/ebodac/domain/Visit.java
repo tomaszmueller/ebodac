@@ -1,6 +1,11 @@
 package org.motechproject.ebodac.domain;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
+import org.motechproject.ebodac.util.CustomDateDeserializer;
+import org.motechproject.ebodac.util.CustomDateSerializer;
+import org.motechproject.ebodac.util.CustomSubjectSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
@@ -28,6 +33,7 @@ public class Visit {
     @Field
     private String owner;
 
+    @JsonSerialize(using = CustomSubjectSerializer.class)
     public Subject getSubject() {
         return subject;
     }
@@ -44,6 +50,8 @@ public class Visit {
         this.type = type;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public DateTime getDate() {
         return date;
     }

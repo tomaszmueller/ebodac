@@ -42,6 +42,9 @@
                     },
                     datatype: 'json',
                     mtype: "POST",
+                    postData: {
+                        fields: JSON.stringify(scope.lookupBy)
+                    },
                     jsonReader:{
                         repeatitems: false
                     },
@@ -49,7 +52,7 @@
                         sort: 'sortColumn',
                         order: 'sortDirection'
                     },
-                    colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
+                    colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitDate'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
                         scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress'),
                         scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitType')],
                     colModel: [{
@@ -58,8 +61,13 @@
                        hidden: true,
                        key: true
                     }, {
+                        name: 'date',
+                        index: 'date',
+                        align: 'center',
+                        formatter:'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat:'Y-m-d H:i'}
+                    }, {
                         name: 'subject',
-                        index: 'subject',
+                        index: 'subject.subjectId',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
                                        if (!cellValue){
@@ -70,7 +78,7 @@
                     }, {
                         name: 'subjectName',
                         jsonmap: 'subject',
-                        index: 'subjectName',
+                        index: 'subject.name',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
                                        if (!cellValue){
@@ -81,7 +89,7 @@
                     }, {
                         name: 'subjectAddress',
                         jsonmap: 'subject',
-                        index: 'subjectAddress',
+                        index: 'subject.address',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
                                        if (!cellValue){
@@ -107,6 +115,16 @@
                         $('.ui-jqgrid-btable').width('100%');
                         elem.jqGrid('setGridWidth', '100%');
                     }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
                 });
             }
         };
