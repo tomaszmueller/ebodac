@@ -6,6 +6,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;
+import org.motechproject.mds.util.Constants;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup
-    Subject findSubjectByName(@LookupField(name = "name") String name);
+    List<Subject> findSubjectByName(@LookupField(name = "name", customOperator = Constants.Operators.EQ_IGNORE_CASE) String name);
 
     @Lookup
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);

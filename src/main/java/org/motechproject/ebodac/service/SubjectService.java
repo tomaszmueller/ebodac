@@ -14,7 +14,7 @@ public interface SubjectService {
 
     Subject createOrUpdateForRave(Subject newSubject);
 
-    Subject findSubjectByName(String name);
+    List<Subject> findSubjectByName(String name);
 
     Subject findSubjectBySubjectId(String subjectId);
 
