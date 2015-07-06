@@ -78,25 +78,32 @@ public class Subject {
      * Fields captured in RAVE
      */
 
+    @NonEditable
     @UIDisplayable(position = 6)
     @Field
     private Gender gender;
 
+    @NonEditable
     @Field
     private Long stageId;
 
+    @NonEditable
     @Field
     private DateTime dateOfBirth;
 
+    @NonEditable
     @Field
     private DateTime primerVaccinationDate;
 
+    @NonEditable
     @Field
     private DateTime boosterVaccinationDate;
 
+    @NonEditable
     @Field
     private DateTime dateOfDisconVac;
 
+    @NonEditable
     @Field
     private DateTime dateOfDisconStd;
 
@@ -111,6 +118,7 @@ public class Subject {
     @Field
     private String owner;
 
+    @NonEditable
     @Field
     @Persistent(mappedBy = "subject")
     @Cascade(delete = true)

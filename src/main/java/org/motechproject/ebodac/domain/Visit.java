@@ -3,21 +3,30 @@ package org.motechproject.ebodac.domain;
 import org.joda.time.DateTime;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 
 @Entity(recordHistory = true)
 public class Visit {
 
+    @NonEditable
     @Field
     private Subject subject;
 
+    @NonEditable
     @Field
     private VisitType type;
 
+    @NonEditable
     @Field
     private DateTime date;
 
+    @NonEditable
     @Field
     private DateTime dateProjected;
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public Subject getSubject() {
         return subject;
@@ -49,6 +58,14 @@ public class Visit {
 
     public void setDateProjected(DateTime dateProjected) {
         this.dateProjected = dateProjected;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override
