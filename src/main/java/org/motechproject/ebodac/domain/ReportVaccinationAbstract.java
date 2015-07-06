@@ -3,6 +3,7 @@ package org.motechproject.ebodac.domain;
 import org.joda.time.DateTime;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
 
 import javax.jdo.annotations.Unique;
@@ -10,38 +11,50 @@ import javax.jdo.annotations.Unique;
 @Entity
 public abstract class ReportVaccinationAbstract {
 
+    @NonEditable
     @Unique
     @UIDisplayable(position = 0)
     @Field
     private DateTime date;
 
+    @NonEditable
     @UIDisplayable(position = 2)
     @Field
     private Integer adultMales;
 
+    @NonEditable
     @UIDisplayable(position = 3)
     @Field
     private Integer adultFemales;
 
+    @NonEditable
     @UIDisplayable(position = 6)
     @Field(displayName = "Children 0-5")
     private Integer children_0_5;
 
+    @NonEditable
     @UIDisplayable(position = 5)
     @Field(displayName = "Children 6-11")
     private Integer children_6_11;
 
+    @NonEditable
     @UIDisplayable(position = 4)
     @Field(displayName = "Children 12-17")
     private Integer children_12_17;
 
+    @NonEditable
     @UIDisplayable(position = 8)
     @Field
     private Integer adultUnidentified;
 
+    @NonEditable
     @UIDisplayable(position = 7)
     @Field
     private Integer adultUndifferentiated;
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public ReportVaccinationAbstract() {
     }
@@ -120,6 +133,14 @@ public abstract class ReportVaccinationAbstract {
 
     public void setAdultUndifferentiated(Integer adultUndifferentiated) {
         this.adultUndifferentiated = adultUndifferentiated;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
