@@ -17,6 +17,7 @@ public class Visit {
     @Field
     private Subject subject;
 
+
     @NonEditable
     @Field
     private VisitType type;
@@ -102,8 +103,8 @@ public class Visit {
 
     @Override
     public String toString() {
-        return type.toString() +
-                (getDateProjected() != null ? " / Date Planned: " + getDateProjected().toLocalDate().toString() : "") +
-                (getDate() != null ? " / Date Actual: " + getDate().toLocalDate().toString() : "");
+        return type.getValue() +
+                (getDateProjected() != null ? " / Planned Date: " + getDateProjected().toLocalDate().toString() : "") +
+                (getDate() != null ? " / Actual Date: " + getDate().toLocalDate().toString() : "");
     }
 }
