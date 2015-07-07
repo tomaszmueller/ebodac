@@ -79,9 +79,9 @@
         $scope.lookupFields = [];
         $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "dateTime"}]},
                           {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Type", "type" : "list",
-                         "values" : ["SCREENING", "PRIME_VACCINATION_DAY", "PRIME_VACCINATION_FOLLOW_UP_VISIT", "BOOST_VACCINATION_DAY",
-                         "BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT", "BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT", "BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT",
-                         "FIRST_LONG_TERM_FOLLOW_UP_VISIT", "SECOND_LONG_TERM_FOLLOW_UP_VISIT", "THIRD_LONG_TERM_FOLLOW_UP_VISIT", "UNSCHEDULED_VISIT"]}]},
+                         "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
+                         "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
+                         "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit(n)"]}]},
                          {"lookupName" : "Find Visit By SubjectId", "fields" : [{"name" : "SubjectId", "type" : "string"}]},
                          {"lookupName" : "Find Visit By Subject Name", "fields" : [{"name" : "Name", "type" : "string"}]},
                          {"lookupName" : "Find Visit By Subject Address", "fields" : [{"name" : "Address", "type" : "string"}]}];

@@ -20,7 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
@@ -72,7 +71,7 @@ public class VisitController {
 
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By Type":
-                    VisitType type = VisitType.valueOf((String) fields.get("Type"));
+                    VisitType type = VisitType.getByValue((String) fields.get("Type"));
                     visits = visitDataService.findVisitByType(type, queryParams);
 
                     recordCount = visitDataService.countFindVisitByType(type);
