@@ -11,4 +11,6 @@ public interface ReportUpdateService {
     Set<String> getBoosterVaccinationReportsToUpdate();
 
     void addReportsToUpdateIfNeeded(Subject oldSubject, Subject newSubject);
+
+    void setConfigService(ConfigService configService);
 }

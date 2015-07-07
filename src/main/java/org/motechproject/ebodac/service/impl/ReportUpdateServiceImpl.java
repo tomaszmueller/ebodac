@@ -111,6 +111,7 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
     }
 
     @Autowired
+    @Override
     public void setConfigService(ConfigService configService) {
         this.configService = configService;
     }

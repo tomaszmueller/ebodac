@@ -9,22 +9,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
-import org.motechproject.ebodac.domain.ReportBoosterVaccination;
-import org.motechproject.ebodac.domain.ReportPrimerVaccination;
+import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
-import org.motechproject.ebodac.service.*;
+import org.motechproject.ebodac.service.ConfigService;
+import org.motechproject.ebodac.service.RaveImportService;
+import org.motechproject.ebodac.service.ReportService;
+import org.motechproject.ebodac.service.ReportUpdateService;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
+import org.motechproject.ebodac.domain.ReportBoosterVaccination;
+import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 
 import javax.inject.Inject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,10 +41,16 @@ import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class ReportServiceIT extends BasePaxIT {
+public class ReportServiceIT extends BasePaxIT{
 
     @Inject
-    private ReportService reportService;
+    private SubjectDataService subjectDataService;
+
+    @Inject
+    private VisitDataService visitDataService;
+
+    @Inject
+    private ConfigService configService;
 
     @Inject
     private ReportPrimerVaccinationDataService primerVaccinationDataService;
@@ -53,25 +62,32 @@ public class ReportServiceIT extends BasePaxIT {
     private RaveImportService raveImportService;
 
     @Inject
-    private SubjectDataService subjectDataService;
+    private ReportUpdateService reportUpdateService;
 
     @Inject
-    private VisitDataService visitDataService;
+    private ReportService reportService;
+
+    private Config savedConfig;
+
+    private Config config;
 
     @Before
-    public void cleanBefore() {
-        primerVaccinationDataService.deleteAll();
-        boosterVaccinationDataService.deleteAll();
+    public void setUp() throws Exception {
+        savedConfig = configService.getConfig();
         visitDataService.deleteAll();
         subjectDataService.deleteAll();
+        boosterVaccinationDataService.deleteAll();
+        primerVaccinationDataService.deleteAll();
+        reportUpdateService.setConfigService(configService);
     }
 
     @After
-    public void cleanAfter() {
-        primerVaccinationDataService.deleteAll();
-        boosterVaccinationDataService.deleteAll();
+    public void tearDown() throws Exception {
+        configService.updateConfig(savedConfig);
         visitDataService.deleteAll();
         subjectDataService.deleteAll();
+        boosterVaccinationDataService.deleteAll();
+        primerVaccinationDataService.deleteAll();
     }
 
     @Test
@@ -108,6 +124,98 @@ public class ReportServiceIT extends BasePaxIT {
         }
     }
 
+    @Test
+    public void shouldGenerateNewReports() throws IOException {
+        try {
+            fakeNow(newDateTime(2015, 7, 6, 1, 0, 0));
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+            assertEquals(0, primerVaccinationDataService.retrieveAll().size());
+            assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
+
+            config = configService.getConfig();
+            config.setLastReportDate(DateUtil.now().minusDays(5).toString(formatter));
+            config.setGenerateReports(true);
+            configService.updateConfig(config);
+
+            reportService.generateDailyReports();
+            assertEquals(5, primerVaccinationDataService.retrieveAll().size());
+            assertEquals(5, boosterVaccinationDataService.retrieveAll().size());
+            for(int i=2;i<6;i++) {
+                assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 7, i, 0, 0, 0)));
+                assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 7, i, 0, 0, 0)));
+            }
+        } finally {
+            stopFakingTime();
+        }
+    }
+
+    @Test
+    public void shouldUpdateDailyReports() throws IOException {
+        try {
+            fakeNow(newDateTime(2015, 7, 6, 12, 0, 0));
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
+
+            config = configService.getConfig();
+            config.setLastReportDate(DateUtil.now().minusDays(5).toString(formatter));
+            config.setGenerateReports(true);
+            config.setPrimerVaccinationReportsToUpdate(null);
+            config.setBoosterVaccinationReportsToUpdate(null);
+            configService.updateConfig(config);
+
+            assertEquals(0, config.getPrimerVaccinationReportsToUpdate().size());
+            assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
+
+            InputStream in = getClass().getResourceAsStream("/sample2.csv");
+            raveImportService.importCsv(new InputStreamReader(in));
+            in.close();
+
+            config=configService.getConfig();
+            assertEquals(2, config.getPrimerVaccinationReportsToUpdate().size());
+            assertEquals(3, config.getBoosterVaccinationReportsToUpdate().size());
+
+            reportService.generateDailyReports();
+            config=configService.getConfig();
+            assertEquals(0, config.getPrimerVaccinationReportsToUpdate().size());
+            assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
+
+            for(int i = 2; i < 6; i++) {
+                assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 7, i, 0, 0, 0)));
+                assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 7, i, 0, 0, 0)));
+            }
+            assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 6, 21, 0, 0, 0)));
+            assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 6, 29, 0, 0, 0)));
+            assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, 19, 0, 0, 0)));
+            assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, 21, 0, 0, 0)));
+            assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, 27, 0, 0, 0)));
+        } finally {
+            stopFakingTime();
+        }
+    }
+
+    @Test
+    public void shouldStartGenerateFromOldestVaccinationDay() throws IOException {
+        try {
+            fakeNow(newDateTime(2015, 6, 28, 12, 0, 0));
+            config=new Config();
+            config.setGenerateReports(true);
+            configService.updateConfig(config);
+
+            InputStream in = getClass().getResourceAsStream("/sample2.csv");
+            raveImportService.importCsv(new InputStreamReader(in));
+            in.close();
+
+            reportService.generateDailyReports();
+            assertEquals(6,primerVaccinationDataService.retrieveAll().size());
+            assertEquals(6,boosterVaccinationDataService.retrieveAll().size());
+            for(int i = 22; i < 28; i++) {
+                assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
+                assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
+            }
+        } finally {
+            stopFakingTime();
+        }
+    }
+
     private void checkUpdateBoosterVaccinationReportsForDates(DateTime date) {
         ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findReportByDate(date);
 
@@ -135,5 +243,5 @@ public class ReportServiceIT extends BasePaxIT {
 
         assertEquals(35, (int) existingPrimerReport.getPeopleVaccinated());
     }
-
 }
+
