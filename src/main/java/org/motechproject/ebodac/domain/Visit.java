@@ -102,6 +102,8 @@ public class Visit {
 
     @Override
     public String toString() {
-        return type.toString();
+        return type.toString() +
+                (getDateProjected() != null ? " / Date Planned: " + getDateProjected().toLocalDate().toString() : "") +
+                (getDate() != null ? " / Date Actual: " + getDate().toLocalDate().toString() : "");
     }
 }
