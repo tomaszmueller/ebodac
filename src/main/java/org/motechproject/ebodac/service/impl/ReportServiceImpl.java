@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Gender;
@@ -61,7 +62,7 @@ public class ReportServiceImpl implements ReportService {
             generateDailyReportsFromDate(lastReportDate.plusDays(1));
 
             config.setGenerateReports(false);
-            config.setLastReportDate(DateTime.now().minusDays(1).toString(formatter));
+            config.setLastReportDate(DateUtil.now().minusDays(1).toString(formatter));
             configService.updateConfig(config);
         }
     }
@@ -69,7 +70,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public void generateDailyReportsFromDate(DateTime startDate) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-        DateTime now = formatter.parseDateTime(DateTime.now().toString(formatter));
+        DateTime now = formatter.parseDateTime(DateUtil.now().toString(formatter));
 
         for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
             generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
