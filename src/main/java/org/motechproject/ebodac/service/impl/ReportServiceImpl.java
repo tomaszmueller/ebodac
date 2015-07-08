@@ -61,6 +61,7 @@ public class ReportServiceImpl implements ReportService {
 
             generateDailyReportsFromDate(lastReportDate.plusDays(1));
 
+            config = configService.getConfig();
             config.setGenerateReports(false);
             config.setLastReportDate(DateUtil.now().minusDays(1).toString(formatter));
             configService.updateConfig(config);

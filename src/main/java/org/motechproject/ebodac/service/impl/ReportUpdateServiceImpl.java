@@ -76,15 +76,15 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
                 oldBoosterVaccinationDate = oldSubject.getBoosterVaccinationDate();
             }
 
-            if (oldBoosterVaccinationDate != null && !oldBoosterVaccinationDate.isEqual(newPrimerVaccinationDate)
+            if (oldBoosterVaccinationDate != null && !oldBoosterVaccinationDate.isEqual(newBoosterVaccinationDate)
                     && oldBoosterVaccinationDate.isBefore(lastReportDate.plusDays(1))) {
 
-                config.getPrimerVaccinationReportsToUpdate().add(oldBoosterVaccinationDate.toString(formatter));
+                config.getBoosterVaccinationReportsToUpdate().add(oldBoosterVaccinationDate.toString(formatter));
             }
             if (newBoosterVaccinationDate != null && newBoosterVaccinationDate.isBefore(lastReportDate.plusDays(1))
                     && (!newBoosterVaccinationDate.isEqual(oldBoosterVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
 
-                config.getPrimerVaccinationReportsToUpdate().add(newBoosterVaccinationDate.toString(formatter));
+                config.getBoosterVaccinationReportsToUpdate().add(newBoosterVaccinationDate.toString(formatter));
             }
 
             configService.updateConfig(config);
