@@ -34,7 +34,7 @@ public class ZetesController {
     @Autowired
     SubjectService subjectService;
 
-    @PreAuthorize("hasAnyRole('manageBundles', 'registrationSubmission')")
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public ResponseEntity<String> submitSubjectRequest(@RequestBody SubmitSubjectRequest submitSubjectRequest) {

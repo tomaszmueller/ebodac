@@ -13,7 +13,6 @@ import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
-import org.motechproject.mds.util.Constants;
 import org.motechproject.mds.util.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,7 +39,7 @@ public class VisitController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping(value = "/visitsRecords", method = RequestMethod.POST)
-    @PreAuthorize(Constants.Roles.HAS_DATA_ACCESS)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
     public Records<?> getVisits(GridSettings settings) throws IOException {
         Order order = null;
