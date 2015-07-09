@@ -101,6 +101,17 @@ public class Visit {
         return result;
     }
 
+    public boolean visitDatesChanged(Visit visit) {
+        if (date != null ? !date.isEqual(visit.date) : visit.date != null) {
+            return false;
+        }
+        if (dateProjected != null ? !dateProjected.isEqual(visit.dateProjected) : visit.dateProjected != null) {
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public String toString() {
         return type.getValue() +
