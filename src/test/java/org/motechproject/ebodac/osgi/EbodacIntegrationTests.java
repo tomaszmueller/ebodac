@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
         EbodacWebIT.class,
         SubjectServiceIT.class,
         EbodacConfigServiceIT.class,
-        RaveImportServiceIT.class
+        RaveImportServiceIT.class,
+        ReportServiceIT.class
 })
 public class EbodacIntegrationTests {
 }
