@@ -34,9 +34,13 @@ public class VisitServiceImpl implements VisitService {
             List<Visit> visits = visit.getSubject().getVisits();
             if (visits.contains(visit)) {
                 Visit existingVisit = visits.get(visits.indexOf(visit));
-                existingVisit.setDate(visit.getDate());
-                existingVisit.setDateProjected(visit.getDateProjected());
-                return visitDataService.update(existingVisit);
+                if (existingVisit.visitDatesChanged(visit)) {
+                    existingVisit.setDate(visit.getDate());
+                    existingVisit.setDateProjected(visit.getDateProjected());
+                    return visitDataService.update(existingVisit);
+                } else {
+                    return existingVisit;
+                }
             }
         }
         return visitDataService.create(visit);

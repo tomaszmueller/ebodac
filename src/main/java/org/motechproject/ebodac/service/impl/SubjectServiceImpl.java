@@ -37,6 +37,9 @@ public class SubjectServiceImpl implements SubjectService {
         reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
 
         if (subjectInDb != null) {
+            if (subjectInDb.equalsForZetes(newSubject)) {
+                return subjectInDb;
+            }
             subjectInDb.setName(newSubject.getName());
             subjectInDb.setHouseholdName(newSubject.getHouseholdName());
             subjectInDb.setPhoneNumber(newSubject.getPhoneNumber());
@@ -60,6 +63,9 @@ public class SubjectServiceImpl implements SubjectService {
         reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
 
         if (subjectInDb != null) {
+            if (subjectInDb.equalsForRave(newSubject)) {
+                return subjectInDb;
+            }
             subjectInDb.setGender(newSubject.getGender());
             subjectInDb.setStageId(newSubject.getStageId());
             subjectInDb.setDateOfBirth(newSubject.getDateOfBirth());
