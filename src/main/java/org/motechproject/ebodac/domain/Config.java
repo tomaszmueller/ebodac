@@ -1,5 +1,8 @@
 package org.motechproject.ebodac.domain;
 
+import org.apache.commons.lang.StringUtils;
+import org.motechproject.ebodac.constants.EbodacConstants;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +37,8 @@ public class Config {
     private String emailPassword;
 
     private Integer emailCheckInterval;
+
+    private String reportStartTime;
 
     private String lastReportDate;
 
@@ -156,6 +161,17 @@ public class Config {
 
     public void setEmailCheckInterval(Integer emailCheckInterval) {
         this.emailCheckInterval = emailCheckInterval;
+    }
+
+    public String getReportStartTime() {
+        if (StringUtils.isBlank(reportStartTime)) {
+            reportStartTime = EbodacConstants.DAILY_REPORT_EVENT_START_HOUR;
+        }
+        return reportStartTime;
+    }
+
+    public void setReportStartTime(String reportStartTime) {
+        this.reportStartTime = reportStartTime;
     }
 
     public String getLastReportDate() {

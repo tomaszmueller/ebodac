@@ -54,4 +54,20 @@ public class EbodacScheduler {
     public void unscheduleEmailCheckJob() {
         motechSchedulerService.safeUnscheduleAllJobs(EbodacConstants.EMAIL_CHECK_EVENT);
     }
+
+    public void scheduleDailyReportJob(DateTime startDate) {
+        Period period = Period.days(1);
+
+        Map<String, Object> eventParameters = new HashMap<>();
+        eventParameters.put(EbodacConstants.DAILY_REPORT_EVENT_START_DATE, startDate);
+
+        MotechEvent event = new MotechEvent(EbodacConstants.DAILY_REPORT_EVENT, eventParameters);
+
+        RepeatingPeriodSchedulableJob job = new RepeatingPeriodSchedulableJob(event, startDate.toDate(), null, period, true);
+        motechSchedulerService.safeScheduleRepeatingPeriodJob(job);
+    }
+
+    public void unscheduleDailyReportJob() {
+        motechSchedulerService.safeUnscheduleAllJobs(EbodacConstants.DAILY_REPORT_EVENT);
+    }
 }
