@@ -32,6 +32,8 @@
 
     <osgi:service ref="reportService" interface="org.motechproject.ebodac.service.ReportService" />
 
+    <osgi:service ref="visitService" interface="org.motechproject.ebodac.service.VisitService" />
+
     <osgi:service ref="reportUpdateService" interface="org.motechproject.ebodac.service.ReportUpdateService" />
 
     <osgi:reference id="reportPrimerVaccinationDataService"
