@@ -90,6 +90,7 @@ public class VisitServiceIT extends BasePaxIT {
 
         firstVisit = visits.get(0);
         firstVisit.setDateProjected(DateTime.parse("2014-10-20", formatter));
+        firstVisit.setSubject(firstSubject);
 
         visitService.createOrUpdate(firstVisit); //should update
         visits = visitDataService.retrieveAll();
