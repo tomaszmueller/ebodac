@@ -85,13 +85,14 @@ public class VisitServiceIT extends BasePaxIT {
         assertEquals(0, visitDataService.retrieveAll().size());
 
         visitService.create(firstVisit);
-        assertEquals(1, visitDataService.retrieveAll().size());
+        List<Visit> visits = visitDataService.retrieveAll();
+        assertEquals(1, visits.size());
 
+        firstVisit = visits.get(0);
         firstVisit.setDateProjected(DateTime.parse("2014-10-20", formatter));
-        firstVisit.setType(VisitType.PRIME_VACCINATION_DAY);
 
         visitService.createOrUpdate(firstVisit); //should update
-        List<Visit> visits = visitDataService.retrieveAll();
+        visits = visitDataService.retrieveAll();
         assertEquals(1, visits.size());
 
         checkVisitFields(firstVisit, visits.get(0));
