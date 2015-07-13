@@ -103,13 +103,13 @@ public class Visit {
 
     public boolean visitDatesChanged(Visit visit) {
         if (date != null ? !date.isEqual(visit.date) : visit.date != null) {
-            return false;
+            return true;
         }
         if (dateProjected != null ? !dateProjected.isEqual(visit.dateProjected) : visit.dateProjected != null) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
