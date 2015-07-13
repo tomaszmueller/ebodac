@@ -1,7 +1,9 @@
 package org.motechproject.ebodac.web;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.scheduler.EbodacScheduler;
 import org.motechproject.ebodac.service.ConfigService;
@@ -51,6 +53,7 @@ public class ConfigController {
 
         ebodacScheduler.unscheduleZetesUpdateJob();
         ebodacScheduler.unscheduleEmailCheckJob();
+        ebodacScheduler.unscheduleDailyReportJob();
         scheduleJobs();
 
         return configService.getConfig();
@@ -79,5 +82,9 @@ public class ConfigController {
 
         Integer interval = configService.getConfig().getEmailCheckInterval();
         ebodacScheduler.scheduleEmailCheckJob(interval);
+
+        DateTime reportStartDate = DateTime.parse(DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT))
+                + configService.getConfig().getReportStartTime(), DateTimeFormat.forPattern(EbodacConstants.REPORT_START_DATE_FORMAT));
+        ebodacScheduler.scheduleDailyReportJob(reportStartDate);
     }
 }
