@@ -38,9 +38,11 @@ public class Config {
 
     private Integer emailCheckInterval;
 
-    private String reportStartTime;
+    private String reportCalculationStartTime;
 
-    private String lastReportDate;
+    private String firstCalculationStartDate;
+
+    private String lastCalculationDate;
 
     private Boolean generateReports;
 
@@ -163,23 +165,31 @@ public class Config {
         this.emailCheckInterval = emailCheckInterval;
     }
 
-    public String getReportStartTime() {
-        if (StringUtils.isBlank(reportStartTime)) {
-            reportStartTime = EbodacConstants.DAILY_REPORT_EVENT_START_HOUR;
+    public String getReportCalculationStartTime() {
+        if (StringUtils.isBlank(reportCalculationStartTime)) {
+            reportCalculationStartTime = EbodacConstants.DAILY_REPORT_EVENT_START_HOUR;
         }
-        return reportStartTime;
+        return reportCalculationStartTime;
     }
 
-    public void setReportStartTime(String reportStartTime) {
-        this.reportStartTime = reportStartTime;
+    public void setReportCalculationStartTime(String reportCalculationStartTime) {
+        this.reportCalculationStartTime = reportCalculationStartTime;
     }
 
-    public String getLastReportDate() {
-        return lastReportDate;
+    public String getFirstCalculationStartDate() {
+        return firstCalculationStartDate;
     }
 
-    public void setLastReportDate(String lastReportDate) {
-        this.lastReportDate = lastReportDate;
+    public void setFirstCalculationStartDate(String firstCalculationStartDate) {
+        this.firstCalculationStartDate = firstCalculationStartDate;
+    }
+
+    public String getLastCalculationDate() {
+        return lastCalculationDate;
+    }
+
+    public void setLastCalculationDate(String lastCalculationDate) {
+        this.lastCalculationDate = lastCalculationDate;
     }
 
     public Boolean getGenerateReports() {

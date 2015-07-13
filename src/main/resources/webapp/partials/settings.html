@@ -113,9 +113,16 @@
             <h5 class="margin-before2">{{msg('ebodac.web.settings.report')}}</h5>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="reportStartTime">{{msg('ebodac.web.settings.report.startTime')}}</label>
+                <label class="col-md-2 control-label" for="reportCalculationStartTime">{{msg('ebodac.web.settings.report.startTime')}}</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="reportStartTime" type="text" ng-model="config.reportStartTime" time-picker required>
+                    <input class="form-control" id="reportCalculationStartTime" type="text" ng-model="config.reportCalculationStartTime" time-picker required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="firstCalculationStartDate">{{msg('ebodac.web.settings.report.firstCalculationStartDate')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.report.firstCalculationStartDate.tooltip')}}">
+                    <input class="form-control" id="firstCalculationStartDate" type="text" ng-model="config.firstCalculationStartDate" date-picker>
                 </div>
             </div>
 

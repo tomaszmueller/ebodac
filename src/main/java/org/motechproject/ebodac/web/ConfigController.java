@@ -84,7 +84,7 @@ public class ConfigController {
         ebodacScheduler.scheduleEmailCheckJob(interval);
 
         DateTime reportStartDate = DateTime.parse(DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT))
-                + configService.getConfig().getReportStartTime(), DateTimeFormat.forPattern(EbodacConstants.REPORT_START_DATE_FORMAT));
+                + configService.getConfig().getReportCalculationStartTime(), DateTimeFormat.forPattern(EbodacConstants.REPORT_START_DATE_FORMAT));
         ebodacScheduler.scheduleDailyReportJob(reportStartDate);
     }
 }
