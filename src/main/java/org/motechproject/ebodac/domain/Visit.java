@@ -30,6 +30,9 @@ public class Visit {
     @Field
     private DateTime dateProjected;
 
+    @Field
+    private DateTime motechProjectedDate;
+
     @NonEditable(display = false)
     @Field
     private String owner;
@@ -67,6 +70,14 @@ public class Visit {
 
     public void setDateProjected(DateTime dateProjected) {
         this.dateProjected = dateProjected;
+    }
+
+    public DateTime getMotechProjectedDate() {
+        return motechProjectedDate;
+    }
+
+    public void setMotechProjectedDate(DateTime motechProjectedDate) {
+        this.motechProjectedDate = motechProjectedDate;
     }
 
     public String getOwner() {
