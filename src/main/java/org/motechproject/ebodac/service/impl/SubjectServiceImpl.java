@@ -7,6 +7,7 @@ import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.ReportUpdateService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.mds.query.QueryParams;
@@ -29,6 +30,9 @@ public class SubjectServiceImpl implements SubjectService {
     @Autowired
     private ReportUpdateService reportUpdateService;
 
+    @Autowired
+    private EbodacEnrollmentService ebodacEnrollmentService;
+
     @Override
     public Subject createOrUpdateForZetes(Subject newSubject) {
 
@@ -48,6 +52,8 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setLanguage(newSubject.getLanguage());
             subjectInDb.setCommunity(newSubject.getCommunity());
             subjectInDb.setSiteId(newSubject.getSiteId());
+
+            ebodacEnrollmentService.enrollSubject(subjectInDb);
 
             return update(subjectInDb);
         } else {

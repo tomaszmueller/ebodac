@@ -2,6 +2,7 @@ package org.motechproject.ebodac.service.impl;
 
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class VisitServiceImpl implements VisitService {
 
     @Autowired
     private VisitDataService visitDataService;
+
+    @Autowired
+    private EbodacEnrollmentService ebodacEnrollmentService;
 
     @Override
     public Visit create(Visit visit) {
@@ -37,11 +41,16 @@ public class VisitServiceImpl implements VisitService {
                 if (existingVisit.visitDatesChanged(visit)) {
                     existingVisit.setDate(visit.getDate());
                     existingVisit.setDateProjected(visit.getDateProjected());
+
+                    ebodacEnrollmentService.enrollSubject(existingVisit);
+
                     return visitDataService.update(existingVisit);
                 } else {
                     return existingVisit;
                 }
             }
+
+            ebodacEnrollmentService.enrollSubject(visit);
         }
         return visitDataService.create(visit);
     }
