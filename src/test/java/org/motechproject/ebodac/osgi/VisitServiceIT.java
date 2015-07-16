@@ -13,6 +13,7 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.VisitService;
@@ -72,10 +73,10 @@ public class VisitServiceIT extends BasePaxIT {
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address", Language.Susu, "community", "B05-SL10001");
 
-        firstVisit = createVisit(firstSubject, VisitType.SCREENING, DateTime.parse("2014-10-17", formatter),
+        firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, DateTime.parse("2014-10-17", formatter),
                 DateTime.parse("2014-10-18", formatter), "owner");
 
-        secondVisit = createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, DateTime.parse("2014-10-19", formatter),
+        secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, DateTime.parse("2014-10-19", formatter),
                 DateTime.parse("2014-10-20", formatter), "owner");
     }
 
@@ -96,7 +97,7 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(1, visits.size());
 
-        checkVisitFields(firstVisit, visits.get(0));
+        VisitUtils.checkVisitFields(firstVisit, visits.get(0));
 
         visitService.createOrUpdate(secondVisit); // should create
         visits = visitDataService.retrieveAll();
@@ -105,7 +106,7 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.findVisitByDate(DateTime.parse("2014-10-19", formatter));
         assertEquals(1, visits.size());
 
-        checkVisitFields(secondVisit, visits.get(0));
+        VisitUtils.checkVisitFields(secondVisit, visits.get(0));
 
         secondVisit.setDate(DateTime.parse("2014-10-21", formatter));
         secondVisit.setSubject(secondSubject);
@@ -117,7 +118,7 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.findVisitByDate(DateTime.parse("2014-10-21", formatter));
         assertEquals(1, visits.size());
 
-        checkVisitFields(secondVisit, visits.get(0));
+        VisitUtils.checkVisitFields(secondVisit, visits.get(0));
     }
 
     @Test
@@ -135,23 +136,4 @@ public class VisitServiceIT extends BasePaxIT {
         assertEquals(1, visits.size());
     }
 
-    private Visit createVisit(Subject subject, VisitType type, DateTime date,
-                              DateTime projectedDate, String owner) {
-        Visit ret = new Visit();
-        ret.setSubject(subject);
-        ret.setType(type);
-        ret.setDate(date);
-        ret.setDateProjected(projectedDate);
-        ret.setOwner(owner);
-
-        return ret;
-    }
-
-    private void checkVisitFields(Visit expected, Visit actual) {
-        assertEquals(expected.getSubject().getSubjectId(), actual.getSubject().getSubjectId());
-        assertEquals(expected.getType(), actual.getType());
-        assertEquals(expected.getDate(), actual.getDate());
-        assertEquals(expected.getDateProjected(), actual.getDateProjected());
-        assertEquals(expected.getOwner(),           actual.getOwner());
-    }
 }
