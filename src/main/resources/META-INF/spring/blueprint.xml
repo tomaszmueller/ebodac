@@ -36,6 +36,8 @@
 
     <osgi:service ref="reportUpdateService" interface="org.motechproject.ebodac.service.ReportUpdateService" />
 
+    <osgi:service ref="ebodacEnrollmentService" interface="org.motechproject.ebodac.service.EbodacEnrollmentService" />
+
     <osgi:reference id="reportPrimerVaccinationDataService"
                     interface="org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService" />
 
@@ -61,4 +63,6 @@
 
     <osgi:reference id="entityService" interface="org.motechproject.mds.service.EntityService"/>
 
+    <osgi:reference id="campaignEnrollmentDataService"
+                    interface="org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService" />
 </beans>
