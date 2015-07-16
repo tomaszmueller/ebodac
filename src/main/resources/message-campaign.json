@@ -1,6 +1,25 @@
 [
   {
-    "name": "EBODAC IVR reminder",
+    "name": "Screening",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Screening message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "screening-message",
+        "timeOffset": "15 Minutes",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Prime Vaccination Day",
     "type": "OFFSET",
     "messages": [
       {
@@ -13,7 +32,7 @@
           "en"
         ],
         "messageKey": "welcome-message",
-        "timeOffset": "1 Days",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -30,45 +49,6 @@
         "startTime": "9:00"
       },
       {
-        "name": "Clinic Visit Reminder: 1 day",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-reminder-1-day-day-7",
-        "timeOffset": "6 Days",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-day-9",
-        "timeOffset": "8 Days",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-day-11",
-        "timeOffset": "10 Days",
-        "startTime": "9:00"
-      },
-      {
         "name": "Weekly Message 2: More info",
         "formats": [
           "IVR",
@@ -77,7 +57,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-2-more-info-day-14",
+        "messageKey": "weekly-message-2-more-info-1",
         "timeOffset": "13 Days",
         "startTime": "9:00"
       },
@@ -90,7 +70,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-2-more-info-day-21",
+        "messageKey": "weekly-message-2-more-info-2",
         "timeOffset": "20 Days",
         "startTime": "9:00"
       },
@@ -105,19 +85,6 @@
         ],
         "messageKey": "weekly-message-3-targeted-engagement-message",
         "timeOffset": "27 Days",
-        "startTime": "9:00"
-      },
-      {
-        "name": "Weekly Message 4: Mid-point message",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "weekly-message-4-mid-point-message",
-        "timeOffset": "34 Days",
         "startTime": "9:00"
       },
       {
@@ -145,7 +112,77 @@
         "messageKey": "weekly-message-6-ebola-reminder",
         "timeOffset": "48 Days",
         "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Mid-point message",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Weekly Message 4: Mid-point message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-4-mid-point-message",
+        "timeOffset": "34 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Prime Vaccination Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Clinic Visit Reminder: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-1-day",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
       },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Sunday",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Booster Reminder: 1 week",
         "formats": [
@@ -156,11 +193,11 @@
           "en"
         ],
         "messageKey": "booster-reminder-1-week",
-        "timeOffset": "49 Days",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
-        "name": "Booster Reminder: less than a week",
+        "name": "Booster Reminder: less than a week - Sunday",
         "formats": [
           "IVR",
           "SMS"
@@ -168,8 +205,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week",
-        "timeOffset": "55 Days",
+        "messageKey": "booster-reminder-less-than-a-week-sunday",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -182,7 +219,7 @@
           "en"
         ],
         "messageKey": "missed-dose-1-day",
-        "timeOffset": "57 Days",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -195,9 +232,363 @@
           "en"
         ],
         "messageKey": "missed-dose-2nd",
-        "timeOffset": "59 Days",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Monday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
+      {
+        "name": "Booster Reminder: less than a week - Monday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-monday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Tuesday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week - Tuesday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-tuesday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Wednesday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week - Wednesday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-wednesday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Thursday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week - Thursday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-thursday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Friday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week - Friday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-friday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Day Saturday",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Booster Reminder: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Booster Reminder: less than a week - Saturday",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "booster-reminder-less-than-a-week-saturday",
+        "timeOffset": "-1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-1-day",
+        "timeOffset": "1 Day",
+        "startTime": "9:00"
+      },
+      {
+        "name": "Missed Dose: 2nd",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "missed-dose-2nd",
+        "timeOffset": "3 Days",
+        "startTime": "9:00"
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination First Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder: 1 day",
         "formats": [
@@ -207,8 +598,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day-day-63",
-        "timeOffset": "62 Days",
+        "messageKey": "clinic-visit-reminder-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -220,8 +611,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-65",
-        "timeOffset": "64 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -233,10 +624,16 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-67",
-        "timeOffset": "66 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
-      },
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Second Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder: 1 week",
         "formats": [
@@ -246,8 +643,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-week-day-71",
-        "timeOffset": "70 Days",
+        "messageKey": "clinic-visit-reminder-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
@@ -259,8 +656,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day-day-77",
-        "timeOffset": "76 Days",
+        "messageKey": "clinic-visit-reminder-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -272,8 +669,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-79",
-        "timeOffset": "78 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -285,10 +682,16 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-81",
-        "timeOffset": "80 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
-      },
+      }
+    ]
+  },
+  {
+    "name": "Boost Vaccination Third Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder: 1 week",
         "formats": [
@@ -298,8 +701,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-week-day-149",
-        "timeOffset": "148 Days",
+        "messageKey": "clinic-visit-reminder-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
@@ -311,8 +714,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day-day-155",
-        "timeOffset": "154 Days",
+        "messageKey": "clinic-visit-reminder-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -324,8 +727,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-157",
-        "timeOffset": "156 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -337,10 +740,16 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-159",
-        "timeOffset": "158 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
-      },
+      }
+    ]
+  },
+  {
+    "name": "First Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder No Exam: 1 week",
         "formats": [
@@ -350,8 +759,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-174",
-        "timeOffset": "173 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
@@ -363,8 +772,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-179",
-        "timeOffset": "178 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -376,8 +785,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-181",
-        "timeOffset": "180 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -389,10 +798,16 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-183",
-        "timeOffset": "182 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
-      },
+      }
+    ]
+  },
+  {
+    "name": "Second Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder No Exam: 1 week",
         "formats": [
@@ -402,8 +817,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-233",
-        "timeOffset": "232 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
@@ -415,8 +830,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-239",
-        "timeOffset": "238 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -428,8 +843,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-241",
-        "timeOffset": "240 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -441,10 +856,16 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-243",
-        "timeOffset": "242 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
-      },
+      }
+    ]
+  },
+  {
+    "name": "Third Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
       {
         "name": "Clinic Visit Reminder No Exam: 1 week",
         "formats": [
@@ -454,8 +875,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-week-day-353",
-        "timeOffset": "352 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
         "startTime": "9:00"
       },
       {
@@ -467,8 +888,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-day-day-359",
-        "timeOffset": "358 Days",
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
         "startTime": "9:00"
       },
       {
@@ -480,8 +901,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-361",
-        "timeOffset": "360 Days",
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
         "startTime": "9:00"
       },
       {
@@ -493,8 +914,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-day-363",
-        "timeOffset": "362 Days",
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
         "startTime": "9:00"
       }
     ]
