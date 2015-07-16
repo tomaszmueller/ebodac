@@ -28,6 +28,31 @@
         };
     });
 
+    directives.directive('datePicker', function($timeout) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            transclude: true,
+            link: function(scope, element, attrs, ngModel) {
+                $timeout(function() {
+                    var elem = angular.element(element);
+
+                    elem.datetimepicker({
+                        dateFormat: "yy-mm-dd",
+                        changeMonth: true,
+                        changeYear: true,
+                        showTimepicker: false,
+                        onSelect: function (selectedDate) {
+                            scope.$apply(function() {
+                                ngModel.$setViewValue(selectedDate);
+                            });
+                        }
+                    });
+                });
+            }
+        };
+    });
+
     directives.directive('dailyClinicVisitScheduleReportGrid', function($http) {
         return {
             restrict: 'A',

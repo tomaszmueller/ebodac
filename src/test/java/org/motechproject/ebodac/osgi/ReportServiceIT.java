@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.motechproject.commons.date.util.DateUtil.newDateTime;
 import static org.motechproject.testing.utils.TimeFaker.fakeNow;
 import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
@@ -133,7 +134,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
 
             config = configService.getConfig();
-            config.setLastReportDate(DateUtil.now().minusDays(5).toString(formatter));
+            config.setLastCalculationDate(DateUtil.now().minusDays(5).toString(formatter));
             config.setGenerateReports(true);
             configService.updateConfig(config);
 
@@ -156,7 +157,7 @@ public class ReportServiceIT extends BasePaxIT{
             DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
             config = configService.getConfig();
-            config.setLastReportDate(DateUtil.now().minusDays(5).toString(formatter));
+            config.setLastCalculationDate(DateUtil.now().minusDays(5).toString(formatter));
             config.setGenerateReports(true);
             config.setPrimerVaccinationReportsToUpdate(null);
             config.setBoosterVaccinationReportsToUpdate(null);
@@ -196,18 +197,52 @@ public class ReportServiceIT extends BasePaxIT{
     public void shouldStartGenerateFromOldestVaccinationDay() throws IOException {
         try {
             fakeNow(newDateTime(2015, 6, 28, 12, 0, 0));
-            config=new Config();
+
+            config = new Config();
             config.setGenerateReports(true);
             configService.updateConfig(config);
+
+            assertNull(config.getLastCalculationDate());
+            assertNull(config.getFirstCalculationStartDate());
 
             InputStream in = getClass().getResourceAsStream("/sample2.csv");
             raveImportService.importCsv(new InputStreamReader(in));
             in.close();
 
             reportService.generateDailyReports();
-            assertEquals(6,primerVaccinationDataService.retrieveAll().size());
-            assertEquals(6,boosterVaccinationDataService.retrieveAll().size());
-            for(int i = 22; i < 28; i++) {
+            assertEquals(7, primerVaccinationDataService.retrieveAll().size());
+            assertEquals(7, boosterVaccinationDataService.retrieveAll().size());
+
+            for(int i = 21; i < 28; i++) {
+                assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
+                assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
+            }
+        } finally {
+            stopFakingTime();
+        }
+    }
+
+    @Test
+    public void shouldUseReportStartDateIfLastReportDateIsNull() throws IOException {
+        try {
+            fakeNow(newDateTime(2015, 6, 28, 12, 0, 0));
+
+            config = new Config();
+            config.setFirstCalculationStartDate("2015-06-25");
+            config.setGenerateReports(true);
+            configService.updateConfig(config);
+
+            assertNull(config.getLastCalculationDate());
+
+            InputStream in = getClass().getResourceAsStream("/sample2.csv");
+            raveImportService.importCsv(new InputStreamReader(in));
+            in.close();
+
+            reportService.generateDailyReports();
+            assertEquals(3, primerVaccinationDataService.retrieveAll().size());
+            assertEquals(3, boosterVaccinationDataService.retrieveAll().size());
+
+            for(int i = 25; i < 28; i++) {
                 assertNotNull(primerVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
                 assertNotNull(boosterVaccinationDataService.findReportByDate(new DateTime(2015, 6, i, 0, 0, 0)));
             }

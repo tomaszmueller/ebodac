@@ -48,10 +48,10 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
         Config config = configService.getConfig();
-        String lastReportDateString = config.getLastReportDate();
+        String lastCalculationDate = config.getLastCalculationDate();
 
-        if (StringUtils.isNotBlank(lastReportDateString)) {
-            DateTime lastReportDate = formatter.parseDateTime(config.getLastReportDate());
+        if (StringUtils.isNotBlank(lastCalculationDate)) {
+            DateTime newCalculationDate = formatter.parseDateTime(lastCalculationDate).plusDays(1);
 
             DateTime newPrimerVaccinationDate = newSubject.getPrimerVaccinationDate();
             DateTime oldPrimerVaccinationDate = null;
@@ -60,11 +60,11 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
             }
 
             if (oldPrimerVaccinationDate != null && !oldPrimerVaccinationDate.isEqual(newPrimerVaccinationDate)
-                    && oldPrimerVaccinationDate.isBefore(lastReportDate.plusDays(1))) {
+                    && oldPrimerVaccinationDate.isBefore(newCalculationDate)) {
 
                 config.getPrimerVaccinationReportsToUpdate().add(oldPrimerVaccinationDate.toString(formatter));
             }
-            if (newPrimerVaccinationDate != null && newPrimerVaccinationDate.isBefore(lastReportDate.plusDays(1))
+            if (newPrimerVaccinationDate != null && newPrimerVaccinationDate.isBefore(newCalculationDate)
                     && (!newPrimerVaccinationDate.isEqual(oldPrimerVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
 
                 config.getPrimerVaccinationReportsToUpdate().add(newPrimerVaccinationDate.toString(formatter));
@@ -77,11 +77,11 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
             }
 
             if (oldBoosterVaccinationDate != null && !oldBoosterVaccinationDate.isEqual(newBoosterVaccinationDate)
-                    && oldBoosterVaccinationDate.isBefore(lastReportDate.plusDays(1))) {
+                    && oldBoosterVaccinationDate.isBefore(newCalculationDate)) {
 
                 config.getBoosterVaccinationReportsToUpdate().add(oldBoosterVaccinationDate.toString(formatter));
             }
-            if (newBoosterVaccinationDate != null && newBoosterVaccinationDate.isBefore(lastReportDate.plusDays(1))
+            if (newBoosterVaccinationDate != null && newBoosterVaccinationDate.isBefore(newCalculationDate)
                     && (!newBoosterVaccinationDate.isEqual(oldBoosterVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
 
                 config.getBoosterVaccinationReportsToUpdate().add(newBoosterVaccinationDate.toString(formatter));

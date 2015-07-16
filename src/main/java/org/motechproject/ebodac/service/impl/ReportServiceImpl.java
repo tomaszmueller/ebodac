@@ -47,23 +47,27 @@ public class ReportServiceImpl implements ReportService {
         Config config = configService.getConfig();
 
         if (config.getGenerateReports() != null && config.getGenerateReports()) {
-            String lastReportDateString = config.getLastReportDate();
-            DateTime lastReportDate;
+            String lastCalculationDate = config.getLastCalculationDate();
+            String calculationStartDate = config.getFirstCalculationStartDate();
 
-            if (StringUtils.isNotBlank(lastReportDateString)) {
-                lastReportDate = formatter.parseDateTime(config.getLastReportDate());
+            DateTime startDate;
+
+            if (StringUtils.isNotBlank(lastCalculationDate)) {
+                startDate = formatter.parseDateTime(lastCalculationDate).plusDays(1);
+            } else if (StringUtils.isNotBlank(calculationStartDate)) {
+                startDate = formatter.parseDateTime(calculationStartDate);
             } else {
-                lastReportDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
+                startDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
             }
 
             updateBoosterVaccinationReportsForDates(reportUpdateService.getBoosterVaccinationReportsToUpdate());
             updatePrimerVaccinationReportsForDates(reportUpdateService.getPrimerVaccinationReportsToUpdate());
 
-            generateDailyReportsFromDate(lastReportDate.plusDays(1));
+            generateDailyReportsFromDate(startDate);
 
             config = configService.getConfig();
             config.setGenerateReports(false);
-            config.setLastReportDate(DateUtil.now().minusDays(1).toString(formatter));
+            config.setLastCalculationDate(DateUtil.now().minusDays(1).toString(formatter));
             configService.updateConfig(config);
         }
     }

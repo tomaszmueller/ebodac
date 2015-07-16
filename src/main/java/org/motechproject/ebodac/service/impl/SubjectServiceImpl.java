@@ -144,7 +144,7 @@ public class SubjectServiceImpl implements SubjectService {
                 }
             }
         }
-        return DateTime.now().minusDays(2);
+        return DateTime.now().minusDays(1);
     }
 
     @Override
