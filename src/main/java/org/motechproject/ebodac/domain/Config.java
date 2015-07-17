@@ -46,6 +46,16 @@ public class Config {
 
     private Boolean generateReports;
 
+    private Boolean showWarnings = true;
+
+    public Boolean getShowWarnings() {
+        return showWarnings;
+    }
+
+    public void setShowWarnings(Boolean showWarnings) {
+        this.showWarnings = showWarnings;
+    }
+
     private Set<String> primerVaccinationReportsToUpdate;
 
     private Set<String> boosterVaccinationReportsToUpdate;

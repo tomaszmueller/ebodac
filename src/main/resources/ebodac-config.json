@@ -1,2 +1,23 @@
 {
+  "zetesUrl":null,
+  "zetesUsername":null,
+  "zetesPassword":null,
+  "startTime":null,
+  "ftpsHost":null,
+  "ftpsPort":null,
+  "ftpsDirectory":null,
+  "ftpsUsername":null,
+  "ftpsPassword":null,
+  "lastCsvUpdate":null,
+  "emailHost":null,
+  "email":null,
+  "emailPassword":null,
+  "emailCheckInterval":null,
+  "reportCalculationStartTime":null,
+  "firstCalculationStartDate":null,
+  "lastCalculationDate":null,
+  "generateReports":null,
+  "showWarnings":true,
+  "primerVaccinationReportsToUpdate":[],
+  "boosterVaccinationReportsToUpdate":[]
 }
