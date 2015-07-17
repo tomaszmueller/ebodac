@@ -2,8 +2,13 @@ package org.motechproject.ebodac.service;
 
 import org.joda.time.DateTime;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.Visit;
 
 public interface EbodacEnrollmentService {
+
+    void enrollSubject(Subject subject);
+
+    void enrollSubject(Visit visit);
 
     void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, Boolean updateInactiveEnrollment);
 
