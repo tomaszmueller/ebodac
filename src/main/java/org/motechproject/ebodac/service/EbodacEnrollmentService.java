@@ -8,7 +8,7 @@ public interface EbodacEnrollmentService {
 
     void enrollSubject(Subject subject);
 
-    void enrollSubject(Visit visit);
+    void enrollOrUnenrollSubject(Visit visit);
 
     void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, Boolean updateInactiveEnrollment);
 

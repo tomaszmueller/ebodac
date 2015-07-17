@@ -1,5 +1,8 @@
 package org.motechproject.ebodac.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public final class EbodacConstants {
@@ -32,4 +35,6 @@ public final class EbodacConstants {
     public static final String DAILY_REPORT_EVENT_START_HOUR = "00:01";
 
     public static final String MIDPOINT_MESSAGE = "Mid-point message";
+
+    public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 }
