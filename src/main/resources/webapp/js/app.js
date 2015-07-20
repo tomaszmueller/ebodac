@@ -3,7 +3,7 @@
 
     /* App Module */
     var ebodac = angular.module('ebodac', ['motech-dashboard', 'ebodac.controllers', 'ebodac.directives',
-    'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'mds']), subjectId, visitId, reportBoosterVaccinationId, reportPrimerVaccinationId, callDetailRecordId;
+    'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'mds', 'sms']), subjectId, visitId, reportBoosterVaccinationId, reportPrimerVaccinationId, callDetailRecordId;
 
     $.ajax({
         url: '../mds/entities/getEntity/EBODAC Module/Subject',
@@ -54,7 +54,8 @@
             .when('/ebodac/reportPrimerVaccination', { redirectTo: '/mds/dataBrowser/' + reportPrimerVaccinationId + '/ebodac' })
             .when('/ebodac/reportBoosterVaccination', { redirectTo: '/mds/dataBrowser/' + reportBoosterVaccinationId + '/ebodac' })
             .when('/ebodac/dailyClinicVisitScheduleReport', { templateUrl: '../ebodac/resources/partials/dailyClinicVisitScheduleReport.html', controller: 'EbodacReportsCtrl' })
-            .when('/ebodac/callDetailRecord', { redirectTo: '/mds/dataBrowser/' + callDetailRecordId + '/ebodac' });
+            .when('/ebodac/callDetailRecord', { redirectTo: '/mds/dataBrowser/' + callDetailRecordId + '/ebodac' })
+            .when('/ebodac/SMSLog', { redirectTo: '/sms/log' });
     });
 
 }());
