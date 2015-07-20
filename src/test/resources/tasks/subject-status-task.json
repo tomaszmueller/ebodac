@@ -1,0 +1,35 @@
+{
+  "description": "Indicates whether a Subject has been updated recently.",
+  "name": "TEST EBODAC Subject status",
+  "actions": [
+    {
+      "name": "org.motechproject.ebodac.domain.Subject.update",
+      "displayName": "UPDATE Subject",
+      "channelName": "data-services",
+      "moduleName": "org.motechproject.motech-platform-dataservices-entities",
+      "moduleVersion": "0.26.0.SNAPSHOT",
+      "subject": null,
+      "serviceInterface": "org.motechproject.mds.service.ActionHandlerService",
+      "serviceMethod": "update",
+      "values": {
+        "id": "{{trigger.object_id}}",
+        "@ENTITY": "org.motechproject.ebodac.domain.Subject",
+        "changed": "true"
+      }
+    }
+  ],
+  "trigger": {
+    "name": null,
+    "displayName": "UPDATE Subject",
+    "channelName": "data-services",
+    "moduleName": "org.motechproject.motech-platform-dataservices-entities",
+    "moduleVersion": "0.26.0.SNAPSHOT",
+    "subject": "mds.crud.ebodacmodule.Subject.UPDATE",
+    "triggerListenerSubject": "mds.crud.ebodacmodule.Subject.UPDATE"
+  },
+  "enabled": false,
+  "taskConfig": {
+    "steps": []
+  },
+  "hasRegisteredChannel": true
+}

@@ -29,7 +29,8 @@ public class TaskImporter implements OsgiServiceLifecycleListener {
     @Override
     public void bind(Object o, Map map) throws Exception {
         this.taskService = (TaskService) o;
-        importTasks();
+        Bundle bundle = FrameworkUtil.getBundle(getClass());
+        importTasks(bundle);
     }
 
     @Override
@@ -37,8 +38,7 @@ public class TaskImporter implements OsgiServiceLifecycleListener {
         this.taskService = null;
     }
 
-    private void importTasks() {
-        Bundle bundle = FrameworkUtil.getBundle(getClass());
+    public void importTasks(Bundle bundle) {
         Enumeration<URL> urls = bundle.findEntries("tasks/", "*.json", false);
 
         while (urls.hasMoreElements()) {
@@ -64,5 +64,4 @@ public class TaskImporter implements OsgiServiceLifecycleListener {
         List<Task> existingTasks = taskService.findTasksByName(task.getName());
         return existingTasks.size() > 0;
     }
-
 }
