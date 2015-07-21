@@ -48,6 +48,9 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setLanguage(newSubject.getLanguage());
             subjectInDb.setCommunity(newSubject.getCommunity());
             subjectInDb.setSiteId(newSubject.getSiteId());
+            subjectInDb.setChiefdom(newSubject.getChiefdom());
+            subjectInDb.setSection(newSubject.getSection());
+            subjectInDb.setDistrict(newSubject.getDistrict());
 
             ebodacEnrollmentService.enrollSubject(subjectInDb);
 

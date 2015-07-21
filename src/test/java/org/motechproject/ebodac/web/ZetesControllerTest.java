@@ -29,14 +29,13 @@ public class ZetesControllerTest {
     public void shouldGenerateSubjectFromZetes()
     {
         SubmitSubjectRequest submitSubjectRequest = new SubmitSubjectRequest("123456789", "Kasia",
-                "Kowalska", "123", "Warszawa 19", "eng", "community", "Nowak");
+                "Kowalska", "123", "Warszawa 19", "eng", "community", "Nowak", "chiefdom", "section", "district");
+
+        Subject subjectTest = new Subject("123", "Kasia", "Kowalska",
+                "Nowak", "123456789", "Warszawa 19", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         zetesController.submitSubjectRequest(submitSubjectRequest);
-
-        Subject subject = new Subject("123", "Kasia", "Kowalska",
-                "Nowak", "123456789", "Warszawa 19", Language.English, "community", "");
-
-        verify(subjectService).createOrUpdateForZetes(subject);
+        verify(subjectService).createOrUpdateForZetes(subjectTest);
     }
 
 }

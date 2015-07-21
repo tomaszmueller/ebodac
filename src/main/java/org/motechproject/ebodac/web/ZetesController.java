@@ -54,7 +54,10 @@ public class ZetesController {
                     submitSubjectRequest.getPhoneNumber(), submitSubjectRequest.getAddress(),
                     Language.getByCode(submitSubjectRequest.getLanguage()),
                     submitSubjectRequest.getCommunity(),
-                    submitSubjectRequest.getSiteId());
+                    submitSubjectRequest.getSiteId(),
+                    submitSubjectRequest.getChiefdom(),
+                    submitSubjectRequest.getSection(),
+                    submitSubjectRequest.getDistrict());
 
             subjectService.createOrUpdateForZetes(subject);
         } catch (JDOException ex) {

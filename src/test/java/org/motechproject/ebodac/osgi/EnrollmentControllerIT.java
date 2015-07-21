@@ -131,10 +131,10 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     private void resetTestFields() {
         firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address1", Language.Susu, "community", "B05-SL10001");
+                "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         testVisits.add(VisitUtils.createVisit(null, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));

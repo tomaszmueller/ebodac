@@ -13,11 +13,11 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
-import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
-import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.VisitService;
+import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
@@ -74,10 +74,10 @@ public class VisitServiceIT extends BasePaxIT {
 
     private void resetTestFields() {
         firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001");
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");

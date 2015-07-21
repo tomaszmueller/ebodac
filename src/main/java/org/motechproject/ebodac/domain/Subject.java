@@ -81,6 +81,18 @@ public class Subject {
     @Field
     private String community;
 
+    @NonEditable(display = false)
+    @Field
+    private String chiefdom;
+
+    @NonEditable(display = false)
+    @Field
+    private String section;
+
+    @NonEditable(display = false)
+    @Field
+    private String district;
+
     /**
      * Fields captured in RAVE
      */
@@ -135,7 +147,8 @@ public class Subject {
     }
 
     public Subject(String subjectId, String name, String householdName, String headOfHousehold,
-                   String phoneNumber, String address, Language language, String community, String siteId) {
+                   String phoneNumber, String address, Language language, String community, String siteId,
+                   String chiefdom, String section, String district) {
         this.subjectId = subjectId;
         this.name = name;
         this.householdName = householdName;
@@ -144,6 +157,9 @@ public class Subject {
         this.address = address;
         this.language = language;
         this.community = community;
+        this.chiefdom = chiefdom;
+        this.section = section;
+        this.district = district;
         setSiteId(siteId);
     }
 
@@ -237,6 +253,30 @@ public class Subject {
 
     public void setStageId(Long stageId) {
         this.stageId = stageId;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public String getChiefdom() {
+        return chiefdom;
+    }
+
+    public void setChiefdom(String chiefdom) {
+        this.chiefdom = chiefdom;
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)
@@ -383,6 +423,15 @@ public class Subject {
         if (siteId != null ? !siteId.equals(subject.siteId) : subject.siteId != null) {
             return false;
         }
+        if (chiefdom != null ? !chiefdom.equals(subject.chiefdom) : subject.chiefdom != null) {
+            return false;
+        }
+        if (district != null ? !district.equals(subject.district) : subject.district != null) {
+            return false;
+        }
+        if (section != null ? !section.equals(subject.section) : subject.section != null) {
+            return false;
+        }
 
         return true;
     }
@@ -432,6 +481,9 @@ public class Subject {
         result = 31 * result + (dateOfDisconVac != null ? dateOfDisconVac.hashCode() : 0);
         result = 31 * result + (dateOfDisconStd != null ? dateOfDisconStd.hashCode() : 0);
         result = 31 * result + (visits != null ? visits.hashCode() : 0);
+        result = 31 * result + (chiefdom != null ? chiefdom.hashCode() : 0);
+        result = 31 * result + (section != null ? section.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
         return result;
     }
 
