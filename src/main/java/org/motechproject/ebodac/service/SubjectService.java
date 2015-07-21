@@ -26,6 +26,8 @@ public interface SubjectService {
 
     void delete(Subject record);
 
+    void deleteAll();
+
     Subject create(Subject record);
 
     Subject update(Subject record);
