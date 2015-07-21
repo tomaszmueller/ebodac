@@ -7,6 +7,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.exception.EbodacUnenrollmentException;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService;
 import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
@@ -41,12 +42,17 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     @Override
-    public void enrollSubject(Visit visit) {
+    public void enrollOrUnenrollSubject(Visit visit) {
+        if (visit.getDate() != null) {
+            unenrollSubject(visit);
+        } else {
+            enrollSubject(visit);
+        }
+    }
+
+    private void enrollSubject(Visit visit) {
         try {
-            if (visit.getDate() != null) {
-                LOGGER.debug("Cannot enroll Subject with id: {} for visit with type: {}, because visit already took place on: {}",
-                        visit.getSubject().getSubjectId(), visit.getType().getValue(), visit.getDate().toString());
-            } else if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+            if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
                 enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getDateProjected(), false);
                 enrollSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE, visit.getDateProjected(), false);
             } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
@@ -59,6 +65,27 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             }
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug("Cannot enroll subject", e);
+        }
+    }
+
+    private void unenrollSubject(Visit visit) {
+        try {
+            if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+                unenrollFromAllBoostVaccinationDayCampaigns(visit.getSubject());
+            } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())
+                    && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+                unenrollSubject(visit.getSubject(), visit.getType().getValue());
+            }
+        } catch (EbodacUnenrollmentException e) {
+            LOGGER.debug("Cannot unenroll subject", e);
+        }
+    }
+
+    private void unenrollFromAllBoostVaccinationDayCampaigns(Subject subject) {
+        String campaignName = VisitType.BOOST_VACCINATION_DAY.getValue();
+
+        for (String day : EbodacConstants.DAYS_OF_WEEK) {
+            unenrollSubject(subject, campaignName + " " + day);
         }
     }
 
@@ -116,12 +143,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         CampaignEnrollment enrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectId, campaignName);
 
         if (enrollment != null) {
-            messageCampaignService.unscheduleJobsForEnrollment(enrollment);
+            try {
+                messageCampaignService.unscheduleJobsForEnrollment(enrollment);
 
-            enrollment.setStatus(CampaignEnrollmentStatus.INACTIVE);
-            campaignEnrollmentDataService.update(enrollment);
+                enrollment.setStatus(CampaignEnrollmentStatus.INACTIVE);
+                campaignEnrollmentDataService.update(enrollment);
+            } catch (CampaignNotFoundException e) {
+                throw new EbodacUnenrollmentException(String.format("Cannot unenroll Subject with id: %s because campaign with name: %s doesn't exist",
+                        subjectId, campaignName), e);
+            } catch (Exception e) {
+                throw new EbodacUnenrollmentException(String.format("Cannot unenroll Subject with id: %s from campaign with name: %s",
+                        subjectId, campaignName), e);
+            }
         } else {
-            LOGGER.warn("No Subject with subjectId {} registered in campaign {}", subjectId, campaignName);
+            LOGGER.debug("No Subject with subjectId {} registered in campaign {}", subjectId, campaignName);
         }
     }
 
