@@ -9,8 +9,9 @@ if ($scope.selectedEntity.name === "Subject" || $scope.selectedEntity.name === "
 $scope.showAddInstanceButton = false;
 $scope.showDeleteInstanceButton = false;
 var importCsvModal = '../ebodac/resources/partials/modals/import-csv.html';
-
+var editSubjectModal = '../ebodac/resources/partials/modals/edit-subject.html';
 $scope.customModals.push(importCsvModal);
+$scope.customModals.push(editSubjectModal);
 
 $scope.importEntityInstances = function() {
     $('#importSubjectModal').modal('show');
@@ -44,7 +45,8 @@ $scope.closeImportSubjectModal = function () {
     $('#importSubjectModal').modal('hide');
 };
 
-$scope.addEntityInstance = function () {
+
+$scope.addEntityInstanceDefault = function () {
     blockUI();
 
     var values = $scope.currentRecord.fields;
@@ -55,9 +57,25 @@ $scope.addEntityInstance = function () {
             value.value = true;
         }
     });
-
     $scope.currentRecord.$save(function() {
         $scope.unselectInstance();
         unblockUI();
     }, angularHandler('mds.error', 'mds.error.cannotAddInstance'));
+};
+
+$scope.addEntityInstance = function() {
+
+    $http.get('../ebodac/ebodac-config')
+    .success(function(response){
+        $scope.ebodacConfig = response;
+    })
+        .error(function(response) {
+            $scope.ebodacConfig.showWarnings = true;
+    });
+
+    if ($scope.selectedEntity.name === "Subject" && $scope.selectedInstance !== undefined && $scope.ebodacConfig.showWarnings) {
+        $('#editSubjectModal').modal('show');
+    } else {
+        $scope.addEntityInstanceDefault();
+    }
 };
