@@ -102,7 +102,13 @@ public class Visit {
         } else if (subject != null || visit.getSubject() != null) {
             return false;
         }
-        return type == visit.type;
+        if (getType() != null && getType().equals(VisitType.UNSCHEDULED_VISIT)
+                && visit.getType() != null && visit.getType().equals(getType())) {
+            return (getDate() != null && visit.getDate() != null
+                    && getDate().equals(visit.getDate()))
+                    || (getDate() == null && visit.getDate() == null);
+        }
+        return getType() != null && getType().equals(visit.getType());
     }
 
     @Override

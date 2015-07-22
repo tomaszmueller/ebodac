@@ -81,7 +81,7 @@
                           {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Type", "type" : "list",
                          "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
-                         "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit(n)"]}]},
+                         "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
                          {"lookupName" : "Find Visit By SubjectId", "fields" : [{"name" : "SubjectId", "type" : "string"}]},
                          {"lookupName" : "Find Visit By Subject Name", "fields" : [{"name" : "Name", "type" : "string"}]},
                          {"lookupName" : "Find Visit By Subject Address", "fields" : [{"name" : "Address", "type" : "string"}]}];

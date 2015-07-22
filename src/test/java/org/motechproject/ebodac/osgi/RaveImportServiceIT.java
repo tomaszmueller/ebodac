@@ -28,10 +28,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
@@ -75,7 +75,9 @@ public class RaveImportServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(8, subjects.size());
         visits = visitDataService.retrieveAll();
-        assertEquals(27, visits.size());
+        assertEquals(29, visits.size());
+
+        assertEquals(2, visitDataService.findVisitByType(VisitType.UNSCHEDULED_VISIT).size());
     }
 
     @Test

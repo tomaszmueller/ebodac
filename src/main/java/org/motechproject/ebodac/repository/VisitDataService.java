@@ -29,5 +29,8 @@ public interface VisitDataService extends MotechDataService<Visit> {
     @Lookup
     List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType, QueryParams queryParams);
 
+    @Lookup
+    List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType);
+
     long countFindVisitByType(@LookupField(name = "type") VisitType visitType);
 }
