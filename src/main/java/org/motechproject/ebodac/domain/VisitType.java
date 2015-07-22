@@ -11,7 +11,7 @@ public enum VisitType {
     FIRST_LONG_TERM_FOLLOW_UP_VISIT("First Long-term Follow-up visit"),
     SECOND_LONG_TERM_FOLLOW_UP_VISIT("Second Long-term Follow-up visit"),
     THIRD_LONG_TERM_FOLLOW_UP_VISIT("Third Long-term Follow-up visit"),
-    UNSCHEDULED_VISIT("Unscheduled Visit(n)");
+    UNSCHEDULED_VISIT("Unscheduled Visit");
 
     private String value;
 
@@ -20,6 +20,9 @@ public enum VisitType {
     }
 
     public static VisitType getByValue(String value) {
+        if (value != null && value.startsWith(UNSCHEDULED_VISIT.getValue())) {
+            return UNSCHEDULED_VISIT;
+        }
         for (VisitType visitType : VisitType.values()) {
             if (visitType.getValue().equals(value)) {
                 return visitType;
