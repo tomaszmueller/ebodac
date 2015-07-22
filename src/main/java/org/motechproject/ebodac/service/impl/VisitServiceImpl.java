@@ -42,7 +42,7 @@ public class VisitServiceImpl implements VisitService {
                     existingVisit.setDate(visit.getDate());
                     existingVisit.setDateProjected(visit.getDateProjected());
 
-                    ebodacEnrollmentService.enrollOrUnenrollSubject(existingVisit);
+                    ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(existingVisit);
 
                     return visitDataService.update(existingVisit);
                 } else {
@@ -50,7 +50,7 @@ public class VisitServiceImpl implements VisitService {
                 }
             }
 
-            ebodacEnrollmentService.enrollOrUnenrollSubject(visit);
+            ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(visit);
         }
         return visitDataService.create(visit);
     }
