@@ -51,8 +51,6 @@ public class Subject {
     private String headOfHousehold;
 
     @UIDisplayable(position = 4)
-    @Column(length = 20)
-    @Pattern(regexp = "^[0-9\\s]*$")
     @Field
     private String phoneNumber;
 
