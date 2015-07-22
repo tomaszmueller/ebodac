@@ -1,16 +1,18 @@
 package org.motechproject.ebodac.web;
 
-import org.motechproject.ebodac.domain.ReportBoosterVaccination;
-import org.motechproject.ebodac.domain.ReportPrimerVaccination;
-import org.motechproject.ebodac.domain.Subject;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
+import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
 import org.motechproject.mds.ex.csv.CsvImportException;
+import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.service.CsvImportExportService;
 import org.motechproject.mds.service.EntityService;
 import org.motechproject.mds.util.Constants;
+import org.motechproject.mds.util.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang.CharEncoding.UTF_8;
 
@@ -44,6 +48,8 @@ public class InstanceController {
     @Autowired
     private EntityService entityService;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @RequestMapping(value = "/instances/{entityId}/csvimport", method = RequestMethod.POST)
     @PreAuthorize(Constants.Roles.HAS_DATA_ACCESS)
     @ResponseBody
@@ -61,24 +67,72 @@ public class InstanceController {
     }
 
     @RequestMapping(value = "/entities/{entityId}/exportInstances", method = RequestMethod.GET)
-    public void exportEntityInstances(@PathVariable Long entityId, HttpServletResponse response) throws IOException {
+    public void exportEntityInstances(@PathVariable Long entityId, GridSettings settings,
+                                      @RequestParam String range,
+                                      @RequestParam String outputFormat,
+                                      HttpServletResponse response) throws IOException {
+        if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
+            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
+        }
+
         final String fileName = "Entity_" + entityId + "_instances";
 
-        response.setContentType("text/csv");
+        if (Constants.ExportFormat.PDF.equals(outputFormat)) {
+            response.setContentType("application/pdf");
+        } else {
+            response.setContentType("text/csv");
+        }
         response.setCharacterEncoding(UTF_8);
         response.setHeader(
                 "Content-Disposition",
-                "attachment; filename=" + fileName + ".csv");
+                "attachment; filename=" + fileName + "." + outputFormat.toLowerCase());
 
         String className = entityService.getEntity(entityId).getClassName();
-        if (className.equals(Visit.class.getName())) {
-            csvImportExportService.exportCsv(entityId, response.getWriter(), visitCsvExportCustomizer);
-        } else if (className.equals(Subject.class.getName())) {
-            csvImportExportService.exportCsv(entityId, response.getWriter());
-        } else if (className.equals(ReportBoosterVaccination.class.getName())){
-            csvImportExportService.exportCsv(entityId, response.getWriter());
-        } else if (className.equals(ReportPrimerVaccination.class.getName())) {
-            csvImportExportService.exportCsv(entityId, response.getWriter());
+        if ("table".equalsIgnoreCase(range)) {
+            Order order = null;
+            if (!settings.getSortColumn().isEmpty()) {
+                order = new Order(settings.getSortColumn(), settings.getSortDirection());
+            }
+
+            QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
+            String lookup = settings.getLookup();
+
+            if (Constants.ExportFormat.PDF.equals(outputFormat)) {
+                if (className.equals(Visit.class.getName())) { // if className is Visit, format is PDF and range is table
+                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), lookup, queryParams,
+                            settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
+                } else {
+                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), lookup, queryParams,
+                            settings.getSelectedFields(), getFields(settings));
+                }
+            } else {
+                if (className.equals(Visit.class.getName())) { // if className is Visit, format is CSV and range is table
+                    csvImportExportService.exportCsv(entityId, response.getWriter(), lookup, queryParams,
+                            settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
+                } else {
+                    csvImportExportService.exportCsv(entityId, response.getWriter(), lookup, queryParams,
+                            settings.getSelectedFields(), getFields(settings));
+                }
+            }
+        } else if ("all".equalsIgnoreCase(range)) {
+            if (Constants.ExportFormat.PDF.equals(outputFormat)) {
+                if (className.equals(Visit.class.getName())) { // if className is Visit, format is PDF and range is all
+                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), visitCsvExportCustomizer);
+                } else {
+                    csvImportExportService.exportPdf(entityId, response.getOutputStream());
+                }
+            } else {
+                if (className.equals(Visit.class.getName())) { // if className is Visit, format is CSV and range is all
+                    csvImportExportService.exportCsv(entityId, response.getWriter(), visitCsvExportCustomizer);
+                } else {
+                    csvImportExportService.exportCsv(entityId, response.getWriter());
+                }
+            }
         }
+    }
+
+    private Map<String, Object> getFields(GridSettings gridSettings) throws IOException {
+        return objectMapper.readValue(gridSettings.getFields(), new TypeReference<HashMap>() {
+        });
     }
 }

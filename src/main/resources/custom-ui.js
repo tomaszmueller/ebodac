@@ -10,6 +10,7 @@ $scope.showAddInstanceButton = false;
 $scope.showDeleteInstanceButton = false;
 var importCsvModal = '../ebodac/resources/partials/modals/import-csv.html';
 var editSubjectModal = '../ebodac/resources/partials/modals/edit-subject.html';
+
 $scope.customModals.push(importCsvModal);
 $scope.customModals.push(editSubjectModal);
 
@@ -33,18 +34,47 @@ $scope.importSubject = function () {
     });
 };
 
-$scope.exportEntityInstances = function() {
-    $http.get("../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances")
-    .success(function (data) {
-         window.location.replace("../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances");
-    });
-};
-
 $scope.closeImportSubjectModal = function () {
     $('#importSubjectForm').resetForm();
     $('#importSubjectModal').modal('hide');
 };
 
+$scope.exportInstance = function() {
+    var selectedFieldsName = [], url, rows, page, sortColumn, sortDirection;
+
+    angular.forEach($scope.selectedFields, function(selectedField) {
+        selectedFieldsName.push(selectedField.basic.name);
+    });
+
+    url = "../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances";
+    url = url + "?range=" + $scope.actualExportRange;
+    url = url + "&outputFormat=" + $scope.exportFormat;
+
+    if ($scope.actualExportRange === 'table') {
+        rows = $('#instancesTable').getGridParam('rowNum');
+        page = $('#instancesTable').getGridParam('page');
+        sortColumn = $('#instancesTable').getGridParam('sortname');
+        sortDirection = $('#instancesTable').getGridParam('sortorder');
+
+        url = url + "&selectedFields=" + selectedFieldsName;
+        url = url + "&rows=" + rows;
+        url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
+        url = url + "&fields=" + JSON.stringify($scope.lookupBy);
+        url = url + "&page=" + page;
+        url = url + "&sortColumn=" + sortColumn;
+        url = url + "&sortDirection=" + sortDirection;
+    }
+
+    $http.get(url)
+    .success(function () {
+        $('#exportInstanceForm').resetForm();
+        $('#exportInstanceModal').modal('hide');
+        window.location.replace(url);
+    })
+    .error(function (response) {
+        handleResponse('mds.error', 'mds.error.exportData', response);
+    });
+};
 
 $scope.addEntityInstanceDefault = function () {
     blockUI();
@@ -57,6 +87,7 @@ $scope.addEntityInstanceDefault = function () {
             value.value = true;
         }
     });
+
     $scope.currentRecord.$save(function() {
         $scope.unselectInstance();
         unblockUI();
