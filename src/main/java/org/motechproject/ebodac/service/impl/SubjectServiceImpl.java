@@ -57,6 +57,8 @@ public class SubjectServiceImpl implements SubjectService {
 
             return update(subjectInDb);
         } else {
+            ebodacEnrollmentService.enrollScreening(newSubject);
+
             return create(newSubject);
         }
     }
