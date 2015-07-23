@@ -96,16 +96,18 @@ $scope.addEntityInstanceDefault = function () {
 
 $scope.addEntityInstance = function() {
 
-    $http.get('../ebodac/ebodac-config')
-    .success(function(response){
-        $scope.ebodacConfig = response;
-    })
+    if ($scope.selectedEntity.name === "Subject") {
+        $http.get('../ebodac/ebodac-config')
+        .success(function(response){
+            if(response.showWarnings) {
+                $('#editSubjectModal').modal('show');
+            } else {
+                $scope.addEntityInstanceDefault();
+            }
+        })
         .error(function(response) {
-            $scope.ebodacConfig.showWarnings = true;
-    });
-
-    if ($scope.selectedEntity.name === "Subject" && $scope.selectedInstance !== undefined && $scope.ebodacConfig.showWarnings) {
-        $('#editSubjectModal').modal('show');
+            $('#editSubjectModal').modal('show');
+        });
     } else {
         $scope.addEntityInstanceDefault();
     }
