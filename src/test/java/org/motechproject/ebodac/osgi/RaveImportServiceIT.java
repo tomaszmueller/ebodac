@@ -69,7 +69,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         InputStream in = getClass().getResourceAsStream("/sample.csv");
         assertNotNull(in);
 
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/sample.csv");
         in.close();
 
         subjects = subjectDataService.retrieveAll();
@@ -87,7 +87,7 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         InputStream in = getClass().getResourceAsStream("/rave.csv");
         assertNotNull(in);
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/rave.csv");
         in.close();
 
         checkSubjectData();
@@ -109,7 +109,7 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         InputStream in = getClass().getResourceAsStream("/rave.csv");
         assertNotNull(in);
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/rave.csv");
         in.close();
 
         List<Subject> subjects = subjectDataService.retrieveAll();

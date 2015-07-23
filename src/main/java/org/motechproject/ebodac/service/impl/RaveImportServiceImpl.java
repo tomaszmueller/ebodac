@@ -41,7 +41,7 @@ public class RaveImportServiceImpl implements RaveImportService {
     private ReportService reportService;
 
     @Override
-    public void importCsv(Reader reader) {
+    public void importCsv(Reader reader, String filename) {
         try (CsvMapReader csvMapReader = new CsvMapReader(reader, CsvPreference.STANDARD_PREFERENCE)) {
             Map<String, String> row;
             final String headers[] = csvMapReader.getHeader(true);
@@ -57,7 +57,7 @@ public class RaveImportServiceImpl implements RaveImportService {
                 try {
                     importRow(row, csvMapReader.getRowNumber(), subjectId);
                 } catch (CsvImportException e) {
-                    LOGGER.error("Skipping subject with id " + subjectId + ": " + e.getMessage(),  e);
+                    LOGGER.error(filename + ": Skipping subject with id " + subjectId + ": " + e.getMessage(),  e);
                 }
             }
 

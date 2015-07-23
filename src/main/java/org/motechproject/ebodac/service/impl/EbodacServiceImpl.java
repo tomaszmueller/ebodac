@@ -125,7 +125,7 @@ public class EbodacServiceImpl implements EbodacService {
                     if (date.isAfter(afterDate)) {
                         OutputStream outputStream = new ByteArrayOutputStream();
                         ftpsClient.fetchFile(directory + filename, outputStream);
-                        raveImportService.importCsv(new StringReader(outputStream.toString()));
+                        raveImportService.importCsv(new StringReader(outputStream.toString()), filename);
                         if (date.isAfter(lastUpdated)) {
                             lastUpdated = date;
                         }
