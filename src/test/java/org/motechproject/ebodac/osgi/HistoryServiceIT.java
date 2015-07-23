@@ -64,7 +64,7 @@ public class HistoryServiceIT extends BasePaxIT {
     public void shouldCreateHistoryRecordsForSubject() throws IOException {
 
         InputStream in = getClass().getResourceAsStream("/history.csv");
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/history.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
@@ -79,7 +79,7 @@ public class HistoryServiceIT extends BasePaxIT {
         assertEquals(1, subjectsHistoryRecords.get(1).size());
 
         in = getClass().getResourceAsStream("/history2.csv");
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/history2.csv");
         in.close();
 
         subjectsHistoryRecords.clear();
@@ -95,7 +95,7 @@ public class HistoryServiceIT extends BasePaxIT {
     public void shouldCreateHistoryRecordsForVisit() throws IOException {
 
         InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
         List<Visit> visitList = visitDataService.findVisitByDate(new DateTime(2015, 7, 13, 0, 0, 0));
@@ -119,7 +119,7 @@ public class HistoryServiceIT extends BasePaxIT {
     @Test
     public void newRecordsForSubjectWhenAddingNewVisit() throws IOException {
         InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
@@ -135,7 +135,7 @@ public class HistoryServiceIT extends BasePaxIT {
     @Test
     public void shouldNotCreateNewRecordsForSubjectWhenUpdatingVisit() throws IOException {
         InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in));
+        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));

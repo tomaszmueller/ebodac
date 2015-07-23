@@ -4,5 +4,5 @@ import java.io.Reader;
 
 public interface RaveImportService {
 
-    void importCsv(final Reader reader);
+    void importCsv(final Reader reader, String filename);
 }

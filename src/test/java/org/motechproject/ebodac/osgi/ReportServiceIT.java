@@ -107,7 +107,7 @@ public class ReportServiceIT extends BasePaxIT{
 
             InputStream in = getClass().getResourceAsStream("/report.csv");
             assertNotNull(in);
-            raveImportService.importCsv(new InputStreamReader(in));
+            raveImportService.importCsv(new InputStreamReader(in), "/report.csv");
             in.close();
 
             assertEquals(98, subjectDataService.retrieveAll().size());
@@ -167,7 +167,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
 
             InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in));
+            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
             in.close();
 
             config=configService.getConfig();
@@ -206,7 +206,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertNull(config.getFirstCalculationStartDate());
 
             InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in));
+            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
             in.close();
 
             reportService.generateDailyReports();
@@ -235,7 +235,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertNull(config.getLastCalculationDate());
 
             InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in));
+            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
             in.close();
 
             reportService.generateDailyReports();
