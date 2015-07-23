@@ -44,9 +44,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     @Override
-    public void enrollOrUnenrollSubject(Visit visit) {
+    public void enrollOrCompleteCampaignForSubject(Visit visit) {
         if (visit.getDate() != null) {
-            unenrollSubject(visit);
+            completeCampaignForSubject(visit);
         } else {
             enrollSubject(visit);
         }
@@ -70,24 +70,24 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
-    private void unenrollSubject(Visit visit) {
+    private void completeCampaignForSubject(Visit visit) {
         try {
             if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
-                unenrollFromAllBoostVaccinationDayCampaigns(visit.getSubject());
+                completeAllBoostVaccinationDayCampaigns(visit.getSubject());
             } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())
                     && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                unenrollSubject(visit.getSubject(), visit.getType().getValue());
+                completeCampaignForSubject(visit.getSubject(), visit.getType().getValue());
             }
         } catch (EbodacUnenrollmentException e) {
             LOGGER.debug("Cannot unenroll subject", e);
         }
     }
 
-    private void unenrollFromAllBoostVaccinationDayCampaigns(Subject subject) {
+    private void completeAllBoostVaccinationDayCampaigns(Subject subject) {
         String campaignName = VisitType.BOOST_VACCINATION_DAY.getValue();
 
         for (String day : EbodacConstants.DAYS_OF_WEEK) {
-            unenrollSubject(subject, campaignName + " " + day);
+            completeCampaignForSubject(subject, campaignName + " " + day);
         }
     }
 
@@ -134,6 +134,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
+    private void completeCampaignForSubject(Subject subject, String campaignName) {
+        unenrollAndSetStatus(subject.getSubjectId(), campaignName, CampaignEnrollmentStatus.COMPLETED);
+    }
+
     @Override
     public void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, Boolean updateInactiveEnrollment) {
         enrollSubject(subject, campaignName, referenceDate, null, updateInactiveEnrollment);
@@ -146,13 +150,19 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void unenrollSubject(String subjectId, String campaignName) {
+        unenrollAndSetStatus(subjectId, campaignName, CampaignEnrollmentStatus.INACTIVE);
+    }
+
+    private void unenrollAndSetStatus(String subjectId, String campaignName, CampaignEnrollmentStatus status) {
         CampaignEnrollment enrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectId, campaignName);
 
-        if (enrollment != null) {
+        if (enrollment == null) {
+            LOGGER.debug("No Subject with subjectId {} registered in campaign {}", subjectId, campaignName);
+        } else if (CampaignEnrollmentStatus.ACTIVE.equals(enrollment.getStatus())) {
             try {
                 messageCampaignService.unscheduleJobsForEnrollment(enrollment);
 
-                enrollment.setStatus(CampaignEnrollmentStatus.INACTIVE);
+                enrollment.setStatus(status);
                 campaignEnrollmentDataService.update(enrollment);
             } catch (CampaignNotFoundException e) {
                 throw new EbodacUnenrollmentException(String.format("Cannot unenroll Subject with id: %s because campaign with name: %s doesn't exist",
@@ -161,8 +171,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 throw new EbodacUnenrollmentException(String.format("Cannot unenroll Subject with id: %s from campaign with name: %s",
                         subjectId, campaignName), e);
             }
-        } else {
-            LOGGER.debug("No Subject with subjectId {} registered in campaign {}", subjectId, campaignName);
+        } else if (CampaignEnrollmentStatus.INACTIVE.equals(enrollment.getStatus()) && !status.equals(enrollment.getStatus())) {
+            enrollment.setStatus(status);
+            campaignEnrollmentDataService.update(enrollment);
         }
     }
 
