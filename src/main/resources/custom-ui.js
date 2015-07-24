@@ -1,3 +1,19 @@
+if(!$('#jqueryInputMaskJs').length) {
+    var s = document.createElement("script");
+    s.id = "jqueryInputMaskJs";
+    s.type = "text/javascript";
+    s.src = "../ebodac/resources/js/jquery.inputmask.js";
+    $("head").append(s);
+}
+
+if(!$('#inputMaskJs').length) {
+    var s = document.createElement("script");
+    s.id = "inputMaskJs";
+    s.type = "text/javascript";
+    s.src = "../ebodac/resources/js/inputmask.js";
+    $("head").append(s);
+}
+
 if ($scope.selectedEntity.name === "Subject" || $scope.selectedEntity.name === "Visit") {
     $scope.showBackToEntityListButton = false;
 } else {
@@ -95,6 +111,10 @@ $scope.addEntityInstanceDefault = function () {
 };
 
 $scope.addEntityInstance = function() {
+    var input = $("#phoneNumberForm");
+    var fieldValue = input.val().replace(/ /g, '');
+    input.val(fieldValue);
+    input.trigger('input');
 
     if ($scope.selectedEntity.name === "Subject") {
         $http.get('../ebodac/ebodac-config')
@@ -111,4 +131,22 @@ $scope.addEntityInstance = function() {
     } else {
         $scope.addEntityInstanceDefault();
     }
+};
+
+var isPhoneNumberForm = false;
+
+$scope.loadEditValueFormDefault = $scope.loadEditValueForm;
+
+$scope.loadEditValueForm = function (field) {
+    if(field.name === 'phoneNumber') {
+        isPhoneNumberForm = true;
+        return '../ebodac/resources/partials/widgets/field-phone-number.html';
+    }
+
+    if(isPhoneNumberForm) {
+        $("#phoneNumberForm").inputmask({ mask: "999 999 999[ 999]", greedy: false, autoUnmask: true });
+        isPhoneNumberForm = false;
+    }
+
+    return $scope.loadEditValueFormDefault(field);
 };
