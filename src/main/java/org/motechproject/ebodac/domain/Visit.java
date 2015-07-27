@@ -68,6 +68,7 @@ public class Visit {
         return dateProjected;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDateProjected(DateTime dateProjected) {
         this.dateProjected = dateProjected;
     }
@@ -76,6 +77,7 @@ public class Visit {
         return motechProjectedDate;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setMotechProjectedDate(DateTime motechProjectedDate) {
         this.motechProjectedDate = motechProjectedDate;
     }
