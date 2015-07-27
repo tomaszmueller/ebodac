@@ -61,20 +61,18 @@ public class InstanceController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value = "/instances/{entityId}/csvimport", method = RequestMethod.POST)
+    @RequestMapping(value = "/instances/{entityId}/Subjectcsvimport", method = RequestMethod.POST)
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageSubjects')")
     @ResponseBody
-    public long importCsv(@PathVariable long entityId, @RequestParam(required = true) MultipartFile csvFile) {
-        try {
-            try (InputStream in = csvFile.getInputStream()) {
-                Reader reader = new InputStreamReader(in);
-                CsvImportResults results = csvImportExportService.importCsv(entityId, reader,
-                        csvFile.getOriginalFilename(), subjectCsvImportCustomizer);
-                return results.totalNumberOfImportedInstances();
-            }
-        } catch (IOException e) {
-            throw new CsvImportException("Unable to open uploaded file", e);
-        }
+    public long subjectImportCsv(@PathVariable long entityId, @RequestParam(required = true) MultipartFile csvFile) {
+        return importCsv(entityId, csvFile);
+    }
+
+    @RequestMapping(value = "/instances/{entityId}/Visitcsvimport", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public long visitImportCsv(@PathVariable long entityId, @RequestParam(required = true) MultipartFile csvFile) {
+        return importCsv(entityId, csvFile);
     }
 
     @RequestMapping(value = "/entities/{entityId}/exportInstances", method = RequestMethod.GET)
@@ -121,6 +119,20 @@ public class InstanceController {
             }
         }
     }
+
+    private long importCsv(long entityId, MultipartFile csvFile) {
+        try {
+            try (InputStream in = csvFile.getInputStream()) {
+                Reader reader = new InputStreamReader(in);
+                CsvImportResults results = csvImportExportService.importCsv(entityId, reader,
+                        csvFile.getOriginalFilename(), subjectCsvImportCustomizer);
+                return results.totalNumberOfImportedInstances();
+            }
+        } catch (IOException e) {
+            throw new CsvImportException("Unable to open uploaded file", e);
+        }
+    }
+
 
     @RequestMapping(value = "/exportDailyClinicVisitScheduleReport", method = RequestMethod.GET)
     public void exportDailyClinicVisitScheduleReport(GridSettings settings,
