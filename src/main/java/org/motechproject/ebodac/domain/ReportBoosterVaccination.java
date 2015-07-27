@@ -2,10 +2,13 @@ package org.motechproject.ebodac.domain;
 
 import org.joda.time.DateTime;
 import org.motechproject.mds.annotations.Entity;
-import org.motechproject.mds.annotations.Field;
-import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
+import org.motechproject.mds.annotations.NonEditable;
+import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.Access;
+import org.motechproject.mds.util.SecurityMode;
 
+@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
 @Entity
 public class ReportBoosterVaccination extends ReportVaccinationAbstract {
 
