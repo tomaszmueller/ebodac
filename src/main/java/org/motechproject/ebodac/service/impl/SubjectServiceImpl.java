@@ -54,6 +54,7 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setSiteId(newSubject.getSiteId());
 
             ebodacEnrollmentService.enrollSubject(subjectInDb);
+            ebodacEnrollmentService.enrollScreening(subjectInDb);
 
             return update(subjectInDb);
         } else {
