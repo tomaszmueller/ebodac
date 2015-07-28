@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class CustomDateSerializer extends JsonSerializer<DateTime> {
 
-    private static DateTimeFormatter formatter =
+    private static final DateTimeFormatter FORMATTER =
             DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -22,6 +22,6 @@ public class CustomDateSerializer extends JsonSerializer<DateTime> {
                           SerializerProvider arg2)
             throws IOException {
 
-        gen.writeString(formatter.print(value));
+        gen.writeString(FORMATTER.print(value));
     }
 }

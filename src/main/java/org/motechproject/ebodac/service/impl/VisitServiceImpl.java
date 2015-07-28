@@ -1,6 +1,9 @@
 package org.motechproject.ebodac.service.impl;
 
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
@@ -18,6 +21,9 @@ public class VisitServiceImpl implements VisitService {
 
     @Autowired
     private VisitDataService visitDataService;
+
+    @Autowired
+    private SubjectDataService subjectDataService;
 
     @Autowired
     private EbodacEnrollmentService ebodacEnrollmentService;
@@ -58,5 +64,20 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public void delete(Visit visit) {
         visitDataService.delete(visit);
+    }
+
+    @Override
+    public Visit findVisitBySubjectIdAndVisitType(String subjectId, VisitType visitType) {
+        Subject subject = subjectDataService.findSubjectBySubjectId(subjectId);
+        List<Visit> visits = subject.getVisits();
+
+        if (visits != null) {
+            for (Visit visit: visits) {
+                if (visitType.equals(visit.getType())) {
+                    return visit;
+                }
+            }
+        }
+        return null;
     }
 }

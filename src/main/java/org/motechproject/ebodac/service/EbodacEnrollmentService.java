@@ -10,11 +10,13 @@ public interface EbodacEnrollmentService {
 
     void enrollOrCompleteCampaignForSubject(Visit visit);
 
-    void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, Boolean updateInactiveEnrollment);
+    void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, boolean updateInactiveEnrollment);
 
     void unenrollSubject(Subject subject, String campaignName);
 
     void unenrollSubject(String subjectId, String campaignName);
+
+    void reenrollSubject(Visit visit);
 
     void enrollScreening(Subject subject);
 }

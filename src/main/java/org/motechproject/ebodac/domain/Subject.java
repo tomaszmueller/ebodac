@@ -1,8 +1,10 @@
 package org.motechproject.ebodac.domain;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.joda.time.DateTime;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
@@ -234,6 +236,7 @@ public class Subject {
         return dateOfBirth;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDateOfBirth(DateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -242,6 +245,7 @@ public class Subject {
         return primerVaccinationDate;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setPrimerVaccinationDate(DateTime primerVaccinationDate) {
         this.primerVaccinationDate = primerVaccinationDate;
     }
@@ -250,6 +254,7 @@ public class Subject {
         return boosterVaccinationDate;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setBoosterVaccinationDate(DateTime boosterVaccinationDate) {
         this.boosterVaccinationDate = boosterVaccinationDate;
     }
@@ -258,6 +263,7 @@ public class Subject {
         return dateOfDisconVac;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDateOfDisconVac(DateTime dateOfDisconVac) {
         this.dateOfDisconVac = dateOfDisconVac;
     }
@@ -266,6 +272,7 @@ public class Subject {
         return dateOfDisconStd;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDateOfDisconStd(DateTime dateOfDisconStd) {
         this.dateOfDisconStd = dateOfDisconStd;
     }
@@ -310,6 +317,10 @@ public class Subject {
             return null;
         }
 
+    }
+
+    public void setLanguageCode(String languageCode) {
+        //this setter is needed, because json deserialization doesn't work properly without it
     }
 
     @Override
