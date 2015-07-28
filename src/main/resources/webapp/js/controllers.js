@@ -33,11 +33,37 @@
             east__maxSize: 350
         });
 
+        $scope.availableCampaigns = [];
+
+        $scope.campaignsChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.text;
+                $scope.config.disconVacCampaignsList.push(value);
+            } else if (change.removed) {
+                value = change.removed.text;
+                $scope.config.disconVacCampaignsList.removeObject(value);
+            }
+        };
+
         $http.get('../ebodac/ebodac-config')
             .success(function(response){
                 var i;
                 $scope.config = response;
                 $scope.originalConfig = angular.copy($scope.config);
+
+                $http.get('../ebodac/availableCampaigns')
+                    .success(function(response){
+                        $scope.availableCampaigns = response;
+                        $timeout(function() {
+                            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
+                        }, 50);
+
+                    })
+                    .error(function(response) {
+                        $scope.errors.push($scope.msg('ebodac.web.settings.enroll.disconVacCampaigns.error', response));
+                    });
             })
             .error(function(response) {
                 $scope.errors.push($scope.msg('ebodac.web.settings.noConfig', response));
@@ -45,6 +71,7 @@
 
         $scope.reset = function () {
             $scope.config = angular.copy($scope.originalConfig);
+            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
         };
 
         function hideMsgLater(index) {

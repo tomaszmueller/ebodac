@@ -9,6 +9,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService;
 import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
@@ -29,7 +30,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEnrollmentServiceImpl.class);
 
     private CampaignEnrollmentDataService campaignEnrollmentDataService;
+
     private MessageCampaignService messageCampaignService;
+
+    private ConfigService configService;
 
     @Override
     public void enrollScreening(Subject subject) {
@@ -56,7 +60,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
         if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-            completeCampaignForSubject(visit);
+            completeCampaignForSubject(visit, false);
         } else if (visit.getMotechProjectedDate() == null) {
             enrollSubject(visit);
         }
@@ -93,6 +97,29 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             enrollSubject(visit.getSubject(), campaignName, visit.getMotechProjectedDate(), false);
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
             reenrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
+        }
+    }
+
+    @Override
+    public void withdrawalSubject(Subject subject) {
+        if (subject.getDateOfDisconStd() != null) {
+            if (subject.getVisits() != null) {
+                for (Visit visit: subject.getVisits()) {
+                    completeCampaignForSubject(visit, true);
+                }
+            }
+        } else if (subject.getDateOfDisconVac() != null) {
+            for (String campaignName: configService.getConfig().getDisconVacCampaignsList()) {
+                try {
+                    if (VisitType.BOOST_VACCINATION_DAY.getValue().equals(campaignName)) {
+                        completeAllBoostVaccinationDayCampaigns(subject);
+                    } else {
+                        completeCampaignForSubject(subject, campaignName);
+                    }
+                } catch (EbodacEnrollmentException e) {
+                    LOGGER.debug(e.getMessage(), e);
+                }
+            }
         }
     }
 
@@ -139,6 +166,18 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         } else if (referenceDate == null) {
             throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
                     subjectID, campaignName));
+        } else if (subject.getDateOfDisconStd() != null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject is withdrawn from study",
+                    subjectID, campaignName));
+        } else if (subject.getDateOfDisconVac() != null) {
+            String campaign = campaignName;
+            if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+                campaign = VisitType.BOOST_VACCINATION_DAY.getValue();
+            }
+            if (configService.getConfig().getDisconVacCampaignsList().contains(campaign)) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject resigned form booster vaccination",
+                        subjectID, campaignName));
+            }
         } else if (subject.getLanguage() == null) {
             throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject language is empty",
                     subjectID, campaignName));
@@ -200,12 +239,16 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         enrollSubject(subject, campaignName, referenceDate, null, updateInactiveEnrollment, true, false);
     }
 
-    private void completeCampaignForSubject(Visit visit) {
+    private void completeCampaignForSubject(Visit visit, boolean completeAllCampaigns) {
         try {
-            if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+            if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+                if (completeAllCampaigns) {
+                    completeCampaignForSubject(visit.getSubject(), visit.getType().getValue());
+                    completeCampaignForSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE);
+                }
+            } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
                 completeAllBoostVaccinationDayCampaigns(visit.getSubject());
-            } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())
-                    && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+            } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
                 if (!completeCampaignForSubject(visit.getSubject(), visit.getType().getValue())) {
                     throw new EbodacEnrollmentException(String.format("Cannot complete Campaign, because no Subject with id: %s registered in Campaign with name: %s",
                             visit.getSubject().getSubjectId(), visit.getType().getValue()));
@@ -342,5 +385,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Autowired
     public void setMessageCampaignService(MessageCampaignService messageCampaignService) {
         this.messageCampaignService = messageCampaignService;
+    }
+
+    @Autowired
+    public void setConfigService(ConfigService configService) {
+        this.configService = configService;
     }
 }

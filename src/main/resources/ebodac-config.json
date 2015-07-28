@@ -19,5 +19,6 @@
   "generateReports":null,
   "showWarnings":true,
   "primerVaccinationReportsToUpdate":[],
-  "boosterVaccinationReportsToUpdate":[]
+  "boosterVaccinationReportsToUpdate":[],
+  "disconVacCampaignsList": ["Mid-point message", "Boost Vaccination Day"]
 }

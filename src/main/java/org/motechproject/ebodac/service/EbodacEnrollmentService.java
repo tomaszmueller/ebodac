@@ -16,4 +16,6 @@ public interface EbodacEnrollmentService {
     void unenrollSubject(String subjectId, String campaignName);
 
     void reenrollSubject(Visit visit);
+
+    void withdrawalSubject(Subject subject);
 }
