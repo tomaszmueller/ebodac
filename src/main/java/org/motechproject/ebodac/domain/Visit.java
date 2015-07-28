@@ -2,7 +2,7 @@ package org.motechproject.ebodac.domain;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
@@ -17,21 +17,20 @@ public class Visit {
     @Field
     private Subject subject;
 
-
     @NonEditable
     @Field
     private VisitType type;
 
     @NonEditable
     @Field
-    private DateTime date;
+    private LocalDate date;
 
     @NonEditable
     @Field
-    private DateTime dateProjected;
+    private LocalDate dateProjected;
 
     @Field
-    private DateTime motechProjectedDate;
+    private LocalDate motechProjectedDate;
 
     @NonEditable(display = false)
     @Field
@@ -56,29 +55,29 @@ public class Visit {
 
     @JsonSerialize(using = CustomDateSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public DateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public DateTime getDateProjected() {
+    public LocalDate getDateProjected() {
         return dateProjected;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setDateProjected(DateTime dateProjected) {
+    public void setDateProjected(LocalDate dateProjected) {
         this.dateProjected = dateProjected;
     }
 
-    public DateTime getMotechProjectedDate() {
+    public LocalDate getMotechProjectedDate() {
         return motechProjectedDate;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setMotechProjectedDate(DateTime motechProjectedDate) {
+    public void setMotechProjectedDate(LocalDate motechProjectedDate) {
         this.motechProjectedDate = motechProjectedDate;
     }
 
@@ -121,10 +120,10 @@ public class Visit {
     }
 
     public boolean visitDatesChanged(Visit visit) {
-        if (date != null ? !date.isEqual(visit.date) : visit.date != null) {
+        if (date != null ? !date.equals(visit.date) : visit.date != null) {
             return true;
         }
-        if (dateProjected != null ? !dateProjected.isEqual(visit.dateProjected) : visit.dateProjected != null) {
+        if (dateProjected != null ? !dateProjected.equals(visit.dateProjected) : visit.dateProjected != null) {
             return true;
         }
 
@@ -134,7 +133,7 @@ public class Visit {
     @Override
     public String toString() {
         return type.getValue() +
-                (getDateProjected() != null ? " / Planned Date: " + getDateProjected().toLocalDate().toString() : "") +
-                (getDate() != null ? " / Actual Date: " + getDate().toLocalDate().toString() : "");
+                (getDateProjected() != null ? " / Planned Date: " + getDateProjected().toString() : "") +
+                (getDate() != null ? " / Actual Date: " + getDate().toString() : "");
     }
 }

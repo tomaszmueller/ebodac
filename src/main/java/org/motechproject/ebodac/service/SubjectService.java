@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.service;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.domain.Subject;
 
 import java.util.List;
@@ -30,9 +30,9 @@ public interface SubjectService {
 
     Subject update(Subject record);
 
-    List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date);
+    List<Subject> findSubjectsPrimerVaccinatedAtDay(LocalDate date);
 
-    List<Subject> findSubjectsBoosterVaccinatedAtDay(DateTime date);
+    List<Subject> findSubjectsBoosterVaccinatedAtDay(LocalDate date);
 
-    DateTime findOldestPrimerVaccinationDate();
+    LocalDate findOldestPrimerVaccinationDate();
 }

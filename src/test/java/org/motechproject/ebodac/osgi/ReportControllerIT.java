@@ -4,7 +4,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
@@ -87,15 +87,15 @@ public class ReportControllerIT extends BasePaxIT {
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address1", Language.Susu, "community", "B05-SL10001");
 
-        firstSubject.setDateOfBirth(DateTime.parse("1967-09-17", formatter));
+        firstSubject.setDateOfBirth(LocalDate.parse("1967-09-17", formatter));
         firstSubject.setGender(Gender.Male);
-        firstSubject.setPrimerVaccinationDate(DateTime.parse("2014-10-17", formatter));
-        firstSubject.setBoosterVaccinationDate(DateTime.parse("2014-10-20", formatter));
+        firstSubject.setPrimerVaccinationDate(LocalDate.parse("2014-10-17", formatter));
+        firstSubject.setBoosterVaccinationDate(LocalDate.parse("2014-10-20", formatter));
 
-        secondSubject.setDateOfBirth(DateTime.parse("2005-08-04", formatter));
+        secondSubject.setDateOfBirth(LocalDate.parse("2005-08-04", formatter));
         secondSubject.setGender(Gender.Male);
-        secondSubject.setPrimerVaccinationDate(DateTime.parse("2014-10-17", formatter));
-        secondSubject.setBoosterVaccinationDate(DateTime.parse("2014-10-20", formatter));
+        secondSubject.setPrimerVaccinationDate(LocalDate.parse("2014-10-17", formatter));
+        secondSubject.setBoosterVaccinationDate(LocalDate.parse("2014-10-20", formatter));
     }
 
     @Test

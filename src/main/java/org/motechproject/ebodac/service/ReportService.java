@@ -1,12 +1,12 @@
 package org.motechproject.ebodac.service;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 public interface ReportService {
 
     void generateDailyReports();
 
-    void generateDailyReportsFromDate(DateTime startDate);
+    void generateDailyReportsFromDate(LocalDate startDate);
 
     void shouldGenerateReports();
 }

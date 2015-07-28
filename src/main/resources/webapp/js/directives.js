@@ -89,7 +89,7 @@
                         name: 'date',
                         index: 'date',
                         align: 'center',
-                        formatter:'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat:'Y-m-d H:i'}
+                        formatter:'date', formatoptions: {srcformat: 'Y-m-d', newformat:'Y-m-d'}
                     }, {
                         name: 'subject',
                         index: 'subject.subjectId',

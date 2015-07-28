@@ -2,7 +2,7 @@ package org.motechproject.ebodac.web;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.domain.Subject;
@@ -56,13 +56,13 @@ public class VisitController {
         long recordCount;
         int rowCount;
 
-        DateTimeFormatter lookupDateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm Z");
+        DateTimeFormatter lookupDateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 
         if (settings.getLookup() != null) {
             Map<String, Object> fields = getFields(settings);
             switch (settings.getLookup()) {
                 case "Find Visit By Date":
-                    DateTime date = DateTime.parse((String) fields.get("Date"), lookupDateTimeFormat);
+                    LocalDate date = LocalDate.parse((String) fields.get("Date"), lookupDateTimeFormat);
                     List<Visit> visits = visitDataService.findVisitByDate(date, queryParams);
 
                     recordCount = visitDataService.countFindVisitByDate(date);

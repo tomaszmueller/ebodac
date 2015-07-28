@@ -1,7 +1,5 @@
 package org.motechproject.ebodac.service;
 
-import org.joda.time.DateTime;
-
 /**
  * Simple example of a service interface.
  */

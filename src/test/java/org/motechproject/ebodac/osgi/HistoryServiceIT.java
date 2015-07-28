@@ -1,9 +1,10 @@
 package org.motechproject.ebodac.osgi;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
@@ -19,13 +20,13 @@ import org.ops4j.pax.exam.ExamFactory;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
-import org.junit.Test;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -98,19 +99,19 @@ public class HistoryServiceIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
-        List<Visit> visitList = visitDataService.findVisitByDate(new DateTime(2015, 7, 13, 0, 0, 0));
+        List<Visit> visitList = visitDataService.findVisitByDate(new LocalDate(2015, 7, 13));
         assertEquals(1,visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByDate(new DateTime(2015, 6, 10, 0, 0, 0));
+        visitList = visitDataService.findVisitByDate(new LocalDate(2015, 6, 10));
         assertEquals(1,visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByDate(new DateTime(2015, 6, 11, 0, 0, 0));
+        visitList = visitDataService.findVisitByDate(new LocalDate(2015, 6, 11));
         assertEquals(1, visitList.size());
         assertEquals(2, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByDate(new DateTime(2015, 6, 12, 0, 0, 0));
+        visitList = visitDataService.findVisitByDate(new LocalDate(2015, 6, 12));
         assertEquals(1,visitList.size());
         assertEquals(1, historyService.countHistoryRecords(visitList.get(0)));
 

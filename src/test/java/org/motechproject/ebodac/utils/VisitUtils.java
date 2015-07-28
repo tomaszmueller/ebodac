@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.utils;
 
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.dao.VisitDAO;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
@@ -14,8 +14,8 @@ import static junit.framework.Assert.assertEquals;
 
 public class VisitUtils {
 
-    public static Visit createVisit(Subject subject, VisitType type, DateTime date,
-                              DateTime projectedDate, String owner) {
+    public static Visit createVisit(Subject subject, VisitType type, LocalDate date,
+                              LocalDate projectedDate, String owner) {
         Visit ret = new Visit();
         ret.setSubject(subject);
         ret.setType(type);

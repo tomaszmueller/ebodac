@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.repository;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.mds.annotations.Lookup;
@@ -29,12 +29,18 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     List<Subject> findSubjectsByModified(@LookupField(name = "changed") Boolean modified);
 
     @Lookup
-    List<Subject> findSubjectsByPrimerVaccinationDate(@LookupField(name = "primerVaccinationDate")
-                                                      Range<DateTime> dateRange);
+    List<Subject> findSubjectsByPrimerVaccinationDateRange(@LookupField(name = "primerVaccinationDate")
+                                                      Range<LocalDate> dateRange);
 
     @Lookup
-    List<Subject> findSubjectsByBoosterVaccinationDate(@LookupField(name = "boosterVaccinationDate")
-                                                       Range<DateTime> dateRange);
+    List<Subject> findSubjectsByBoosterVaccinationDateRange(@LookupField(name = "boosterVaccinationDate")
+                                                       Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Subject> findSubjectsByPrimerVaccinationDate(@LookupField(name = "primerVaccinationDate") LocalDate dateRange);
+
+    @Lookup
+    List<Subject> findSubjectsByBoosterVaccinationDate(@LookupField(name = "boosterVaccinationDate") LocalDate dateRange);
 
     @Lookup
     List<Subject> findSubjectByAddress(@LookupField(name = "address",
