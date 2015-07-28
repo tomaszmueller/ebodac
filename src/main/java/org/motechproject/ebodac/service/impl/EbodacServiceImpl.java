@@ -120,12 +120,13 @@ public class EbodacServiceImpl implements EbodacService {
                 LOGGER.error("Skipping " + filename + " because the filename does not match specified format");
             } else {
                 try {
-                    LOGGER.debug("Parsing file {}", filename);
                     DateTime date = dateTimeFormatter.parseDateTime(m.group(1));
                     if (date.isAfter(afterDate)) {
                         OutputStream outputStream = new ByteArrayOutputStream();
                         ftpsClient.fetchFile(directory + filename, outputStream);
+                        LOGGER.info("Parsing CSV file {}", filename);
                         raveImportService.importCsv(new StringReader(outputStream.toString()), filename);
+                        LOGGER.info("Finished parsing CSV file {}", filename);
                         if (date.isAfter(lastUpdated)) {
                             lastUpdated = date;
                         }
