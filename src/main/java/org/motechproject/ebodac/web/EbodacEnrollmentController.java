@@ -2,7 +2,6 @@ package org.motechproject.ebodac.web;
 
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
-import org.motechproject.ebodac.exception.EbodacUnenrollmentException;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
 import org.slf4j.Logger;
@@ -41,25 +40,22 @@ public class EbodacEnrollmentController {
             Visit existingVisit = visitService.findVisitBySubjectIdAndVisitType(visit.getSubject().getSubjectId(), visit.getType());
 
             if (existingVisit == null) {
-                return new ResponseEntity<>("Cannot find visit in database", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("Cannot find visit in the database", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             if (existingVisit.getDate() != null) {
-                return new ResponseEntity<>("Cannot re-enroll subject for that visit, because visit already took place", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because visit already took place", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate() == null) {
-                return new ResponseEntity<>("Cannot re-enroll subject for that visit, because motech projected date is null", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is null", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().isEqual(existingVisit.getMotechProjectedDate())) {
-                return new ResponseEntity<>("Cannot re-enroll subject for that visit, because motech projected date wasn't changed", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date wasn't changed", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().isBeforeNow()) {
-                return new ResponseEntity<>("Cannot re-enroll subject for that visit, because motech projected date is in the past", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is in the past", HttpStatus.BAD_REQUEST);
             } else {
 
                 try {
                     ebodacEnrollmentService.reenrollSubject(visit);
                 } catch (EbodacEnrollmentException e) {
-                    LOGGER.debug(e.getMessage(), e);
-                    return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-                } catch (EbodacUnenrollmentException e) {
                     LOGGER.debug(e.getMessage(), e);
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
                 }
