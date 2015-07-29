@@ -2,7 +2,7 @@ package org.motechproject.ebodac.dao;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.domain.Visit;
@@ -20,7 +20,7 @@ public class VisitDAO {
 
     private String owner;
 
-    private DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @JsonSerialize(using = CustomSubjectSerializer.class)
     public SubjectDAO getSubject() {
@@ -39,11 +39,11 @@ public class VisitDAO {
         this.type = type;
     }
 
-    public DateTime getDate() {
-        return DateTime.parse(this.date, formatter);
+    public LocalDate getDate() {
+        return LocalDate.parse(this.date, formatter);
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date.toString(formatter);
     }
 
@@ -57,7 +57,7 @@ public class VisitDAO {
 
     public Visit toVisit() {
         Visit ret = new Visit();
-        ret.setDate(DateTime.parse(this.date, formatter));
+        ret.setDate(LocalDate.parse(this.date, formatter));
         ret.setType(this.type);
         ret.setOwner(this.owner);
         ret.setSubject(this.subject.toSubject());

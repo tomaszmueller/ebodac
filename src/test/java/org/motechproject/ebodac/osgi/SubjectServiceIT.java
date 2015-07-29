@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.osgi;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
@@ -128,7 +128,7 @@ public class SubjectServiceIT extends BasePaxIT {
 
         checkZetesFields(firstSubject, subjects.get(0));
 
-        firstSubject.setDateOfDisconStd(DateTime.parse("2014-10-17", formatter));
+        firstSubject.setDateOfDisconStd(LocalDate.parse("2014-10-17", formatter));
         firstSubject.setGender(Gender.Male);
         firstSubject.setStageId((long) 1);
 
@@ -149,9 +149,9 @@ public class SubjectServiceIT extends BasePaxIT {
         checkZetesFields(secondSubject, subjectFromDataService);
         checkRaveFields(secondSubject, subjectFromDataService);
 
-        secondSubject.setDateOfBirth(DateTime.parse("1967-05-02", formatter));
-        secondSubject.setPrimerVaccinationDate(DateTime.parse("2014-10-12", formatter));
-        secondSubject.setBoosterVaccinationDate(DateTime.parse("2014-10-17", formatter));
+        secondSubject.setDateOfBirth(LocalDate.parse("1967-05-02", formatter));
+        secondSubject.setPrimerVaccinationDate(LocalDate.parse("2014-10-12", formatter));
+        secondSubject.setBoosterVaccinationDate(LocalDate.parse("2014-10-17", formatter));
 
         subjectDataService.update(secondSubject);
         subjects = subjectDataService.retrieveAll();
@@ -230,8 +230,8 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        firstSubject.setBoosterVaccinationDate(DateTime.parse("2015-02-28", formatter));
-        secondSubject.setBoosterVaccinationDate(DateTime.parse("2015-03-18", formatter));
+        firstSubject.setBoosterVaccinationDate(LocalDate.parse("2015-02-28", formatter));
+        secondSubject.setBoosterVaccinationDate(LocalDate.parse("2015-03-18", formatter));
 
         subjectService.create(firstSubject);
         subjectService.create(secondSubject);
@@ -239,10 +239,10 @@ public class SubjectServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        subjects = subjectService.findSubjectsBoosterVaccinatedAtDay(DateTime.parse("2015-02-28", formatter));
+        subjects = subjectService.findSubjectsBoosterVaccinatedAtDay(LocalDate.parse("2015-02-28", formatter));
         assertEquals(1, subjects.size());
 
-        assertEquals(DateTime.parse("2015-02-28", formatter), subjects.get(0).getBoosterVaccinationDate());
+        assertEquals(LocalDate.parse("2015-02-28", formatter), subjects.get(0).getBoosterVaccinationDate());
     }
 
     @Test
@@ -251,8 +251,8 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        firstSubject.setPrimerVaccinationDate(DateTime.parse("2015-02-28", formatter));
-        secondSubject.setPrimerVaccinationDate(DateTime.parse("2015-03-18", formatter));
+        firstSubject.setPrimerVaccinationDate(LocalDate.parse("2015-02-28", formatter));
+        secondSubject.setPrimerVaccinationDate(LocalDate.parse("2015-03-18", formatter));
 
         subjectService.create(firstSubject);
         subjectService.create(secondSubject);
@@ -260,10 +260,10 @@ public class SubjectServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        subjects = subjectService.findSubjectsPrimerVaccinatedAtDay(DateTime.parse("2015-02-28", formatter));
+        subjects = subjectService.findSubjectsPrimerVaccinatedAtDay(LocalDate.parse("2015-02-28", formatter));
         assertEquals(1, subjects.size());
 
-        assertEquals(DateTime.parse("2015-02-28", formatter), subjects.get(0).getPrimerVaccinationDate());
+        assertEquals(LocalDate.parse("2015-02-28", formatter), subjects.get(0).getPrimerVaccinationDate());
     }
 
     @Test
@@ -272,8 +272,8 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        firstSubject.setPrimerVaccinationDate(DateTime.parse("2015-02-28", formatter));
-        secondSubject.setPrimerVaccinationDate(DateTime.parse("2015-03-18", formatter));
+        firstSubject.setPrimerVaccinationDate(LocalDate.parse("2015-02-28", formatter));
+        secondSubject.setPrimerVaccinationDate(LocalDate.parse("2015-03-18", formatter));
 
         subjectService.create(firstSubject);
         subjectService.create(secondSubject);
@@ -281,8 +281,8 @@ public class SubjectServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        DateTime oldest = subjectService.findOldestPrimerVaccinationDate();
-        assertEquals(DateTime.parse("2015-02-28", formatter), oldest);
+        LocalDate oldest = subjectService.findOldestPrimerVaccinationDate();
+        assertEquals(LocalDate.parse("2015-02-28", formatter), oldest);
     }
 
     private void checkZetesFields(Subject expected, Subject actual) {

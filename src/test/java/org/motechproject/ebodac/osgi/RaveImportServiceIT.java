@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.osgi;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
@@ -138,11 +138,11 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals("1000000161",  subject.getSubjectId());
         assertEquals(Gender.Male, subject.getGender());
         assertEquals(1, (long) subject.getStageId());
-        assertEquals(DateTime.parse("1968-12-29", formatter), subject.getDateOfBirth());
-        assertEquals(DateTime.parse("2015-06-27", formatter), subject.getPrimerVaccinationDate());
-        assertEquals(DateTime.parse("2015-08-22", formatter), subject.getBoosterVaccinationDate());
-        assertEquals(DateTime.parse("2015-07-05", formatter), subject.getDateOfDisconVac()); // firstly 2015-07-06 then changed to 2015-07-05
-        assertEquals(DateTime.parse("2015-06-21", formatter), subject.getDateOfDisconStd());
+        assertEquals(LocalDate.parse("1968-12-29", formatter), subject.getDateOfBirth());
+        assertEquals(LocalDate.parse("2015-06-27", formatter), subject.getPrimerVaccinationDate());
+        assertEquals(LocalDate.parse("2015-08-22", formatter), subject.getBoosterVaccinationDate());
+        assertEquals(LocalDate.parse("2015-07-05", formatter), subject.getDateOfDisconVac()); // firstly 2015-07-06 then changed to 2015-07-05
+        assertEquals(LocalDate.parse("2015-06-21", formatter), subject.getDateOfDisconStd());
 
         subject = subjectDataService.findSubjectBySubjectId("1000000646");
 
@@ -150,11 +150,11 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals("1000000646", subject.getSubjectId());
         assertEquals(Gender.Female, subject.getGender());
         assertEquals(2, (long) subjects.get(1).getStageId());
-        assertEquals(DateTime.parse("2009-06-23", formatter), subject.getDateOfBirth());
-        assertEquals(DateTime.parse("2015-06-28", formatter), subject.getPrimerVaccinationDate());
-        assertEquals(DateTime.parse("2015-08-22", formatter), subject.getBoosterVaccinationDate());
-        assertEquals(DateTime.parse("2015-07-05", formatter), subject.getDateOfDisconVac());
-        assertEquals(DateTime.parse("2015-06-21", formatter), subject.getDateOfDisconStd());
+        assertEquals(LocalDate.parse("2009-06-23", formatter), subject.getDateOfBirth());
+        assertEquals(LocalDate.parse("2015-06-28", formatter), subject.getPrimerVaccinationDate());
+        assertEquals(LocalDate.parse("2015-08-22", formatter), subject.getBoosterVaccinationDate());
+        assertEquals(LocalDate.parse("2015-07-05", formatter), subject.getDateOfDisconVac());
+        assertEquals(LocalDate.parse("2015-06-21", formatter), subject.getDateOfDisconStd());
 
     }
 
@@ -174,16 +174,16 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(3, visits.size());
 
         checkVisit(visits.get(0), subjects.get(1), VisitType.SCREENING,
-                DateTime.parse("2015-06-14", formatter), null);
+                LocalDate.parse("2015-06-14", formatter), null);
 
         checkVisit(visits.get(1), subjects.get(1), VisitType.PRIME_VACCINATION_DAY,
-                null, DateTime.parse("2015-07-12", formatter));
+                null, LocalDate.parse("2015-07-12", formatter));
 
         checkVisit(visits.get(2), subjects.get(1), VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT,
                 null, null);
     }
 
-    private void checkVisit(Visit visit, Subject subject, VisitType type, DateTime date, DateTime dateProjected) {
+    private void checkVisit(Visit visit, Subject subject, VisitType type, LocalDate date, LocalDate dateProjected) {
         assertSame(subject, visit.getSubject());
         assertEquals(type, visit.getType());
         assertEquals(date, visit.getDate());

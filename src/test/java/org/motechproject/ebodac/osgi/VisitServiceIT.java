@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.osgi;
 
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
@@ -73,11 +73,11 @@ public class VisitServiceIT extends BasePaxIT {
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address", Language.Susu, "community", "B05-SL10001");
 
-        firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, DateTime.parse("2014-10-17", formatter),
-                DateTime.parse("2014-10-18", formatter), "owner");
+        firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
+                LocalDate.parse("2014-10-18", formatter), "owner");
 
-        secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, DateTime.parse("2014-10-19", formatter),
-                DateTime.parse("2014-10-20", formatter), "owner");
+        secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-20", formatter), "owner");
     }
 
     @Test
@@ -90,7 +90,7 @@ public class VisitServiceIT extends BasePaxIT {
         assertEquals(1, visits.size());
 
         firstVisit = visits.get(0);
-        firstVisit.setDateProjected(DateTime.parse("2014-10-20", formatter));
+        firstVisit.setDateProjected(LocalDate.parse("2014-10-20", formatter));
         firstVisit.setSubject(firstSubject);
 
         visitService.createOrUpdate(firstVisit); //should update
@@ -103,19 +103,19 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(2, visits.size());
 
-        visits = visitDataService.findVisitByDate(DateTime.parse("2014-10-19", formatter));
+        visits = visitDataService.findVisitByDate(LocalDate.parse("2014-10-19", formatter));
         assertEquals(1, visits.size());
 
         VisitUtils.checkVisitFields(secondVisit, visits.get(0));
 
-        secondVisit.setDate(DateTime.parse("2014-10-21", formatter));
+        secondVisit.setDate(LocalDate.parse("2014-10-21", formatter));
         secondVisit.setSubject(secondSubject);
 
         visitService.update(secondVisit);
         visits = visitDataService.retrieveAll();
         assertEquals(2, visits.size());
 
-        visits = visitDataService.findVisitByDate(DateTime.parse("2014-10-21", formatter));
+        visits = visitDataService.findVisitByDate(LocalDate.parse("2014-10-21", formatter));
         assertEquals(1, visits.size());
 
         VisitUtils.checkVisitFields(secondVisit, visits.get(0));

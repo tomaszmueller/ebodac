@@ -8,7 +8,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
@@ -21,9 +21,9 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
-import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
@@ -85,19 +85,19 @@ public class VisitControllerIT extends BasePaxIT {
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address1", Language.Susu, "community", "B05-SL10001");
 
-        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, DateTime.parse("2014-10-17", formatter),
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));
 
-        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, DateTime.parse("2014-10-19", formatter),
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 null, "owner"));
 
-        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, DateTime.parse("2014-10-19", formatter),
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-19", formatter),
                 null, "owner"));
 
-        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, DateTime.parse("2014-10-21", formatter),
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
                 null, "owner"));
 
-        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_DAY, DateTime.parse("2014-10-17", formatter),
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_DAY, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));
     }
 
@@ -126,7 +126,7 @@ public class VisitControllerIT extends BasePaxIT {
 
     @Test
     public void shouldGetVisitsByDate() throws IOException, InterruptedException {
-        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date\":\"2014-10-21 00:00 +0200\"}", "Find Visit By Date",1, 5), typeOfRecords);
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date\":\"2014-10-21\"}", "Find Visit By Date",1, 5), typeOfRecords);
         List<VisitDAO> visitsDao = records.getRows();
         assertEquals(1, visitsDao.size());
 

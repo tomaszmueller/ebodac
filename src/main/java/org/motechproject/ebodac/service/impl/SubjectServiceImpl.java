@@ -1,10 +1,6 @@
 package org.motechproject.ebodac.service.impl;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.motechproject.commons.api.Range;
-import org.motechproject.ebodac.constants.EbodacConstants;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -125,25 +121,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> findSubjectsPrimerVaccinatedAtDay(DateTime date) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-        DateTime from = formatter.parseDateTime(date.toString(formatter));
-        DateTime to = from.plusDays(1).minusSeconds(1);
-        Range<DateTime> range = new Range<>(from, to);
-        return subjectDataService.findSubjectsByPrimerVaccinationDate(range);
+    public List<Subject> findSubjectsPrimerVaccinatedAtDay(LocalDate date) {
+        return subjectDataService.findSubjectsByPrimerVaccinationDate(date);
     }
 
     @Override
-    public List<Subject> findSubjectsBoosterVaccinatedAtDay(DateTime date) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-        DateTime from = formatter.parseDateTime(date.toString(formatter));
-        DateTime to = from.plusDays(1).minusSeconds(1);
-        Range<DateTime> range = new Range<>(from, to);
-        return subjectDataService.findSubjectsByBoosterVaccinationDate(range);
+    public List<Subject> findSubjectsBoosterVaccinatedAtDay(LocalDate date) {
+        return subjectDataService.findSubjectsByBoosterVaccinationDate(date);
     }
 
     @Override
-    public DateTime findOldestPrimerVaccinationDate() {
+    public LocalDate findOldestPrimerVaccinationDate() {
         QueryParams queryParams = new QueryParams(new Order("primerVaccinationDate", Order.Direction.ASC));
         List<Subject> subjects = subjectDataService.retrieveAll(queryParams);
         if (subjects != null && !subjects.isEmpty()) {
@@ -153,7 +141,7 @@ public class SubjectServiceImpl implements SubjectService {
                 }
             }
         }
-        return DateTime.now().minusDays(1);
+        return LocalDate.now().minusDays(1);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.domain;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
@@ -15,7 +15,7 @@ public abstract class ReportVaccinationAbstract {
     @Unique
     @UIDisplayable(position = 0)
     @Field
-    private DateTime date;
+    private LocalDate date;
 
     @NonEditable
     @UIDisplayable(position = 2)
@@ -59,7 +59,7 @@ public abstract class ReportVaccinationAbstract {
     public ReportVaccinationAbstract() {
     }
 
-    public ReportVaccinationAbstract(DateTime date, Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
                                      Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.date = date;
         this.adultMales = adultMales;
@@ -71,11 +71,11 @@ public abstract class ReportVaccinationAbstract {
         this.adultUndifferentiated = adultUndifferentiated;
     }
 
-    public DateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -77,7 +77,7 @@
         $scope.lookupBy = {};
         $scope.selectedLookup = undefined;
         $scope.lookupFields = [];
-        $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "dateTime"}]},
+        $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "localDate"}]},
                           {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Type", "type" : "list",
                          "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",

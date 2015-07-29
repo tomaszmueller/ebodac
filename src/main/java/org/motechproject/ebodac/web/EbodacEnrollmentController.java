@@ -6,6 +6,7 @@ import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class EbodacEnrollmentController {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is null", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().isEqual(existingVisit.getMotechProjectedDate())) {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date wasn't changed", HttpStatus.BAD_REQUEST);
-            } else if (visit.getMotechProjectedDate().isBeforeNow()) {
+            } else if (visit.getMotechProjectedDate().isBefore(LocalDate.now())) {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is in the past", HttpStatus.BAD_REQUEST);
             } else {
 

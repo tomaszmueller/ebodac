@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -51,38 +51,38 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
         String lastCalculationDate = config.getLastCalculationDate();
 
         if (StringUtils.isNotBlank(lastCalculationDate)) {
-            DateTime newCalculationDate = formatter.parseDateTime(lastCalculationDate).plusDays(1);
+            LocalDate newCalculationDate = LocalDate.parse(lastCalculationDate,formatter).plusDays(1);
 
-            DateTime newPrimerVaccinationDate = newSubject.getPrimerVaccinationDate();
-            DateTime oldPrimerVaccinationDate = null;
+            LocalDate newPrimerVaccinationDate = newSubject.getPrimerVaccinationDate();
+            LocalDate oldPrimerVaccinationDate = null;
             if (oldSubject != null) {
                 oldPrimerVaccinationDate = oldSubject.getPrimerVaccinationDate();
             }
 
-            if (oldPrimerVaccinationDate != null && !oldPrimerVaccinationDate.isEqual(newPrimerVaccinationDate)
+            if (oldPrimerVaccinationDate != null && !oldPrimerVaccinationDate.equals(newPrimerVaccinationDate)
                     && oldPrimerVaccinationDate.isBefore(newCalculationDate)) {
 
                 config.getPrimerVaccinationReportsToUpdate().add(oldPrimerVaccinationDate.toString(formatter));
             }
             if (newPrimerVaccinationDate != null && newPrimerVaccinationDate.isBefore(newCalculationDate)
-                    && (!newPrimerVaccinationDate.isEqual(oldPrimerVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
+                    && (!newPrimerVaccinationDate.equals(oldPrimerVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
 
                 config.getPrimerVaccinationReportsToUpdate().add(newPrimerVaccinationDate.toString(formatter));
             }
 
-            DateTime newBoosterVaccinationDate = newSubject.getBoosterVaccinationDate();
-            DateTime oldBoosterVaccinationDate = null;
+            LocalDate newBoosterVaccinationDate = newSubject.getBoosterVaccinationDate();
+            LocalDate oldBoosterVaccinationDate = null;
             if (oldSubject != null) {
                 oldBoosterVaccinationDate = oldSubject.getBoosterVaccinationDate();
             }
 
-            if (oldBoosterVaccinationDate != null && !oldBoosterVaccinationDate.isEqual(newBoosterVaccinationDate)
+            if (oldBoosterVaccinationDate != null && !oldBoosterVaccinationDate.equals(newBoosterVaccinationDate)
                     && oldBoosterVaccinationDate.isBefore(newCalculationDate)) {
 
                 config.getBoosterVaccinationReportsToUpdate().add(oldBoosterVaccinationDate.toString(formatter));
             }
             if (newBoosterVaccinationDate != null && newBoosterVaccinationDate.isBefore(newCalculationDate)
-                    && (!newBoosterVaccinationDate.isEqual(oldBoosterVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
+                    && (!newBoosterVaccinationDate.equals(oldBoosterVaccinationDate) || reportRelevantDataChanged(oldSubject, newSubject))) {
 
                 config.getBoosterVaccinationReportsToUpdate().add(newBoosterVaccinationDate.toString(formatter));
             }
@@ -101,10 +101,10 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
         if (newSubject.getGender() != null && !newSubject.getGender().equals(oldSubject.getGender())) {
             return true;
         }
-        if (oldSubject.getDateOfBirth() != null && !oldSubject.getDateOfBirth().isEqual(newSubject.getDateOfBirth())) {
+        if (oldSubject.getDateOfBirth() != null && !oldSubject.getDateOfBirth().equals(newSubject.getDateOfBirth())) {
             return true;
         }
-        if (newSubject.getDateOfBirth() != null && !newSubject.getDateOfBirth().isEqual(oldSubject.getDateOfBirth())) {
+        if (newSubject.getDateOfBirth() != null && !newSubject.getDateOfBirth().equals(oldSubject.getDateOfBirth())) {
             return true;
         }
         return false;

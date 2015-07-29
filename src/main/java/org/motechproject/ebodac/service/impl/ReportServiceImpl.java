@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.date.util.DateUtil;
@@ -50,14 +50,14 @@ public class ReportServiceImpl implements ReportService {
             String lastCalculationDate = config.getLastCalculationDate();
             String calculationStartDate = config.getFirstCalculationStartDate();
 
-            DateTime startDate;
+            LocalDate startDate;
 
             if (StringUtils.isNotBlank(lastCalculationDate)) {
-                startDate = formatter.parseDateTime(lastCalculationDate).plusDays(1);
+                startDate = LocalDate.parse(lastCalculationDate, formatter).plusDays(1);
             } else if (StringUtils.isNotBlank(calculationStartDate)) {
-                startDate = formatter.parseDateTime(calculationStartDate);
+                startDate = LocalDate.parse(calculationStartDate, formatter);
             } else {
-                startDate = formatter.parseDateTime(subjectService.findOldestPrimerVaccinationDate().toString(formatter));
+                startDate = subjectService.findOldestPrimerVaccinationDate();
             }
 
             updateBoosterVaccinationReportsForDates(reportUpdateService.getBoosterVaccinationReportsToUpdate());
@@ -73,11 +73,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void generateDailyReportsFromDate(DateTime startDate) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-        DateTime now = formatter.parseDateTime(DateUtil.now().toString(formatter));
+    public void generateDailyReportsFromDate(LocalDate startDate) {
+        LocalDate now = DateUtil.now().toLocalDate();
 
-        for(DateTime date = startDate; date.isBefore(now); date = date.plusDays(1)) {
+        for(LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
             generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
             generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
         }
@@ -95,7 +94,7 @@ public class ReportServiceImpl implements ReportService {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
         for (String dateString : dates) {
-            DateTime date = DateTime.parse(dateString, formatter);
+            LocalDate date = LocalDate.parse(dateString, formatter);
             generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
         }
     }
@@ -104,15 +103,15 @@ public class ReportServiceImpl implements ReportService {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
         for (String dateString : dates) {
-            DateTime date = DateTime.parse(dateString, formatter);
+            LocalDate date = LocalDate.parse(dateString, formatter);
             generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
         }
     }
 
-    private void generateOrUpdateBoosterVaccinationReport(List<Subject> subjects, DateTime date) {
-        DateTime age_6 = date.minusYears(6);
-        DateTime age_12 = date.minusYears(12);
-        DateTime age_18 = date.minusYears(18);
+    private void generateOrUpdateBoosterVaccinationReport(List<Subject> subjects, LocalDate date) {
+        LocalDate age_6 = date.minusYears(6);
+        LocalDate age_12 = date.minusYears(12);
+        LocalDate age_18 = date.minusYears(18);
 
         int children_0_5 = 0;
         int children_6_11 = 0;
@@ -164,10 +163,10 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    private void generateOrUpdatePrimerVaccinationReport(List<Subject> subjects, DateTime date) {
-        DateTime age_6 = date.minusYears(6);
-        DateTime age_12 = date.minusYears(12);
-        DateTime age_18 = date.minusYears(18);
+    private void generateOrUpdatePrimerVaccinationReport(List<Subject> subjects, LocalDate date) {
+        LocalDate age_6 = date.minusYears(6);
+        LocalDate age_12 = date.minusYears(12);
+        LocalDate age_18 = date.minusYears(18);
 
         int children_0_5 = 0;
         int children_6_11 = 0;

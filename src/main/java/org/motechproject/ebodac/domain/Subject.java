@@ -2,7 +2,7 @@ package org.motechproject.ebodac.domain;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.mds.annotations.Cascade;
@@ -92,23 +92,23 @@ public class Subject {
 
     @NonEditable
     @Field
-    private DateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @NonEditable
     @Field
-    private DateTime primerVaccinationDate;
+    private LocalDate primerVaccinationDate;
 
     @NonEditable
     @Field
-    private DateTime boosterVaccinationDate;
+    private LocalDate boosterVaccinationDate;
 
     @NonEditable
     @Field(displayName = "Date of Discontinuation Vac.")
-    private DateTime dateOfDisconVac;
+    private LocalDate dateOfDisconVac;
 
     @NonEditable
     @Field(displayName = "Withdrawal Date")
-    private DateTime dateOfDisconStd;
+    private LocalDate dateOfDisconStd;
 
     /**
      * Motech internal fields
@@ -235,48 +235,48 @@ public class Subject {
         this.stageId = stageId;
     }
 
-    public DateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setDateOfBirth(DateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public DateTime getPrimerVaccinationDate() {
+    public LocalDate getPrimerVaccinationDate() {
         return primerVaccinationDate;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setPrimerVaccinationDate(DateTime primerVaccinationDate) {
+    public void setPrimerVaccinationDate(LocalDate primerVaccinationDate) {
         this.primerVaccinationDate = primerVaccinationDate;
     }
 
-    public DateTime getBoosterVaccinationDate() {
+    public LocalDate getBoosterVaccinationDate() {
         return boosterVaccinationDate;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setBoosterVaccinationDate(DateTime boosterVaccinationDate) {
+    public void setBoosterVaccinationDate(LocalDate boosterVaccinationDate) {
         this.boosterVaccinationDate = boosterVaccinationDate;
     }
 
-    public DateTime getDateOfDisconVac() {
+    public LocalDate getDateOfDisconVac() {
         return dateOfDisconVac;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setDateOfDisconVac(DateTime dateOfDisconVac) {
+    public void setDateOfDisconVac(LocalDate dateOfDisconVac) {
         this.dateOfDisconVac = dateOfDisconVac;
     }
 
-    public DateTime getDateOfDisconStd() {
+    public LocalDate getDateOfDisconStd() {
         return dateOfDisconStd;
     }
 
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    public void setDateOfDisconStd(DateTime dateOfDisconStd) {
+    public void setDateOfDisconStd(LocalDate dateOfDisconStd) {
         this.dateOfDisconStd = dateOfDisconStd;
     }
 
@@ -379,22 +379,22 @@ public class Subject {
     }
 
     public boolean equalsForRave(Subject subject) {
-        if (primerVaccinationDate != null ? !primerVaccinationDate.isEqual(subject.primerVaccinationDate) : subject.primerVaccinationDate != null) {
+        if (primerVaccinationDate != null ? !primerVaccinationDate.equals(subject.primerVaccinationDate) : subject.primerVaccinationDate != null) {
             return false;
         }
-        if (boosterVaccinationDate != null ? !boosterVaccinationDate.isEqual(subject.boosterVaccinationDate) : subject.boosterVaccinationDate != null) {
+        if (boosterVaccinationDate != null ? !boosterVaccinationDate.equals(subject.boosterVaccinationDate) : subject.boosterVaccinationDate != null) {
             return false;
         }
-        if (dateOfBirth != null ? !dateOfBirth.isEqual(subject.dateOfBirth) : subject.dateOfBirth != null) {
+        if (dateOfBirth != null ? !dateOfBirth.equals(subject.dateOfBirth) : subject.dateOfBirth != null) {
             return false;
         }
         if (gender != subject.gender) {
             return false;
         }
-        if (dateOfDisconStd != null ? !dateOfDisconStd.isEqual(subject.dateOfDisconStd) : subject.dateOfDisconStd != null) {
+        if (dateOfDisconStd != null ? !dateOfDisconStd.equals(subject.dateOfDisconStd) : subject.dateOfDisconStd != null) {
             return false;
         }
-        if (dateOfDisconVac != null ? !dateOfDisconVac.isEqual(subject.dateOfDisconVac) : subject.dateOfDisconVac != null) {
+        if (dateOfDisconVac != null ? !dateOfDisconVac.equals(subject.dateOfDisconVac) : subject.dateOfDisconVac != null) {
             return false;
         }
         if (stageId != null ? !stageId.equals(subject.stageId) : subject.stageId != null) {

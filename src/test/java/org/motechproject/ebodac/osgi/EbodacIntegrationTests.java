@@ -8,12 +8,19 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+        EbodacConfigServiceIT.class,
         EbodacServiceIT.class,
         EbodacWebIT.class,
-        SubjectServiceIT.class,
-        EbodacConfigServiceIT.class,
+        HistoryServiceIT.class,
+        JobImporterIT.class,
+        MessageCampaignImporterIT.class,
         RaveImportServiceIT.class,
-        ReportServiceIT.class
+        ReportControllerIT.class,
+        ReportServiceIT.class,
+        SubjectServiceIT.class,
+        TaskImporterIT.class,
+        VisitControllerIT.class,
+        VisitServiceIT.class
 })
 public class EbodacIntegrationTests {
 }

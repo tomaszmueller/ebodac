@@ -3,12 +3,14 @@ package org.motechproject.ebodac.scheduler;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.motechproject.commons.date.model.Time;
+import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.scheduler.contract.RepeatingPeriodSchedulableJob;
@@ -41,7 +43,7 @@ public class EbodacSchedulerTest {
 
     @Test
     public void shouldScheduleZetesUpdateJob() {
-        Date startDate = DateTime.now().toDate();
+        Date startDate = LocalDate.now().toDate();
         String zetesUrl = "zetesUrl";
         String zetesUsername = "username";
         String zetesPassword = "password";
@@ -89,8 +91,7 @@ public class EbodacSchedulerTest {
 
     @Test
     public void shouldScheduleDailyReportJob() {
-        DateTime startDate = DateTime.parse(DateTime.now().plusDays(1).toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT))
-                + EbodacConstants.DAILY_REPORT_EVENT_START_HOUR, DateTimeFormat.forPattern(EbodacConstants.REPORT_START_DATE_FORMAT));
+        DateTime startDate = DateUtil.newDateTime(LocalDate.now().plusDays(1), Time.parseTime(EbodacConstants.DAILY_REPORT_EVENT_START_HOUR, ":"));
 
         ebodacScheduler.scheduleDailyReportJob(startDate);
 

@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -34,7 +34,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public void enrollScreening(Subject subject) {
         try {
-            enrollSubject(subject, VisitType.SCREENING.getValue(), DateUtil.now(), new Time(DateUtil.now().toLocalTime()), false, false, true);
+            enrollSubject(subject, VisitType.SCREENING.getValue(), DateUtil.now().toLocalDate(), new Time(DateUtil.now().toLocalTime()), false, false, true);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
         }
@@ -124,11 +124,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
-    private void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, boolean updateInactiveEnrollment) {
+    private void enrollSubject(Subject subject, String campaignName, LocalDate referenceDate, boolean updateInactiveEnrollment) {
         enrollSubject(subject, campaignName, referenceDate, null, updateInactiveEnrollment, false, false);
     }
 
-    private void enrollSubject(Subject subject, String campaignName, DateTime referenceDate, Time deliverTime, boolean updateInactiveEnrollment, boolean updateOnly, boolean createOly) {
+    private void enrollSubject(Subject subject, String campaignName, LocalDate referenceDate, Time deliverTime, boolean updateInactiveEnrollment, boolean updateOnly, boolean createOly) {
         String subjectID = subject.getSubjectId();
 
         if (StringUtils.isBlank(campaignName)) {
@@ -155,7 +155,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                                 subjectID, campaignName));
                     }
 
-                    if (referenceDate.isBeforeNow()) {
+                    if (referenceDate.isBefore(DateUtil.now().toLocalDate())) {
                         throw new EbodacEnrollmentException(String.format("Cannot re-enroll Subject with id: %s for Campaign with name: %s, because reference date is in the past",
                                 subjectID, campaignName));
                     }
@@ -196,7 +196,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
-    private void reenrollSubject(Subject subject, String campaignName, DateTime referenceDate, boolean updateInactiveEnrollment) {
+    private void reenrollSubject(Subject subject, String campaignName, LocalDate referenceDate, boolean updateInactiveEnrollment) {
         enrollSubject(subject, campaignName, referenceDate, null, updateInactiveEnrollment, true, false);
     }
 
@@ -308,15 +308,15 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         return false;
     }
 
-    private CampaignEnrollment updateEnrollment(CampaignEnrollment existingEnrollment, DateTime referenceDate, Time deliverTime, Boolean updateInactiveEnrollment) {
+    private CampaignEnrollment updateEnrollment(CampaignEnrollment existingEnrollment, LocalDate referenceDate, Time deliverTime, Boolean updateInactiveEnrollment) {
 
-        if (CampaignEnrollmentStatus.ACTIVE.equals(existingEnrollment.getStatus()) && !referenceDate.toLocalDate().isEqual(existingEnrollment.getReferenceDate())) {
-            existingEnrollment.setReferenceDate(referenceDate.toLocalDate());
+        if (CampaignEnrollmentStatus.ACTIVE.equals(existingEnrollment.getStatus()) && !referenceDate.isEqual(existingEnrollment.getReferenceDate())) {
+            existingEnrollment.setReferenceDate(referenceDate);
             existingEnrollment.setDeliverTime(deliverTime);
 
             return existingEnrollment;
         } else if (CampaignEnrollmentStatus.INACTIVE.equals(existingEnrollment.getStatus()) && updateInactiveEnrollment) {
-            existingEnrollment.setReferenceDate(referenceDate.toLocalDate());
+            existingEnrollment.setReferenceDate(referenceDate);
             existingEnrollment.setStatus(CampaignEnrollmentStatus.ACTIVE);
             existingEnrollment.setDeliverTime(deliverTime);
 
@@ -326,9 +326,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         return null;
     }
 
-    private CampaignEnrollment createEnrollment(String externalId, String campaignName, DateTime referenceDate, Time deliverTime) {
+    private CampaignEnrollment createEnrollment(String externalId, String campaignName, LocalDate referenceDate, Time deliverTime) {
         CampaignEnrollment enrollment = new CampaignEnrollment(externalId, campaignName);
-        enrollment.setReferenceDate(referenceDate.toLocalDate());
+        enrollment.setReferenceDate(referenceDate);
         enrollment.setDeliverTime(deliverTime);
 
         return enrollment;
