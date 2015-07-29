@@ -11,6 +11,8 @@ import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
+import org.motechproject.mds.annotations.Access;
+import org.motechproject.mds.util.SecurityMode;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Persistent;
@@ -22,6 +24,7 @@ import java.util.List;
 /**
  * Models data for registration of Subject in EBODAC
  */
+@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
 @Entity(recordHistory = true)
 public class Subject {
 

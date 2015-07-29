@@ -16,10 +16,10 @@ import org.motechproject.mds.util.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,7 +51,7 @@ public class InstanceController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping(value = "/instances/{entityId}/csvimport", method = RequestMethod.POST)
-    @PreAuthorize(Constants.Roles.HAS_DATA_ACCESS)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageSubjects')")
     @ResponseBody
     public long importCsv(@PathVariable long entityId, @RequestParam(required = true) MultipartFile csvFile) {
         try {

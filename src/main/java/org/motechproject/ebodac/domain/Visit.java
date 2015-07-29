@@ -6,17 +6,20 @@ import org.joda.time.DateTime;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
+import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
+import org.motechproject.mds.util.SecurityMode;
 
+
+@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
 @Entity(recordHistory = true)
 public class Visit {
 
     @NonEditable
     @Field
     private Subject subject;
-
 
     @NonEditable
     @Field

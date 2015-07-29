@@ -4,7 +4,11 @@
     "permissionNames": ["registrationSubmission"]
   },
   {
-    "roleName": "EBODAC Management",
-    "permissionNames": ["manageEbodac"]
+    "roleName": "EBODAC Administrator",
+    "permissionNames": ["manageEbodac", "manageSubjects", "viewUI"]
+  },
+  {
+    "roleName": "EBODAC Site-Analyst",
+    "permissionNames": ["manageEbodac", "viewUI"]
   }
 ]
