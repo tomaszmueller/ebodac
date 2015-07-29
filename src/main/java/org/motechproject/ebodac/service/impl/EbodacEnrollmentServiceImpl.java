@@ -46,7 +46,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         if (visits != null) {
             for (Visit visit : visits) {
-                if (visit.getDate() == null && visit.getMotechProjectedDate() == null) {
+                if (visit.getMotechProjectedDate() == null && (visit.getDate() == null || VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()))) {
                     enrollSubject(visit);
                 }
             }
@@ -55,7 +55,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
-        if (visit.getDate() != null) {
+        if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             completeCampaignForSubject(visit);
         } else if (visit.getMotechProjectedDate() == null) {
             enrollSubject(visit);
