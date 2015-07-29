@@ -5,10 +5,10 @@
   },
   {
     "roleName": "EBODAC Administrator",
-    "permissionNames": ["manageEbodac", "manageSubjects", "viewUI"]
+    "permissionNames": ["manageEbodac", "manageSubjects", "viewUI", "manageIVR", "viewSMSLogs"]
   },
   {
     "roleName": "EBODAC Site-Analyst",
-    "permissionNames": ["manageEbodac", "viewUI"]
+    "permissionNames": ["manageEbodac", "viewUI", "manageIVR", "viewSMSLogs"]
   }
 ]
