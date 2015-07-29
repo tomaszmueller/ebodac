@@ -81,6 +81,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             reenrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
             reenrollSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE, visit.getMotechProjectedDate(), false);
         } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+            if (visit.getMotechProjectedDate() == null) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
+                        visit.getSubject().getSubjectId(), visit.getType().getValue()));
+            }
             String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
             String campaignName = visit.getType().getValue() + " " + dayOfWeek;
 
@@ -100,6 +104,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
                 visit.setMotechProjectedDate(visit.getDateProjected());
             } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+                if (visit.getDateProjected() == null) {
+                    throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
+                            visit.getSubject().getSubjectId(), visit.getType().getValue()));
+                }
                 String dayOfWeek = visit.getDateProjected().dayOfWeek().getAsText(Locale.ENGLISH);
                 String campaignName = visit.getType().getValue() + " " + dayOfWeek;
 
@@ -124,18 +132,18 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         String subjectID = subject.getSubjectId();
 
         if (StringUtils.isBlank(campaignName)) {
-            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s because Campaign name is null or empty", subjectID));
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s because Campaign name is empty", subjectID));
         } else if (subjectID == null) {
-            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject for Campaign with name: %s, because subject id is null",
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject for Campaign with name: %s, because subject id is empty",
                     campaignName));
         } else if (referenceDate == null) {
-            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is nul",
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
                     subjectID, campaignName));
         } else if (subject.getLanguage() == null) {
-            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject language is null",
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject language is empty",
                     subjectID, campaignName));
         } else if (StringUtils.isBlank(subject.getPhoneNumber())) {
-            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject phone number is null",
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject phone number is empty",
                     subjectID, campaignName));
         } else {
             CampaignEnrollment existingEnrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectID, campaignName);
