@@ -19,11 +19,7 @@ import java.util.List;
 public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup
-    List<Subject> findSubjectByName(@LookupField(name = "name",
-            customOperator = Constants.Operators.EQ_IGNORE_CASE) String name);
-
-    @Lookup
-    List<Subject> findSubjectsByMatchesInsensitiveName(@LookupField(name = "name",
+    List<Subject> findSubjectsByName(@LookupField(name = "name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
     @Lookup
@@ -47,6 +43,10 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     List<Subject> findSubjectsByBoosterVaccinationDate(@LookupField(name = "boosterVaccinationDate") LocalDate dateRange);
 
     @Lookup
-    List<Subject> findSubjectByAddress(@LookupField(name = "address",
-            customOperator = Constants.Operators.EQ_IGNORE_CASE) String address);
+    List<Subject> findSubjectsByAddress(@LookupField(name = "address",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address);
+
+    @Lookup
+    List<Subject> findSubjectsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subjectId",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 }
