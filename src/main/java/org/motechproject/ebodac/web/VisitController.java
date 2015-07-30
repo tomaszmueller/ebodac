@@ -91,7 +91,7 @@ public class VisitController {
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By SubjectId":
                     String subjectId = (String) fields.get("SubjectId");
-                    subject = subjectDataService.findSubjectsByMatchesCaseInsensitiveSubjectId(subjectId);
+                    subject = subjectDataService.findSubjectBySubjectId(subjectId);
                     visits = subject.getVisits();
 
                     recordCount = visits.size();
