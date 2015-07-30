@@ -23,6 +23,10 @@ public interface SubjectDataService extends MotechDataService<Subject> {
             customOperator = Constants.Operators.EQ_IGNORE_CASE) String name);
 
     @Lookup
+    List<Subject> findSubjectsByMatchesInsensitiveName(@LookupField(name = "name",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
+
+    @Lookup
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
 
     @Lookup
