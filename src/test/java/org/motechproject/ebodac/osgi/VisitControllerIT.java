@@ -126,7 +126,17 @@ public class VisitControllerIT extends BasePaxIT {
 
     @Test
     public void shouldGetVisitsByDate() throws IOException, InterruptedException {
-        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date\":\"2014-10-21\"}", "Find Visit By Date",1, 5), typeOfRecords);
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date\":\"2014-10-21\"}", "Find Visit By Date", 1, 5), typeOfRecords);
+        List<VisitDAO> visitsDao = records.getRows();
+        assertEquals(1, visitsDao.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visitsDao.get(0).toVisit());
+    }
+
+    @Test
+    public void shouldGetVisitsByDateRange() throws IOException, InterruptedException {
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date Range\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"}}",
+                "Find Visits By Date Range",1, 5), typeOfRecords);
         List<VisitDAO> visitsDao = records.getRows();
         assertEquals(1, visitsDao.size());
 
