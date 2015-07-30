@@ -67,6 +67,7 @@ public class Visit {
         this.date = date;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDateProjected() {
         return dateProjected;
     }
@@ -76,6 +77,7 @@ public class Visit {
         this.dateProjected = dateProjected;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getMotechProjectedDate() {
         return motechProjectedDate;
     }

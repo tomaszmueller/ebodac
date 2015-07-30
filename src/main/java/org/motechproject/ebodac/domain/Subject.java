@@ -2,9 +2,11 @@ package org.motechproject.ebodac.domain;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
+import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
@@ -235,6 +237,7 @@ public class Subject {
         this.stageId = stageId;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -244,6 +247,7 @@ public class Subject {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getPrimerVaccinationDate() {
         return primerVaccinationDate;
     }
@@ -253,6 +257,7 @@ public class Subject {
         this.primerVaccinationDate = primerVaccinationDate;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getBoosterVaccinationDate() {
         return boosterVaccinationDate;
     }
@@ -262,6 +267,7 @@ public class Subject {
         this.boosterVaccinationDate = boosterVaccinationDate;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDateOfDisconVac() {
         return dateOfDisconVac;
     }
@@ -271,6 +277,7 @@ public class Subject {
         this.dateOfDisconVac = dateOfDisconVac;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDateOfDisconStd() {
         return dateOfDisconStd;
     }
