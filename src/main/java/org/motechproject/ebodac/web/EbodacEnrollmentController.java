@@ -48,7 +48,7 @@ public class EbodacEnrollmentController {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because visit already took place", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate() == null) {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is null", HttpStatus.BAD_REQUEST);
-            } else if (visit.getMotechProjectedDate().isEqual(existingVisit.getMotechProjectedDate())) {
+            } else if (visit.getMotechProjectedDate().equals(existingVisit.getMotechProjectedDate())) {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date wasn't changed", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().isBefore(LocalDate.now())) {
                 return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is in the past", HttpStatus.BAD_REQUEST);
