@@ -91,7 +91,7 @@ public class VisitController {
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By SubjectId":
                     String subjectId = (String) fields.get("SubjectId");
-                    subject = subjectDataService.findSubjectBySubjectId(subjectId);
+                    subject = subjectDataService.findSubjectsByMatchesCaseInsensitiveSubjectId(subjectId);
                     visits = subject.getVisits();
 
                     recordCount = visits.size();
@@ -106,7 +106,7 @@ public class VisitController {
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By Subject Name":
                     String name = (String) fields.get("Name");
-                    subjects = subjectDataService.findSubjectByName(name);
+                    subjects = subjectDataService.findSubjectsByName(name);
 
                     visits = new ArrayList<>();
                     for (Subject s : subjects) {
@@ -125,7 +125,7 @@ public class VisitController {
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By Subject Address":
                     String address = (String) fields.get("Address");
-                    subjects = subjectDataService.findSubjectByAddress(address);
+                    subjects = subjectDataService.findSubjectsByAddress(address);
 
                     visits = new ArrayList<>();
                     for (Subject s : subjects) {
