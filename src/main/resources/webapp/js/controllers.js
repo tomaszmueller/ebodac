@@ -78,6 +78,7 @@
         $scope.selectedLookup = undefined;
         $scope.lookupFields = [];
         $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "localDate"}]},
+                          {"lookupName" : "Find Visits By Date Range", "fields" : [{"name" : "Date Range", "type" : "range"}]},
                           {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Type", "type" : "list",
                          "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
@@ -142,6 +143,12 @@
             } else if (field.type === "dateTime" || field.type === "date") {
                 value = "datetime";
             } else if (field.type === "localDate") {
+                value = "date";
+            } else if(field.type === "range") {
+                if (!$scope.lookupBy[field.name]) {
+                    $scope.lookupBy[field.name] = {min: '', max: ''};
+                }
+                type = "range";
                 value = "date";
             }
 

@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.repository;
 
 import org.joda.time.LocalDate;
+import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.mds.annotations.Lookup;
@@ -25,6 +26,14 @@ public interface VisitDataService extends MotechDataService<Visit> {
     List<Visit> findVisitByDate(@LookupField(name = "date") LocalDate date, QueryParams queryParams);
 
     long countFindVisitByDate(@LookupField(name = "date") LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange, QueryParams queryParams);
+
+    long countFindVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup
     List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType, QueryParams queryParams);

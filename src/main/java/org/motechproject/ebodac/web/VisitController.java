@@ -5,6 +5,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
@@ -66,6 +67,17 @@ public class VisitController {
                     List<Visit> visits = visitDataService.findVisitByDate(date, queryParams);
 
                     recordCount = visitDataService.countFindVisitByDate(date);
+                    rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
+
+                    return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
+                case "Find Visits By Date Range":
+                    Map<String, Object> rangeMap = (Map<String, Object>) fields.get("Date Range");
+                    LocalDate min = LocalDate.parse((String)rangeMap.get("min"));
+                    LocalDate max = LocalDate.parse((String)rangeMap.get("max"));
+                    Range<LocalDate> range = new Range<>(min, max);
+
+                    visits = visitDataService.findVisitsByDateRange(range, queryParams);
+                    recordCount = visitDataService.countFindVisitsByDateRange(range);
                     rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
 
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
