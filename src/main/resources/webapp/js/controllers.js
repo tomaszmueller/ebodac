@@ -78,14 +78,22 @@
         $scope.selectedLookup = undefined;
         $scope.lookupFields = [];
         $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "localDate"}]},
+                          {"lookupName" : "Find Visit By Date And Type", "fields" : [{"name" : "Date", "type" : "localDate"},
+                          {"name" : "Type", "type" : "list", "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
+                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
+                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
                           {"lookupName" : "Find Visits By Date Range", "fields" : [{"name" : "Date Range", "type" : "range"}]},
+                          {"lookupName" : "Find Visits By Date Range And Type", "fields" : [{"name" : "Date Range", "type" : "range"},
+                          {"name" : "Type", "type" : "list", "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
+                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
+                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
                           {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Type", "type" : "list",
-                         "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
-                         "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
-                         "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
-                         {"lookupName" : "Find Visit By SubjectId", "fields" : [{"name" : "SubjectId", "type" : "string"}]},
-                         {"lookupName" : "Find Visit By Subject Name", "fields" : [{"name" : "Name", "type" : "string"}]},
-                         {"lookupName" : "Find Visit By Subject Address", "fields" : [{"name" : "Address", "type" : "string"}]}];
+                          "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
+                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
+                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
+                          {"lookupName" : "Find Visit By SubjectId", "fields" : [{"name" : "SubjectId", "type" : "string"}]},
+                          {"lookupName" : "Find Visit By Subject Name", "fields" : [{"name" : "Name", "type" : "string"}]},
+                          {"lookupName" : "Find Visit By Subject Address", "fields" : [{"name" : "Address", "type" : "string"}]}];
 
         /**
         * Shows/Hides lookup dialog
@@ -144,7 +152,7 @@
                 value = "datetime";
             } else if (field.type === "localDate") {
                 value = "date";
-            } else if(field.type === "range") {
+            }  else if(field.type === "range") {
                 if (!$scope.lookupBy[field.name]) {
                     $scope.lookupBy[field.name] = {min: '', max: ''};
                 }
