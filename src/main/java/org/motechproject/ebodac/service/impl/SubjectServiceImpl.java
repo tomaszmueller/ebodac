@@ -79,6 +79,8 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb.setDateOfDisconVac(newSubject.getDateOfDisconVac());
             subjectInDb.setDateOfDisconStd(newSubject.getDateOfDisconStd());
 
+            ebodacEnrollmentService.withdrawalSubject(subjectInDb);
+
             return update(subjectInDb);
         } else {
             return create(newSubject);

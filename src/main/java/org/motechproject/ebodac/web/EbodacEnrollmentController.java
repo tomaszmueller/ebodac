@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.web;
 
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class EbodacEnrollmentController {
@@ -63,5 +66,12 @@ public class EbodacEnrollmentController {
             }
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/availableCampaigns", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getAvailableCampaigns() {
+        return EbodacConstants.AVAILABLE_CAMPAIGNS;
     }
 }

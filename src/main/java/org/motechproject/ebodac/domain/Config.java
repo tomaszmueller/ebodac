@@ -3,7 +3,9 @@ package org.motechproject.ebodac.domain;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.constants.EbodacConstants;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Config {
@@ -59,6 +61,8 @@ public class Config {
     private Set<String> primerVaccinationReportsToUpdate;
 
     private Set<String> boosterVaccinationReportsToUpdate;
+
+    private List<String> disconVacCampaignsList;
 
     public Config() {
     }
@@ -230,5 +234,16 @@ public class Config {
 
     public void setBoosterVaccinationReportsToUpdate(Set<String> boosterVaccinationReportsToUpdate) {
         this.boosterVaccinationReportsToUpdate = boosterVaccinationReportsToUpdate;
+    }
+
+    public List<String> getDisconVacCampaignsList() {
+        if (disconVacCampaignsList == null) {
+            disconVacCampaignsList = new ArrayList<>();
+        }
+        return disconVacCampaignsList;
+    }
+
+    public void setDisconVacCampaignsList(List<String> disconVacCampaignsList) {
+        this.disconVacCampaignsList = disconVacCampaignsList;
     }
 }

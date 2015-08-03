@@ -37,4 +37,9 @@ public final class EbodacConstants {
     public static final String MIDPOINT_MESSAGE = "Mid-point message";
 
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+
+    public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
+            "Mid-point message", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
+            "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
+            "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
 }
