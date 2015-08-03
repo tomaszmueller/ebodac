@@ -115,7 +115,7 @@ public class VisitControllerIT extends BasePaxIT {
 
     @Test
     public void shouldGetCorrectNumberOfRows() throws IOException, InterruptedException {
-        Records<VisitDAO> records = new Gson().fromJson(getVisitsWithoutLookup(1,4), typeOfRecords);
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsWithoutLookup(1, 4), typeOfRecords);
         List<VisitDAO> visitsDao = records.getRows();
         assertEquals(4, visitsDao.size());
 
@@ -134,9 +134,29 @@ public class VisitControllerIT extends BasePaxIT {
     }
 
     @Test
+    public void shouldGetVisitsByDateAndType() throws IOException, InterruptedException {
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date\":\"2014-10-21\",\"Type\":\"Prime Vaccination Follow-up visit\"}",
+                "Find Visit By Date And Type", 1, 5), typeOfRecords);
+        List<VisitDAO> visitsDao = records.getRows();
+        assertEquals(1, visitsDao.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visitsDao.get(0).toVisit());
+    }
+
+    @Test
     public void shouldGetVisitsByDateRange() throws IOException, InterruptedException {
         Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date Range\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"}}",
                 "Find Visits By Date Range",1, 5), typeOfRecords);
+        List<VisitDAO> visitsDao = records.getRows();
+        assertEquals(1, visitsDao.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visitsDao.get(0).toVisit());
+    }
+
+    @Test
+    public void shouldGetVisitsByDateRangeAndType() throws IOException, InterruptedException {
+        Records<VisitDAO> records = new Gson().fromJson(getVisitsByLookup("{\"Date Range\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"},\"Type\":\"Prime Vaccination Follow-up visit\"}",
+                "Find Visits By Date Range And Type",1, 5), typeOfRecords);
         List<VisitDAO> visitsDao = records.getRows();
         assertEquals(1, visitsDao.size());
 

@@ -28,12 +28,34 @@ public interface VisitDataService extends MotechDataService<Visit> {
     long countFindVisitByDate(@LookupField(name = "date") LocalDate date);
 
     @Lookup
+    List<Visit> findVisitByDateAndType(@LookupField(name = "date") LocalDate date,
+                                       @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitByDateAndType(@LookupField(name = "date") LocalDate date,
+                                       @LookupField(name = "type") VisitType visitType,  QueryParams queryParams);
+
+    long countFindVisitByDateAndType(@LookupField(name = "date") LocalDate date,
+                                     @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
     List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup
     List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange, QueryParams queryParams);
 
     long countFindVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                             @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                             @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
+
+    long countFindVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                           @LookupField(name = "type") VisitType visitType);
 
     @Lookup
     List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType, QueryParams queryParams);

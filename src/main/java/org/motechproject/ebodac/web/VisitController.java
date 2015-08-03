@@ -70,6 +70,15 @@ public class VisitController {
                     rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
 
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
+                case "Find Visit By Date And Type":
+                    date = LocalDate.parse((String) fields.get("Date"), lookupDateTimeFormat);
+                    VisitType type = VisitType.getByValue((String) fields.get("Type"));
+
+                    visits = visitDataService.findVisitByDateAndType(date, type, queryParams);
+                    recordCount = visitDataService.countFindVisitByDateAndType(date, type);
+                    rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
+
+                    return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visits By Date Range":
                     Map<String, Object> rangeMap = (Map<String, Object>) fields.get("Date Range");
                     LocalDate min = LocalDate.parse((String)rangeMap.get("min"));
@@ -81,8 +90,20 @@ public class VisitController {
                     rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
 
                     return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
+                case "Find Visits By Date Range And Type":
+                    rangeMap = (Map<String, Object>) fields.get("Date Range");
+                    min = LocalDate.parse((String)rangeMap.get("min"));
+                    max = LocalDate.parse((String)rangeMap.get("max"));
+                    type = VisitType.getByValue((String) fields.get("Type"));
+                    range = new Range<>(min, max);
+
+                    visits = visitDataService.findVisitsByDateRangeAndType(range,type,queryParams);
+                    recordCount = visitDataService.countFindVisitsByDateRangeAndType(range, type);
+                    rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
+
+                    return new Records<>(settings.getPage(), rowCount, (int) recordCount, visits);
                 case "Find Visit By Type":
-                    VisitType type = VisitType.getByValue((String) fields.get("Type"));
+                    type = VisitType.getByValue((String) fields.get("Type"));
                     visits = visitDataService.findVisitByType(type, queryParams);
 
                     recordCount = visitDataService.countFindVisitByType(type);
