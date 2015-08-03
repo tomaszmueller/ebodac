@@ -78,8 +78,8 @@
                         order: 'sortDirection'
                     },
                     colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitDate'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
-                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress'),
-                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitType')],
+                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectPhoneNumber'),
+                        scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitType')],
                     colModel: [{
                        name: 'rowId',
                        index: 'rowId',
@@ -110,6 +110,17 @@
                                            return '';
                                        }
                                        return cellValue.name;
+                                   }
+                    }, {
+                        name: 'subjectPhoneNumber',
+                        jsonmap: 'subject',
+                        index: 'subject.phoneNumber',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.phoneNumber;
                                    }
                     }, {
                         name: 'subjectAddress',
