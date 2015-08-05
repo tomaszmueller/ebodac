@@ -1,14 +1,14 @@
 package org.motechproject.ebodac.service.impl.csv;
 
 import org.motechproject.ebodac.constants.EbodacConstants;
-import org.motechproject.mds.service.CsvExportCustomizer;
+import org.motechproject.mds.service.DefaultCsvExportCustomizer;
 import org.motechproject.mds.util.PropertyUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
 @Component
-public class VisitCsvExportCustomizer implements CsvExportCustomizer {
+public class VisitCsvExportCustomizer extends DefaultCsvExportCustomizer {
 
     @Override
     public String formatRelationship(Object object) {
