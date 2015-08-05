@@ -33,7 +33,7 @@ public interface VisitDataService extends MotechDataService<Visit> {
 
     @Lookup
     List<Visit> findVisitByDateAndType(@LookupField(name = "date") LocalDate date,
-                                       @LookupField(name = "type") VisitType visitType,  QueryParams queryParams);
+                                       @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
 
     long countFindVisitByDateAndType(@LookupField(name = "date") LocalDate date,
                                      @LookupField(name = "type") VisitType visitType);
@@ -64,4 +64,28 @@ public interface VisitDataService extends MotechDataService<Visit> {
     List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType);
 
     long countFindVisitByType(@LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitBySubjectId(@LookupField(name = "subject.subjectId") String subjectId, QueryParams queryParams);
+
+    @Lookup
+    List<Visit> findVisitBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
+
+    long countFindVisitBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
+
+    @Lookup
+    List<Visit> findVisitBySubjectName(@LookupField(name = "subject.name") String name, QueryParams queryParams);
+
+    @Lookup
+    List<Visit> findVisitBySubjectName(@LookupField(name = "subject.name") String name);
+
+    long countFindVisitBySubjectName(@LookupField(name = "subject.name") String name);
+
+    @Lookup
+    List<Visit> findVisitBySubjectAddress(@LookupField(name = "subject.address") String address, QueryParams queryParams);
+
+    @Lookup
+    List<Visit> findVisitBySubjectAddress(@LookupField(name = "subject.address") String address);
+
+    long countFindVisitBySubjectAddress(@LookupField(name = "subject.address") String address);
 }

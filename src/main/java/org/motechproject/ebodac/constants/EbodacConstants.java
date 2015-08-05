@@ -2,7 +2,9 @@ package org.motechproject.ebodac.constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public final class EbodacConstants {
@@ -36,10 +38,24 @@ public final class EbodacConstants {
 
     public static final String MIDPOINT_MESSAGE = "Mid-point message";
 
+    public static final String PDF_EXPORT_FORMAT="pdf";
+    public static final String CSV_EXPORT_FORMAT="csv";
+
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
             "Mid-point message", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
+
+    public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new HashMap<String, String>() {
+        {
+            put("Date",         "date");
+            put("Subject ID",   "subjectId");
+            put("Name",         "name");
+            put("Phone Number", "phoneNumber");
+            put("Address",      "address");
+            put("Visit type",   "type");
+        }
+    };
 }
