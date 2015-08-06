@@ -12,6 +12,7 @@ import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.testing.osgi.BasePaxIT;
@@ -40,6 +41,9 @@ public class SubjectServiceIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     private Subject firstSubject;
@@ -49,6 +53,7 @@ public class SubjectServiceIT extends BasePaxIT {
     @Before
     public void cleanBefore() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         resetSubjects();
     }
@@ -56,6 +61,7 @@ public class SubjectServiceIT extends BasePaxIT {
     @After
     public void cleanAfter() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 

@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.RaveImportService;
 import org.motechproject.mds.query.QueryParams;
@@ -43,6 +44,9 @@ public class HistoryServiceIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     @Inject
@@ -51,12 +55,14 @@ public class HistoryServiceIT extends BasePaxIT {
     @Before
     public void cleanBefore() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 
     @After
     public void cleanAfter() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
 
     }

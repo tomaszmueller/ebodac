@@ -5,10 +5,13 @@ import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.service.ConfigService;
+import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.messagecampaign.EventKeys;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class EbodacEventListener {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private EbodacEnrollmentService enrollmentService;
 
     @MotechListener(subjects = {EbodacConstants.ZETES_UPDATE_EVENT})
     public void zetesUpdate(MotechEvent event) {
@@ -56,5 +62,13 @@ public class EbodacEventListener {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
         reportService.generateDailyReports();
         LOGGER.info("Daily Reports generation completed");
+    }
+
+    @MotechListener(subjects = EventKeys.CAMPAIGN_COMPLETED)
+    public void completeCampaign(MotechEvent event) throws SchedulerException {
+        String campaignName = (String) event.getParameters().get(EventKeys.CAMPAIGN_NAME_KEY);
+        String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
+
+        enrollmentService.completeCampaign(externalId, campaignName);
     }
 }

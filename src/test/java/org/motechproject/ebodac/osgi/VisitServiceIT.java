@@ -13,6 +13,7 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -41,6 +42,9 @@ public class VisitServiceIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     private Subject firstSubject;
@@ -56,6 +60,7 @@ public class VisitServiceIT extends BasePaxIT {
     @Before
     public void cleanBefore() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         resetTestFields();
     }
@@ -63,6 +68,7 @@ public class VisitServiceIT extends BasePaxIT {
     @After
     public void cleanAfter() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 

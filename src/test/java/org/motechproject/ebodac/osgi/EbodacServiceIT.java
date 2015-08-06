@@ -12,6 +12,7 @@ import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.server.FtpsServer;
 import org.motechproject.ebodac.service.ConfigService;
@@ -51,6 +52,9 @@ public class EbodacServiceIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     @Inject
@@ -73,6 +77,7 @@ public class EbodacServiceIT extends BasePaxIT {
         assertTrue(csvDir.exists());
 
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 
@@ -85,6 +90,7 @@ public class EbodacServiceIT extends BasePaxIT {
         FileUtils.deleteDirectory(csvDir);
 
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 

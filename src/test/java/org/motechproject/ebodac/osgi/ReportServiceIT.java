@@ -15,6 +15,7 @@ import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.RaveImportService;
@@ -48,6 +49,9 @@ public class ReportServiceIT extends BasePaxIT{
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     @Inject
@@ -76,6 +80,7 @@ public class ReportServiceIT extends BasePaxIT{
     public void setUp() throws Exception {
         savedConfig = configService.getConfig();
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         boosterVaccinationDataService.deleteAll();
         primerVaccinationDataService.deleteAll();
@@ -86,6 +91,7 @@ public class ReportServiceIT extends BasePaxIT{
     public void tearDown() throws Exception {
         configService.updateConfig(savedConfig);
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         boosterVaccinationDataService.deleteAll();
         primerVaccinationDataService.deleteAll();

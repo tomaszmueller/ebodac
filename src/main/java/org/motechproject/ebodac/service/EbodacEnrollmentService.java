@@ -18,4 +18,6 @@ public interface EbodacEnrollmentService {
     void reenrollSubject(Visit visit);
 
     void withdrawalSubject(Subject subject);
+
+    void completeCampaign(String subjectId, String campaignName);
 }
