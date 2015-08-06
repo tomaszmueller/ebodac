@@ -22,15 +22,15 @@ public class Visit {
     private Subject subject;
 
     @NonEditable
-    @Field
+    @Field(displayName = "Visit Type")
     private VisitType type;
 
     @NonEditable
-    @Field
+    @Field(displayName = "Actual Visit Date")
     private LocalDate date;
 
     @NonEditable
-    @Field
+    @Field(displayName = "Planned Visit Date")
     private LocalDate dateProjected;
 
     @Field
