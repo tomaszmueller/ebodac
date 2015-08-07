@@ -10,6 +10,10 @@
             <i class="fa fa-lg fa-caret-down"></i>
             {{msg('ebodac.btn.lookup')}}
         </button>
+        <button ng-click="exportEntityInstances()" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-export"></span>
+            {{msg('ebodac.btn.exportData')}}
+        </button>
     </div>
 
     <div id="lookup-dialog" class="popover bottom inside lookup-dialog">
@@ -53,4 +57,6 @@
         <table id="dailyClinicVisitScheduleReportTable" daily-clinic-visit-schedule-report-grid="pageDailyClinicVisitScheduleReportTable"></table>
         <div id="pageDailyClinicVisitScheduleReportTable"></div>
     </div>
+
+    <div ng-include="'../ebodac/resources/partials/modals/export-entity.html'"></div>
 </div>

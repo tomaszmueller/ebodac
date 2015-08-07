@@ -38,6 +38,10 @@
 
     <osgi:service ref="ebodacEnrollmentService" interface="org.motechproject.ebodac.service.EbodacEnrollmentService" />
 
+    <osgi:service ref="exportService" interface="org.motechproject.ebodac.service.ExportService" />
+
+    <osgi:service ref="lookupService" interface="org.motechproject.ebodac.service.LookupService" />
+
     <osgi:reference id="reportPrimerVaccinationDataService"
                     interface="org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService" />
 

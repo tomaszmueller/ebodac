@@ -2,7 +2,10 @@ package org.motechproject.ebodac.web;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.LocalDate;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
 import org.motechproject.ebodac.web.domain.GridSettings;
@@ -13,6 +16,8 @@ import org.motechproject.mds.service.CsvImportExportService;
 import org.motechproject.mds.service.EntityService;
 import org.motechproject.mds.util.Constants;
 import org.motechproject.mds.util.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +41,7 @@ import static org.apache.commons.lang.CharEncoding.UTF_8;
 
 @Controller
 public class InstanceController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InstanceController.class);
 
     @Autowired
     private CsvImportExportService csvImportExportService;
@@ -44,6 +51,9 @@ public class InstanceController {
 
     @Autowired
     private VisitCsvExportCustomizer visitCsvExportCustomizer;
+
+    @Autowired
+    private ExportService exportService;
 
     @Autowired
     private EntityService entityService;
@@ -128,6 +138,56 @@ public class InstanceController {
                     csvImportExportService.exportCsv(entityId, response.getWriter());
                 }
             }
+        }
+    }
+
+    @RequestMapping(value = "/exportDailyClinicVisitScheduleReport", method = RequestMethod.GET)
+    public void exportDailyClinicVisitScheduleReport(GridSettings settings,
+                                                     @RequestParam String range,
+                                                     @RequestParam String outputFormat,
+                                                     HttpServletResponse response) throws IOException {
+
+        if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
+            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
+        }
+
+        final String fileName = "DailyClinicVisitScheduleReport_" + LocalDate.now().toString();
+
+        if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
+            response.setContentType("application/pdf");
+        } else {
+            response.setContentType("text/csv");
+        }
+        response.setCharacterEncoding(UTF_8);
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=" + fileName + "." + outputFormat.toLowerCase());
+
+        Order order = null;
+        if (!settings.getSortColumn().isEmpty()) {
+            order = new Order(settings.getSortColumn(), settings.getSortDirection());
+        }
+        QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
+        try {
+            if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
+                exportService.exportDailyClinicVisitScheduleReportToPDF(response.getOutputStream(), settings.getLookup(),
+                        settings.getFields(), queryParams);
+            } else {
+                exportService.exportDailyClinicVisitScheduleReportToCSV(response.getWriter(), settings.getLookup(),
+                        settings.getFields(), queryParams);
+            }
+        } catch (IOException e) {
+            LOGGER.debug(e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (NoSuchMethodException e) {
+            LOGGER.debug(e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        } catch (InvocationTargetException e) {
+            LOGGER.debug(e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        } catch (IllegalAccessException e) {
+            LOGGER.debug(e.getMessage(), e);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 

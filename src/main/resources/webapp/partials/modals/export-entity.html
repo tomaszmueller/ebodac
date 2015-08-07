@@ -1,0 +1,50 @@
+<div id="exportInstanceModal" class="mds modal fade" tabindex="-1" role="dialog" aria-labelledby="exportInstanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeExportInstanceModal()">&times;</button>
+                <h4 class="modal-title" id="exportInstanceModalLabel">{{msg('ebodac.form.exportData')}}</h4>
+            </div>
+            <div class="modal-body">
+                <form id="exportInstanceForm" name="exportInstanceForm" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="range">
+                            {{msg('ebodac.form.exportRange')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="range">
+                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    {{msg('ebodac.form.exportRange.' + actualExportRange)}}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="range in availableExportRange" ng-click="changeExportRange(range)"><a>{{ msg('ebodac.form.exportRange.' + range) }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="exportFormat">
+                            {{msg('ebodac.form.exportFormat')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="exportFormat">
+                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    {{msg('ebodac.form.exportFormat.' + exportFormat)}}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="format in availableExportFormats" ng-click="changeExportFormat(format)"><a>{{ msg('ebodac.form.exportFormat.' + format) }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="exportInstance()">{{msg('ebodac.btn.export')}}</button>
+                <button class="btn btn-default" ng-click="closeExportInstanceModal()">{{msg('ebodac.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
