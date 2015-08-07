@@ -12,6 +12,7 @@ import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -31,6 +32,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEnrollmentServiceImpl.class);
 
     private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    private EnrollmentDataService enrollmentDataService;
 
     private MessageCampaignService messageCampaignService;
 
@@ -59,6 +62,64 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     @Override
+    public void enrollSubject(String subjectId) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments == null || !EnrollmentStatus.UNENROLLED.equals(subjectEnrollments.getStatus())) {
+            throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject, because Subject with id: %s is not enrolled in any campaign",
+                    subjectId));
+        }
+
+        Subject subject = subjectEnrollments.getSubject();
+
+        if (subject.getDateOfDisconStd() != null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject is withdrawn from study",
+                    subject.getSubjectId()));
+        } else if (subject.getLanguage() == null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject language is empty",
+                    subject.getSubjectId()));
+        } else if (StringUtils.isBlank(subject.getPhoneNumber())) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject phone number is empty",
+                    subject.getSubjectId()));
+        }
+
+        for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
+            if (!EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus())) {
+                continue;
+            }
+            if (enrollment.getReferenceDate() == null) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
+                        subject.getSubjectId(), enrollment.getCampaignName()));
+            } else if (subject.getDateOfDisconVac() != null) {
+                String campaign = enrollment.getCampaignName();
+                if (enrollment.getCampaignName().startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+                    campaign = VisitType.BOOST_VACCINATION_DAY.getValue();
+                }
+                if (configService.getConfig().getDisconVacCampaignsList().contains(campaign)) {
+                    enrollment.setStatus(EnrollmentStatus.COMPLETED);
+                    continue;
+                }
+            }
+
+            try {
+                messageCampaignService.scheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
+                enrollment.setStatus(EnrollmentStatus.ENROLLED);
+                enrollmentDataService.update(enrollment);
+            } catch (CampaignNotFoundException e) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s because Campaign with name: %s doesn't exist",
+                        subject.getSubjectId(), enrollment.getCampaignName()), e);
+            } catch (IllegalArgumentException e) {
+                LOGGER.debug("Cannot enroll Subject with id: {} for Campaign with name: {}, because last message date is in the past. Changing enrollment status to Completed",
+                        subject.getSubjectId(), enrollment.getCampaignName(), e);
+                enrollment.setStatus(EnrollmentStatus.COMPLETED);
+            } catch (Exception e) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because of unknown exception",
+                        subject.getSubjectId(), enrollment.getCampaignName()), e);
+            }
+        }
+        updateSubjectEnrollments(subjectEnrollments);
+    }
+
+    @Override
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
         if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             completeCampaignForSubject(visit, false);
@@ -70,6 +131,32 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public void unenrollSubject(Subject subject, String campaignName) {
         unenrollSubject(subject.getSubjectId(), campaignName);
+    }
+
+    @Override
+    public void unenrollSubject(String subjectId) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments == null || !EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus())) {
+            throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject, because no Subject with id: %s is not enrolled in any campaign",
+                    subjectId));
+        }
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            try {
+                if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+                    messageCampaignService.unscheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
+
+                    enrollment.setStatus(EnrollmentStatus.UNENROLLED);
+                    enrollmentDataService.update(enrollment);
+                }
+            } catch (CampaignNotFoundException e) {
+                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s because Campaign with name: %s doesn't exist",
+                        subjectId, enrollment.getCampaignName()), e);
+            } catch (Exception e) {
+                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from Campaign with name: %s, because of unknown exception",
+                        subjectId, enrollment.getCampaignName()), e);
+            }
+        }
+        updateSubjectEnrollments(subjectEnrollments);
     }
 
     @Override
@@ -248,7 +335,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             } catch (EbodacEnrollmentException e) {
                 throw e;
             } catch (Exception e) {
-                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s",
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because of unknown exception",
                         subjectID, campaignName), e);
             }
         }
@@ -319,7 +406,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s because Campaign with name: %s doesn't exist",
                         subjectId, campaignName), e);
             } catch (Exception e) {
-                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from Campaign with name: %s",
+                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from Campaign with name: %s, because of unknown exception",
                         subjectId, campaignName), e);
             }
         } else if (EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus()) && !status.equals(enrollment.getStatus())) {
@@ -368,7 +455,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s because campaign with name: %s doesn't exist",
                         subjectId, campaignName), e);
             } catch (Exception e) {
-                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from campaign with name: %s",
+                throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from campaign with name: %s, because of unknown exception",
                         subjectId, campaignName), e);
             }
         } else if (deleteInactiveEnrollment && EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus())) {
@@ -424,6 +511,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Autowired
     public void setSubjectEnrollmentsDataService(SubjectEnrollmentsDataService subjectEnrollmentsDataService) {
         this.subjectEnrollmentsDataService = subjectEnrollmentsDataService;
+    }
+
+    @Autowired
+    public void setEnrollmentDataService(EnrollmentDataService enrollmentDataService) {
+        this.enrollmentDataService = enrollmentDataService;
     }
 
     @Autowired

@@ -166,4 +166,106 @@
         };
     });
 
+    directives.directive('enrollmentGrid', function($http, $compile) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var elem = angular.element(element), filters;
+
+                elem.jqGrid({
+                    url: '../ebodac/getEnrollments',
+                    headers: {
+                        'Accept': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    datatype: 'json',
+                    mtype: "POST",
+                    postData: {
+                        fields: JSON.stringify(scope.lookupBy)
+                    },
+                    jsonReader:{
+                        repeatitems: false
+                    },
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    colNames: ['rowId', scope.msg('ebodac.web.enrollment.subjectId'), scope.msg('ebodac.web.enrollment.subjectName'),
+                        scope.msg('ebodac.web.enrollment.status'), scope.msg('ebodac.web.enrollment.action')],
+                    colModel: [{
+                       name: 'rowId',
+                       index: 'rowId',
+                       hidden: true,
+                       key: true
+                    }, {
+                        name: 'subject',
+                        index: 'subject.subjectId',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.subjectId;
+                                   }
+                    }, {
+                        name: 'subjectName',
+                        jsonmap: 'subject',
+                        index: 'subject.name',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue){
+                                           return '';
+                                       }
+                                       return cellValue.name;
+                                   }
+                    }, {
+                        name: 'status',
+                        index: 'status',
+                        align: 'center'
+                    }, {
+                        name: 'action',
+                        jsonmap: 'status',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (rowObject.status === 'ENROLLED') {
+                                           return "<button ng-click='unenroll(\"" + rowObject.subject.subjectId + "\")'" +
+                                                   " type='button' class='btn btn-danger compileBtn'>" +
+                                                   scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
+                                       } else if (rowObject.status === 'UNENROLLED') {
+                                           return "<button ng-click='enroll(\"" + rowObject.subject.subjectId + "\")'" +
+                                                   " type='button' class='btn btn-success compileBtn'>" +
+                                                   scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
+                                       }
+                                       return '';
+                                   }
+                    }],
+                    pager: '#' + attrs.enrollmentGrid,
+                    viewrecords: true,
+                    loadonce: false,
+                    resizeStop: function() {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                    },
+                    gridComplete: function () {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                        $compile($('.compileBtn'))(scope);
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
 }());

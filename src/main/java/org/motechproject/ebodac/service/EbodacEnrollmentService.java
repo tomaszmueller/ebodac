@@ -9,9 +9,13 @@ public interface EbodacEnrollmentService {
 
     void enrollSubject(Subject subject);
 
+    void enrollSubject(String subjectId);
+
     void enrollOrCompleteCampaignForSubject(Visit visit);
 
     void unenrollSubject(Subject subject, String campaignName);
+
+    void unenrollSubject(String subjectId);
 
     void unenrollSubject(String subjectId, String campaignName);
 
