@@ -58,28 +58,30 @@ $scope.closeImportSubjectModal = function () {
 $scope.exportInstance = function() {
     var selectedFieldsName = [], url, rows, page, sortColumn, sortDirection;
 
-    angular.forEach($scope.selectedFields, function(selectedField) {
-        selectedFieldsName.push(selectedField.basic.name);
-    });
-
     url = "../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances";
-    url = url + "?range=" + $scope.actualExportRange;
-    url = url + "&outputFormat=" + $scope.exportFormat;
+    url = url + "?outputFormat=" + $scope.exportFormat;
+    url = url + "&exportRecords=" + $scope.actualExportRecords;
 
-    if ($scope.actualExportRange === 'table') {
-        rows = $('#instancesTable').getGridParam('rowNum');
-        page = $('#instancesTable').getGridParam('page');
-        sortColumn = $('#instancesTable').getGridParam('sortname');
-        sortDirection = $('#instancesTable').getGridParam('sortorder');
+   if ($scope.actualExportColumns === 'selected') {
+       angular.forEach($scope.selectedFields, function(selectedField) {
+           selectedFieldsName.push(selectedField.basic.name);
+       });
 
-        url = url + "&selectedFields=" + selectedFieldsName;
-        url = url + "&rows=" + rows;
-        url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
-        url = url + "&fields=" + JSON.stringify($scope.lookupBy);
-        url = url + "&page=" + page;
-        url = url + "&sortColumn=" + sortColumn;
-        url = url + "&sortDirection=" + sortDirection;
-    }
+       url = url + "&selectedFields=" + selectedFieldsName;
+   }
+
+   if ($scope.checkboxModel.exportWithOrder === true) {
+       sortColumn = $('#instancesTable').getGridParam('sortname');
+       sortDirection = $('#instancesTable').getGridParam('sortorder');
+
+       url = url + "&sortColumn=" + sortColumn;
+       url = url + "&sortDirection=" + sortDirection;
+   }
+
+   if ($scope.checkboxModel.exportWithLookup === true) {
+       url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
+       url = url + "&fields=" + JSON.stringify($scope.lookupBy);
+   }
 
     $http.get(url)
     .success(function () {
