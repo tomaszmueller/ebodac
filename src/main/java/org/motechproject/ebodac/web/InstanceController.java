@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
@@ -21,10 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,7 +79,7 @@ public class InstanceController {
 
     @RequestMapping(value = "/entities/{entityId}/exportInstances", method = RequestMethod.GET)
     public void exportEntityInstances(@PathVariable Long entityId, GridSettings settings,
-                                      @RequestParam String range,
+                                      @RequestParam String exportRecords,
                                       @RequestParam String outputFormat,
                                       HttpServletResponse response) throws IOException {
         if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
@@ -97,46 +98,26 @@ public class InstanceController {
                 "Content-Disposition",
                 "attachment; filename=" + fileName + "." + outputFormat.toLowerCase());
 
+        Order order = StringUtils.isNotEmpty(settings.getSortColumn()) ? new Order(settings.getSortColumn(), settings.getSortDirection()) : null;
+        QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
+
         String className = entityService.getEntity(entityId).getClassName();
-        if ("table".equalsIgnoreCase(range)) {
-            Order order = null;
-            if (!settings.getSortColumn().isEmpty()) {
-                order = new Order(settings.getSortColumn(), settings.getSortDirection());
-            }
 
-            QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
-            String lookup = settings.getLookup();
-
-            if (Constants.ExportFormat.PDF.equals(outputFormat)) {
-                if (className.equals(Visit.class.getName())) { // if className is Visit, format is PDF and range is table
-                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), lookup, queryParams,
-                            settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
-                } else {
-                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), lookup, queryParams,
-                            settings.getSelectedFields(), getFields(settings));
-                }
+        if (Constants.ExportFormat.PDF.equals(outputFormat)) {
+            if(className.equals(Visit.class.getName())) {
+                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
             } else {
-                if (className.equals(Visit.class.getName())) { // if className is Visit, format is CSV and range is table
-                    csvImportExportService.exportCsv(entityId, response.getWriter(), lookup, queryParams,
-                            settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
-                } else {
-                    csvImportExportService.exportCsv(entityId, response.getWriter(), lookup, queryParams,
-                            settings.getSelectedFields(), getFields(settings));
-                }
+                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings));
             }
-        } else if ("all".equalsIgnoreCase(range)) {
-            if (Constants.ExportFormat.PDF.equals(outputFormat)) {
-                if (className.equals(Visit.class.getName())) { // if className is Visit, format is PDF and range is all
-                    csvImportExportService.exportPdf(entityId, response.getOutputStream(), visitCsvExportCustomizer);
-                } else {
-                    csvImportExportService.exportPdf(entityId, response.getOutputStream());
-                }
+        } else {
+            if(className.equals(Visit.class.getName())) {
+                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
             } else {
-                if (className.equals(Visit.class.getName())) { // if className is Visit, format is CSV and range is all
-                    csvImportExportService.exportCsv(entityId, response.getWriter(), visitCsvExportCustomizer);
-                } else {
-                    csvImportExportService.exportCsv(entityId, response.getWriter());
-                }
+                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings));
             }
         }
     }
@@ -192,7 +173,10 @@ public class InstanceController {
     }
 
     private Map<String, Object> getFields(GridSettings gridSettings) throws IOException {
-        return objectMapper.readValue(gridSettings.getFields(), new TypeReference<HashMap>() {
-        });
+        if (gridSettings.getFields() == null) {
+            return null;
+        } else {
+            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<HashMap>() {});
+        }
     }
 }
