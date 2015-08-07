@@ -254,4 +254,56 @@
         };
     });
 
+    /*
+     *
+     * Enrollment
+     *
+     */
+    controllers.controller('EbodacEnrollmentCtrl', function ($scope, $http, $timeout) {
+        $scope.errors = [];
+        $scope.messages = [];
+
+        innerLayout({
+            spacing_closed: 30,
+            east__minSize: 200,
+            east__maxSize: 350
+        });
+
+        function hideMsgLater(index) {
+            return $timeout(function() {
+                $scope.messages.splice(index, 1);
+            }, 5000);
+        }
+
+        $scope.refreshGrid = function() {
+            $scope.lookupRefresh = !$scope.lookupRefresh;
+        };
+
+        $scope.enroll = function(subjectId) {
+            $http.post('../ebodac/enrollSubject', subjectId)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                $scope.refreshGrid();
+            });
+        }
+
+        $scope.unenroll = function(subjectId) {
+            $http.post('../ebodac/unenrollSubject', subjectId)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
+                $scope.refreshGrid();
+            });
+        }
+    });
+
 }());

@@ -55,7 +55,8 @@
             .when('/ebodac/reportBoosterVaccination', { redirectTo: '/mds/dataBrowser/' + reportBoosterVaccinationId + '/ebodac' })
             .when('/ebodac/dailyClinicVisitScheduleReport', { templateUrl: '../ebodac/resources/partials/dailyClinicVisitScheduleReport.html', controller: 'EbodacReportsCtrl' })
             .when('/ebodac/callDetailRecord', { redirectTo: '/mds/dataBrowser/' + callDetailRecordId + '/ebodac' })
-            .when('/ebodac/SMSLog', { redirectTo: '/sms/log' });
+            .when('/ebodac/SMSLog', { redirectTo: '/sms/log' })
+            .when('/ebodac/enrollment', {templateUrl: '../ebodac/resources/partials/enrollment.html', controller: 'EbodacEnrollmentCtrl'});
     });
 
 }());
