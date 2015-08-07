@@ -48,6 +48,12 @@
     <osgi:reference id="reportBoosterVaccinationDataService"
                     interface="org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService" />
 
+    <osgi:reference id="subjectEnrollmentsDataService"
+                    interface="org.motechproject.ebodac.repository.SubjectEnrollmentsDataService" />
+
+    <osgi:reference id="enrollmentDataService"
+                    interface="org.motechproject.ebodac.repository.EnrollmentDataService" />
+
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
     <osgi:reference id="messageCampaignService"
@@ -66,7 +72,4 @@
     </osgi:reference>
 
     <osgi:reference id="entityService" interface="org.motechproject.mds.service.EntityService"/>
-
-    <osgi:reference id="campaignEnrollmentDataService"
-                    interface="org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService" />
 </beans>

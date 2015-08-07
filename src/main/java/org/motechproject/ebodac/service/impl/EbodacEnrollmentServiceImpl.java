@@ -5,15 +5,16 @@ import org.joda.time.LocalDate;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Enrollment;
+import org.motechproject.ebodac.domain.EnrollmentStatus;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
-import org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService;
-import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
-import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollmentStatus;
 import org.motechproject.messagecampaign.exception.CampaignNotFoundException;
 import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEnrollmentServiceImpl.class);
 
-    private CampaignEnrollmentDataService campaignEnrollmentDataService;
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
 
     private MessageCampaignService messageCampaignService;
 
@@ -73,7 +74,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void unenrollSubject(String subjectId, String campaignName) {
-        if (!unenrollAndSetStatus(subjectId, campaignName, CampaignEnrollmentStatus.INACTIVE)) {
+        if (!unenrollAndSetStatus(subjectId, campaignName, EnrollmentStatus.UNENROLLED)) {
             throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject, because no Subject with id: %s registered in Campaign with name: %s",
                     subjectId, campaignName));
         }
@@ -119,6 +120,18 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 } catch (EbodacEnrollmentException e) {
                     LOGGER.debug(e.getMessage(), e);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void completeCampaign(String subjectId, String campaignName) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments != null) {
+            Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+            if (enrollment != null) {
+                enrollment.setStatus(EnrollmentStatus.COMPLETED);
+                updateSubjectEnrollments(subjectEnrollments);
             }
         }
     }
@@ -185,7 +198,12 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject phone number is empty",
                     subjectID, campaignName));
         } else {
-            CampaignEnrollment existingEnrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectID, campaignName);
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectID);
+            if (subjectEnrollments == null) {
+                subjectEnrollments = new SubjectEnrollments(subject);
+            }
+
+            Enrollment existingEnrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
 
             try {
                 if (existingEnrollment != null) {
@@ -199,25 +217,26 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                                 subjectID, campaignName));
                     }
 
-                    CampaignEnrollment enrollment = updateEnrollment(existingEnrollment, referenceDate, deliverTime, updateInactiveEnrollment);
+                    Enrollment enrollment = updateEnrollment(existingEnrollment, referenceDate, deliverTime, updateInactiveEnrollment);
 
                     if (enrollment != null) {
-                        messageCampaignService.unscheduleJobsForEnrollment(enrollment);
-                        messageCampaignService.scheduleJobsForEnrollment(enrollment);
+                        messageCampaignService.unscheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
+                        messageCampaignService.scheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
 
-                        campaignEnrollmentDataService.update(enrollment);
+                        updateSubjectEnrollments(subjectEnrollments);
                     }
                 } else {
                     if (updateOnly) {
                         throw new EbodacEnrollmentException(String.format("Cannot re-enroll Subject, because no Subject with id %s registered in Campaign with name: %s",
                                 subjectID, campaignName));
                     }
-                    CampaignEnrollment enrollment = createEnrollment(subjectID, campaignName, referenceDate, deliverTime);
+                    Enrollment enrollment = createEnrollment(subjectID, campaignName, referenceDate, deliverTime);
 
                     if (enrollment != null) {
-                        messageCampaignService.scheduleJobsForEnrollment(enrollment);
+                        messageCampaignService.scheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
 
-                        campaignEnrollmentDataService.create(enrollment);
+                        subjectEnrollments.addEnrolment(enrollment);
+                        updateSubjectEnrollments(subjectEnrollments);
                     }
                 }
             } catch (CampaignNotFoundException e) {
@@ -276,20 +295,24 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private boolean completeCampaignForSubject(Subject subject, String campaignName) {
-        return unenrollAndSetStatus(subject.getSubjectId(), campaignName, CampaignEnrollmentStatus.COMPLETED);
+        return unenrollAndSetStatus(subject.getSubjectId(), campaignName, EnrollmentStatus.COMPLETED);
     }
 
-    private boolean unenrollAndSetStatus(String subjectId, String campaignName, CampaignEnrollmentStatus status) {
-        CampaignEnrollment enrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectId, campaignName);
+    private boolean unenrollAndSetStatus(String subjectId, String campaignName, EnrollmentStatus status) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments == null) {
+            return false;
+        }
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
 
         if (enrollment == null) {
             return false;
-        } else if (CampaignEnrollmentStatus.ACTIVE.equals(enrollment.getStatus())) {
+        } else if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
             try {
-                messageCampaignService.unscheduleJobsForEnrollment(enrollment);
+                messageCampaignService.unscheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
 
                 enrollment.setStatus(status);
-                campaignEnrollmentDataService.update(enrollment);
+                updateSubjectEnrollments(subjectEnrollments);
 
                 return true;
             } catch (CampaignNotFoundException e) {
@@ -299,9 +322,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from Campaign with name: %s",
                         subjectId, campaignName), e);
             }
-        } else if (CampaignEnrollmentStatus.INACTIVE.equals(enrollment.getStatus()) && !status.equals(enrollment.getStatus())) {
+        } else if (EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus()) && !status.equals(enrollment.getStatus())) {
             enrollment.setStatus(status);
-            campaignEnrollmentDataService.update(enrollment);
+            updateSubjectEnrollments(subjectEnrollments);
             return true;
         }
 
@@ -325,15 +348,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private boolean unenrollAndDeleteEnrolment(String subjectId, String campaignName, boolean deleteInactiveEnrollment) {
-        CampaignEnrollment enrollment = campaignEnrollmentDataService.findByExternalIdAndCampaignName(subjectId, campaignName);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments == null) {
+            return false;
+        }
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
 
         if (enrollment == null) {
             return false;
-        } else if (CampaignEnrollmentStatus.ACTIVE.equals(enrollment.getStatus())) {
+        } else if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
             try {
-                messageCampaignService.unscheduleJobsForEnrollment(enrollment);
+                messageCampaignService.unscheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
 
-                campaignEnrollmentDataService.delete(enrollment);
+                subjectEnrollments.removeEnrolment(enrollment);
+                updateSubjectEnrollments(subjectEnrollments);
 
                 return true;
             } catch (CampaignNotFoundException e) {
@@ -343,24 +371,25 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 throw new EbodacEnrollmentException(String.format("Cannot unenroll Subject with id: %s from campaign with name: %s",
                         subjectId, campaignName), e);
             }
-        } else if (deleteInactiveEnrollment && CampaignEnrollmentStatus.INACTIVE.equals(enrollment.getStatus())) {
-            campaignEnrollmentDataService.delete(enrollment);
+        } else if (deleteInactiveEnrollment && EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus())) {
+            subjectEnrollments.removeEnrolment(enrollment);
+            updateSubjectEnrollments(subjectEnrollments);
             return true;
         }
 
         return false;
     }
 
-    private CampaignEnrollment updateEnrollment(CampaignEnrollment existingEnrollment, LocalDate referenceDate, Time deliverTime, Boolean updateInactiveEnrollment) {
+    private Enrollment updateEnrollment(Enrollment existingEnrollment, LocalDate referenceDate, Time deliverTime, Boolean updateInactiveEnrollment) {
 
-        if (CampaignEnrollmentStatus.ACTIVE.equals(existingEnrollment.getStatus()) && !referenceDate.isEqual(existingEnrollment.getReferenceDate())) {
+        if (EnrollmentStatus.ENROLLED.equals(existingEnrollment.getStatus()) && !referenceDate.isEqual(existingEnrollment.getReferenceDate())) {
             existingEnrollment.setReferenceDate(referenceDate);
             existingEnrollment.setDeliverTime(deliverTime);
 
             return existingEnrollment;
-        } else if (CampaignEnrollmentStatus.INACTIVE.equals(existingEnrollment.getStatus()) && updateInactiveEnrollment) {
+        } else if (EnrollmentStatus.UNENROLLED.equals(existingEnrollment.getStatus()) && updateInactiveEnrollment) {
             existingEnrollment.setReferenceDate(referenceDate);
-            existingEnrollment.setStatus(CampaignEnrollmentStatus.ACTIVE);
+            existingEnrollment.setStatus(EnrollmentStatus.ENROLLED);
             existingEnrollment.setDeliverTime(deliverTime);
 
             return existingEnrollment;
@@ -369,17 +398,32 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         return null;
     }
 
-    private CampaignEnrollment createEnrollment(String externalId, String campaignName, LocalDate referenceDate, Time deliverTime) {
-        CampaignEnrollment enrollment = new CampaignEnrollment(externalId, campaignName);
+    private Enrollment createEnrollment(String externalId, String campaignName, LocalDate referenceDate, Time deliverTime) {
+        Enrollment enrollment = new Enrollment(externalId, campaignName);
         enrollment.setReferenceDate(referenceDate);
         enrollment.setDeliverTime(deliverTime);
 
         return enrollment;
     }
 
+    private void updateSubjectEnrollments(SubjectEnrollments subjectEnrollments) {
+        EnrollmentStatus status = EnrollmentStatus.COMPLETED;
+
+        for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
+            if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+                status = EnrollmentStatus.ENROLLED;
+            } else if (EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus()) && !EnrollmentStatus.ENROLLED.equals(status)) {
+                status = EnrollmentStatus.UNENROLLED;
+            }
+        }
+
+        subjectEnrollments.setStatus(status);
+        subjectEnrollmentsDataService.update(subjectEnrollments);
+    }
+
     @Autowired
-    public void setCampaignEnrollmentDataService(CampaignEnrollmentDataService campaignEnrollmentDataService) {
-        this.campaignEnrollmentDataService = campaignEnrollmentDataService;
+    public void setSubjectEnrollmentsDataService(SubjectEnrollmentsDataService subjectEnrollmentsDataService) {
+        this.subjectEnrollmentsDataService = subjectEnrollmentsDataService;
     }
 
     @Autowired

@@ -20,6 +20,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
@@ -48,6 +49,9 @@ public class ReportControllerIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     @Inject
@@ -65,6 +69,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Before
     public void cleanBefore() throws IOException, InterruptedException {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         boosterVaccinationDataService.deleteAll();
         primerVaccinationDataService.deleteAll();
@@ -75,6 +80,7 @@ public class ReportControllerIT extends BasePaxIT {
     @After
     public void cleanAfter() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         boosterVaccinationDataService.deleteAll();
         primerVaccinationDataService.deleteAll();

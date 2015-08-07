@@ -22,6 +22,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.web.domain.Records;
@@ -51,6 +52,9 @@ public class VisitControllerIT extends BasePaxIT {
     private SubjectDataService subjectDataService;
 
     @Inject
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Inject
     private VisitDataService visitDataService;
 
     private Type typeOfRecords = new TypeToken<Records<VisitDAO>>() {}.getType();
@@ -66,6 +70,7 @@ public class VisitControllerIT extends BasePaxIT {
     @Before
     public void cleanBefore() throws IOException, InterruptedException {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         resetTestFields();
         addTestVisitsToDB();
@@ -75,6 +80,7 @@ public class VisitControllerIT extends BasePaxIT {
     @After
     public void cleanAfter() {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
     }
 

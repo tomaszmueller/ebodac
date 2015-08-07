@@ -18,17 +18,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.utils.VisitUtils;
-import org.motechproject.messagecampaign.dao.CampaignEnrollmentDataService;
-import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
-import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.motechproject.testing.utils.TestContext;
@@ -67,10 +67,10 @@ public class EnrollmentControllerIT extends BasePaxIT {
     private VisitDataService visitDataService;
 
     @Inject
-    private CampaignEnrollmentDataService campaignEnrollmentDataService;
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
 
     @Inject
-    private MessageCampaignService messageCampaignService;
+    private EnrollmentDataService enrollmentDataService;
 
     @Inject
     private EbodacEnrollmentService ebodacEnrollmentService;
@@ -104,8 +104,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Before
     public void cleanBefore() throws IOException, InterruptedException, SchedulerException {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
+        enrollmentDataService.deleteAll();
         subjectDataService.deleteAll();
-        campaignEnrollmentDataService.deleteAll();
         clearJobs();
         resetTestFields();
         addTestVisitsToDB();
@@ -115,8 +116,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @After
     public void cleanAfter() throws SchedulerException {
         visitDataService.deleteAll();
+        subjectEnrollmentsDataService.deleteAll();
+        enrollmentDataService.deleteAll();
         subjectDataService.deleteAll();
-        campaignEnrollmentDataService.deleteAll();
         clearJobs();
     }
 
@@ -204,21 +206,21 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldReenrollVisit() throws IOException, InterruptedException {
         try {
             fakeNow(newDateTime(2015, 7, 31, 10, 0, 0));
-            assertEquals(0, campaignEnrollmentDataService.retrieveAll().size());
+            assertEquals(0, enrollmentDataService.retrieveAll().size());
             Visit visit = testVisits.get(3);
 
             ebodacEnrollmentService.enrollSubject(secondSubject);
             visit.setMotechProjectedDate(LocalDate.parse("2015-10-11", formatter));
             checkResponse(200, "", reenrollVisit(visit, 200));
 
-            List<CampaignEnrollment> campaignEnrollments = campaignEnrollmentDataService.retrieveAll();
-            assertEquals(2, campaignEnrollments.size());
+            List<Enrollment> enrollments = enrollmentDataService.retrieveAll();
+            assertEquals(2, enrollments.size());
 
             checkCampaignEnrollment("1000000162", VisitType.PRIME_VACCINATION_DAY.getValue(),
-                    LocalDate.parse("2015-10-11", formatter), campaignEnrollments.get(0));
+                    LocalDate.parse("2015-10-11", formatter), enrollments.get(0));
 
             checkCampaignEnrollment("1000000162", EbodacConstants.MIDPOINT_MESSAGE,
-                    LocalDate.parse("2015-10-11", formatter), campaignEnrollments.get(1));
+                    LocalDate.parse("2015-10-11", formatter), enrollments.get(1));
         } finally {
             stopFakingTime();
         }
@@ -252,10 +254,10 @@ public class EnrollmentControllerIT extends BasePaxIT {
     }
 
     private void checkCampaignEnrollment(String externalId, String campaignName,
-                                         LocalDate referenceDate, CampaignEnrollment campaignEnrollment) {
-        assertEquals(externalId, campaignEnrollment.getExternalId());
-        assertEquals(campaignName, campaignEnrollment.getCampaignName());
-        assertEquals(referenceDate, campaignEnrollment.getReferenceDate());
+                                         LocalDate referenceDate, Enrollment enrollment) {
+        assertEquals(externalId, enrollment.getExternalId());
+        assertEquals(campaignName, enrollment.getCampaignName());
+        assertEquals(referenceDate, enrollment.getReferenceDate());
     }
 
 }
