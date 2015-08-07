@@ -1,0 +1,16 @@
+<div class="row">
+    <h4 class="frame-title">{{ msg('ebodac.web.enrollmentAdvanced.header')}}</h4>
+
+    <div ng-repeat="error in errors" class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{error}}
+    </div>
+    <div ng-repeat="message in messages" class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{message}}
+    </div>
+
+    <div id="enrollmentAdvanced" class="overrideJqgridTable">
+        <table id="enrollmentAdvancedTable" enrollment-advanced-grid></table>
+    </div>
+</div>

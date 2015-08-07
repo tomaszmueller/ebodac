@@ -3,9 +3,11 @@ package org.motechproject.ebodac.web;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +44,9 @@ public class EbodacEnrollmentController {
 
     @Autowired
     private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+
+    @Autowired
+    private EnrollmentDataService enrollmentDataService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -144,5 +150,27 @@ public class EbodacEnrollmentController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @RequestMapping(value = "/getEnrollmentAdvanced/{subjectId}", method = RequestMethod.POST)
+    @ResponseBody
+    public Records<?> getEnrollmentAdvanced(@PathVariable String subjectId, GridSettings settings) throws IOException {
+        Order order = null;
+        if (!settings.getSortColumn().isEmpty()) {
+            order = new Order(settings.getSortColumn(), settings.getSortDirection());
+        }
+
+        QueryParams queryParams = new QueryParams(null, null, order);
+
+        long recordCount;
+        int rowCount;
+
+        recordCount = enrollmentDataService.countFindEnrollmentsBySubjectId(subjectId);
+        rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
+
+        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsBySubjectId(subjectId, queryParams);
+
+        return new Records<>(settings.getPage(), rowCount, (int) recordCount, enrollments);
     }
 }

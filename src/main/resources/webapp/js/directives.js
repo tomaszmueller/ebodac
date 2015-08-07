@@ -239,6 +239,10 @@
                                        return '';
                                    }
                     }],
+                    onSelectRow: function (id) {
+                        var rowValue = elem.jqGrid('getRowData', id);
+                        scope.goToAdvanced(rowValue.subject);
+                    },
                     pager: '#' + attrs.enrollmentGrid,
                     viewrecords: true,
                     loadonce: false,
@@ -261,6 +265,97 @@
                         postData: {
                             fields: JSON.stringify(scope.lookupBy),
                             lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
+    directives.directive('enrollmentAdvancedGrid', function($http, $compile) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var elem = angular.element(element), filters;
+
+                elem.jqGrid({
+                    url: '../ebodac/getEnrollmentAdvanced/' + scope.selectedSubjectId,
+                    headers: {
+                        'Accept': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    datatype: 'json',
+                    mtype: "POST",
+                    postData: {
+                    },
+                    jsonReader:{
+                        repeatitems: false
+                    },
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    colNames: ['rowId', scope.msg('ebodac.web.enrollment.subjectId'), scope.msg('ebodac.web.enrollment.campaignName'),
+                        scope.msg('ebodac.web.enrollment.date'), scope.msg('ebodac.web.enrollment.status'), scope.msg('ebodac.web.enrollment.action')],
+                    colModel: [{
+                       name: 'rowId',
+                       index: 'rowId',
+                       hidden: true,
+                       key: true
+                    }, {
+                        name: 'externalId',
+                        index: 'externalId',
+                        align: 'center'
+                    }, {
+                        name: 'campaignName',
+                        index: 'campaignName',
+                        align: 'center'
+                    }, {
+                        name: 'referenceDate',
+                        index: 'referenceDate',
+                        align: 'center',
+                        formatter:'date', formatoptions: {srcformat: 'Y-m-d', newformat:'Y-m-d'}
+                    }, {
+                        name: 'status',
+                        index: 'status',
+                        align: 'center'
+                    }, {
+                        name: 'action',
+                        jsonmap: 'status',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (rowObject.status === 'ENROLLED') {
+                                           return "<button ng-click='unenroll(\"" + rowObject.campaignName + "\")'" +
+                                                   " type='button' class='btn btn-danger compileBtn'>" +
+                                                   scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
+                                       } else if (rowObject.status === 'UNENROLLED') {
+                                           return "<button ng-click='enroll(\"" + rowObject.campaignName + "\")'" +
+                                                   " type='button' class='btn btn-success compileBtn'>" +
+                                                   scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
+                                       }
+                                       return '';
+                                   }
+                    }],
+                    viewrecords: true,
+                    rowNum: 100,
+                    loadonce: false,
+                    resizeStop: function() {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                    },
+                    gridComplete: function () {
+                        $('.ui-jqgrid-htable').width('100%');
+                        $('.ui-jqgrid-btable').width('100%');
+                        elem.jqGrid('setGridWidth', '100%');
+                        $compile($('.compileBtn'))(scope);
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
                         }
                     }).trigger('reloadGrid');
                 });

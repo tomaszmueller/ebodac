@@ -1,7 +1,11 @@
 package org.motechproject.ebodac.domain;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
 import org.motechproject.commons.date.model.Time;
+import org.motechproject.ebodac.util.CustomDateDeserializer;
+import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
@@ -59,10 +63,12 @@ public class Enrollment {
         this.status = status;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getReferenceDate() {
         return referenceDate;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setReferenceDate(LocalDate referenceDate) {
         this.referenceDate = referenceDate;
     }
