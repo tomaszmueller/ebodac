@@ -304,6 +304,46 @@
                 $scope.refreshGrid();
             });
         }
+
+        $scope.goToAdvanced = function(subjectId) {
+            window.location.replace('#/ebodac/enrollmentAdvanced/' + subjectId);
+        }
+    });
+
+    /*
+     *
+     * Enrollment Advanced
+     *
+     */
+    controllers.controller('EbodacEnrollmentAdvancedCtrl', function ($scope, $http, $timeout, $routeParams) {
+        $scope.errors = [];
+        $scope.messages = [];
+
+        innerLayout({
+            spacing_closed: 30,
+            east__minSize: 200,
+            east__maxSize: 350
+        });
+
+        function hideMsgLater(index) {
+            return $timeout(function() {
+                $scope.messages.splice(index, 1);
+            }, 5000);
+        }
+
+        $scope.selectedSubjectId = $routeParams.subjectId;
+
+        $scope.refreshGrid = function() {
+            $scope.lookupRefresh = !$scope.lookupRefresh;
+        };
+
+        $scope.enroll = function(campaignName) {
+
+        }
+
+        $scope.unenroll = function(campaignName) {
+
+        }
     });
 
 }());

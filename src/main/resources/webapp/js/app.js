@@ -56,7 +56,8 @@
             .when('/ebodac/dailyClinicVisitScheduleReport', { templateUrl: '../ebodac/resources/partials/dailyClinicVisitScheduleReport.html', controller: 'EbodacReportsCtrl' })
             .when('/ebodac/callDetailRecord', { redirectTo: '/mds/dataBrowser/' + callDetailRecordId + '/ebodac' })
             .when('/ebodac/SMSLog', { redirectTo: '/sms/log' })
-            .when('/ebodac/enrollment', {templateUrl: '../ebodac/resources/partials/enrollment.html', controller: 'EbodacEnrollmentCtrl'});
+            .when('/ebodac/enrollment', {templateUrl: '../ebodac/resources/partials/enrollment.html', controller: 'EbodacEnrollmentCtrl'})
+            .when('/ebodac/enrollmentAdvanced/:subjectId', {templateUrl: '../ebodac/resources/partials/enrollmentAdvanced.html', controller: 'EbodacEnrollmentAdvancedCtrl'});
     });
 
 }());
