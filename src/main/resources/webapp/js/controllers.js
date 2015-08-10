@@ -101,10 +101,15 @@
      *
      */
     controllers.controller('EbodacReportsCtrl', function ($scope, $http) {
-        $scope.availableExportRange = ['all','table'];
+        $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['csv','pdf'];
-        $scope.actualExportRange = 'all';
+        $scope.actualExportRecords = 'All';
+        $scope.actualExportColumns = 'All';
         $scope.exportFormat = 'csv';
+        $scope.checkboxModel = {
+            exportWithLookup : false,
+            exportWithOrder : false
+        };
 
         $scope.lookupBy = {};
         $scope.selectedLookup = undefined;
@@ -132,8 +137,8 @@
             $('#exportInstanceModal').modal('show');
         };
 
-        $scope.changeExportRange = function (range) {
-            $scope.actualExportRange = range;
+        $scope.changeExportRecords = function (records) {
+            $scope.actualExportRecords = records;
         };
 
         $scope.changeExportFormat = function (format) {
@@ -152,22 +157,21 @@
             var url, rows, page, sortColumn, sortDirection;
 
             url = "../ebodac/exportDailyClinicVisitScheduleReport";
-            url = url + "?range=" + $scope.actualExportRange;
-            url = url + "&outputFormat=" + $scope.exportFormat;
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
 
-            sortColumn = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortname');
-            sortDirection = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortorder');
+           if ($scope.checkboxModel.exportWithOrder === true) {
+               sortColumn = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortname');
+               sortDirection = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortorder');
 
-            if ($scope.actualExportRange === 'table') {
-                rows = $('#dailyClinicVisitScheduleReportTable').getGridParam('rowNum');
-                page = $('#dailyClinicVisitScheduleReportTable').getGridParam('page');
-                url = url + "&rows=" + rows;
-                url = url + "&page=" + page;
-                url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
-                url = url + "&fields=" + JSON.stringify($scope.lookupBy);
-            }
-            url = url + "&sortColumn=" + sortColumn;
-            url = url + "&sortDirection=" + sortDirection;
+               url = url + "&sortColumn=" + sortColumn;
+               url = url + "&sortDirection=" + sortDirection;
+           }
+
+           if ($scope.checkboxModel.exportWithLookup === true) {
+               url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
+               url = url + "&fields=" + JSON.stringify($scope.lookupBy);
+           }
 
             $http.get(url)
             .success(function () {

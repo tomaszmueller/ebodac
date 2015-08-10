@@ -8,23 +8,23 @@
             <div class="modal-body">
                 <form id="exportInstanceForm" name="exportInstanceForm" class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="range">
-                            {{msg('ebodac.form.exportRange')}}
+                        <label class="col-sm-6 control-label" for="records">
+                            {{msg('ebodac.form.exportRecords')}}
                         </label>
                         <div class="form-inline col-md-4 col-sm-4">
-                            <div class="btn-group" id="range">
+                            <div class="btn-group" id="records">
                                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    {{msg('ebodac.form.exportRange.' + actualExportRange)}}
+                                    {{actualExportRecords}}
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li ng-repeat="range in availableExportRange" ng-click="changeExportRange(range)"><a>{{ msg('ebodac.form.exportRange.' + range) }}</a></li>
+                                    <li ng-repeat="records in availableExportRecords" ng-click="changeExportRecords(records)"><a>{{records}}</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="exportFormat">
+                        <label class="col-sm-6 control-label" for="exportFormat">
                             {{msg('ebodac.form.exportFormat')}}
                         </label>
                         <div class="form-inline col-md-4 col-sm-4">
@@ -39,6 +39,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" for="exportWithOrder">
+                            {{msg('ebodac.form.exportWithOrder')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="exportWithOrder">
+                                <input type="checkbox" ng-model="checkboxModel.exportWithOrder" ng-checked="checkboxModel.exportWithOrder">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="selectedLookup !== undefined">
+                        <label class="col-sm-6 control-label" for="exportWithLookups">
+                            {{msg('ebodac.form.exportWithLookup')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="exportWithLookups">
+                                <input type="checkbox" ng-model="checkboxModel.exportWithLookup" ng-checked="checkboxModel.exportWithLookup">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -48,3 +68,4 @@
         </div>
     </div>
 </div>
+
