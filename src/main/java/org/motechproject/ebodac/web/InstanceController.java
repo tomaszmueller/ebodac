@@ -136,7 +136,7 @@ public class InstanceController {
 
     @RequestMapping(value = "/exportDailyClinicVisitScheduleReport", method = RequestMethod.GET)
     public void exportDailyClinicVisitScheduleReport(GridSettings settings,
-                                                     @RequestParam String range,
+                                                     @RequestParam String exportRecords,
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
 
@@ -160,7 +160,8 @@ public class InstanceController {
         if (!settings.getSortColumn().isEmpty()) {
             order = new Order(settings.getSortColumn(), settings.getSortDirection());
         }
-        QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
+        QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
+
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportDailyClinicVisitScheduleReportToPDF(response.getOutputStream(), settings.getLookup(),
