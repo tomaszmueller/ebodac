@@ -22,7 +22,7 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     List<Subject> findSubjectsByName(@LookupField(name = "name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
-    @Lookup
+    @Lookup(name="Find unique Subject by SubjectId")
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
 
     @Lookup
@@ -46,7 +46,7 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     List<Subject> findSubjectsByAddress(@LookupField(name = "address",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address);
 
-    @Lookup
+    @Lookup(name="Find Subjects by SubjectId")
     List<Subject> findSubjectsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 }
