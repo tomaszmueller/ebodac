@@ -157,7 +157,7 @@ public class InstanceController {
                 "attachment; filename=" + fileName + "." + outputFormat.toLowerCase());
 
         Order order = null;
-        if (!settings.getSortColumn().isEmpty()) {
+        if (StringUtils.isNotBlank(settings.getSortColumn())) {
             order = new Order(settings.getSortColumn(), settings.getSortDirection());
         }
         QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
