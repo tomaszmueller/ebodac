@@ -2,14 +2,16 @@ package org.motechproject.ebodac.service;
 
 
 import org.motechproject.ebodac.web.domain.Records;
+import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.query.QueryParams;
-import org.motechproject.mds.service.MotechDataService;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public interface LookupService {
     
-    <T> Records<T> getEntities(MotechDataService<T> dataService, String lookup,
-                               String lookupFields, QueryParams queryParams) throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    <T> Records<T> getEntities(Class<T> entityType, String lookup,
+                               String lookupFields, QueryParams queryParams) throws IOException;
+
+    List<LookupDto> getAvailableLookups(String entityName);
 }

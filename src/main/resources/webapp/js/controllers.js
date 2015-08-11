@@ -111,27 +111,15 @@
             exportWithOrder : false
         };
 
+        var url = "../ebodac/getLookupsForDailyClinicVisitScheduleReport";
+
+         $http.get(url).
+         success( function(data) {
+                     $scope.lookups = data;
+                 });
         $scope.lookupBy = {};
         $scope.selectedLookup = undefined;
         $scope.lookupFields = [];
-        $scope.lookups = [{"lookupName" : "Find Visit By Date", "fields" : [{"name" : "Date", "type" : "localDate"}]},
-                          {"lookupName" : "Find Visit By Date And Type", "fields" : [{"name" : "Date", "type" : "localDate"},
-                          {"name" : "Visit Type", "type" : "list", "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
-                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
-                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
-                          {"lookupName" : "Find Visits By Date Range", "fields" : [{"name" : "Date Range", "type" : "range"}]},
-                          {"lookupName" : "Find Visits By Date Range And Type", "fields" : [{"name" : "Date Range", "type" : "range"},
-                          {"name" : "Visit Type", "type" : "list", "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
-                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
-                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
-                          {"lookupName" : "Find Visit By Type", "fields" : [{"name" : "Visit Type", "type" : "list",
-                          "values" : ["Screening", "Prime Vaccination Day", "Prime Vaccination Follow-up visit", "Boost Vaccination Day",
-                          "Boost Vaccination First Follow-up visit", "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit",
-                          "First Long-term Follow-up visit", "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Unscheduled Visit"]}]},
-                          {"lookupName" : "Find Visit By SubjectId", "fields" : [{"name" : "SubjectId", "type" : "string"}]},
-                          {"lookupName" : "Find Visit By Subject Name", "fields" : [{"name" : "Name", "type" : "string"}]},
-                          {"lookupName" : "Find Visit By Subject Address", "fields" : [{"name" : "Address", "type" : "string"}]}];
-
 
         $scope.exportEntityInstances = function () {
             $('#exportInstanceModal').modal('show');
@@ -200,7 +188,7 @@
         */
         $scope.selectLookup = function(lookup) {
             $scope.selectedLookup = lookup;
-            $scope.lookupFields = lookup.fields;
+            $scope.lookupFields = lookup.lookupFields;
             $scope.lookupBy = {};
         };
 
@@ -226,6 +214,13 @@
             $scope.lookupRefresh = !$scope.lookupRefresh;
         };
 
+        $scope.buildLookupFieldName = function (field) {
+            if (field.relatedName !== undefined && field.relatedName !== '' && field.relatedName !== null) {
+                return field.name + "." + field.relatedName;
+            }
+            return field.name;
+        };
+
         /**
         * Depending on the field type, includes proper html file containing visual representation for
         * the object type. Radio input for boolean, select input for list and text input as default one.
@@ -233,24 +228,40 @@
         $scope.loadInputForLookupField = function(field) {
             var value = "default", type = "field";
 
-            if (field.type === "boolean") {
+            if (field.className === "java.lang.Boolean") {
                 value = "boolean";
-            } else if (field.type === "list") {
+            } else if (field.className === "java.util.Collection") {
                 value = "list";
-            } else if (field.type === "dateTime" || field.type === "date") {
+            } else if (field.className === "org.joda.time.DateTime" || field.className === "java.util.Date") {
                 value = "datetime";
-            } else if (field.type === "localDate") {
+            } else if (field.className === "org.joda.time.LocalDate") {
                 value = "date";
-            }  else if(field.type === "range") {
-                if (!$scope.lookupBy[field.name]) {
-                    $scope.lookupBy[field.name] = {min: '', max: ''};
-                }
+            }
+
+            if ($scope.isRangedLookup(field)) {
                 type = "range";
                 value = "date";
+                if (!$scope.lookupBy[$scope.buildLookupFieldName(field)]) {
+                    $scope.lookupBy[$scope.buildLookupFieldName(field)] = {min: '', max: ''};
+                }
             }
 
             return '../ebodac/resources/partials/lookups/{0}-{1}.html'
                 .format(type, value);
+        };
+
+        $scope.isRangedLookup = function(field) {
+            return $scope.isLookupFieldOfType(field, 'RANGE');
+        };
+
+        $scope.isLookupFieldOfType = function(field, type) {
+            var i, lookupField;
+            for (i = 0; i < $scope.selectedLookup.lookupFields.length; i += 1) {
+                lookupField = $scope.selectedLookup.lookupFields[i];
+                if ($scope.buildLookupFieldName(lookupField) === $scope.buildLookupFieldName(field)) {
+                    return lookupField.type === type;
+                }
+            }
         };
 
         $scope.backToEntityList = function() {

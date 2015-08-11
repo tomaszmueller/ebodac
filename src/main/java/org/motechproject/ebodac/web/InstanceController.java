@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,24 +163,15 @@ public class InstanceController {
 
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
-                exportService.exportDailyClinicVisitScheduleReportToPDF(response.getOutputStream(), settings.getLookup(),
-                        settings.getFields(), queryParams);
+                exportService.exportEntityToPDF(response.getOutputStream(), Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP,
+                        settings.getLookup(), settings.getFields(), queryParams);
             } else {
-                exportService.exportDailyClinicVisitScheduleReportToCSV(response.getWriter(), settings.getLookup(),
-                        settings.getFields(), queryParams);
+                exportService.exportEntityToCSV(response.getWriter(), Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP,
+                        settings.getLookup(), settings.getFields(), queryParams);
             }
         } catch (IOException e) {
             LOGGER.debug(e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-        } catch (NoSuchMethodException e) {
-            LOGGER.debug(e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        } catch (InvocationTargetException e) {
-            LOGGER.debug(e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-        } catch (IllegalAccessException e) {
-            LOGGER.debug(e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 

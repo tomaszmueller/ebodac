@@ -3,58 +3,45 @@ package org.motechproject.ebodac.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.motechproject.commons.api.Range;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.web.domain.Records;
+import org.motechproject.mds.dto.AdvancedSettingsDto;
+import org.motechproject.mds.dto.EntityDto;
+import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.query.QueryParams;
-import org.motechproject.mds.service.MotechDataService;
+import org.motechproject.mds.service.EntityService;
+import org.motechproject.mds.service.MDSLookupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service("lookupService")
 public class LookupServiceImpl implements LookupService {
 
+    @Autowired
+    private EntityService entityService;
+
+    @Autowired
+    private MDSLookupService mdsLookupService;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public <T> Records<T> getEntities(MotechDataService<T> dataService, String lookup,
-                                      String lookupFields, QueryParams queryParams)
-            throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public <T> Records<T> getEntities(Class<T> entityType, String lookup,
+                                      String lookupFields, QueryParams queryParams) throws IOException {
         List<T> entities;
         long recordCount;
         int rowCount;
         if (StringUtils.isNotBlank(lookup) && queryParams != null) {
-            Map<Class<?>, Object> mappedFields = getLookupFieldsMappedByType(lookupFields);
 
-            if(mappedFields.size() == 0) {
-                return getEntitiesWithoutLookup(dataService, queryParams);
-            }
+            entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), queryParams);
+            recordCount = mdsLookupService.count(entityType.getName(), lookup, getFields(lookupFields));
 
-            List<Class<?>> typesList = buildTypesList(mappedFields);
-            List<Object> paramsList = buildParamsList(mappedFields);
-
-            Method countMethod = dataService.getClass().getMethod(getCountMethodNameFromLookup(lookup),
-                    typesListToArray(typesList));
-            typesList.add(QueryParams.class);
-            Method lookupMethod = dataService.getClass().getMethod(getMethodNameFromLookup(lookup),
-                    typesListToArray(typesList));
-
-            recordCount = (long) countMethod.invoke(dataService, paramsList.toArray());
-            paramsList.add(queryParams);
-            entities = (List<T>) lookupMethod.invoke(dataService, paramsList.toArray());
             if (queryParams.getPageSize() != null) {
                 rowCount = (int) Math.ceil(recordCount / (double) queryParams.getPageSize());
             } else {
@@ -64,93 +51,39 @@ public class LookupServiceImpl implements LookupService {
             return new Records<>(queryParams.getPage(), rowCount, (int) recordCount, entities);
         }
 
-        return getEntitiesWithoutLookup(dataService, queryParams);
-    }
+        recordCount = mdsLookupService.countAll(entityType.getName());
 
-    private <T> Records<T> getEntitiesWithoutLookup(MotechDataService<T> dataService, QueryParams queryParams) {
-        List<T> entities;
-        long recordCount;
-        int rowCount;
-
-        recordCount = dataService.count();
         int page;
         if(queryParams.getPageSize() != null && queryParams.getPage() != null) {
             rowCount = (int) Math.ceil(recordCount / (double) queryParams.getPageSize());
             page = queryParams.getPage();
-            entities = dataService.retrieveAll(queryParams);
+            entities = mdsLookupService.retrieveAll(entityType.getName(), queryParams);
         } else {
             rowCount = (int) recordCount;
             page = 1;
-            entities = dataService.retrieveAll(queryParams);
+            entities = mdsLookupService.retrieveAll(entityType.getName(), queryParams);
         }
         return new Records<>(page, rowCount, (int) recordCount, entities);
     }
 
-    private String getCountMethodNameFromLookup(String lookup) {
-        String methodName = lookup;
-        methodName = methodName.replaceAll("\\s", "");
-        return "count" + methodName;
+    @Override
+    public List<LookupDto> getAvailableLookups(String entityName) {
+        EntityDto entity = getEntityByEntityClassName(entityName);
+        AdvancedSettingsDto settingsDto = entityService.getAdvancedSettings(entity.getId(), true);
+        return settingsDto.getIndexes();
     }
 
-    private String getMethodNameFromLookup(String lookup) {
-        String methodName = lookup;
-        methodName = methodName.replaceAll("\\s", "");
-        char c[] = methodName.toCharArray();
-        c[0] = Character.toLowerCase(c[0]);
-        return new String(c);
-    }
+    private EntityDto getEntityByEntityClassName(String entityName) {
+        List<EntityDto> entities = entityService.listEntities();
+        String moduleName = EbodacConstants.EBODAC_MODULE;
 
-    private Class<?>[] typesListToArray(List<Class<?>> typesList) {
-        Class<?>[] ret = new Class<?>[typesList.size()];
-        int i = 0;
-        for(Class<?> type : typesList) {
-            ret[i] = type;
-            i++;
-        }
-        return ret;
-    }
-
-    private List<Object> buildParamsList(Map<Class<?>, Object> mappedFields) throws IOException {
-        List<Object> params = new ArrayList<>();
-        for(Map.Entry<Class<?>, Object> entry : mappedFields.entrySet()) {
-            params.add(entry.getValue());
-        }
-        return params;
-    }
-
-    private List<Class<?>> buildTypesList(Map<Class<?>, Object> mappedFields) {
-        Set<Class<?>> typesSet = mappedFields.keySet();
-        List<Class<?>> types = new ArrayList<>();
-        for(Class<?> type : typesSet) {
-            types.add(type);
-        }
-        return types;
-    }
-
-    private Map<Class<?>, Object> getLookupFieldsMappedByType(String lookupFields) throws IOException {
-        DateTimeFormatter lookupDateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
-        Map<Class<?>, Object> ret = new LinkedHashMap<>();
-        Map<String, Object> fields = getFields(lookupFields);
-        for(Map.Entry<String, Object> entry : fields.entrySet()) {
-            switch (entry.getKey()) {
-                case "Date":
-                    ret.put(LocalDate.class, LocalDate.parse((String) entry.getValue(), lookupDateTimeFormat));
-                    break;
-                case "Visit Type":
-                    ret.put(VisitType.class, VisitType.getByValue((String) entry.getValue()));
-                    break;
-                case "Date Range":
-                    Map<String, Object> rangeMap = (Map<String, Object>) entry.getValue();
-                    LocalDate min = LocalDate.parse((String) rangeMap.get("min"), lookupDateTimeFormat);
-                    LocalDate max = LocalDate.parse((String) rangeMap.get("max"), lookupDateTimeFormat);
-                    ret.put(Range.class, new Range<>(min, max));
-                    break;
-                default:
-                    ret.put(String.class, entry.getValue());
-                    break;
+        for (EntityDto entity : entities) {
+            if (entity.getModule() != null && entity.getModule().equals(moduleName) &&
+                    entity.getName().equals(entityName)) {
+                return entity;
             }
         }
-        return ret;
+        return null;
     }
 
     private Map<String, Object> getFields(String lookupFields) throws IOException {
