@@ -2,7 +2,7 @@ package org.motechproject.ebodac.constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -48,7 +48,7 @@ public final class EbodacConstants {
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
 
-    public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new HashMap<String, String>() {
+    public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Date",         "date");
             put("Subject ID",   "subjectId");
