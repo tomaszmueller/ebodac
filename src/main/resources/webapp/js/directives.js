@@ -239,9 +239,11 @@
                                        return '';
                                    }
                     }],
-                    onSelectRow: function (id) {
-                        var rowValue = elem.jqGrid('getRowData', id);
-                        scope.goToAdvanced(rowValue.subject);
+                    onCellSelect: function (id, iCol, cellContent, e) {
+                        if (iCol !== 4) {
+                            var rowValue = elem.jqGrid('getRowData', id);
+                            scope.goToAdvanced(rowValue.subject);
+                        }
                     },
                     pager: '#' + attrs.enrollmentGrid,
                     viewrecords: true,
