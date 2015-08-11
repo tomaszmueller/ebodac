@@ -1,1 +1,1 @@
-<select class="form-control" ng-model="lookupBy[field.name]" ng-options="option for option in field.values" ng-required="true" />
+<select class="form-control" ng-model="lookupBy[buildLookupFieldName(field)]" ng-options="option for option in field.settings[0].value" ng-required="true" />

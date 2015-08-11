@@ -6,21 +6,13 @@ import org.motechproject.mds.query.QueryParams;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 public interface ExportService {
 
-    void exportDailyClinicVisitScheduleReportToPDF(OutputStream outputStream, String lookup,
-                                                   String lookupFields, QueryParams queryParams)
-            throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException;
+    void  exportEntityToPDF(OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap,
+                                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException;
 
-    void exportDailyClinicVisitScheduleReportToPDF(OutputStream outputStream)
-            throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException;
-
-    void exportDailyClinicVisitScheduleReportToCSV(Writer writer, String lookup,
-                                                   String lookupFields, QueryParams queryParams)
-            throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException;
-
-    void exportDailyClinicVisitScheduleReportToCSV(Writer writer)
-            throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException;
+    void  exportEntityToCSV(Writer writer, Class<?> entityType, Map<String, String> headerMap,
+                                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException;
 }

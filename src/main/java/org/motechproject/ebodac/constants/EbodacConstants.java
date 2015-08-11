@@ -41,12 +41,18 @@ public final class EbodacConstants {
     public static final String PDF_EXPORT_FORMAT="pdf";
     public static final String CSV_EXPORT_FORMAT="csv";
 
+    public static final String EBODAC_MODULE="EBODAC Module";
+
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
             "Mid-point message", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
+
+    public static final List<String> AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT = new ArrayList<>(Arrays.asList("Find Visit By Date", "Find Visit By Date And Type",
+            "Find Visits By Date Range", "Find Visits By Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
+            "Find Visit By Subject Name", "Find Visit By Subject Address"));
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {

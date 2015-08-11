@@ -3,8 +3,15 @@ package org.motechproject.ebodac.web;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.ReportService;
+import org.motechproject.ebodac.web.domain.GridSettings;
+import org.motechproject.ebodac.web.domain.Records;
+import org.motechproject.mds.dto.LookupDto;
+import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Constants;
+import org.motechproject.mds.util.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ReportController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportController.class);
+
+    @Autowired
+    private LookupService lookupService;
 
     @Autowired
     private ReportService reportService;
@@ -44,5 +58,36 @@ public class ReportController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/dailyClinicVisitScheduleReport", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public Records<?> getDailyClinicVisitScheduleReport(GridSettings settings) {
+        Order order = null;
+        if (!settings.getSortColumn().isEmpty()) {
+            order = new Order(settings.getSortColumn(), settings.getSortDirection());
+        }
+        QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
+        try {
+            return lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+        } catch (IOException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/getLookupsForDailyClinicVisitScheduleReport", method = RequestMethod.GET)
+    @PreAuthorize(Constants.Roles.HAS_DATA_OR_SCHEMA_ACCESS)
+    @ResponseBody
+    public List<LookupDto> getLookupsForDailyClinicVisitScheduleReport() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookupas = lookupService.getAvailableLookups("Visit");
+        for(LookupDto lookupDto : availableLookupas) {
+            if(EbodacConstants.AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
     }
 }

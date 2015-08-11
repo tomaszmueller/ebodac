@@ -60,7 +60,7 @@
                 var elem = angular.element(element), filters;
 
                 elem.jqGrid({
-                    url: '../ebodac/visitsRecords',
+                    url: '../ebodac/dailyClinicVisitScheduleReport',
                     headers: {
                         'Accept': 'application/x-www-form-urlencoded',
                         'Content-Type': 'application/x-www-form-urlencoded'
