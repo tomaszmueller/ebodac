@@ -75,19 +75,6 @@
         "startTime": "9:00"
       },
       {
-        "name": "Weekly Message 3: Targeted Engagement Message",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "weekly-message-3-targeted-engagement-message",
-        "timeOffset": "27 Days",
-        "startTime": "9:00"
-      },
-      {
         "name": "Weekly Message 5: Targeted Engagement Message 2",
         "formats": [
           "IVR",
@@ -116,9 +103,22 @@
     ]
   },
   {
-    "name": "Mid-point message",
+    "name": "Booster related messages",
     "type": "OFFSET",
     "messages": [
+      {
+        "name": "Weekly Message 3: Targeted Engagement Message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "weekly-message-3-targeted-engagement-message",
+        "timeOffset": "27 Days",
+        "startTime": "9:00"
+      },
       {
         "name": "Weekly Message 4: Mid-point message",
         "formats": [

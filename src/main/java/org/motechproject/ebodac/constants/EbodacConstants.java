@@ -36,7 +36,7 @@ public final class EbodacConstants {
     public static final String DAILY_REPORT_EVENT_START_DATE = "daily_report_event_start_date";
     public static final String DAILY_REPORT_EVENT_START_HOUR = "00:01";
 
-    public static final String MIDPOINT_MESSAGE = "Mid-point message";
+    public static final String BOOSTER_RELATED_MESSAGES = "Booster related messages";
 
     public static final String PDF_EXPORT_FORMAT="pdf";
     public static final String CSV_EXPORT_FORMAT="csv";
@@ -46,7 +46,7 @@ public final class EbodacConstants {
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
-            "Mid-point message", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
+            "Booster related messages", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
 

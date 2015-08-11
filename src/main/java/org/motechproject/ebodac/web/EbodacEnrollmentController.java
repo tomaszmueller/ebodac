@@ -280,7 +280,7 @@ public class EbodacEnrollmentController {
     }
 
     private void updateVisit(String subjectId, String campaignName, LocalDate date) {
-        if (!EbodacConstants.MIDPOINT_MESSAGE.equals(campaignName)) {
+        if (!EbodacConstants.BOOSTER_RELATED_MESSAGES.equals(campaignName)) {
             VisitType visitType = null;
             if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
                 visitType = VisitType.BOOST_VACCINATION_DAY;

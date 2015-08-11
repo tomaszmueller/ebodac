@@ -219,7 +219,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
             checkCampaignEnrollment("1000000162", VisitType.PRIME_VACCINATION_DAY.getValue(),
                     LocalDate.parse("2015-10-11", formatter), enrollments.get(0));
 
-            checkCampaignEnrollment("1000000162", EbodacConstants.MIDPOINT_MESSAGE,
+            checkCampaignEnrollment("1000000162", EbodacConstants.BOOSTER_RELATED_MESSAGES,
                     LocalDate.parse("2015-10-11", formatter), enrollments.get(1));
         } finally {
             stopFakingTime();
