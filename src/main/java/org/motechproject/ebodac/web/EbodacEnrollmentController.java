@@ -1,11 +1,14 @@
 package org.motechproject.ebodac.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
@@ -120,7 +123,7 @@ public class EbodacEnrollmentController {
     @RequestMapping(value = "/enrollSubject", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> enrollSubject(@RequestBody String subjectId) {
-        if (subjectId == null) {
+        if (StringUtils.isBlank(subjectId)) {
             return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
@@ -138,7 +141,7 @@ public class EbodacEnrollmentController {
     @RequestMapping(value = "/unenrollSubject", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> unenrollSubject(@RequestBody String subjectId) {
-        if (subjectId == null) {
+        if (StringUtils.isBlank(subjectId)) {
             return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
@@ -172,5 +175,125 @@ public class EbodacEnrollmentController {
         List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsBySubjectId(subjectId, queryParams);
 
         return new Records<>(settings.getPage(), rowCount, (int) recordCount, enrollments);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/enrollCampaign/{subjectId}/{campaignName}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> enrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
+
+        if (StringUtils.isBlank(subjectId)) {
+            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (StringUtils.isBlank(campaignName)) {
+            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            ebodacEnrollmentService.enrollSubjectToCampaign(subjectId, campaignName);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/unenrollCampaign/{subjectId}/{campaignName}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> unenrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
+
+        if (StringUtils.isBlank(subjectId)) {
+            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (StringUtils.isBlank(campaignName)) {
+            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            ebodacEnrollmentService.unenrollSubject(subjectId, campaignName);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/enrollCampaignWithNewDate/{subjectId}/{campaignName}/{date}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> enrollCampaignWithNewDate(@PathVariable String subjectId, @PathVariable String campaignName,
+                                                            @PathVariable String date) throws IOException {
+
+        if (StringUtils.isBlank(subjectId)) {
+            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (StringUtils.isBlank(campaignName)) {
+            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
+            ebodacEnrollmentService.enrollSubjectToCampaignWithNewDate(subjectId, campaignName, referenceDate);
+            updateVisit(subjectId, campaignName, referenceDate);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/reenrollCampaign/{subjectId}/{campaignName}/{date}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> reenrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName,
+                                                   @PathVariable String date) throws IOException {
+
+        if (StringUtils.isBlank(subjectId)) {
+            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (StringUtils.isBlank(campaignName)) {
+            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
+            ebodacEnrollmentService.reenrollSubjectWithNewDate(subjectId, campaignName, referenceDate);
+            updateVisit(subjectId, campaignName, referenceDate);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void updateVisit(String subjectId, String campaignName, LocalDate date) {
+        if (!EbodacConstants.MIDPOINT_MESSAGE.equals(campaignName)) {
+            VisitType visitType = null;
+            if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+                visitType = VisitType.BOOST_VACCINATION_DAY;
+            } else {
+                visitType = VisitType.getByValue(campaignName);
+            }
+            if (visitType != null) {
+                Visit visit = visitService.findVisitBySubjectIdAndVisitType(subjectId, visitType);
+                if (visit != null) {
+                    visit.setMotechProjectedDate(date);
+                    visitService.update(visit);
+                }
+            }
+        }
     }
 }

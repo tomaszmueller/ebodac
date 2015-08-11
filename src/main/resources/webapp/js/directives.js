@@ -200,6 +200,7 @@
                     }, {
                         name: 'subject',
                         index: 'subject.subjectId',
+                        classes: 'pointer',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
                                        if (!cellValue){
@@ -211,6 +212,7 @@
                         name: 'subjectName',
                         jsonmap: 'subject',
                         index: 'subject.name',
+                        classes: 'pointer',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
                                        if (!cellValue){
@@ -221,11 +223,13 @@
                     }, {
                         name: 'status',
                         index: 'status',
+                        classes: 'pointer',
                         align: 'center'
                     }, {
                         name: 'action',
                         jsonmap: 'status',
                         align: 'center',
+                        sortable: false,
                         formatter: function(cellValue, options, rowObject) {
                                        if (rowObject.status === 'ENROLLED') {
                                            return "<button ng-click='unenroll(\"" + rowObject.subject.subjectId + "\")'" +
@@ -315,30 +319,48 @@
                     }, {
                         name: 'referenceDate',
                         index: 'referenceDate',
+                        classes: 'pointer',
                         align: 'center',
-                        formatter:'date', formatoptions: {srcformat: 'Y-m-d', newformat:'Y-m-d'}
+                        editable: true,
+                        edittype: 'text',
+                        editoptions: {
+                            dataInit: function(elem) {
+                                $(elem).addClass("pointer");
+                                $(elem).datetimepicker({
+                                    dateFormat: "yy-mm-dd",
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    showTimepicker: false
+                                });
+                            }
+                        }
                     }, {
                         name: 'status',
                         index: 'status',
                         align: 'center'
                     }, {
                         name: 'action',
-                        jsonmap: 'status',
+                        jsonmap: 'referenceDate',
                         align: 'center',
+                        sortable: false,
                         formatter: function(cellValue, options, rowObject) {
-                                       if (rowObject.status === 'ENROLLED') {
+                                       if (rowObject.action !== undefined &&  rowObject.action.startsWith("<button")) {
+                                           return rowObject.action;
+                                       } else if (rowObject.status === 'ENROLLED') {
                                            return "<button ng-click='unenroll(\"" + rowObject.campaignName + "\")'" +
-                                                   " type='button' class='btn btn-danger compileBtn'>" +
-                                                   scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
+                                                  " type='button' class='btn btn-danger compileBtn'>" +
+                                                  scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
                                        } else if (rowObject.status === 'UNENROLLED') {
                                            return "<button ng-click='enroll(\"" + rowObject.campaignName + "\")'" +
-                                                   " type='button' class='btn btn-success compileBtn'>" +
-                                                   scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
+                                                  " type='button' class='btn btn-success compileBtn'>" +
+                                                  scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
                                        }
                                        return '';
                                    }
                     }],
                     viewrecords: true,
+                    cellEdit: true,
+                    cellsubmit : 'clientArray',
                     rowNum: 100,
                     loadonce: false,
                     resizeStop: function() {
@@ -351,6 +373,23 @@
                         $('.ui-jqgrid-btable').width('100%');
                         elem.jqGrid('setGridWidth', '100%');
                         $compile($('.compileBtn'))(scope);
+                    },
+                    beforeSaveCell: function (rowId, name, val, iRow, iCol) {
+                        var rowData = elem.jqGrid('getRowData', rowId);
+                        var action = '';
+                        if (rowData.status === 'ENROLLED') {
+                            action = "<button ng-click='reenroll(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
+                                     " type='button' class='btn btn-primary compileBtn'>" +
+                                     scope.msg('ebodac.web.enrollment.btn.reenroll') + "</button>"
+                        } else if (rowData.status === 'UNENROLLED') {
+                            action = "<button ng-click='enrollWithNewDate(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
+                                     " type='button' class='btn btn-primary compileBtn'>" +
+                                     scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>"
+                        }
+                        rowData.action = action;
+                        elem.jqGrid('setRowData', rowId, rowData);
+                        $compile($('.compileBtn'))(scope);
+                        return val;
                     }
                 });
 

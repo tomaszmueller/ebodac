@@ -353,11 +353,55 @@
         };
 
         $scope.enroll = function(campaignName) {
-
+            $http.get('../ebodac/enrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                $scope.refreshGrid();
+            });
         }
 
         $scope.unenroll = function(campaignName) {
+            $http.get('../ebodac/unenrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
+                $scope.refreshGrid();
+            });
+        }
 
+        $scope.reenroll = function(campaignName, date) {
+            $http.get('../ebodac/reenrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName + '/' + date)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.reenrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.reenrollSubject.error', response));
+                $scope.refreshGrid();
+            });
+        }
+
+        $scope.enrollWithNewDate = function(campaignName, date) {
+            $http.get('../ebodac/enrollCampaignWithNewDate/' + $scope.selectedSubjectId + '/' + campaignName + '/' + date)
+            .success(function(response) {
+                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
+                hideMsgLater(index-1);
+                $scope.refreshGrid();
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                $scope.refreshGrid();
+            });
         }
     });
 

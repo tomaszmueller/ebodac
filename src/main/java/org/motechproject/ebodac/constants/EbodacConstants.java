@@ -50,6 +50,8 @@ public final class EbodacConstants {
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit"));
 
+    public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
+
     public static final List<String> AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT = new ArrayList<>(Arrays.asList("Find Visit By Date", "Find Visit By Date And Type",
             "Find Visits By Date Range", "Find Visits By Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
             "Find Visit By Subject Name", "Find Visit By Subject Address"));

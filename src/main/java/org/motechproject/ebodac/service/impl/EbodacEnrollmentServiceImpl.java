@@ -120,17 +120,22 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     @Override
+    public void enrollSubjectToCampaign(String subjectId, String campaignName) {
+        enrollSubjectToCampaign(subjectId, campaignName, null);
+    }
+
+    @Override
+    public void enrollSubjectToCampaignWithNewDate(String subjectId, String campaignName, LocalDate date) {
+        enrollSubjectToCampaign(subjectId, campaignName, date);
+    }
+
+    @Override
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
         if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             completeCampaignForSubject(visit, false);
         } else if (visit.getMotechProjectedDate() == null) {
             enrollSubject(visit);
         }
-    }
-
-    @Override
-    public void unenrollSubject(Subject subject, String campaignName) {
-        unenrollSubject(subject.getSubjectId(), campaignName);
     }
 
     @Override
@@ -185,6 +190,24 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             enrollSubject(visit.getSubject(), campaignName, visit.getMotechProjectedDate(), false);
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
             reenrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
+        }
+    }
+
+    @Override
+    public void reenrollSubjectWithNewDate(String subjectId, String campaignName, LocalDate date) {
+        if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+            if (!unenrollAndDeleteEnrolment(subjectId, campaignName, false)) {
+                throw new EbodacEnrollmentException(String.format("Cannot re-enrol Subject, because no Subject with id %s registered in Campaign with name: %s",
+                        subjectId, campaignName));
+            }
+
+            String dayOfWeek = date.dayOfWeek().getAsText(Locale.ENGLISH);
+            String newName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+
+            enrollSubjectToCampaign(subjectId, newName, date);
+        } else {
+            unenrollSubject(subjectId, campaignName);
+            enrollSubjectToCampaign(subjectId, campaignName, date);
         }
     }
 
@@ -339,6 +362,79 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                         subjectID, campaignName), e);
             }
         }
+    }
+
+    private void enrollSubjectToCampaign(String subjectId, String campaignName, LocalDate referenceDate) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        if (subjectEnrollments == null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject, because not found unenrolled Subject with id: %s in campaign with name: %s",
+                    subjectId, campaignName));
+        }
+
+        Subject subject = subjectEnrollments.getSubject();
+
+        if (subject.getDateOfDisconStd() != null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject is withdrawn from study",
+                    subject.getSubjectId()));
+        } else if (subject.getLanguage() == null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject language is empty",
+                    subject.getSubjectId()));
+        } else if (StringUtils.isBlank(subject.getPhoneNumber())) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s, because subject phone number is empty",
+                    subject.getSubjectId()));
+        }
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+        if (enrollment == null && campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+            enrollment = new Enrollment(subjectId, campaignName);
+            enrollment.setStatus(EnrollmentStatus.UNENROLLED);
+            subjectEnrollments.addEnrolment(enrollment);
+        }
+
+        if (enrollment == null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject, because not found unenrolled Subject with id: %s in campaign with name: %s",
+                    subject.getSubjectId(), campaignName));
+        } else if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject is already enrolled in this campaign",
+                    subject.getSubjectId(), enrollment.getCampaignName()));
+        } else if (EnrollmentStatus.COMPLETED.equals(enrollment.getStatus())) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because this campaign is completed",
+                    subject.getSubjectId(), enrollment.getCampaignName()));
+        }
+        if (subject.getDateOfDisconVac() != null) {
+            String campaign = enrollment.getCampaignName();
+            if (enrollment.getCampaignName().startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+                campaign = VisitType.BOOST_VACCINATION_DAY.getValue();
+            }
+            if (configService.getConfig().getDisconVacCampaignsList().contains(campaign)) {
+                throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because subject resigned form booster vaccination",
+                        subject.getSubjectId(), enrollment.getCampaignName()));
+            }
+        }
+
+        if (referenceDate != null) {
+            enrollment.setReferenceDate(referenceDate);
+        } else if (enrollment.getReferenceDate() == null) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
+                    subject.getSubjectId(), enrollment.getCampaignName()));
+        }
+
+        try {
+            messageCampaignService.scheduleJobsForEnrollment(enrollment.toCampaignEnrollment());
+            enrollment.setStatus(EnrollmentStatus.ENROLLED);
+            enrollmentDataService.update(enrollment);
+        } catch (CampaignNotFoundException e) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s because Campaign with name: %s doesn't exist",
+                    subject.getSubjectId(), enrollment.getCampaignName()), e);
+        } catch (IllegalArgumentException e) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because last message date is in the past",
+                    subject.getSubjectId(), campaignName), e);
+        } catch (Exception e) {
+            throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because of unknown exception",
+                    subject.getSubjectId(), enrollment.getCampaignName()), e);
+        }
+
+        updateSubjectEnrollments(subjectEnrollments);
     }
 
     private void reenrollSubject(Subject subject, String campaignName, LocalDate referenceDate, boolean updateInactiveEnrollment) {
