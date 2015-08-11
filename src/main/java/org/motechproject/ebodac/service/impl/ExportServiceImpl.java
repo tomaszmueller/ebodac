@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class ExportServiceImpl implements ExportService {
         String json = objectMapper.writeValueAsString(entity);
         Map<String, Object> visitMap = objectMapper.readValue(json, new TypeReference<HashMap>() {});
         Map<String, Object> subjectMap = (Map<String, Object>)visitMap.get("subject");
-        Map<String, String> row = new HashMap<>();
+        Map<String, String> row = new LinkedHashMap<>();
 
         for(Map.Entry<String, String> entry : headerMap.entrySet()) {
             String value = (String)visitMap.get(entry.getValue());
