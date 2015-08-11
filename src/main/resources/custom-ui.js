@@ -148,7 +148,7 @@ $scope.addEntityInstance = function() {
         var fieldValue = input.val().replace(/ /g, '');
         input.val(fieldValue);
         input.trigger('input');
-        
+
         $http.get('../ebodac/ebodac-config')
         .success(function(response){
             if(response.showWarnings) {
