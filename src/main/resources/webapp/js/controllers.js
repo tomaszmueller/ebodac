@@ -20,157 +20,20 @@
 
     /*
      *
-     * Settings
+     * Lookups
      *
      */
-    controllers.controller('EbodacSettingsCtrl', function ($scope, $http, $timeout) {
-        $scope.errors = [];
-        $scope.messages = [];
-
-        innerLayout({
-            spacing_closed: 30,
-            east__minSize: 200,
-            east__maxSize: 350
-        });
-
-        $scope.availableCampaigns = [];
-
-        $scope.campaignsChanged = function(change) {
-            var value;
-
-            if (change.added) {
-                value = change.added.text;
-                $scope.config.disconVacCampaignsList.push(value);
-            } else if (change.removed) {
-                value = change.removed.text;
-                $scope.config.disconVacCampaignsList.removeObject(value);
-            }
-        };
-
-        $http.get('../ebodac/ebodac-config')
-            .success(function(response){
-                var i;
-                $scope.config = response;
-                $scope.originalConfig = angular.copy($scope.config);
-
-                $http.get('../ebodac/availableCampaigns')
-                    .success(function(response){
-                        $scope.availableCampaigns = response;
-                        $timeout(function() {
-                            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
-                        }, 50);
-
-                    })
-                    .error(function(response) {
-                        $scope.errors.push($scope.msg('ebodac.web.settings.enroll.disconVacCampaigns.error', response));
-                    });
-            })
-            .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.settings.noConfig', response));
-            });
-
-        $scope.reset = function () {
-            $scope.config = angular.copy($scope.originalConfig);
-            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
-        };
-
-        function hideMsgLater(index) {
-            return $timeout(function() {
-                $scope.messages.splice(index, 1);
-            }, 5000);
-        }
-
-        $scope.submit = function () {
-            $http.post('../ebodac/ebodac-config', $scope.config)
-                .success(function (response) {
-                    $scope.config = response;
-                    $scope.originalConfig = angular.copy($scope.config);
-                    var index = $scope.messages.push($scope.msg('ebodac.web.settings.saved'));
-                    hideMsgLater(index-1);
-                })
-                .error (function (response) {
-                    //todo: better than that!
-                    handleWithStackTrace('ebodac.error.header', 'ebodac.error.body', response);
-                });
-        };
-    });
-
-    /*
-     *
-     * Reports
-     *
-     */
-    controllers.controller('EbodacReportsCtrl', function ($scope, $http) {
-        $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
-        $scope.availableExportFormats = ['csv','pdf'];
-        $scope.actualExportRecords = 'All';
-        $scope.actualExportColumns = 'All';
-        $scope.exportFormat = 'csv';
-        $scope.checkboxModel = {
-            exportWithLookup : false,
-            exportWithOrder : false
-        };
-
-        var url = "../ebodac/getLookupsForDailyClinicVisitScheduleReport";
-
-         $http.get(url).
-         success( function(data) {
-                     $scope.lookups = data;
-                 });
+    controllers.controller('EbodacLookupsCtrl', function ($scope, $http) {
         $scope.lookupBy = {};
         $scope.selectedLookup = undefined;
         $scope.lookupFields = [];
 
-        $scope.exportEntityInstances = function () {
-            $('#exportInstanceModal').modal('show');
-        };
-
-        $scope.changeExportRecords = function (records) {
-            $scope.actualExportRecords = records;
-        };
-
-        $scope.changeExportFormat = function (format) {
-            $scope.exportFormat = format;
-        };
-
-        $scope.closeExportInstanceModal = function () {
-            $('#exportInstanceForm').resetForm();
-            $('#exportInstanceModal').modal('hide');
-        };
-
-        /**
-        * Exports selected entity's instances to CSV file
-        */
-        $scope.exportInstance = function() {
-            var url, rows, page, sortColumn, sortDirection;
-
-            url = "../ebodac/exportDailyClinicVisitScheduleReport";
-            url = url + "?outputFormat=" + $scope.exportFormat;
-            url = url + "&exportRecords=" + $scope.actualExportRecords;
-
-           if ($scope.checkboxModel.exportWithOrder === true) {
-               sortColumn = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortname');
-               sortDirection = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortorder');
-
-               url = url + "&sortColumn=" + sortColumn;
-               url = url + "&sortDirection=" + sortDirection;
-           }
-
-           if ($scope.checkboxModel.exportWithLookup === true) {
-               url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
-               url = url + "&fields=" + JSON.stringify($scope.lookupBy);
-           }
-
+        $scope.getLookups = function(url) {
             $http.get(url)
-            .success(function () {
-                $('#exportInstanceForm').resetForm();
-                $('#exportInstanceModal').modal('hide');
-                window.location.replace(url);
-            })
-            .error(function (response) {
-                handleResponse('mds.error', 'mds.error.exportData', response);
+            .success(function(data) {
+                        $scope.lookups = data;
             });
-        };
+        }
 
         /**
         * Shows/Hides lookup dialog
@@ -263,6 +126,156 @@
                 }
             }
         };
+    });
+
+    /*
+     *
+     * Settings
+     *
+     */
+    controllers.controller('EbodacSettingsCtrl', function ($scope, $http, $timeout) {
+        $scope.errors = [];
+        $scope.messages = [];
+
+        innerLayout({
+            spacing_closed: 30,
+            east__minSize: 200,
+            east__maxSize: 350
+        });
+
+        $scope.availableCampaigns = [];
+
+        $scope.campaignsChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.text;
+                $scope.config.disconVacCampaignsList.push(value);
+            } else if (change.removed) {
+                value = change.removed.text;
+                $scope.config.disconVacCampaignsList.removeObject(value);
+            }
+        };
+
+        $http.get('../ebodac/ebodac-config')
+            .success(function(response){
+                var i;
+                $scope.config = response;
+                $scope.originalConfig = angular.copy($scope.config);
+
+                $http.get('../ebodac/availableCampaigns')
+                    .success(function(response){
+                        $scope.availableCampaigns = response;
+                        $timeout(function() {
+                            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
+                        }, 50);
+
+                    })
+                    .error(function(response) {
+                        $scope.errors.push($scope.msg('ebodac.web.settings.enroll.disconVacCampaigns.error', response));
+                    });
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('ebodac.web.settings.noConfig', response));
+            });
+
+        $scope.reset = function () {
+            $scope.config = angular.copy($scope.originalConfig);
+            $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
+        };
+
+        function hideMsgLater(index) {
+            return $timeout(function() {
+                $scope.messages.splice(index, 1);
+            }, 5000);
+        }
+
+        $scope.submit = function () {
+            $http.post('../ebodac/ebodac-config', $scope.config)
+                .success(function (response) {
+                    $scope.config = response;
+                    $scope.originalConfig = angular.copy($scope.config);
+                    var index = $scope.messages.push($scope.msg('ebodac.web.settings.saved'));
+                    hideMsgLater(index-1);
+                })
+                .error (function (response) {
+                    //todo: better than that!
+                    handleWithStackTrace('ebodac.error.header', 'ebodac.error.body', response);
+                });
+        };
+    });
+
+    /*
+     *
+     * Reports
+     *
+     */
+    controllers.controller('EbodacReportsCtrl', function ($scope, $http, $controller) {
+
+        $controller('EbodacLookupsCtrl', {$scope: $scope});
+        var url = "../ebodac/getLookupsForDailyClinicVisitScheduleReport";
+        $scope.getLookups(url);
+
+        $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
+        $scope.availableExportFormats = ['csv','pdf'];
+        $scope.actualExportRecords = 'All';
+        $scope.actualExportColumns = 'All';
+        $scope.exportFormat = 'csv';
+        $scope.checkboxModel = {
+            exportWithLookup : false,
+            exportWithOrder : false
+        };
+
+        $scope.exportEntityInstances = function () {
+            $('#exportInstanceModal').modal('show');
+        };
+
+        $scope.changeExportRecords = function (records) {
+            $scope.actualExportRecords = records;
+        };
+
+        $scope.changeExportFormat = function (format) {
+            $scope.exportFormat = format;
+        };
+
+        $scope.closeExportInstanceModal = function () {
+            $('#exportInstanceForm').resetForm();
+            $('#exportInstanceModal').modal('hide');
+        };
+
+        /**
+        * Exports selected entity's instances to CSV file
+        */
+        $scope.exportInstance = function() {
+            var url, rows, page, sortColumn, sortDirection;
+
+            url = "../ebodac/exportDailyClinicVisitScheduleReport";
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+           if ($scope.checkboxModel.exportWithOrder === true) {
+               sortColumn = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortname');
+               sortDirection = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortorder');
+
+               url = url + "&sortColumn=" + sortColumn;
+               url = url + "&sortDirection=" + sortDirection;
+           }
+
+           if ($scope.checkboxModel.exportWithLookup === true) {
+               url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
+               url = url + "&fields=" + JSON.stringify($scope.lookupBy);
+           }
+
+            $http.get(url)
+            .success(function () {
+                $('#exportInstanceForm').resetForm();
+                $('#exportInstanceModal').modal('hide');
+                window.location.replace(url);
+            })
+            .error(function (response) {
+                handleResponse('mds.error', 'mds.error.exportData', response);
+            });
+        };
 
         $scope.backToEntityList = function() {
             window.location.replace('#/ebodac/reports');
@@ -274,7 +287,12 @@
      * Enrollment
      *
      */
-    controllers.controller('EbodacEnrollmentCtrl', function ($scope, $http, $timeout) {
+    controllers.controller('EbodacEnrollmentCtrl', function ($scope, $http, $timeout, $controller) {
+
+        $controller('EbodacLookupsCtrl', {$scope: $scope});
+        var url = "../ebodac/getLookupsForEnrollments";
+        $scope.getLookups(url);
+
         $scope.errors = [];
         $scope.messages = [];
 
@@ -344,6 +362,10 @@
             return $timeout(function() {
                 $scope.messages.splice(index, 1);
             }, 5000);
+        }
+
+        $scope.backToEnrolments = function() {
+            window.location.replace('#/ebodac/enrollment');
         }
 
         $scope.selectedSubjectId = $routeParams.subjectId;

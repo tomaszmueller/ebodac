@@ -13,9 +13,11 @@ import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
+import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.VisitService;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
+import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Order;
 import org.slf4j.Logger;
@@ -50,6 +52,9 @@ public class EbodacEnrollmentController {
 
     @Autowired
     private EnrollmentDataService enrollmentDataService;
+
+    @Autowired
+    private LookupService lookupService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -108,13 +113,39 @@ public class EbodacEnrollmentController {
 
         QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
 
+        try {
+            return lookupService.getEntities(SubjectEnrollments.class, settings.getLookup(), settings.getFields(), queryParams);
+        } catch (IOException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @RequestMapping(value = "/getLookupsForEnrollments", method = RequestMethod.GET)
+    @ResponseBody
+    public List<LookupDto> getLookupsForEnrollments() {
+        return lookupService.getAvailableLookups("SubjectEnrollments");
+    }
+
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @RequestMapping(value = "/getEnrollmentAdvanced/{subjectId}", method = RequestMethod.POST)
+    @ResponseBody
+    public Records<?> getEnrollmentAdvanced(@PathVariable String subjectId, GridSettings settings) throws IOException {
+        Order order = null;
+        if (!settings.getSortColumn().isEmpty()) {
+            order = new Order(settings.getSortColumn(), settings.getSortDirection());
+        }
+
+        QueryParams queryParams = new QueryParams(null, null, order);
+
         long recordCount;
         int rowCount;
 
-        recordCount = subjectEnrollmentsDataService.count();
+        recordCount = enrollmentDataService.countFindEnrollmentsBySubjectId(subjectId);
         rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
 
-        List<SubjectEnrollments> enrollments = subjectEnrollmentsDataService.retrieveAll(queryParams);
+        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsBySubjectId(subjectId, queryParams);
 
         return new Records<>(settings.getPage(), rowCount, (int) recordCount, enrollments);
     }
@@ -153,28 +184,6 @@ public class EbodacEnrollmentController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
-    @RequestMapping(value = "/getEnrollmentAdvanced/{subjectId}", method = RequestMethod.POST)
-    @ResponseBody
-    public Records<?> getEnrollmentAdvanced(@PathVariable String subjectId, GridSettings settings) throws IOException {
-        Order order = null;
-        if (!settings.getSortColumn().isEmpty()) {
-            order = new Order(settings.getSortColumn(), settings.getSortDirection());
-        }
-
-        QueryParams queryParams = new QueryParams(null, null, order);
-
-        long recordCount;
-        int rowCount;
-
-        recordCount = enrollmentDataService.countFindEnrollmentsBySubjectId(subjectId);
-        rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
-
-        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsBySubjectId(subjectId, queryParams);
-
-        return new Records<>(settings.getPage(), rowCount, (int) recordCount, enrollments);
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
