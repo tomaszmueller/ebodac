@@ -176,7 +176,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     public void reenrollSubject(Visit visit) {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             reenrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
-            reenrollSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE, visit.getMotechProjectedDate(), false);
+            reenrollSubject(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getMotechProjectedDate(), false);
         } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
             if (visit.getMotechProjectedDate() == null) {
                 throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
@@ -250,7 +250,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         try {
             if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
                 enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getDateProjected(), false);
-                enrollSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE, visit.getDateProjected(), false);
+                enrollSubject(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDateProjected(), false);
 
                 visit.setMotechProjectedDate(visit.getDateProjected());
             } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
@@ -446,7 +446,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
                 if (completeAllCampaigns) {
                     completeCampaignForSubject(visit.getSubject(), visit.getType().getValue());
-                    completeCampaignForSubject(visit.getSubject(), EbodacConstants.MIDPOINT_MESSAGE);
+                    completeCampaignForSubject(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES);
                 }
             } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
                 completeAllBoostVaccinationDayCampaigns(visit.getSubject());
