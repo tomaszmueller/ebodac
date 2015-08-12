@@ -10,6 +10,13 @@
         {{message}}
     </div>
 
+    <div class="clearfix toolbox form-horizontal">
+        <button ng-click="backToEnrolments()" type="button" class="btn btn-primary">
+            <i class="fa fa-lg fa-level-up"></i>
+            {{msg('ebodac.btn.backToEnrolments')}}
+        </button>
+    </div>
+
     <div id="enrollmentAdvanced" class="overrideJqgridTable">
         <table id="enrollmentAdvancedTable" enrollment-advanced-grid></table>
     </div>
