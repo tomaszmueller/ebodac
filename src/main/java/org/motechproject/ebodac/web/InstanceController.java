@@ -113,7 +113,7 @@ public class InstanceController {
                 csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
                         settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
             } else {
-                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
                         settings.getSelectedFields(), getFields(settings));
             }
         }

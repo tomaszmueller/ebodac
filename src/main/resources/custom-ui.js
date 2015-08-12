@@ -56,7 +56,7 @@ $scope.closeImportSubjectModal = function () {
 };
 
 $scope.exportInstance = function() {
-    var selectedFieldsName = [], url, rows, page, sortColumn, sortDirection;
+    var selectedFieldsName = [], url, sortColumn, sortDirection;
 
     url = "../ebodac/entities/" + $scope.selectedEntity.id + "/exportInstances";
     url = url + "?outputFormat=" + $scope.exportFormat;
