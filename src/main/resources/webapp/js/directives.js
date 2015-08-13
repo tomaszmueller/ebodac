@@ -233,11 +233,11 @@
                         formatter: function(cellValue, options, rowObject) {
                                        if (rowObject.status === 'ENROLLED') {
                                            return "<button ng-click='unenroll(\"" + rowObject.subject.subjectId + "\")'" +
-                                                   " type='button' class='btn btn-danger compileBtn'>" +
+                                                   " type='button' class='btn btn-danger compileBtn' ng-disabled='enrollInProgress'>" +
                                                    scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
                                        } else if (rowObject.status === 'UNENROLLED') {
                                            return "<button ng-click='enroll(\"" + rowObject.subject.subjectId + "\")'" +
-                                                   " type='button' class='btn btn-success compileBtn'>" +
+                                                   " type='button' class='btn btn-success compileBtn' ng-disabled='enrollInProgress'>" +
                                                    scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
                                        }
                                        return '';
@@ -348,11 +348,11 @@
                                            return rowObject.action;
                                        } else if (rowObject.status === 'ENROLLED') {
                                            return "<button ng-click='unenroll(\"" + rowObject.campaignName + "\")'" +
-                                                  " type='button' class='btn btn-danger compileBtn'>" +
+                                                  " type='button' class='btn btn-danger compileBtn' ng-disabled='enrollInProgress'>" +
                                                   scope.msg('ebodac.web.enrollment.btn.unenroll') + "</button>";
                                        } else if (rowObject.status === 'UNENROLLED') {
                                            return "<button ng-click='enroll(\"" + rowObject.campaignName + "\")'" +
-                                                  " type='button' class='btn btn-success compileBtn'>" +
+                                                  " type='button' class='btn btn-success compileBtn' ng-disabled='enrollInProgress'>" +
                                                   scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>";
                                        }
                                        return '';
@@ -379,11 +379,11 @@
                         var action = '';
                         if (rowData.status === 'ENROLLED') {
                             action = "<button ng-click='reenroll(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
-                                     " type='button' class='btn btn-primary compileBtn'>" +
+                                     " type='button' class='btn btn-primary compileBtn' ng-disabled='enrollInProgress'>" +
                                      scope.msg('ebodac.web.enrollment.btn.reenroll') + "</button>"
                         } else if (rowData.status === 'UNENROLLED') {
                             action = "<button ng-click='enrollWithNewDate(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
-                                     " type='button' class='btn btn-primary compileBtn'>" +
+                                     " type='button' class='btn btn-primary compileBtn' ng-disabled='enrollInProgress'>" +
                                      scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>"
                         }
                         rowData.action = action;
