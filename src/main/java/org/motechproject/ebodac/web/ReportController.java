@@ -78,7 +78,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/getLookupsForDailyClinicVisitScheduleReport", method = RequestMethod.GET)
-    @PreAuthorize(Constants.Roles.HAS_DATA_OR_SCHEMA_ACCESS)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
     public List<LookupDto> getLookupsForDailyClinicVisitScheduleReport() {
         List<LookupDto> ret = new ArrayList<>();
