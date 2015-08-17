@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface EnrollmentDataService extends MotechDataService<Enrollment> {
 
-    @Lookup
+    @Lookup(name="Find Enrollments By Participant Id")
     List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);
 
     @Lookup
     List<Enrollment> findEnrollmentsByCampaignName(@LookupField(name = "campaignName") String campaignName);
 
-    @Lookup
+    @Lookup(name="Find Enrollments By Participant Id")
     List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId, QueryParams queryParams);
 
     long countFindEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);

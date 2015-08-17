@@ -8,10 +8,10 @@ import org.motechproject.mds.annotations.Ignore;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "ParticipantEnrollments")
 public class SubjectEnrollments {
 
-    @Field
+    @Field(displayName = "Participant")
     private Subject subject;
 
     @Field

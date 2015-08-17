@@ -18,35 +18,35 @@ import java.util.List;
  */
 public interface SubjectDataService extends MotechDataService<Subject> {
 
-    @Lookup
+    @Lookup(name="Find Participant by Name")
     List<Subject> findSubjectsByName(@LookupField(name = "name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
-    @Lookup(name="Find unique Subject by SubjectId")
+    @Lookup(name="Find unique Participant by ParticipantId")
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
 
-    @Lookup
+    @Lookup(name="Find Participant by Modified")
     List<Subject> findSubjectsByModified(@LookupField(name = "changed") Boolean modified);
 
-    @Lookup
+    @Lookup(name="Find Participant by Primer Vaccination Date Range")
     List<Subject> findSubjectsByPrimerVaccinationDateRange(@LookupField(name = "primerVaccinationDate")
                                                       Range<LocalDate> dateRange);
 
-    @Lookup
+    @Lookup(name="Find Participant by Booster Vaccination Date Range")
     List<Subject> findSubjectsByBoosterVaccinationDateRange(@LookupField(name = "boosterVaccinationDate")
                                                        Range<LocalDate> dateRange);
 
-    @Lookup
+    @Lookup(name="Find Participant by Primer Vaccination Date")
     List<Subject> findSubjectsByPrimerVaccinationDate(@LookupField(name = "primerVaccinationDate") LocalDate dateRange);
 
-    @Lookup
+    @Lookup(name="Find Participant by Booster Vaccination Date")
     List<Subject> findSubjectsByBoosterVaccinationDate(@LookupField(name = "boosterVaccinationDate") LocalDate dateRange);
 
-    @Lookup
+    @Lookup(name="Find Participant by Address")
     List<Subject> findSubjectsByAddress(@LookupField(name = "address",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address);
 
-    @Lookup(name="Find Subjects by SubjectId")
+    @Lookup(name="Find Participant by ParticipantId")
     List<Subject> findSubjectsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 }

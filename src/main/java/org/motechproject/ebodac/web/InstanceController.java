@@ -67,7 +67,7 @@ public class InstanceController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value = "/instances/{entityId}/Subjectcsvimport", method = RequestMethod.POST)
+    @RequestMapping(value = "/instances/{entityId}/Participantcsvimport", method = RequestMethod.POST)
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageSubjects')")
     @ResponseBody
     public long subjectImportCsv(@PathVariable long entityId, @RequestParam(required = true) MultipartFile csvFile) {

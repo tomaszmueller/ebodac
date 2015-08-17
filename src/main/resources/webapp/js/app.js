@@ -6,7 +6,7 @@
     'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'mds', 'sms']), subjectId, visitId, reportBoosterVaccinationId, reportPrimerVaccinationId, callDetailRecordId;
 
     $.ajax({
-        url: '../mds/entities/getEntity/EBODAC Module/Subject',
+        url: '../mds/entities/getEntity/EBODAC Module/Participant',
         success:  function(data) {
             subjectId = data.id;
         },
