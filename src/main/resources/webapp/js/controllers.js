@@ -347,7 +347,13 @@
         }
 
         $scope.goToAdvanced = function(subjectId) {
-            window.location.replace('#/ebodac/enrollmentAdvanced/' + subjectId);
+            $.ajax({
+                url: '../ebodac/checkAdvancedPermissions',
+                success:  function(data) {
+                    window.location.replace('#/ebodac/enrollmentAdvanced/' + subjectId);
+                },
+                async: false
+            });
         }
     });
 
