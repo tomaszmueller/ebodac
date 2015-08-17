@@ -5,10 +5,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.ExportService;
+import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
+import org.motechproject.ebodac.util.DtoLookupHelper;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
 import org.motechproject.mds.ex.csv.CsvImportException;
@@ -42,6 +46,9 @@ import static org.apache.commons.lang.CharEncoding.UTF_8;
 @Controller
 public class InstanceController {
     private static final Logger LOGGER = LoggerFactory.getLogger(InstanceController.class);
+
+    @Autowired
+    private LookupService lookupService;
 
     @Autowired
     private CsvImportExportService csvImportExportService;
@@ -132,18 +139,55 @@ public class InstanceController {
         }
     }
 
-
     @RequestMapping(value = "/exportDailyClinicVisitScheduleReport", method = RequestMethod.GET)
     public void exportDailyClinicVisitScheduleReport(GridSettings settings,
                                                      @RequestParam String exportRecords,
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
+        exportEntity(settings, exportRecords, outputFormat, response, "DailyClinicVisitScheduleReport_",
+                null, Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP);
+    }
 
+    @RequestMapping(value = "/exportFollowupsAfterPrimeInjectionReport", method = RequestMethod.GET)
+    public void exportFollowupsAfterPrimeInjectionReport(GridSettings settings,
+                                                     @RequestParam String exportRecords,
+                                                     @RequestParam String outputFormat,
+                                                     HttpServletResponse response) throws IOException {
+        settings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
+        if(settings == null) {
+            response.sendError(400, "Invalid lookups params");
+        } else {
+            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsAfterPrimeInjectionReport_",
+                    null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP);
+        }
+    }
+
+    @RequestMapping(value = "/exportFollowupsMissedClinicVisitsReport", method = RequestMethod.GET)
+    public void exportFollowupsMissedClinicVisitsReport(GridSettings settings,
+                                                         @RequestParam String exportRecords,
+                                                         @RequestParam String outputFormat,
+                                                         HttpServletResponse response) throws IOException {
+        settings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
+        if(settings == null) {
+            response.sendError(400, "Invalid lookups params");
+        } else {
+            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsMissedClinicVisitsReport_",
+                    MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP);
+        }
+    }
+
+    private void exportEntity(GridSettings settings,
+                              String exportRecords,
+                              String outputFormat,
+                              HttpServletResponse response,
+                              String fileNameBeginning,
+                              Class<?> entityDtoType, Class<?> entityType,
+                              Map<String, String> headerMap) throws IOException {
         if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
         }
 
-        final String fileName = "DailyClinicVisitScheduleReport_" + LocalDate.now().toString();
+        final String fileName = fileNameBeginning + LocalDate.now().toString();
 
         if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
@@ -163,13 +207,13 @@ public class InstanceController {
 
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
-                exportService.exportEntityToPDF(response.getOutputStream(), Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP,
+                exportService.exportEntityToPDF(response.getOutputStream(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else {
-                exportService.exportEntityToCSV(response.getWriter(), Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP,
+                exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             }
-        } catch (IOException e) {
+        } catch (IOException | EbodacLookupException e) {
             LOGGER.debug(e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }

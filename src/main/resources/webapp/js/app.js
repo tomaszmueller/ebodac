@@ -53,7 +53,7 @@
             .when('/ebodac/reports', {templateUrl: '../ebodac/resources/partials/reports.html' })
             .when('/ebodac/reportPrimerVaccination', { redirectTo: '/mds/dataBrowser/' + reportPrimerVaccinationId + '/ebodac' })
             .when('/ebodac/reportBoosterVaccination', { redirectTo: '/mds/dataBrowser/' + reportBoosterVaccinationId + '/ebodac' })
-            .when('/ebodac/dailyClinicVisitScheduleReport', { templateUrl: '../ebodac/resources/partials/dailyClinicVisitScheduleReport.html', controller: 'EbodacReportsCtrl' })
+            .when('/ebodac/getReport/:reportType', { templateUrl: '../ebodac/resources/partials/report.html', controller: 'EbodacReportsCtrl' })
             .when('/ebodac/callDetailRecord', { redirectTo: '/mds/dataBrowser/' + callDetailRecordId + '/ebodac' })
             .when('/ebodac/SMSLog', { redirectTo: '/sms/log' })
             .when('/ebodac/enrollment', {templateUrl: '../ebodac/resources/partials/enrollment.html', controller: 'EbodacEnrollmentCtrl'})

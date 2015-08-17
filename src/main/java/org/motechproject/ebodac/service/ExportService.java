@@ -15,4 +15,10 @@ public interface ExportService {
 
     void  exportEntityToCSV(Writer writer, Class<?> entityType, Map<String, String> headerMap,
                                                    String lookup, String lookupFields, QueryParams queryParams) throws IOException;
+
+    void  exportEntityToPDF(OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                            String lookup, String lookupFields, QueryParams queryParams) throws IOException;
+
+    void  exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                            String lookup, String lookupFields, QueryParams queryParams) throws IOException;
 }

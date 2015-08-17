@@ -210,12 +210,10 @@
      * Reports
      *
      */
-    controllers.controller('EbodacReportsCtrl', function ($scope, $http, $controller) {
-
+    controllers.controller('EbodacReportsCtrl', function ($scope, $http, $controller, $routeParams) {
         $controller('EbodacLookupsCtrl', {$scope: $scope});
-        var url = "../ebodac/getLookupsForDailyClinicVisitScheduleReport";
-        $scope.getLookups(url);
-
+        $scope.reportType = $routeParams.reportType;
+        $scope.reportName = "";
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['csv','pdf'];
         $scope.actualExportRecords = 'All';
@@ -224,6 +222,40 @@
         $scope.checkboxModel = {
             exportWithLookup : false,
             exportWithOrder : false
+        };
+        var url;
+        switch($scope.reportType){
+            case "dailyClinicVisitScheduleReport":
+                url = "../ebodac/getLookupsForDailyClinicVisitScheduleReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport');
+                break;
+            case "followupsAfterPrimeInjectionReport":
+                url = "../ebodac/getLookupsForFollowupsAfterPrimeInjectionReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.followupsAfterPrimeInjectionReport');
+                break;
+            case "followupsMissedClinicVisitsReport":
+                url = "../ebodac/getLookupsForFollowupsMissedClinicVisitsReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.followupsMissedClinicVisitsReport');
+                break;
+        }
+         $scope.getLookups(url);
+
+        $scope.buildColumnModel = function (colModel) {
+            var newColModel = colModel;
+            for (var i in colModel) {
+              if(!colModel[i].hasOwnProperty('formatoptions') && colModel[i].hasOwnProperty('formatter')) {
+                newColModel[i].formatter = eval("(" + colModel[i].formatter + ")");
+              }
+            }
+            return newColModel;
+        };
+
+        $scope.buildColumnNames = function (colNames) {
+            var newColNames = colNames;
+            for(var i in colNames) {
+                newColNames[i] = $scope.msg(colNames[i]);
+            }
+            return newColNames;
         };
 
         $scope.exportEntityInstances = function () {
@@ -249,13 +281,23 @@
         $scope.exportInstance = function() {
             var url, rows, page, sortColumn, sortDirection;
 
-            url = "../ebodac/exportDailyClinicVisitScheduleReport";
+            switch($scope.reportType){
+                case "dailyClinicVisitScheduleReport":
+                    url = "../ebodac/exportDailyClinicVisitScheduleReport";
+                    break;
+                case "followupsAfterPrimeInjectionReport":
+                    url = "../ebodac/exportFollowupsAfterPrimeInjectionReport";
+                    break;
+                case "followupsMissedClinicVisitsReport":
+                    url = "../ebodac/exportFollowupsMissedClinicVisitsReport";
+                    break;
+            }
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
 
            if ($scope.checkboxModel.exportWithOrder === true) {
-               sortColumn = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortname');
-               sortDirection = $('#dailyClinicVisitScheduleReportTable').getGridParam('sortorder');
+               sortColumn = $('#reportTable').getGridParam('sortname');
+               sortDirection = $('#reportTable').getGridParam('sortorder');
 
                url = url + "&sortColumn=" + sortColumn;
                url = url + "&sortDirection=" + sortDirection;

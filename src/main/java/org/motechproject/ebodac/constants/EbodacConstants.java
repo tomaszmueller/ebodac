@@ -52,18 +52,44 @@ public final class EbodacConstants {
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
-    public static final List<String> AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT = new ArrayList<>(Arrays.asList("Find Visit By Planned Date", "Find Visit By Planned Date And Type",
-            "Find Visits By Planned Date Range", "Find Visits By Planned Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
-            "Find Visit By Subject Name", "Find Visit By Subject Address"));
-
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Date",         "date");
-            put("Subject ID",   "subjectId");
-            put("Name",         "name");
-            put("Phone Number", "phoneNumber");
-            put("Address",      "address");
+            put("Subject ID",   "subject.subjectId");
+            put("Subject Name", "subject.name");
+            put("Phone Number", "subject.phoneNumber");
+            put("Address",      "subject.address");
             put("Visit type",   "type");
+        }
+    };
+
+    public static final Map<String, String> FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Subject Name",             "subject.name");
+            put("Household name",           "subject.householdName");
+            put("Head Of Household",        "subject.headOfHousehold");
+            put("DOB",                      "subject.dateOfBirth");
+            put("Gender",                   "subject.gender");
+            put("Subject Community",        "subject.community");
+            put("Address",                  "subject.address");
+            put("Primer Vaccination Date",  "subject.primerVaccinationDate");
+            put("Booster Vaccination Date", "subject.boosterVaccinationDate");
+            put("Date Of Follow-up Visit",  "date");
+        }
+    };
+
+    public static final Map<String, String> FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Subject Name",             "subject.name");
+            put("Household name",           "subject.householdName");
+            put("Head Of Household",        "subject.headOfHousehold");
+            put("DOB",                      "subject.dateOfBirth");
+            put("Gender",                   "subject.gender");
+            put("Subject Community",        "subject.community");
+            put("Address",                  "subject.address");
+            put("Visit type",               "type");
+            put("Planed Visit Date",        "planedVisitDate");
+            put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
         }
     };
 }
