@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.web;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -11,7 +10,6 @@ import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
-import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.VisitService;
@@ -48,15 +46,10 @@ public class EbodacEnrollmentController {
     private VisitService visitService;
 
     @Autowired
-    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
-
-    @Autowired
     private EnrollmentDataService enrollmentDataService;
 
     @Autowired
     private LookupService lookupService;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/reenrollSubject", method = RequestMethod.POST)
@@ -102,7 +95,7 @@ public class EbodacEnrollmentController {
         return EbodacConstants.AVAILABLE_CAMPAIGNS;
     }
 
-    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getEnrollments", method = RequestMethod.POST)
     @ResponseBody
     public Records<?> getEnrollments(GridSettings settings) throws IOException {
@@ -121,14 +114,21 @@ public class EbodacEnrollmentController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getLookupsForEnrollments", method = RequestMethod.GET)
     @ResponseBody
     public List<LookupDto> getLookupsForEnrollments() {
         return lookupService.getAvailableLookups("SubjectEnrollments");
     }
 
-    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @PreAuthorize("hasRole('manageEnrollments')")
+    @RequestMapping(value = "/checkAdvancedPermissions", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> checkAdvancedPermissions() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEnrollments')")
     @RequestMapping(value = "/getEnrollmentAdvanced/{subjectId}", method = RequestMethod.POST)
     @ResponseBody
     public Records<?> getEnrollmentAdvanced(@PathVariable String subjectId, GridSettings settings) throws IOException {
@@ -186,7 +186,7 @@ public class EbodacEnrollmentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
+    @PreAuthorize("hasRole('manageEnrollments')")
     @RequestMapping(value = "/enrollCampaign/{subjectId}/{campaignName}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> enrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
@@ -209,7 +209,7 @@ public class EbodacEnrollmentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
+    @PreAuthorize("hasRole('manageEnrollments')")
     @RequestMapping(value = "/unenrollCampaign/{subjectId}/{campaignName}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> unenrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
@@ -232,7 +232,7 @@ public class EbodacEnrollmentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
+    @PreAuthorize("hasRole('manageEnrollments')")
     @RequestMapping(value = "/enrollCampaignWithNewDate/{subjectId}/{campaignName}/{date}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> enrollCampaignWithNewDate(@PathVariable String subjectId, @PathVariable String campaignName,
@@ -260,7 +260,7 @@ public class EbodacEnrollmentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
+    @PreAuthorize("hasRole('manageEnrollments')")
     @RequestMapping(value = "/reenrollCampaign/{subjectId}/{campaignName}/{date}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> reenrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName,
