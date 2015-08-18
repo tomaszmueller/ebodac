@@ -147,4 +147,7 @@ public class SubjectServiceImpl implements SubjectService {
     public void delete(Subject record) {
         subjectDataService.delete(record);
     }
+
+    @Override
+    public void deleteAll(){ subjectDataService.deleteAll(); }
 }

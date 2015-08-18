@@ -14,6 +14,9 @@ public interface EnrollmentDataService extends MotechDataService<Enrollment> {
     List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);
 
     @Lookup
+    List<Enrollment> findEnrollmentsByCampaignName(@LookupField(name = "campaignName") String campaignName);
+
+    @Lookup
     List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId, QueryParams queryParams);
 
     long countFindEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);
