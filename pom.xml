@@ -253,7 +253,9 @@
                             org.motechproject.ebodac.validation;version=${project.version},
                             org.motechproject.ebodac.web;version=${project.version},
                             org.motechproject.ebodac.client;version=${project.version},
-                            org.motechproject.ebodac.exception;version=${project.version}
+                            org.motechproject.ebodac.exception;version=${project.version},
+                            org.motechproject.ebodac.util;version=${project.version},
+                            org.motechproject.ebodac.web.domain;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             org.motechproject.osgi.web,

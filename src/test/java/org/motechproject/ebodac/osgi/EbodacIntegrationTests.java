@@ -19,7 +19,6 @@ import org.junit.runners.Suite;
         ReportServiceIT.class,
         SubjectServiceIT.class,
         TaskImporterIT.class,
-        VisitControllerIT.class,
         VisitServiceIT.class
 })
 public class EbodacIntegrationTests {
