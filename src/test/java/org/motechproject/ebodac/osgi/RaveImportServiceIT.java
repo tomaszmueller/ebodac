@@ -194,5 +194,6 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(type, visit.getType());
         assertEquals(date, visit.getDate());
         assertEquals(dateProjected, visit.getDateProjected());
+        assertEquals(dateProjected, visit.getMotechProjectedDate());
     }
 }

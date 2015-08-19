@@ -21,6 +21,7 @@ public class VisitUtils {
         ret.setType(type);
         ret.setDate(date);
         ret.setDateProjected(projectedDate);
+        ret.setMotechProjectedDate(projectedDate);
         ret.setOwner(owner);
 
         return ret;

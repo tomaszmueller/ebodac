@@ -54,7 +54,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         if (visits != null) {
             for (Visit visit : visits) {
-                if (visit.getMotechProjectedDate() == null && (visit.getDate() == null || VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()))) {
+                if (visit.getDate() == null || VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
                     enrollSubject(visit);
                 }
             }
@@ -133,7 +133,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
         if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             completeCampaignForSubject(visit, false);
-        } else if (visit.getMotechProjectedDate() == null) {
+        } else {
             enrollSubject(visit);
         }
     }
@@ -249,25 +249,19 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     private void enrollSubject(Visit visit) {
         try {
             if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getDateProjected(), false);
-                enrollSubject(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDateProjected(), false);
-
-                visit.setMotechProjectedDate(visit.getDateProjected());
+                enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
+                enrollSubject(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getMotechProjectedDate(), false);
             } else if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
-                if (visit.getDateProjected() == null) {
+                if (visit.getMotechProjectedDate() == null) {
                     throw new EbodacEnrollmentException(String.format("Cannot enroll Subject with id: %s for Campaign with name: %s, because reference date is empty",
                             visit.getSubject().getSubjectId(), visit.getType().getValue()));
                 }
-                String dayOfWeek = visit.getDateProjected().dayOfWeek().getAsText(Locale.ENGLISH);
+                String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
                 String campaignName = visit.getType().getValue() + " " + dayOfWeek;
 
-                enrollSubject(visit.getSubject(), campaignName, visit.getDateProjected(), false);
-
-                visit.setMotechProjectedDate(visit.getDateProjected());
+                enrollSubject(visit.getSubject(), campaignName, visit.getMotechProjectedDate(), false);
             } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-                enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getDateProjected(), false);
-
-                visit.setMotechProjectedDate(visit.getDateProjected());
+                enrollSubject(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate(), false);
             }
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);

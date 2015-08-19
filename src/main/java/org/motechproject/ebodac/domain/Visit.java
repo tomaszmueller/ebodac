@@ -6,6 +6,8 @@ import org.joda.time.LocalDate;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
+import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
+import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
@@ -49,20 +51,22 @@ public class Visit {
         this.subject = subject;
     }
 
+    @JsonSerialize(using = CustomVisitTypeSerializer.class)
     public VisitType getType() {
         return type;
     }
 
+    @JsonDeserialize(using = CustomVisitTypeDeserializer.class)
     public void setType(VisitType type) {
         this.type = type;
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)
-    @JsonDeserialize(using = CustomDateDeserializer.class)
     public LocalDate getDate() {
         return date;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDate(LocalDate date) {
         this.date = date;
     }

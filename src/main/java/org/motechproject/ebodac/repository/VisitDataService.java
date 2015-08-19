@@ -21,42 +21,80 @@ import java.util.List;
 public interface VisitDataService extends MotechDataService<Visit> {
 
     @Lookup
-    List<Visit> findVisitByDate(@LookupField(name = "date") LocalDate date);
+    List<Visit> findVisitByActualDate(@LookupField(name = "date") LocalDate date);
 
     @Lookup
-    List<Visit> findVisitByDate(@LookupField(name = "date") LocalDate date, QueryParams queryParams);
+    List<Visit> findVisitByActualDate(@LookupField(name = "date") LocalDate date, QueryParams queryParams);
 
-    long countFindVisitByDate(@LookupField(name = "date") LocalDate date);
-
-    @Lookup
-    List<Visit> findVisitByDateAndType(@LookupField(name = "date") LocalDate date,
-                                       @LookupField(name = "type") VisitType visitType);
+    long countFindVisitByActualDate(@LookupField(name = "date") LocalDate date);
 
     @Lookup
-    List<Visit> findVisitByDateAndType(@LookupField(name = "date") LocalDate date,
-                                       @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
-
-    long countFindVisitByDateAndType(@LookupField(name = "date") LocalDate date,
-                                     @LookupField(name = "type") VisitType visitType);
-
-    @Lookup
-    List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
-
-    @Lookup
-    List<Visit> findVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange, QueryParams queryParams);
-
-    long countFindVisitsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
-
-    @Lookup
-    List<Visit> findVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+    List<Visit> findVisitByActualDateAndType(@LookupField(name = "date") LocalDate date,
                                              @LookupField(name = "type") VisitType visitType);
 
     @Lookup
-    List<Visit> findVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+    List<Visit> findVisitByActualDateAndType(@LookupField(name = "date") LocalDate date,
                                              @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
 
-    long countFindVisitsByDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+    long countFindVisitByActualDateAndType(@LookupField(name = "date") LocalDate date,
                                            @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitsByActualDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByActualDateRange(@LookupField(name = "date") Range<LocalDate> dateRange, QueryParams queryParams);
+
+    long countFindVisitsByActualDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByActualDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                                   @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitsByActualDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                                   @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
+
+    long countFindVisitsByActualDateRangeAndType(@LookupField(name = "date") Range<LocalDate> dateRange,
+                                                 @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitByPlannedDate(@LookupField(name = "motechProjectedDate") LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitByPlannedDate(@LookupField(name = "motechProjectedDate") LocalDate date, QueryParams queryParams);
+
+    long countFindVisitByPlannedDate(@LookupField(name = "motechProjectedDate") LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitByPlannedDateAndType(@LookupField(name = "motechProjectedDate") LocalDate date,
+                                             @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitByPlannedDateAndType(@LookupField(name = "motechProjectedDate") LocalDate date,
+                                             @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
+
+    long countFindVisitByPlannedDateAndType(@LookupField(name = "motechProjectedDate") LocalDate date,
+                                           @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedDateRange(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedDateRange(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange, QueryParams queryParams);
+
+    long countFindVisitsByPlannedDateRange(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedDateRangeAndType(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
+                                                   @LookupField(name = "type") VisitType visitType);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedDateRangeAndType(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
+                                                   @LookupField(name = "type") VisitType visitType, QueryParams queryParams);
+
+    long countFindVisitsByPlannedDateRangeAndType(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
+                                                 @LookupField(name = "type") VisitType visitType);
 
     @Lookup
     List<Visit> findVisitByType(@LookupField(name = "type") VisitType visitType, QueryParams queryParams);

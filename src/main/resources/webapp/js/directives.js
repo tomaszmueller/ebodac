@@ -77,7 +77,7 @@
                         sort: 'sortColumn',
                         order: 'sortDirection'
                     },
-                    colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitDate'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
+                    colNames: ['rowId', scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitPlannedDate'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId'),
                         scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectPhoneNumber'),
                         scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress'), scope.msg('ebodac.web.reports.dailyClinicVisitScheduleReport.visitType')],
                     colModel: [{
@@ -86,8 +86,8 @@
                        hidden: true,
                        key: true
                     }, {
-                        name: 'date',
-                        index: 'date',
+                        name: 'motechProjectedDate',
+                        index: 'motechProjectedDate',
                         align: 'center',
                         formatter:'date', formatoptions: {srcformat: 'Y-m-d', newformat:'Y-m-d'}
                     }, {

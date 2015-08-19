@@ -52,8 +52,8 @@ public final class EbodacConstants {
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
-    public static final List<String> AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT = new ArrayList<>(Arrays.asList("Find Visit By Date", "Find Visit By Date And Type",
-            "Find Visits By Date Range", "Find Visits By Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
+    public static final List<String> AVAILABLE_LOOKUPS_FOR_DAILY_CLINIC_VISIT_SCHEDULE_REPORT = new ArrayList<>(Arrays.asList("Find Visit By Planned Date", "Find Visit By Planned Date And Type",
+            "Find Visits By Planned Date Range", "Find Visits By Planned Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
             "Find Visit By Subject Name", "Find Visit By Subject Address"));
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
