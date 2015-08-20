@@ -1,0 +1,202 @@
+{
+    "dailyClinicVisitScheduleReport": {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.visitPlannedDate",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectId",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectPhoneNumber",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.visitType"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    }, {
+      "name": "motechProjectedDate",
+      "index": "motechProjectedDate",
+      "align": "center",
+      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "subject",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.subjectId; }"
+    }, {
+      "name": "subjectName",
+      "jsonmap": "subject",
+      "index": "subject.name",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+    }, {
+      "name": "subjectPhoneNumber",
+      "jsonmap": "subject",
+      "index": "subject.phoneNumber",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.phoneNumber; }"
+    }, {
+      "name": "subjectAddress",
+      "jsonmap": "subject",
+      "index": "subject.address",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+    }, {
+      "name": "type",
+      "index": "type",
+      "align": "center"
+    }]
+  },
+    "followupsAfterPrimeInjectionReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.subjectName",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.householdName",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.headOfHousehold",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.dateOfBirth",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.gender",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.community",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.address",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.primerVaccinationDate",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.followupVisitDate"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    },{
+      "name": "subjectName",
+      "jsonmap": "subject",
+      "index": "subject.name",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+    }, {
+      "name": "subjectHouseholdName",
+      "jsonmap": "subject",
+      "index": "subject.householdName",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.householdName; }"
+    }, {
+      "name": "subjectHeadOfHousehold",
+      "jsonmap": "subject",
+      "index": "subject.headOfHousehold",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.headOfHousehold; }"
+    }, {
+      "name": "subjectDateOfBirth",
+      "jsonmap": "subject",
+      "index": "subject.dateOfBirth",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.dateOfBirth; }"
+    }, {
+      "name": "subjectGender",
+      "jsonmap": "subject",
+      "index": "subject.gender",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.gender; }"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.community; }"
+    }, {
+      "name": "subjectAddress",
+      "jsonmap": "subject",
+      "index": "subject.address",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+    }, {
+      "name": "subjectPrimerVaccinationDate",
+      "jsonmap": "subject",
+      "index": "subject.primerVaccinationDate",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.primerVaccinationDate; }"
+    }, {
+      "name": "subjectBoosterVaccinationDate",
+      "jsonmap": "subject",
+      "index": "subject.boosterVaccinationDate",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.boosterVaccinationDate; }"
+    }, {
+      "name": "date",
+      "index": "date",
+      "align": "center",
+      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }]
+  } ,
+    "followupsMissedClinicVisitsReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.subjectName",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.householdName",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.headOfHousehold",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.dateOfBirth",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.gender",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.community",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.address",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.visitType",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.planedVisitDate",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.noOfDaysExceededVisit"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    },{
+      "name": "subjectName",
+      "jsonmap": "subject",
+      "index": "subject.name",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+    }, {
+      "name": "subjectHouseholdName",
+      "jsonmap": "subject",
+      "index": "subject.householdName",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.householdName; }"
+    }, {
+      "name": "subjectHeadOfHousehold",
+      "jsonmap": "subject",
+      "index": "subject.headOfHousehold",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.headOfHousehold; }"
+    }, {
+      "name": "subjectDateOfBirth",
+      "jsonmap": "subject",
+      "index": "subject.dateOfBirth",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.dateOfBirth; }"
+    }, {
+      "name": "subjectGender",
+      "jsonmap": "subject",
+      "index": "subject.gender",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.gender; }"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.community; }"
+    }, {
+      "name": "subjectAddress",
+      "jsonmap": "subject",
+      "index": "subject.address",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+    }, {
+      "name": "type",
+      "index": "type",
+      "align": "center"
+    }, {
+      "name": "planedVisitDate",
+      "index": "motechProjectedDate",
+      "align": "center",
+      "formatter":"planedVisitDate", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "noOfDaysExceededVisit",
+      "index": "noOfDaysExceededVisit",
+      "align": "center"
+    }]
+  }
+}

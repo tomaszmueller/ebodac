@@ -64,6 +64,12 @@ public class Config {
 
     private List<String> disconVacCampaignsList;
 
+    private List<String> availableLookupsForDailyClinicVisitScheduleReport;
+
+    private List<String> availableLookupsForFollowupsAfterPrimeInjectionReport;
+
+    private List<String> availableLookupsForFollowupsMissedClinicVisitsReport;
+
     public Config() {
     }
 
@@ -245,5 +251,29 @@ public class Config {
 
     public void setDisconVacCampaignsList(List<String> disconVacCampaignsList) {
         this.disconVacCampaignsList = disconVacCampaignsList;
+    }
+
+    public List<String> getAvailableLookupsForDailyClinicVisitScheduleReport() {
+        return availableLookupsForDailyClinicVisitScheduleReport;
+    }
+
+    public void setAvailableLookupsForDailyClinicVisitScheduleReport(List<String> availableLookupsForDailyClinicVisitScheduleReport) {
+        this.availableLookupsForDailyClinicVisitScheduleReport = availableLookupsForDailyClinicVisitScheduleReport;
+    }
+
+    public List<String> getAvailableLookupsForFollowupsAfterPrimeInjectionReport() {
+        return availableLookupsForFollowupsAfterPrimeInjectionReport;
+    }
+
+    public void setAvailableLookupsForFollowupsAfterPrimeInjectionReport(List<String> availableLookupsForFollowupsAfterPrimeInjectionReport) {
+        this.availableLookupsForFollowupsAfterPrimeInjectionReport = availableLookupsForFollowupsAfterPrimeInjectionReport;
+    }
+
+    public List<String> getAvailableLookupsForFollowupsMissedClinicVisitsReport() {
+        return availableLookupsForFollowupsMissedClinicVisitsReport;
+    }
+
+    public void setAvailableLookupsForFollowupsMissedClinicVisitsReport(List<String> availableLookupsForFollowupsMissedClinicVisitsReport) {
+        this.availableLookupsForFollowupsMissedClinicVisitsReport = availableLookupsForFollowupsMissedClinicVisitsReport;
     }
 }

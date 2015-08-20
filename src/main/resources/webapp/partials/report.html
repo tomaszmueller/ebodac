@@ -1,5 +1,5 @@
 <div class="row">
-    <h4 class="frame-title">{{ msg('ebodac.web.reports.dailyClinicVisitScheduleReport')}}</h4>
+    <h4 class="frame-title">{{ reportName }}</h4>
 
     <div class="clearfix toolbox form-horizontal">
         <button ng-click="backToEntityList()" type="button" class="btn btn-primary">
@@ -59,9 +59,9 @@
         </div>
     </div>
 
-    <div id="dailyClinicVisitScheduleReport" class="overrideJqgridTable">
-        <table id="dailyClinicVisitScheduleReportTable" daily-clinic-visit-schedule-report-grid="pageDailyClinicVisitScheduleReportTable"></table>
-        <div id="pageDailyClinicVisitScheduleReportTable"></div>
+    <div id="reportInstanceTable" class="overrideJqgridTable">
+        <table id="reportTable" report-grid="pageReportTable"></table>
+        <div id="pageReportTable"></div>
     </div>
 
     <div ng-include="'../ebodac/resources/partials/modals/export-entity.html'"></div>

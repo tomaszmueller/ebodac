@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,19 +33,39 @@ public class ExportServiceImpl implements ExportService {
     public void exportEntityToPDF(OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap,
                                                           String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         PdfTableWriter tableWriter = new PdfTableWriter(outputStream);
-        exportReport(entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
     @Override
     public void  exportEntityToCSV(Writer writer, Class<?> entityType, Map<String, String> headerMap,
                                                           String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         CsvTableWriter tableWriter = new CsvTableWriter(writer);
-        exportReport(entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
-    private <T> void exportReport(Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter,String lookup,
+    @Override
+    public void exportEntityToPDF(OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+        PdfTableWriter tableWriter = new PdfTableWriter(outputStream);
+        exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    @Override
+    public void exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                                  String lookup, String lookupFields, QueryParams queryParams)throws IOException {
+        CsvTableWriter tableWriter = new CsvTableWriter(writer);
+        exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter,String lookup,
                                                       String lookupFields, QueryParams queryParams) throws IOException {
-        Records<T> records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
+        Records<T> records;
+        if(entityDtoType != null)
+        {
+            records = (Records<T>) lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
+        } else {
+            records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
+        }
         List<T> entities = records.getRows();
         Set<String> keys = headerMap.keySet();
         String[] fields = keys.toArray(new String[keys.size()]);
@@ -65,38 +84,28 @@ public class ExportServiceImpl implements ExportService {
 
     private <T> Map<String, String> buildRow(T entity, Map<String, String> headerMap) throws IOException {
         String json = objectMapper.writeValueAsString(entity);
-        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {});
-        List<Map<String, Object>> entityMapList = getEntityMapList(entityMap);
+        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {
+        });
         Map<String, String> row = new LinkedHashMap<>();
 
-        for(Map.Entry<String, String> entry : headerMap.entrySet()) {
-            String value = (String)entityMap.get(entry.getValue());
-            if (value == null) {
-                for(Map<String, Object> map : entityMapList) {
-                    value = (String) map.get(entry.getValue());
-                    if(value != null) {
-                        break;
-                    }
+        for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+            String fieldName = entry.getValue();
+            String[] fieldPath = fieldName.split("\\.");
+            String value = null;
+            if(fieldPath.length == 2) {
+                Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
+                Object fieldValue = objectMap.get(fieldPath[1]);
+                if(fieldValue != null) {
+                    value = fieldValue.toString();
+                }
+            } else {
+                Object entryValue = entityMap.get(entry.getValue());
+                if(entryValue != null) {
+                    value = entryValue.toString();
                 }
             }
             row.put(entry.getKey(), value);
         }
         return  row;
-    }
-
-    private List<Map<String, Object>> getEntityMapList(Map<String, Object> entityMap) {
-        List<Map<String, Object>> entityMapList = new ArrayList<>();
-        for(Map.Entry<String, Object> entry : entityMap.entrySet()) {
-            if(entry.getValue() instanceof Map) {
-                Map<String, Object> object = null;
-                try {
-                    object = (Map<String, Object>) entry.getValue();
-                } catch (ClassCastException e) {
-                    continue;
-                }
-                entityMapList.add(object);
-            }
-        }
-        return  entityMapList;
     }
 }

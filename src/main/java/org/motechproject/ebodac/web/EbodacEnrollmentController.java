@@ -9,6 +9,7 @@ import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.LookupService;
@@ -108,7 +109,7 @@ public class EbodacEnrollmentController {
 
         try {
             return lookupService.getEntities(SubjectEnrollments.class, settings.getLookup(), settings.getFields(), queryParams);
-        } catch (IOException e) {
+        } catch (EbodacLookupException e) {
             LOGGER.debug(e.getMessage(), e);
             return null;
         }
@@ -118,7 +119,7 @@ public class EbodacEnrollmentController {
     @RequestMapping(value = "/getLookupsForEnrollments", method = RequestMethod.GET)
     @ResponseBody
     public List<LookupDto> getLookupsForEnrollments() {
-        return lookupService.getAvailableLookups("SubjectEnrollments");
+        return lookupService.getAvailableLookups(SubjectEnrollments.class.getName());
     }
 
     @PreAuthorize("hasRole('manageEnrollments')")

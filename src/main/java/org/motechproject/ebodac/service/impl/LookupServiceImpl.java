@@ -3,7 +3,7 @@ package org.motechproject.ebodac.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.dto.AdvancedSettingsDto;
@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +36,17 @@ public class LookupServiceImpl implements LookupService {
 
     @Override
     public <T> Records<T> getEntities(Class<T> entityType, String lookup,
-                                      String lookupFields, QueryParams queryParams) throws IOException {
+                                      String lookupFields, QueryParams queryParams) {
         List<T> entities;
         long recordCount;
         int rowCount;
         if (StringUtils.isNotBlank(lookup) && queryParams != null) {
-
-            entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), queryParams);
-            recordCount = mdsLookupService.count(entityType.getName(), lookup, getFields(lookupFields));
+            try {
+                entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), queryParams);
+                recordCount = mdsLookupService.count(entityType.getName(), lookup, getFields(lookupFields));
+            } catch (IOException e) {
+                throw new EbodacLookupException("Invalid lookup fields: " + lookupFields, e.getCause());
+            }
 
             if (queryParams.getPageSize() != null) {
                 rowCount = (int) Math.ceil(recordCount / (double) queryParams.getPageSize());
@@ -48,6 +54,9 @@ public class LookupServiceImpl implements LookupService {
                 rowCount = (int) recordCount;
             }
 
+            if(queryParams.getPage() == null) {
+                queryParams = new QueryParams(1, queryParams.getPageSize(), queryParams.getOrder());
+            }
             return new Records<>(queryParams.getPage(), rowCount, (int) recordCount, entities);
         }
 
@@ -67,6 +76,30 @@ public class LookupServiceImpl implements LookupService {
     }
 
     @Override
+    public <T> Records<?> getEntities(Class<?> entityDtoType, Class<T> entityType, String lookup,
+                                      String lookupFields, QueryParams queryParams) {
+        List<Object> entityDtoList = new ArrayList<>();
+        Records<T> baseRecords = getEntities(entityType, lookup, lookupFields, queryParams);
+        Constructor reportDtoConstructor;
+        try {
+            reportDtoConstructor = entityDtoType.getConstructor(entityType);
+        } catch (NoSuchMethodException e) {
+            throw new EbodacLookupException("Invalid reportDtoType parametr", e);
+        }
+        try {
+            for (T entity : baseRecords.getRows()) {
+                Object entityDto;
+                entityDto = reportDtoConstructor.newInstance(entity);
+                entityDtoList.add(entityDto);
+            }
+        } catch (InstantiationException | IllegalAccessException |
+                InvocationTargetException e) {
+           throw new EbodacLookupException("Can not create: " + entityDtoType.getName() +" using: " + entityType.getName(), e);
+        }
+        return new Records<>(baseRecords.getPage(), baseRecords.getTotal(), baseRecords.getRecords(), entityDtoList);
+    }
+
+    @Override
     public List<LookupDto> getAvailableLookups(String entityName) {
         EntityDto entity = getEntityByEntityClassName(entityName);
         AdvancedSettingsDto settingsDto = entityService.getAdvancedSettings(entity.getId(), true);
@@ -74,16 +107,11 @@ public class LookupServiceImpl implements LookupService {
     }
 
     private EntityDto getEntityByEntityClassName(String entityName) {
-        List<EntityDto> entities = entityService.listEntities();
-        String moduleName = EbodacConstants.EBODAC_MODULE;
-
-        for (EntityDto entity : entities) {
-            if (entity.getModule() != null && entity.getModule().equals(moduleName) &&
-                    entity.getName().equals(entityName)) {
-                return entity;
-            }
+        EntityDto entity = entityService.getEntityByClassName(entityName);
+        if(entity == null) {
+            throw new EbodacLookupException( "Can not find entity named: " + entityName);
         }
-        return null;
+        return entity;
     }
 
     private Map<String, Object> getFields(String lookupFields) throws IOException {
