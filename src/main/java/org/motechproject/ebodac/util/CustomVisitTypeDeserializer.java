@@ -16,6 +16,10 @@ public class CustomVisitTypeDeserializer extends JsonDeserializer<VisitType> {
     public VisitType deserialize(JsonParser parser, DeserializationContext context)
             throws IOException {
         String typeString = parser.getText();
-        return VisitType.getByValue(typeString);
+        VisitType visitType = VisitType.getByValue(typeString);
+        if (visitType == null) {
+            visitType = VisitType.valueOf(typeString);
+        }
+        return visitType;
     }
 }
