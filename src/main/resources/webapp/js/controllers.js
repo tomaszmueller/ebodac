@@ -215,7 +215,7 @@
         $scope.reportType = $routeParams.reportType;
         $scope.reportName = "";
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
-        $scope.availableExportFormats = ['csv','pdf'];
+        $scope.availableExportFormats = ['csv','pdf','xls'];
         $scope.actualExportRecords = 'All';
         $scope.actualExportColumns = 'All';
         $scope.exportFormat = 'csv';

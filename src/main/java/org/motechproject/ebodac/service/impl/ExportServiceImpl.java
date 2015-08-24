@@ -4,6 +4,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
+import org.motechproject.ebodac.util.ExcelTableWriter;
+import org.motechproject.ebodac.util.XlsTemplate;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.service.impl.csv.writer.CsvTableWriter;
@@ -44,6 +46,12 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
+    public void exportEntityToExcel(XlsTemplate template, OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap, String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+        ExcelTableWriter tableWriter = new ExcelTableWriter(outputStream, template);
+        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    @Override
     public void exportEntityToPDF(OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         PdfTableWriter tableWriter = new PdfTableWriter(outputStream);
@@ -54,6 +62,13 @@ public class ExportServiceImpl implements ExportService {
     public void exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                   String lookup, String lookupFields, QueryParams queryParams)throws IOException {
         CsvTableWriter tableWriter = new CsvTableWriter(writer);
+        exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    @Override
+    public void exportEntityToExcel(XlsTemplate template, OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                                    String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+        ExcelTableWriter tableWriter = new ExcelTableWriter(outputStream, template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
@@ -84,8 +99,7 @@ public class ExportServiceImpl implements ExportService {
 
     private <T> Map<String, String> buildRow(T entity, Map<String, String> headerMap) throws IOException {
         String json = objectMapper.writeValueAsString(entity);
-        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {
-        });
+        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() { });
         Map<String, String> row = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {

@@ -40,6 +40,8 @@ public final class EbodacConstants {
 
     public static final String PDF_EXPORT_FORMAT="pdf";
     public static final String CSV_EXPORT_FORMAT="csv";
+    public static final String XLSX_EXPORT_FORMAT="xlsx";
+    public static final String XLS_EXPORT_FORMAT="xls";
 
     public static final String EBODAC_MODULE="EBODAC Module";
 
@@ -54,12 +56,12 @@ public final class EbodacConstants {
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Date",         "date");
-            put("Subject ID",   "subject.subjectId");
-            put("Subject Name", "subject.name");
-            put("Phone Number", "subject.phoneNumber");
-            put("Address",      "subject.address");
-            put("Visit type",   "type");
+            put("Planned Visit Date","motechProjectedDate");
+            put("Subject ID",       "subject.subjectId");
+            put("Subject Name",     "subject.name");
+            put("Phone Number",     "subject.phoneNumber");
+            put("Address",          "subject.address");
+            put("Visit type",       "type");
         }
     };
 
@@ -88,7 +90,7 @@ public final class EbodacConstants {
             put("Subject Community",        "subject.community");
             put("Address",                  "subject.address");
             put("Visit type",               "type");
-            put("Planed Visit Date",        "planedVisitDate");
+            put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
         }
     };

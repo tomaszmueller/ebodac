@@ -7,12 +7,14 @@ import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
 import org.motechproject.ebodac.util.DtoLookupHelper;
+import org.motechproject.ebodac.util.XlsTemplate;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
 import org.motechproject.mds.ex.csv.CsvImportException;
@@ -144,7 +146,7 @@ public class InstanceController {
                                                      @RequestParam String exportRecords,
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
-        exportEntity(settings, exportRecords, outputFormat, response, "DailyClinicVisitScheduleReport_",
+        exportEntity(settings, exportRecords, outputFormat, response, "DailyClinicVisitScheduleReport",
                 null, Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP);
     }
 
@@ -157,7 +159,7 @@ public class InstanceController {
         if(settings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsAfterPrimeInjectionReport_",
+            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsAfterPrimeInjectionReport",
                     null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP);
         }
     }
@@ -171,7 +173,7 @@ public class InstanceController {
         if(settings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsMissedClinicVisitsReport_",
+            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsMissedClinicVisitsReport",
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP);
         }
     }
@@ -183,16 +185,16 @@ public class InstanceController {
                               String fileNameBeginning,
                               Class<?> entityDtoType, Class<?> entityType,
                               Map<String, String> headerMap) throws IOException {
-        if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
-            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
-        }
-
-        final String fileName = fileNameBeginning + LocalDate.now().toString();
+        final String fileName = fileNameBeginning + "_" + LocalDate.now().toString();
 
         if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
-        } else {
+        } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
+        } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            response.setContentType("application/vnd.ms-excel");
+        } else {
+            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
         }
         response.setCharacterEncoding(UTF_8);
         response.setHeader(
@@ -209,11 +211,20 @@ public class InstanceController {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToPDF(response.getOutputStream(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else {
+            } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
+            } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+                XlsTemplate template = new XlsTemplate("/report_template.xls");
+                template.setAdditionalCellValue("title", fileNameBeginning.replaceAll("([A-Z])", " $1"));
+                template.setAdditionalCellValue("district", "Kambia");
+                template.setAdditionalCellValue("chiefdom", "unknown");
+                template.setAdditionalCellValue("community", "unknown");
+                template.setAdditionalCellValue("phu", "unknown");
+                exportService.exportEntityToExcel(template, response.getOutputStream(), entityDtoType, entityType, headerMap,
+                        settings.getLookup(), settings.getFields(), queryParams);
             }
-        } catch (IOException | EbodacLookupException e) {
+        } catch (IOException | EbodacLookupException | EbodacExportException e) {
             LOGGER.debug(e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
