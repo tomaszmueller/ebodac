@@ -2,8 +2,16 @@ package org.motechproject.ebodac.osgi;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.message.BasicNameValuePair;
+import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
+import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -17,11 +25,16 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
+import org.motechproject.ebodac.utils.VisitUtils;
+import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.motechproject.testing.utils.TestContext;
@@ -32,10 +45,12 @@ import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.motechproject.commons.date.util.DateUtil.newDateTime;
 import static org.motechproject.testing.utils.TimeFaker.fakeNow;
 import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
@@ -66,6 +81,8 @@ public class ReportControllerIT extends BasePaxIT {
 
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
+    private ArrayList<Visit> testVisits = new ArrayList<Visit>();
+    
     @Before
     public void cleanBefore() throws IOException, InterruptedException {
         visitDataService.deleteAll();
@@ -102,6 +119,21 @@ public class ReportControllerIT extends BasePaxIT {
         secondSubject.setGender(Gender.Male);
         secondSubject.setPrimerVaccinationDate(LocalDate.parse("2014-10-17", formatter));
         secondSubject.setBoosterVaccinationDate(LocalDate.parse("2014-10-20", formatter));
+
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
+                LocalDate.parse("2014-10-17", formatter), "owner"));
+
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-19", formatter), "owner"));
+
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-19", formatter), "owner"));
+
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
+                LocalDate.parse("2014-10-21", formatter), "owner"));
+
+        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_DAY, LocalDate.parse("2014-10-17", formatter),
+                LocalDate.parse("2014-10-17", formatter), "owner"));
     }
 
     @Test
@@ -175,6 +207,148 @@ public class ReportControllerIT extends BasePaxIT {
         }
     }
 
+    @Test
+    public void shouldGetCorrectNumberOfRows() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsWithoutLookup(1, 4);
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+
+        assertEquals(4, visits.size());
+
+        jsonInput = getVisitsWithoutLookup(2, 4);
+        visits = deserializeVisits(jsonInput).getRows();
+
+        assertEquals(1, visits.size());
+    }
+
+    @Test
+    public void shouldGetVisitsByPlannedDate() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"201" +
+                "4-10-21\"}", "Find Visit By Planned Visit Date", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(1, visits.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visits.get(0));
+    }
+
+    @Test
+    public void shouldGetVisitsByPlannedDateAndType() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"2014-10-21\",\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
+                "Find Visit By Planned Visit Date And Type", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(1, visits.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visits.get(0));
+    }
+
+    @Test
+    public void shouldGetVisitsByPlannedDateRange() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"}}",
+                "Find Visits By Planned Visit Date Range",1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(1, visits.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visits.get(0));
+    }
+
+    @Test
+    public void shouldGetVisitsByPlannedDateRangeAndType() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"},\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
+                "Find Visits By Planned Visit Date Range And Type", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(1, visits.size());
+
+        VisitUtils.checkVisitFields(testVisits.get(3), visits.get(0));
+    }
+
+    @Test
+    public void shouldGetVisitsBySubjectAddress() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"subject.address\":\"address1\"}", "Find Visit By Subject Address", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(2, visits.size());
+
+        assertTrue(testVisits.containsAll(visits));
+    }
+
+    @Test
+    public void shouldGetVisitsBySubjectName() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"subject.name\":\"Rafal\"}", "Find Visit By Subject Name", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(2, visits.size());
+
+        assertTrue(testVisits.containsAll(visits));
+    }
+
+    @Test
+    public void shouldGetVisitsBySubjectId() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"subject.subjectId\":\"1000000162\"}", "Find Visit By Subject Id", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(2, visits.size());
+
+        assertTrue(testVisits.containsAll(visits));
+    }
+
+    @Test
+    public void shouldGetVisitsByType() throws IOException, InterruptedException {
+        addTestVisitsToDB();
+        String jsonInput = getVisitsByLookup("{\"type\":\"SCREENING\"}", "Find Visit By Type", 1, 5);
+
+        List<Visit> visits = deserializeVisits(jsonInput).getRows();
+        assertEquals(2, visits.size());
+
+        assertTrue(testVisits.containsAll(visits));
+    }
+
+    private Records<Visit> deserializeVisits(String jsonInput) throws IOException {
+        CustomVisitTypeDeserializer deserializer = new CustomVisitTypeDeserializer();
+
+        SimpleModule module = new SimpleModule("VisitTypeDeserializerModule", new Version(1, 0, 0, null));
+        module.addDeserializer(VisitType.class, deserializer);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(module);
+        Records<Visit> records = mapper.readValue(jsonInput, new TypeReference<Records<Visit>>(){});
+        return records;
+    }
+
+    private String getVisitsWithoutLookup(int page, int rows) throws IOException, InterruptedException {
+        return getVisitsByLookup("{}","",page,rows);
+    }
+
+    private String getVisitsByLookup(String fields, String lookupType, int page, int rows) throws IOException, InterruptedException {
+        HttpPost post;
+        post = new HttpPost(String.format("http://localhost:%d/ebodac/getReport/dailyClinicVisitScheduleReport", TestContext.getJettyPort()));
+        ArrayList<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        nvps.add(new BasicNameValuePair("fields", fields));
+        nvps.add(new BasicNameValuePair("filter", ""));
+        nvps.add(new BasicNameValuePair("lookup", lookupType));
+        nvps.add(new BasicNameValuePair("page", Integer.toString(page)));
+        nvps.add(new BasicNameValuePair("rows", Integer.toString(rows)));
+        nvps.add(new BasicNameValuePair("sortColumn", ""));
+        nvps.add(new BasicNameValuePair("sortDirection", "asc"));
+        post.setEntity(new UrlEncodedFormEntity(nvps, "UTF8"));
+        post.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+
+        String response = getHttpClient().execute(post, new BasicResponseHandler());
+        assertNotNull(response);
+
+        return response;
+    }
+
     private HttpResponse getReports(String startDate) throws IOException, InterruptedException {
         HttpPost post = new HttpPost(String.format("http://localhost:%d/ebodac/generateReports", TestContext.getJettyPort()));
         StringEntity dateEntity = new StringEntity(startDate);
@@ -185,6 +359,18 @@ public class ReportControllerIT extends BasePaxIT {
         assertNotNull(response);
 
         return response;
+    }
+
+    private void addTestVisitsToDB() {
+        assertEquals(0, subjectDataService.retrieveAll().size());
+        assertEquals(0, visitDataService.retrieveAll().size());
+
+        for(Visit visit : testVisits) {
+            visitDataService.create(visit);
+        }
+
+        assertEquals(2, subjectDataService.retrieveAll().size());
+        assertEquals(5, visitDataService.retrieveAll().size());
     }
 
 }

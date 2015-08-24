@@ -21,6 +21,8 @@ public class Records<T> {
         rows = list;
     }
 
+    public Records(){};
+
     public Integer getPage() {
         return page;
     }
