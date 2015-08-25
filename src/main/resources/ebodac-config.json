@@ -22,14 +22,14 @@
   "boosterVaccinationReportsToUpdate":[],
   "disconVacCampaignsList": ["Booster related messages", "Boost Vaccination Day"],
   "availableLookupsForDailyClinicVisitScheduleReport" : ["Find Visit By Planned Visit Date", "Find Visit By Planned Visit Date And Type",
-    "Find Visits By Planned Visit Date Range", "Find Visits By Planned Visit Date Range And Type", "Find Visit By Type", "Find Visit By Subject Id",
-    "Find Visit By Subject Name", "Find Visit By Subject Address"],
-  "availableLookupsForFollowupsAfterPrimeInjectionReport" : ["Find Visit By Subject Primer Vaccination Date",
-    "Find Visits By Subject Primer Vaccination Date Range", "Find Visit By Subject Booster Vaccination Date",
-    "Find Visits By Subject Booster Vaccination Date Range", "Find Visit By Date Of Followup Visit", "Find Visits By Date Range Of Followup Visit",
-    "Find Visit By Subject Name", "Find Visit By Subject Address", "Find Visit By Subject Community"],
+    "Find Visits By Planned Visit Date Range", "Find Visits By Planned Visit Date Range And Type", "Find Visit By Type", "Find Visit By Participant Id",
+    "Find Visit By Participant Name", "Find Visit By Participant Address"],
+  "availableLookupsForFollowupsAfterPrimeInjectionReport" : ["Find Visit By Participant Primer Vaccination Date",
+    "Find Visits By Participant Primer Vaccination Date Range", "Find Visit By Participant Booster Vaccination Date",
+    "Find Visits By Participant Booster Vaccination Date Range", "Find Visit By Date Of Followup Visit", "Find Visits By Date Range Of Followup Visit",
+    "Find Visit By Participant Name", "Find Visit By Participant Address", "Find Visit By Participant Community"],
   "availableLookupsForFollowupsMissedClinicVisitsReport" : ["Find Visit By Planned Visit Date",
     "Find Visit By Planned Visit Date And Type", "Find Visits By Planned Visit Date Range",
-    "Find Visits By Planned Visit Date Range And Type","Find Visit By Subject Name",
-    "Find Visit By Subject Address", "Find Visit By Subject Community"]
+    "Find Visits By Planned Visit Date Range And Type","Find Visit By Participant Name",
+    "Find Visit By Participant Address", "Find Visit By Participant Community"]
 }

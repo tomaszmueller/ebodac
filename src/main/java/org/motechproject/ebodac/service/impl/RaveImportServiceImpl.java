@@ -57,7 +57,7 @@ public class RaveImportServiceImpl implements RaveImportService {
                 try {
                     importRow(row, csvMapReader.getRowNumber(), subjectId);
                 } catch (CsvImportException e) {
-                    LOGGER.error(filename + ": Skipping subject with id " + subjectId + ": " + e.getMessage(),  e);
+                    LOGGER.error(filename + ": Skipping participant with id " + subjectId + ": " + e.getMessage(),  e);
                 }
             }
 
@@ -106,7 +106,7 @@ public class RaveImportServiceImpl implements RaveImportService {
             visit.setSubject(updatedSubject);
             visitService.createOrUpdate(visit);
         } else {
-            throw new CsvImportException("Could not store subject imported from row " + row);
+            throw new CsvImportException("Could not store participant imported from row " + row);
         }
     }
 

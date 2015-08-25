@@ -24,7 +24,7 @@ public class DtoLookupHelper {
             settings.setFields("{}");
             fields = "{}";
         }
-        if(StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visit By Subject Address")) {
+        if(StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visit By Participant Address")) {
             String address = getAddressFromLookupFields(settings.getFields());
             if(StringUtils.isNotBlank(address) && !address.equals("null")) {
                 settings.setFields(fields.substring(0, fields.length() - 1) + ", \"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}");
