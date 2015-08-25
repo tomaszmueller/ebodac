@@ -1,12 +1,12 @@
 package org.motechproject.ebodac.exception;
 
-public class EbodacEnrollmentException extends RuntimeException {
+public class EbodacEnrollmentException extends EbodacException {
 
-    public EbodacEnrollmentException(String message, Throwable cause) {
-        super(message, cause);
+    public EbodacEnrollmentException(String message, Throwable cause, String messageKey, String... params) {
+        super(message, cause, messageKey, params);
     }
 
-    public EbodacEnrollmentException(String message) {
-        super(message);
+    public EbodacEnrollmentException(String message, String messageKey, String... params) {
+        super(message, messageKey, params);
     }
 }

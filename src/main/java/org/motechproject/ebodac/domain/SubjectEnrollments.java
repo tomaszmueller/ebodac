@@ -55,7 +55,7 @@ public class SubjectEnrollments {
     @Ignore
     public Enrollment findEnrolmentByCampaignName(String campaignName) {
         for (Enrollment enrollment: enrollments) {
-            if (enrollment.getCampaignName().equals(campaignName)) {
+            if (enrollment.getCampaignName().startsWith(campaignName)) {
                 return enrollment;
             }
         }

@@ -20,6 +20,32 @@
 
     /*
      *
+     * Messages
+     *
+     */
+    controllers.controller('EbodacMessagesCtrl', function ($scope) {
+        $scope.getMessageFromData = function(responseData) {
+            var messageCode, messageParams;
+
+            if (responseData && (typeof(responseData) === 'string')) {
+                if (responseData.startsWith('key:')) {
+                    if (responseData.indexOf('params:') !== -1) {
+                       messageCode = responseData.split('\n')[0].split(':')[1];
+                       messageParams = responseData.split('\n')[1].split(':')[1].split(',');
+                    } else {
+                       messageCode = responseData.split(':')[1];
+                    }
+                } else {
+                    messageCode = responseData;
+                }
+            }
+
+            return $scope.msg(messageCode, messageParams);
+        };
+    });
+
+    /*
+     *
      * Lookups
      *
      */
@@ -331,6 +357,7 @@
      */
     controllers.controller('EbodacEnrollmentCtrl', function ($scope, $http, $timeout, $controller) {
 
+        $controller('EbodacMessagesCtrl', {$scope: $scope});
         $controller('EbodacLookupsCtrl', {$scope: $scope});
 
         var url = "../ebodac/getLookupsForEnrollments";
@@ -372,7 +399,7 @@
                             $scope.enrollInProgress = false;
                         })
                         .error(function(response) {
-                            $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                            $scope.errors.push($scope.getMessageFromData(response));
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         });
@@ -395,7 +422,7 @@
                             $scope.enrollInProgress = false;
                         })
                         .error(function(response) {
-                            $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
+                            $scope.errors.push($scope.getMessageFromData(response));
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         });
@@ -419,7 +446,10 @@
      * Enrollment Advanced
      *
      */
-    controllers.controller('EbodacEnrollmentAdvancedCtrl', function ($scope, $http, $timeout, $routeParams) {
+    controllers.controller('EbodacEnrollmentAdvancedCtrl', function ($scope, $http, $timeout, $routeParams, $controller) {
+
+        $controller('EbodacMessagesCtrl', {$scope: $scope});
+
         $scope.errors = [];
         $scope.messages = [];
 
@@ -457,7 +487,7 @@
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                $scope.errors.push($scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -473,7 +503,7 @@
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
+                $scope.errors.push($scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -489,7 +519,7 @@
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.reenrollSubject.error', response));
+                $scope.errors.push($scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -505,7 +535,7 @@
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                $scope.errors.push($scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
