@@ -202,6 +202,11 @@
             <version>1.8.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.poi</artifactId>
+            <version>3.9_2</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

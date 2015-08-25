@@ -18,7 +18,6 @@ import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.query.QueryParams;
-import org.motechproject.mds.util.Constants;
 import org.motechproject.mds.util.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,7 @@ public class ReportController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping(value = "/generateReports", method = RequestMethod.POST)
-    @PreAuthorize(Constants.Roles.HAS_DATA_ACCESS)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
     public ResponseEntity<String> generateReports(@RequestBody String startDate) {
 
