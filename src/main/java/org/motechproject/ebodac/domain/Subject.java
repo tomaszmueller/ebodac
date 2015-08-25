@@ -437,7 +437,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return String.format("Subject{id='%s', name='%s', householdName='%s', phoneNumber='%s'}",
+        return String.format("Participant{id='%s', name='%s', householdName='%s', phoneNumber='%s'}",
                 getSubjectId(), getName(), getHouseholdName(), getPhoneNumber());
     }
 }

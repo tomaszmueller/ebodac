@@ -24,8 +24,8 @@
     "channelName": "data-services",
     "moduleName": "org.motechproject.motech-platform-dataservices-entities",
     "moduleVersion": "0.26.0.SNAPSHOT",
-    "subject": "mds.crud.ebodacmodule.Subject.UPDATE",
-    "triggerListenerSubject": "mds.crud.ebodacmodule.Subject.UPDATE"
+    "subject": "mds.crud.ebodacmodule.Participant.UPDATE",
+    "triggerListenerSubject": "mds.crud.ebodacmodule.Participant.UPDATE"
   },
   "enabled": true,
   "taskConfig": {

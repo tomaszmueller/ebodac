@@ -272,7 +272,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectAddress() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.address\":\"address1\"}", "Find Visit By Subject Address", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.address\":\"address1\"}", "Find Visit By Participant Address", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
@@ -283,7 +283,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectName() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.name\":\"Rafal\"}", "Find Visit By Subject Name", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.name\":\"Rafal\"}", "Find Visit By Participant Name", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
@@ -294,7 +294,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectId() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.subjectId\":\"1000000162\"}", "Find Visit By Subject Id", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.subjectId\":\"1000000162\"}", "Find Visit By Participant Id", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
