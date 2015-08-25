@@ -31,7 +31,7 @@ public class ExcelTableWriter implements TableWriter {
     public void writeHeader(String[] titles) throws IOException {
         columnIndexMap = new HashMap<>();
         Sheet sheet = xlsTemplate.getSheet();
-        Row headerRow = sheet.createRow(xlsTemplate.getIndexOfHeaderRow());
+        Row headerRow = sheet.createRow(xlsTemplate.INDEX_OF_HEADER_ROW);
         headerRow.setHeightInPoints(40);
         Cell headerCell;
         for (int i = 0; i < titles.length; i++) {
@@ -46,7 +46,7 @@ public class ExcelTableWriter implements TableWriter {
     @Override
     public void writeRow(Map<String, String> map, String[] strings) throws IOException {
         Sheet sheet = xlsTemplate.getSheet();
-        Row row = sheet.createRow(xlsTemplate.getIndexOfFirstDataRow() + currentRowIndex);
+        Row row = sheet.createRow(xlsTemplate.INDEX_OF_FIRST_DATA_ROW + currentRowIndex);
         Cell dataCell;
         for(Map.Entry<String, String> entry : map.entrySet()) {
             Integer columnIndex = columnIndexMap.get(entry.getKey());
