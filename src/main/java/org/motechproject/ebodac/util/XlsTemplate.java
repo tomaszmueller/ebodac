@@ -27,9 +27,9 @@ public class XlsTemplate {
 
     private Sheet sheet;
 
-    private static final int INDEX_OF_HEADER_ROW = 12;
+    public static final int INDEX_OF_HEADER_ROW = 12;
 
-    private static final int INDEX_OF_FIRST_DATA_ROW = 13;
+    public static final int INDEX_OF_FIRST_DATA_ROW = 13;
 
     private static final Map<String, String> CELL_ADDRESS_OF_ADDITIONAL_INFO =
             Collections.unmodifiableMap(new HashMap<String, String>() {
@@ -54,14 +54,6 @@ public class XlsTemplate {
         printSetup.setLandscape(true);
         sheet.setFitToPage(true);
         sheet.setHorizontallyCenter(true);
-    }
-    
-    public int getIndexOfHeaderRow() {
-        return INDEX_OF_HEADER_ROW;
-    }
-    
-    public int getIndexOfFirstDataRow() {
-        return INDEX_OF_FIRST_DATA_ROW;
     }
     
     public String getCellAddressForAdditionalInfo(String additionalInfoName) {
