@@ -14,7 +14,7 @@ if(!$('#inputMaskJs').length) {
     $("head").append(s);
 }
 
-if ($scope.selectedEntity.name === "Subject" || $scope.selectedEntity.name === "Visit") {
+if ($scope.selectedEntity.name === "Participant" || $scope.selectedEntity.name === "Visit") {
     $scope.showBackToEntityListButton = false;
 } else {
     $scope.showImportButton = false;
@@ -143,7 +143,7 @@ $scope.addEntityInstanceDefault = function () {
 };
 
 $scope.addEntityInstance = function() {
-    if ($scope.selectedEntity.name === "Subject") {
+    if ($scope.selectedEntity.name === "Participant") {
         var input = $("#phoneNumberForm");
         var fieldValue = input.val().replace(/ /g, '');
         input.val(fieldValue);

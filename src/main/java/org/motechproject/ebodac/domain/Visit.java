@@ -20,7 +20,7 @@ import org.motechproject.mds.util.SecurityMode;
 public class Visit {
 
     @NonEditable
-    @Field
+    @Field(displayName = "Participant")
     private Subject subject;
 
     @NonEditable

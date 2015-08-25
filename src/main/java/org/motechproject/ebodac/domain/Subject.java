@@ -29,7 +29,7 @@ import java.util.List;
  */
 @ReadAccess(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
 @Access(value = SecurityMode.PERMISSIONS, members = {"manageSubjects"})
-@Entity(recordHistory = true)
+@Entity(recordHistory = true, name = "Participant")
 public class Subject {
 
     /**
@@ -41,7 +41,7 @@ public class Subject {
     @Unique
     @NonEditable
     @UIDisplayable(position = 0)
-    @Field(required = true)
+    @Field(required = true, displayName = "Participant Id")
     private String subjectId;
 
     @UIDisplayable(position = 1)
