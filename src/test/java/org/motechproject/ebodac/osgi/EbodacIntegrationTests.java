@@ -9,11 +9,14 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         EbodacConfigServiceIT.class,
+        EbodacEnrollmentServiceIT.class,
         EbodacServiceIT.class,
         EbodacWebIT.class,
+        EnrollmentControllerIT.class,
         HistoryServiceIT.class,
         JobImporterIT.class,
         MessageCampaignImporterIT.class,
+        LookupServiceIT.class,
         RaveImportServiceIT.class,
         ReportControllerIT.class,
         ReportServiceIT.class,
