@@ -58,17 +58,7 @@ public class TaskImporterIT extends BasePaxIT {
         taskImporter.importTasks(FrameworkUtil.getBundle(getClass()));
         List<Task> tasks = taskService.getAllTasks();
 
-        List<Task> foundTasks = taskService.findTasksByName(TEST_EBODAC_CAMPAIGN_ENROLLMENT_ON_CREATE);
-        assertEquals(1, foundTasks.size());
-        assertTrue(tasks.contains(foundTasks.get(0)));
-        tasksId.add(foundTasks.get(0).getId());
-
-        foundTasks = taskService.findTasksByName(TEST_EBODAC_CAMPAIGN_ENROLLMENT_ON_UPDATE);
-        assertEquals(1, foundTasks.size());
-        assertTrue(tasks.contains(foundTasks.get(0)));
-        tasksId.add(foundTasks.get(0).getId());
-
-        foundTasks = taskService.findTasksByName(TEST_EBODAC_SUBJECT_STATUS);
+        List<Task> foundTasks = taskService.findTasksByName(TEST_EBODAC_SUBJECT_STATUS);
         assertEquals(1, foundTasks.size());
         assertTrue(tasks.contains(foundTasks.get(0)));
         tasksId.add(foundTasks.get(0).getId());

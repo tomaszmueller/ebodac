@@ -29,7 +29,8 @@
   },
   "enabled": false,
   "taskConfig": {
-    "steps": []
+    "steps": [],
+    "failIfDataNotFound": true
   },
   "hasRegisteredChannel": true
 }
