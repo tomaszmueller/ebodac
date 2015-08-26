@@ -14,7 +14,7 @@
         ],
         "messageKey": "screening-message",
         "timeOffset": "15 Minutes",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -33,7 +33,7 @@
         ],
         "messageKey": "welcome-message",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly Message 1: Medical Assistance Message",
@@ -46,7 +46,7 @@
         ],
         "messageKey": "weekly-message-1-medical-assistance-message",
         "timeOffset": "4 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly Message 2: More info",
@@ -59,7 +59,7 @@
         ],
         "messageKey": "weekly-message-2-more-info-1",
         "timeOffset": "13 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly Message 2: More info",
@@ -72,7 +72,7 @@
         ],
         "messageKey": "weekly-message-2-more-info-2",
         "timeOffset": "20 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly Message 5: Targeted Engagement Message 2",
@@ -85,7 +85,7 @@
         ],
         "messageKey": "weekly-message-5-targeted-engagement-message-2",
         "timeOffset": "41 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly message 6: Ebola Reminder",
@@ -98,7 +98,7 @@
         ],
         "messageKey": "weekly-message-6-ebola-reminder",
         "timeOffset": "48 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -117,7 +117,7 @@
         ],
         "messageKey": "weekly-message-3-targeted-engagement-message",
         "timeOffset": "27 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Weekly Message 4: Mid-point message",
@@ -130,7 +130,7 @@
         ],
         "messageKey": "weekly-message-4-mid-point-message",
         "timeOffset": "34 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -149,7 +149,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -162,7 +162,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -175,7 +175,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -194,7 +194,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Sunday",
@@ -207,7 +207,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-sunday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -220,7 +220,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -233,7 +233,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -252,7 +252,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Monday",
@@ -265,7 +265,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-monday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -278,7 +278,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -291,7 +291,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -310,7 +310,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Tuesday",
@@ -323,7 +323,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-tuesday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -336,7 +336,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -349,7 +349,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -368,7 +368,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Wednesday",
@@ -381,7 +381,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-wednesday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -394,7 +394,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -407,7 +407,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -426,7 +426,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Thursday",
@@ -439,7 +439,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-thursday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -452,7 +452,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -465,7 +465,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -484,7 +484,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Friday",
@@ -497,7 +497,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-friday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -510,7 +510,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -523,7 +523,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -542,7 +542,7 @@
         ],
         "messageKey": "booster-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Booster Reminder: less than a week - Saturday",
@@ -555,7 +555,7 @@
         ],
         "messageKey": "booster-reminder-less-than-a-week-saturday",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 1 day",
@@ -568,7 +568,7 @@
         ],
         "messageKey": "missed-dose-1-day",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Missed Dose: 2nd",
@@ -581,7 +581,7 @@
         ],
         "messageKey": "missed-dose-2nd",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -600,7 +600,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -613,7 +613,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -626,7 +626,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -645,7 +645,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Reminder: 1 day",
@@ -658,7 +658,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -671,7 +671,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -684,7 +684,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -703,7 +703,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Reminder: 1 day",
@@ -716,7 +716,7 @@
         ],
         "messageKey": "clinic-visit-reminder-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -729,7 +729,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -742,7 +742,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -761,7 +761,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Reminder No Exam: 1 day",
@@ -774,7 +774,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -787,7 +787,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -800,7 +800,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -819,7 +819,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Reminder No Exam: 1 day",
@@ -832,7 +832,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -845,7 +845,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -858,7 +858,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   },
@@ -877,7 +877,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-week",
         "timeOffset": "-7 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Reminder No Exam: 1 day",
@@ -890,7 +890,7 @@
         ],
         "messageKey": "clinic-visit-reminder-no-exam-1-day",
         "timeOffset": "-1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -903,7 +903,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-1",
         "timeOffset": "1 Day",
-        "startTime": "9:00"
+        "startTime": "7:00"
       },
       {
         "name": "Clinic Visit Missed appointment",
@@ -916,7 +916,7 @@
         ],
         "messageKey": "clinic-visit-missed-appointment-2",
         "timeOffset": "3 Days",
-        "startTime": "9:00"
+        "startTime": "7:00"
       }
     ]
   }
