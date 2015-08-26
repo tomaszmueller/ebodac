@@ -70,6 +70,12 @@ public class Config {
 
     private List<String> availableLookupsForFollowupsMissedClinicVisitsReport;
 
+    private Boolean enableZetesJob = false;
+
+    private Boolean enableRaveJob = false;
+
+    private Boolean enableReportJob = false;
+
     public Config() {
     }
 
@@ -275,5 +281,29 @@ public class Config {
 
     public void setAvailableLookupsForFollowupsMissedClinicVisitsReport(List<String> availableLookupsForFollowupsMissedClinicVisitsReport) {
         this.availableLookupsForFollowupsMissedClinicVisitsReport = availableLookupsForFollowupsMissedClinicVisitsReport;
+    }
+
+    public Boolean getEnableZetesJob() {
+        return enableZetesJob;
+    }
+
+    public void setEnableZetesJob(Boolean enableZetesJob) {
+        this.enableZetesJob = enableZetesJob;
+    }
+
+    public Boolean getEnableRaveJob() {
+        return enableRaveJob;
+    }
+
+    public void setEnableRaveJob(Boolean enableRaveJob) {
+        this.enableRaveJob = enableRaveJob;
+    }
+
+    public Boolean getEnableReportJob() {
+        return enableReportJob;
+    }
+
+    public void setEnableReportJob(Boolean enableReportJob) {
+        this.enableReportJob = enableReportJob;
     }
 }

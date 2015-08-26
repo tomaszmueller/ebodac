@@ -70,22 +70,28 @@ public class ConfigController {
     }
 
     private void scheduleJobs() {
-        String zetesUrl = configService.getConfig().getZetesUrl();
-        String zetesUsername = configService.getConfig().getZetesUsername();
-        String zetesPassword = configService.getConfig().getZetesPassword();
 
-        LocalTime startTime = LocalTime.parse(
-                configService.getConfig().getStartTime(),
-                DateTimeFormat.forPattern(Config.TIME_PICKER_FORMAT)
-        );
-        Date startDate = startTime.toDateTimeToday().toDate();
+        if(configService.getConfig().getEnableZetesJob()) {
+            String zetesUrl = configService.getConfig().getZetesUrl();
+            String zetesUsername = configService.getConfig().getZetesUsername();
+            String zetesPassword = configService.getConfig().getZetesPassword();
 
-        ebodacScheduler.scheduleZetesUpdateJob(startDate, zetesUrl, zetesUsername, zetesPassword);
+            LocalTime startTime = LocalTime.parse(
+                    configService.getConfig().getStartTime(),
+                    DateTimeFormat.forPattern(Config.TIME_PICKER_FORMAT)
+            );
+            Date startDate = startTime.toDateTimeToday().toDate();
+            ebodacScheduler.scheduleZetesUpdateJob(startDate, zetesUrl, zetesUsername, zetesPassword);
+        }
 
-        Integer interval = configService.getConfig().getEmailCheckInterval();
-        ebodacScheduler.scheduleEmailCheckJob(interval);
+        if(configService.getConfig().getEnableRaveJob()) {
+            Integer interval = configService.getConfig().getEmailCheckInterval();
+            ebodacScheduler.scheduleEmailCheckJob(interval);
+        }
 
-        DateTime reportStartDate = DateUtil.newDateTime(LocalDate.now().plusDays(1), Time.parseTime(configService.getConfig().getReportCalculationStartTime(), ":"));
-        ebodacScheduler.scheduleDailyReportJob(reportStartDate);
+        if(configService.getConfig().getEnableReportJob()) {
+            DateTime reportStartDate = DateUtil.newDateTime(LocalDate.now().plusDays(1), Time.parseTime(configService.getConfig().getReportCalculationStartTime(), ":"));
+            ebodacScheduler.scheduleDailyReportJob(reportStartDate);
+        }
     }
 }
