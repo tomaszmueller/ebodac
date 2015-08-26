@@ -17,6 +17,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -82,16 +83,22 @@ public class ReportControllerIT extends BasePaxIT {
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
     private ArrayList<Visit> testVisits = new ArrayList<Visit>();
-    
+
+    @BeforeClass
+    public static void beforeClass() throws IOException, InterruptedException {
+        createAdminUser();
+        login();
+        Thread.sleep(EbodacConstants.LOGIN_WAIT_TIME);
+    }
+
     @Before
-    public void cleanBefore() throws IOException, InterruptedException {
+    public void cleanBefore(){
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
         boosterVaccinationDataService.deleteAll();
         primerVaccinationDataService.deleteAll();
         resetTestFields();
-        login();
     }
 
     @After

@@ -15,6 +15,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -101,8 +102,15 @@ public class EnrollmentControllerIT extends BasePaxIT {
         }
     };
 
+    @BeforeClass
+    public static void beforeClass() throws IOException, InterruptedException {
+        createAdminUser();
+        login();
+        Thread.sleep(EbodacConstants.LOGIN_WAIT_TIME);
+    }
+
     @Before
-    public void cleanBefore() throws IOException, InterruptedException, SchedulerException {
+    public void cleanBefore() throws SchedulerException {
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         enrollmentDataService.deleteAll();
@@ -110,7 +118,6 @@ public class EnrollmentControllerIT extends BasePaxIT {
         clearJobs();
         resetTestFields();
         addTestVisitsToDB();
-        login();
     }
 
     @After
