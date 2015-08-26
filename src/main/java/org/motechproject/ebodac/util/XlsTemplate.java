@@ -27,18 +27,18 @@ public class XlsTemplate {
 
     private Sheet sheet;
 
-    public static final int INDEX_OF_HEADER_ROW = 12;
+    public static final int INDEX_OF_HEADER_ROW = 15;
 
-    public static final int INDEX_OF_FIRST_DATA_ROW = 13;
+    public static final int INDEX_OF_FIRST_DATA_ROW = 16;
 
     private static final Map<String, String> CELL_ADDRESS_OF_ADDITIONAL_INFO =
             Collections.unmodifiableMap(new HashMap<String, String>() {
                 {
-                    put("title",    "B6");
-                    put("district", "A10");
-                    put("chiefdom", "B10");
-                    put("community","C10");
-                    put("phu",      "D10");
+                    put("title",    "B10");
+                    put("district", "A14");
+                    put("chiefdom", "B14");
+                    put("community","C14");
+                    put("phu",      "D14");
                 }
             });
 
