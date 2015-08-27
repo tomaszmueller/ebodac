@@ -260,7 +260,7 @@ public class ReportServiceIT extends BasePaxIT{
     private void checkUpdateBoosterVaccinationReportsForDates(LocalDate date) {
         ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findReportByDate(date);
 
-        assertEquals(7, (int) existingBoosterReport.getChildren_0_5());
+        assertEquals(7, (int) existingBoosterReport.getChildren_1_5());
         assertEquals(7, (int) existingBoosterReport.getChildren_6_11());
         assertEquals(7, (int) existingBoosterReport.getChildren_12_17());
         assertEquals(7, (int) existingBoosterReport.getAdultFemales());
@@ -274,7 +274,7 @@ public class ReportServiceIT extends BasePaxIT{
     private void checkUpdatePrimerVaccinationReportsForDates(LocalDate date) {
         ReportPrimerVaccination existingPrimerReport = primerVaccinationDataService.findReportByDate(date);
 
-        assertEquals(7, (int) existingPrimerReport.getChildren_0_5());
+        assertEquals(7, (int) existingPrimerReport.getChildren_1_5());
         assertEquals(7, (int) existingPrimerReport.getChildren_6_11());
         assertEquals(7, (int) existingPrimerReport.getChildren_12_17());
         assertEquals(7, (int) existingPrimerReport.getAdultFemales());
