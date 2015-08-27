@@ -406,9 +406,6 @@
         var url = "../ebodac/getLookupsForEnrollments";
         $scope.getLookups(url);
 
-        $scope.errors = [];
-        $scope.messages = [];
-
         $scope.enrollInProgress = false;
 
         innerLayout({
@@ -416,12 +413,6 @@
             east__minSize: 200,
             east__maxSize: 350
         });
-
-        function hideMsgLater(index) {
-            return $timeout(function() {
-                $scope.messages.splice(index, 1);
-            }, 5000);
-        }
 
         $scope.refreshGrid = function() {
             $scope.lookupRefresh = !$scope.lookupRefresh;
@@ -436,13 +427,12 @@
                         $scope.enrollInProgress = true;
                         $http.post('../ebodac/enrollSubject', subjectId)
                         .success(function(response) {
-                            var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
-                            hideMsgLater(index-1);
+                            motechAlert('ebodac.web.enrollment.enrollSubject.success', 'ebodac.web.enrollment.enrolledSubject');
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         })
                         .error(function(response) {
-                            $scope.errors.push($scope.getMessageFromData(response));
+                            motechAlert('ebodac.web.enrollment.enrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         });
@@ -459,13 +449,12 @@
                         $scope.enrollInProgress = true;
                         $http.post('../ebodac/unenrollSubject', subjectId)
                         .success(function(response) {
-                            var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
-                            hideMsgLater(index-1);
+                            motechAlert('ebodac.web.enrollment.unenrollSubject.success', 'ebodac.web.enrollment.unenrolledSubject');
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         })
                         .error(function(response) {
-                            $scope.errors.push($scope.getMessageFromData(response));
+                            motechAlert('ebodac.web.enrollment.unenrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                             $scope.refreshGrid();
                             $scope.enrollInProgress = false;
                         });
@@ -493,9 +482,6 @@
 
         $controller('EbodacMessagesCtrl', {$scope: $scope});
 
-        $scope.errors = [];
-        $scope.messages = [];
-
         $scope.enrollInProgress = false;
 
         innerLayout({
@@ -503,12 +489,6 @@
             east__minSize: 200,
             east__maxSize: 350
         });
-
-        function hideMsgLater(index) {
-            return $timeout(function() {
-                $scope.messages.splice(index, 1);
-            }, 5000);
-        }
 
         $scope.backToEnrolments = function() {
             window.location.replace('#/ebodac/enrollment');
@@ -524,13 +504,12 @@
             $scope.enrollInProgress = true;
             $http.get('../ebodac/enrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName)
             .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
-                hideMsgLater(index-1);
+                motechAlert('ebodac.web.enrollment.enrollSubject.success', 'ebodac.web.enrollment.enrolledSubject');
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.getMessageFromData(response));
+                motechAlert('ebodac.web.enrollment.enrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -540,13 +519,12 @@
             $scope.enrollInProgress = true;
             $http.get('../ebodac/unenrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName)
             .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
-                hideMsgLater(index-1);
+                motechAlert('ebodac.web.enrollment.unenrollSubject.success', 'ebodac.web.enrollment.unenrolledSubject');
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.getMessageFromData(response));
+                motechAlert('ebodac.web.enrollment.unenrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -556,13 +534,12 @@
             $scope.enrollInProgress = true;
             $http.get('../ebodac/reenrollCampaign/' + $scope.selectedSubjectId + '/' + campaignName + '/' + date)
             .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.reenrollSubject.success'));
-                hideMsgLater(index-1);
+                motechAlert('ebodac.web.enrollment.reenrollSubject.success', 'ebodac.web.enrollment.reenrolledSubject');
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.getMessageFromData(response));
+                motechAlert('ebodac.web.enrollment.reenrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
@@ -572,13 +549,12 @@
             $scope.enrollInProgress = true;
             $http.get('../ebodac/enrollCampaignWithNewDate/' + $scope.selectedSubjectId + '/' + campaignName + '/' + date)
             .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
-                hideMsgLater(index-1);
+                motechAlert('ebodac.web.enrollment.enrollSubject.success', 'ebodac.web.enrollment.enrolledSubject');
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             })
             .error(function(response) {
-                $scope.errors.push($scope.getMessageFromData(response));
+                motechAlert('ebodac.web.enrollment.enrollSubject.error', 'ebodac.web.enrollment.error', $scope.getMessageFromData(response));
                 $scope.refreshGrid();
                 $scope.enrollInProgress = false;
             });
