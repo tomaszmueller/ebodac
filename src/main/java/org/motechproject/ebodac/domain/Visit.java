@@ -10,6 +10,7 @@ import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
 import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Entity;
+import org.motechproject.mds.annotations.EnumDisplayName;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.util.SecurityMode;
@@ -25,6 +26,7 @@ public class Visit {
 
     @NonEditable
     @Field(displayName = "Visit Type")
+    @EnumDisplayName(enumField="value")
     private VisitType type;
 
     @NonEditable

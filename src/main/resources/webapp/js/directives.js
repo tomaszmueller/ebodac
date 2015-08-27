@@ -165,7 +165,7 @@
                         classes: 'pointer',
                         align: 'center',
                         formatter: function(cellValue, options, rowObject) {
-                                       if (!cellValue){
+                                       if (!cellValue || !cellValue.name){
                                            return '';
                                        }
                                        return cellValue.name;

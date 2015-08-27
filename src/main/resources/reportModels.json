@@ -28,19 +28,19 @@
       "jsonmap": "subject",
       "index": "subject.name",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.name){ return ''; } return cellValue.name; }"
     }, {
       "name": "subjectPhoneNumber",
       "jsonmap": "subject",
       "index": "subject.phoneNumber",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.phoneNumber; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.phoneNumber){ return ''; } return cellValue.phoneNumber; }"
     }, {
       "name": "subjectAddress",
       "jsonmap": "subject",
       "index": "subject.address",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.address){ return ''; } return cellValue.address; }"
     }, {
       "name": "type",
       "index": "type",
@@ -69,55 +69,55 @@
       "jsonmap": "subject",
       "index": "subject.name",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.name){ return ''; } return cellValue.name; }"
     }, {
       "name": "subjectHouseholdName",
       "jsonmap": "subject",
       "index": "subject.householdName",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.householdName; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.householdName){ return ''; } return cellValue.householdName; }"
     }, {
       "name": "subjectHeadOfHousehold",
       "jsonmap": "subject",
       "index": "subject.headOfHousehold",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.headOfHousehold; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.headOfHousehold){ return ''; } return cellValue.headOfHousehold; }"
     }, {
       "name": "subjectDateOfBirth",
       "jsonmap": "subject",
       "index": "subject.dateOfBirth",
       "align": "center",
-      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.dateOfBirth; }"
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.dateOfBirth){ return ''; } return cellValue.dateOfBirth; }"
     }, {
       "name": "subjectGender",
       "jsonmap": "subject",
       "index": "subject.gender",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.gender; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
     }, {
       "name": "subjectCommunity",
       "jsonmap": "subject",
       "index": "subject.community",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.community; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
       "name": "subjectAddress",
       "jsonmap": "subject",
       "index": "subject.address",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.address){ return ''; } return cellValue.address; }"
     }, {
       "name": "subjectPrimerVaccinationDate",
       "jsonmap": "subject",
       "index": "subject.primerVaccinationDate",
       "align": "center",
-      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.primerVaccinationDate; }"
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.primerVaccinationDate){ return ''; } return cellValue.primerVaccinationDate; }"
     }, {
       "name": "subjectBoosterVaccinationDate",
       "jsonmap": "subject",
       "index": "subject.boosterVaccinationDate",
       "align": "center",
-      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.boosterVaccinationDate; }"
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.boosterVaccinationDate){ return ''; } return cellValue.boosterVaccinationDate; }"
     }, {
       "name": "date",
       "index": "date",
@@ -147,43 +147,43 @@
       "jsonmap": "subject",
       "index": "subject.name",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.name; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.name){ return ''; } return cellValue.name; }"
     }, {
       "name": "subjectHouseholdName",
       "jsonmap": "subject",
       "index": "subject.householdName",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.householdName; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.householdName){ return ''; } return cellValue.householdName; }"
     }, {
       "name": "subjectHeadOfHousehold",
       "jsonmap": "subject",
       "index": "subject.headOfHousehold",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.headOfHousehold; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.headOfHousehold){ return ''; } return cellValue.headOfHousehold; }"
     }, {
       "name": "subjectDateOfBirth",
       "jsonmap": "subject",
       "index": "subject.dateOfBirth",
       "align": "center",
-      "formatter":"function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.dateOfBirth; }"
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.dateOfBirth){ return ''; } return cellValue.dateOfBirth; }"
     }, {
       "name": "subjectGender",
       "jsonmap": "subject",
       "index": "subject.gender",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.gender; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
     }, {
       "name": "subjectCommunity",
       "jsonmap": "subject",
       "index": "subject.community",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.community; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
       "name": "subjectAddress",
       "jsonmap": "subject",
       "index": "subject.address",
       "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue){ return ''; } return cellValue.address; }"
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.address){ return ''; } return cellValue.address; }"
     }, {
       "name": "type",
       "index": "type",
