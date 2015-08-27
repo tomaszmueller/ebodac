@@ -11,8 +11,12 @@ import java.util.List;
 
 public interface SubjectEnrollmentsDataService extends MotechDataService<SubjectEnrollments> {
 
-    @Lookup(name="Find Enrollment By Participant Id")
+    @Lookup(name="Find unique Enrollment By Participant Id")
     SubjectEnrollments findEnrollmentBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
+
+    @Lookup(name="Find Enrollments By Participant Id")
+    List<SubjectEnrollments> findEnrollmentsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subject.subjectId",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
     @Lookup(name="Find Enrollments By Participant Name")
     List<SubjectEnrollments> findEnrollmentsBySubjectName(@LookupField(name = "subject.name",
