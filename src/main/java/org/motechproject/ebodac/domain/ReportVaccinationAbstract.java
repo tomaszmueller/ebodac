@@ -29,8 +29,8 @@ public abstract class ReportVaccinationAbstract {
 
     @NonEditable
     @UIDisplayable(position = 6)
-    @Field(displayName = "Children 0-5")
-    private Integer children_0_5;
+    @Field(displayName = "Children 1-5")
+    private Integer children_1_5;
 
     @NonEditable
     @UIDisplayable(position = 5)
@@ -59,12 +59,12 @@ public abstract class ReportVaccinationAbstract {
     public ReportVaccinationAbstract() {
     }
 
-    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
                                      Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.date = date;
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
-        this.children_0_5 = children_0_5;
+        this.children_1_5 = children_1_5;
         this.children_6_11 = children_6_11;
         this.children_12_17 = children_12_17;
         this.adultUnidentified = adultUnidentified;
@@ -95,12 +95,12 @@ public abstract class ReportVaccinationAbstract {
         this.adultFemales = adultFemales;
     }
 
-    public Integer getChildren_0_5() {
-        return children_0_5;
+    public Integer getChildren_1_5() {
+        return children_1_5;
     }
 
-    public void setChildren_0_5(Integer children_0_5) {
-        this.children_0_5 = children_0_5;
+    public void setChildren_1_5(Integer children_1_5) {
+        this.children_1_5 = children_1_5;
     }
 
     public Integer getChildren_6_11() {
@@ -143,11 +143,11 @@ public abstract class ReportVaccinationAbstract {
         this.owner = owner;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_0_5, Integer children_6_11,
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
                                  Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
-        this.children_0_5 = children_0_5;
+        this.children_1_5 = children_1_5;
         this.children_6_11 = children_6_11;
         this.children_12_17 = children_12_17;
         this.adultUnidentified = adultUnidentified;
