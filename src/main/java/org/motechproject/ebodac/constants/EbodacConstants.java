@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public final class EbodacConstants {
 
+    public static final int LOGIN_WAIT_TIME = 1000;
+
     public static final String UI_CONFIG = "custom-ui.js";
 
     public static final String SUBJECT_ID_FIELD_NAME = "subjectId";
