@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <motech.version>0.26-SNAPSHOT</motech.version>
         <spring.version>3.1.0.RELEASE</spring.version>
+        <mysql.version>5.1.32</mysql.version>
     </properties>
 
     <dependencies>
@@ -390,6 +391,58 @@
                                             <include>motech-settings.properties</include>
                                         </resource>
                                     </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>${mysql.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <driver>com.mysql.jdbc.Driver</driver>
+                            <username>root</username>
+                            <password>password</password>
+                            <url>jdbc:mysql://localhost:3306/</url>
+                        </configuration>
+                        <!--
+                            For each Bundle IT tests in modules migrated to MDS the
+                            'motech_data_services' database has to be dropped and created again.
+                        -->
+                        <executions>
+                            <execution>
+                                <id>drop-db</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <sqlCommand>
+                                        DROP DATABASE IF EXISTS motech_data_services;
+                                    </sqlCommand>
+                                    <onError>continue</onError>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>create-db</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <orderFile>ascending</orderFile>
+                                    <sqlCommand>
+                                        CREATE DATABASE motech_data_services;
+                                    </sqlCommand>
                                 </configuration>
                             </execution>
                         </executions>
