@@ -332,6 +332,7 @@
     controllers.controller('EbodacEnrollmentCtrl', function ($scope, $http, $timeout, $controller) {
 
         $controller('EbodacLookupsCtrl', {$scope: $scope});
+
         var url = "../ebodac/getLookupsForEnrollments";
         $scope.getLookups(url);
 
@@ -357,35 +358,49 @@
         };
 
         $scope.enroll = function(subjectId) {
-            $scope.enrollInProgress = true;
-            $http.post('../ebodac/enrollSubject', subjectId)
-            .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
-                hideMsgLater(index-1);
-                $scope.refreshGrid();
-                $scope.enrollInProgress = false;
-            })
-            .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
-                $scope.refreshGrid();
-                $scope.enrollInProgress = false;
-            });
+            motechConfirm("ebodac.enrollSubject.ConfirmMsg", "ebodac.enrollSubject.ConfirmTitle",
+                function (response) {
+                    if (!response) {
+                        return;
+                    } else {
+                        $scope.enrollInProgress = true;
+                        $http.post('../ebodac/enrollSubject', subjectId)
+                        .success(function(response) {
+                            var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.enrollSubject.success'));
+                            hideMsgLater(index-1);
+                            $scope.refreshGrid();
+                            $scope.enrollInProgress = false;
+                        })
+                        .error(function(response) {
+                            $scope.errors.push($scope.msg('ebodac.web.enrollment.enrollSubject.error', response));
+                            $scope.refreshGrid();
+                            $scope.enrollInProgress = false;
+                        });
+                    }
+                });
         }
 
         $scope.unenroll = function(subjectId) {
-            $scope.enrollInProgress = true;
-            $http.post('../ebodac/unenrollSubject', subjectId)
-            .success(function(response) {
-                var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
-                hideMsgLater(index-1);
-                $scope.refreshGrid();
-                $scope.enrollInProgress = false;
-            })
-            .error(function(response) {
-                $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
-                $scope.refreshGrid();
-                $scope.enrollInProgress = false;
-            });
+            motechConfirm("ebodac.unenrollSubject.ConfirmMsg", "ebodac.unenrollSubject.ConfirmTitle",
+                function (response) {
+                    if (!response) {
+                        return;
+                    } else {
+                        $scope.enrollInProgress = true;
+                        $http.post('../ebodac/unenrollSubject', subjectId)
+                        .success(function(response) {
+                            var index = $scope.messages.push($scope.msg('ebodac.web.enrollment.unenrollSubject.success'));
+                            hideMsgLater(index-1);
+                            $scope.refreshGrid();
+                            $scope.enrollInProgress = false;
+                        })
+                        .error(function(response) {
+                            $scope.errors.push($scope.msg('ebodac.web.enrollment.unenrollSubject.error', response));
+                            $scope.refreshGrid();
+                            $scope.enrollInProgress = false;
+                        });
+                    }
+                });
         }
 
         $scope.goToAdvanced = function(subjectId) {
