@@ -9,6 +9,7 @@ import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
+import org.motechproject.ebodac.exception.EbodacException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -58,31 +59,31 @@ public class EbodacEnrollmentController {
     public ResponseEntity<String> reenrollVisit(@RequestBody Visit visit) {
 
         if (visit == null) {
-            return new ResponseEntity<>("Visit cannot be null", HttpStatus.BAD_REQUEST);
-        } else if(visit.getSubject() == null) {
-            return new ResponseEntity<>("Visit must have Subject to be enrolled", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.nullVisit", HttpStatus.BAD_REQUEST);
+        } else if (visit.getSubject() == null) {
+            return new ResponseEntity<>("ebodac.enrollment.error.noSubject", HttpStatus.BAD_REQUEST);
         } else {
             Visit existingVisit = visitService.findVisitBySubjectIdAndVisitType(visit.getSubject().getSubjectId(), visit.getType());
 
             if (existingVisit == null) {
-                return new ResponseEntity<>("Cannot find visit in the database", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("ebodac.enrollment.error.noVisitInDB", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             if (existingVisit.getDate() != null) {
-                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because visit already took place", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("ebodac.enrollment.error.visitCompleted", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate() == null) {
-                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is null", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("ebodac.enrollment.error.EmptyPlannedDate", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().equals(existingVisit.getMotechProjectedDate())) {
-                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date wasn't changed", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("ebodac.enrollment.error.plannedDateNotChanged", HttpStatus.BAD_REQUEST);
             } else if (visit.getMotechProjectedDate().isBefore(LocalDate.now())) {
-                return new ResponseEntity<>("Cannot re-enroll Subject for that Visit, because motech projected date is in the past", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("ebodac.enrollment.error.plannedDateInPast", HttpStatus.BAD_REQUEST);
             } else {
 
                 try {
                     ebodacEnrollmentService.reenrollSubject(visit);
                 } catch (EbodacEnrollmentException e) {
                     LOGGER.debug(e.getMessage(), e);
-                    return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             }
         }
@@ -156,14 +157,14 @@ public class EbodacEnrollmentController {
     @ResponseBody
     public ResponseEntity<String> enrollSubject(@RequestBody String subjectId) {
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         try {
             ebodacEnrollmentService.enrollSubject(subjectId);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -174,14 +175,14 @@ public class EbodacEnrollmentController {
     @ResponseBody
     public ResponseEntity<String> unenrollSubject(@RequestBody String subjectId) {
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         try {
             ebodacEnrollmentService.unenrollSubject(subjectId);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -193,18 +194,18 @@ public class EbodacEnrollmentController {
     public ResponseEntity<String> enrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
 
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         if (StringUtils.isBlank(campaignName)) {
-            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
         try {
             ebodacEnrollmentService.enrollSubjectToCampaign(subjectId, campaignName);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -216,18 +217,18 @@ public class EbodacEnrollmentController {
     public ResponseEntity<String> unenrollCampaign(@PathVariable String subjectId, @PathVariable String campaignName) throws IOException {
 
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         if (StringUtils.isBlank(campaignName)) {
-            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
         try {
             ebodacEnrollmentService.unenrollSubject(subjectId, campaignName);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -240,11 +241,11 @@ public class EbodacEnrollmentController {
                                                             @PathVariable String date) throws IOException {
 
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         if (StringUtils.isBlank(campaignName)) {
-            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
         try {
@@ -255,7 +256,7 @@ public class EbodacEnrollmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -268,11 +269,11 @@ public class EbodacEnrollmentController {
                                                    @PathVariable String date) throws IOException {
 
         if (StringUtils.isBlank(subjectId)) {
-            return new ResponseEntity<>("Subject id cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptySubjectId", HttpStatus.BAD_REQUEST);
         }
 
         if (StringUtils.isBlank(campaignName)) {
-            return new ResponseEntity<>("Campaign name cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
         try {
@@ -283,7 +284,7 @@ public class EbodacEnrollmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -305,5 +306,9 @@ public class EbodacEnrollmentController {
                 }
             }
         }
+    }
+
+    private String getMessageFromException(EbodacException e) {
+        return String.format("key:%s\nparams:%s", e.getMessageKey(), e.getParams());
     }
 }

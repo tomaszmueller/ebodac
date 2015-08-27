@@ -81,6 +81,28 @@ public class Enrollment {
         this.deliverTime = deliverTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Enrollment)) {
+            return false;
+        }
+
+        Enrollment that = (Enrollment) o;
+
+        return externalId.equals(that.externalId) && campaignName.equals(that.campaignName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = externalId.hashCode();
+        result = 31 * result + campaignName.hashCode();
+        return result;
+    }
+
     public CampaignEnrollment toCampaignEnrollment() {
         CampaignEnrollment enrollment = new CampaignEnrollment(externalId, campaignName);
         enrollment.setDeliverTime(deliverTime);

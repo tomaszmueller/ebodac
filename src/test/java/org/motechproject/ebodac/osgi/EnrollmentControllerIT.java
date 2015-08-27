@@ -179,30 +179,30 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldNotReenrollVisit() throws IOException, InterruptedException {
         try {
             fakeNow(newDateTime(2015, 7, 31, 10, 0, 0));
-            checkResponse(400, "Visit cannot be null", reenrollVisit(null, 400));
+            checkResponse(400, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, 400));
 
-            checkResponse(400, "Visit must have Subject to be enrolled", reenrollVisit(testVisits.get(0), 400));
+            checkResponse(400, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), 400));
 
             Visit visit = testVisits.get(1);
             visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
-            checkResponse(500, "Cannot find visit in the database", reenrollVisit(visit, 500));
+            checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
             visit.setType(VisitType.SCREENING);
 
-            checkResponse(400, "Cannot re-enroll Subject for that Visit, because visit already took place",
+            checkResponse(400, "ebodac.enrollment.error.visitCompleted",
                     reenrollVisit(testVisits.get(1), 400));
 
             visit = testVisits.get(2);
             visit.setMotechProjectedDate(null);
-            checkResponse(400, "Cannot re-enroll Subject for that Visit, because motech projected date is null",
+            checkResponse(400, "ebodac.enrollment.error.EmptyPlannedDate",
                     reenrollVisit(visit, 400));
             visit.setMotechProjectedDate(LocalDate.parse("2015-10-10", formatter));
 
-            checkResponse(400, "Cannot re-enroll Subject for that Visit, because motech projected date wasn't changed",
+            checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
                     reenrollVisit(testVisits.get(2), 400));
 
             visit = testVisits.get(2);
             visit.setMotechProjectedDate(LocalDate.parse("2014-10-17", formatter));
-            checkResponse(400, "Cannot re-enroll Subject for that Visit, because motech projected date is in the past",
+            checkResponse(400, "ebodac.enrollment.error.plannedDateInPast",
                     reenrollVisit(visit, 400));
         } finally {
             stopFakingTime();

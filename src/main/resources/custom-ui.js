@@ -30,6 +30,25 @@ var editSubjectModal = '../ebodac/resources/partials/modals/edit-subject.html';
 $scope.customModals.push(importCsvModal);
 $scope.customModals.push(editSubjectModal);
 
+$scope.getMessageFromData = function(responseData) {
+    var messageCode, messageParams;
+
+    if (responseData && (typeof(responseData) === 'string')) {
+        if (responseData.startsWith('key:')) {
+            if (responseData.indexOf('params:') !== -1) {
+               messageCode = responseData.split('\n')[0].split(':')[1];
+               messageParams = responseData.split('\n')[1].split(':')[1].split(',');
+            } else {
+               messageCode = responseData.split(':')[1];
+            }
+        } else {
+            messageCode = responseData;
+        }
+    }
+
+    return $scope.msg(messageCode, messageParams);
+};
+
 $scope.importEntityInstances = function() {
     $('#importSubjectModal').modal('show');
 };
@@ -132,7 +151,7 @@ $scope.addEntityInstanceDefault = function () {
                     $scope.saveCurrentRecord();
                 })
                 .error(function(response) {
-                    motechAlert("ebodac.reenrollVisit.errorMsg", "ebodac.reenrollVisit.errorTitle", response);
+                    motechAlert("ebodac.reenrollVisit.errorMsg", "ebodac.reenrollVisit.errorTitle", $scope.getMessageFromData(response));
                     unblockUI();
                 });
             });
