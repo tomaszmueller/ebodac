@@ -29,4 +29,6 @@ public interface EbodacEnrollmentService {
     void withdrawalSubject(Subject subject);
 
     void completeCampaign(String subjectId, String campaignName);
+
+    boolean isEnrolled(Visit visit);
 }

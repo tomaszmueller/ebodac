@@ -49,6 +49,7 @@ import java.util.Set;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.motechproject.commons.date.util.DateUtil.newDateTime;
 import static org.motechproject.testing.utils.TimeFaker.fakeNow;
 import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
@@ -686,6 +687,34 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             stopFakingTime();
         }
 
+    }
+
+    @Test
+    public void shouldCheckIfSubjectIsEnrolled() throws IOException {
+        try {
+            fakeNow(newDateTime(2015, 8, 1, 0, 0, 0));
+
+            Subject subject = createSubjectWithRequireData("1");
+
+            Visit visit = new Visit();
+            visit.setType(VisitType.BOOST_VACCINATION_DAY);
+            visit.setMotechProjectedDate(new LocalDate(2015, 10, 10));
+            visit.setSubject(subject);
+            assertFalse(ebodacEnrollmentService.isEnrolled(visit));
+
+            visitService.create(visit);
+            subject = subjectService.findSubjectBySubjectId("1");
+            ebodacEnrollmentService.enrollSubject(subject);
+
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+            assertTrue(ebodacEnrollmentService.isEnrolled(visit));
+
+            ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
+            assertFalse(ebodacEnrollmentService.isEnrolled(visit));
+
+        } finally {
+            stopFakingTime();
+        }
     }
 
     private void clearJobs() throws SchedulerException {

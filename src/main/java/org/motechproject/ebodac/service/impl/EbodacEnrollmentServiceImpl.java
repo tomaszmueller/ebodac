@@ -184,6 +184,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
+    @Override
+    public boolean isEnrolled(Visit visit) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(visit.getSubject().getSubjectId());
+        String campaignName = visit.getType().getValue();
+
+        if(null == subjectEnrollments) {
+            return false;
+        }
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+
+        return enrollment != null && EnrollmentStatus.ENROLLED.equals(enrollment.getStatus());
+    }
+
     private void enrollSubject(Visit visit) {
         try {
             if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {

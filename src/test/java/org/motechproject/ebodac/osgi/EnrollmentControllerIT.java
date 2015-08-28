@@ -22,6 +22,7 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
@@ -184,26 +185,27 @@ public class EnrollmentControllerIT extends BasePaxIT {
             checkResponse(400, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), 400));
 
             Visit visit = testVisits.get(1);
-            visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
-            checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
-            visit.setType(VisitType.SCREENING);
-
-            checkResponse(400, "ebodac.enrollment.error.visitCompleted",
-                    reenrollVisit(testVisits.get(1), 400));
-
-            visit = testVisits.get(2);
             visit.setMotechProjectedDate(null);
             checkResponse(400, "ebodac.enrollment.error.EmptyPlannedDate",
                     reenrollVisit(visit, 400));
+
+            visit = testVisits.get(1);
+            visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
             visit.setMotechProjectedDate(LocalDate.parse("2015-10-10", formatter));
+            checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
 
-            checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
-                    reenrollVisit(testVisits.get(2), 400));
 
-            visit = testVisits.get(2);
-            visit.setMotechProjectedDate(LocalDate.parse("2014-10-17", formatter));
+            ebodacEnrollmentService.enrollSubject(secondSubject);
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(secondSubject.getSubjectId());
+            visit = testVisits.get(3);
+
+            visit.setMotechProjectedDate(LocalDate.parse("2014-10-19", formatter));
             checkResponse(400, "ebodac.enrollment.error.plannedDateInPast",
                     reenrollVisit(visit, 400));
+
+            visit.setMotechProjectedDate(LocalDate.parse("2015-10-19", formatter));
+            checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
+                    reenrollVisit(testVisits.get(3), 400));
         } finally {
             stopFakingTime();
         }
@@ -255,7 +257,6 @@ public class EnrollmentControllerIT extends BasePaxIT {
             assertEquals(code, Integer.parseInt(codeAndMessage[0]));
             assertEquals(message, codeAndMessage[1]);
         } else {
-            assertEquals(1, codeAndMessage.length);
             assertEquals(code, Integer.parseInt(codeAndMessage[0]));
         }
     }

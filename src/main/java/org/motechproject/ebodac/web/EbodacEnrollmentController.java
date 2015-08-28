@@ -60,34 +60,37 @@ public class EbodacEnrollmentController {
 
         if (visit == null) {
             return new ResponseEntity<>("ebodac.enrollment.error.nullVisit", HttpStatus.BAD_REQUEST);
-        } else if (visit.getSubject() == null) {
-            return new ResponseEntity<>("ebodac.enrollment.error.noSubject", HttpStatus.BAD_REQUEST);
-        } else {
-            Visit existingVisit = visitService.findVisitBySubjectIdAndVisitType(visit.getSubject().getSubjectId(), visit.getType());
-
-            if (existingVisit == null) {
-                return new ResponseEntity<>("ebodac.enrollment.error.noVisitInDB", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-            if (existingVisit.getDate() != null) {
-                return new ResponseEntity<>("ebodac.enrollment.error.visitCompleted", HttpStatus.BAD_REQUEST);
-            } else if (visit.getMotechProjectedDate() == null) {
-                return new ResponseEntity<>("ebodac.enrollment.error.EmptyPlannedDate", HttpStatus.BAD_REQUEST);
-            } else if (visit.getMotechProjectedDate().equals(existingVisit.getMotechProjectedDate())) {
-                return new ResponseEntity<>("ebodac.enrollment.error.plannedDateNotChanged", HttpStatus.BAD_REQUEST);
-            } else if (visit.getMotechProjectedDate().isBefore(LocalDate.now())) {
-                return new ResponseEntity<>("ebodac.enrollment.error.plannedDateInPast", HttpStatus.BAD_REQUEST);
-            } else {
-
-                try {
-                    ebodacEnrollmentService.reenrollSubject(visit);
-                } catch (EbodacEnrollmentException e) {
-                    LOGGER.debug(e.getMessage(), e);
-                    return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            }
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (visit.getSubject() == null) {
+            return new ResponseEntity<>("ebodac.enrollment.error.noSubject", HttpStatus.BAD_REQUEST);
+        }
+        if (visit.getMotechProjectedDate() == null) {
+            return new ResponseEntity<>("ebodac.enrollment.error.EmptyPlannedDate", HttpStatus.BAD_REQUEST);
+        }
+
+        Visit existingVisit = visitService.findVisitBySubjectIdAndVisitType(visit.getSubject().getSubjectId(), visit.getType());
+
+        if (existingVisit == null) {
+            return new ResponseEntity<>("ebodac.enrollment.error.noVisitInDB", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (!ebodacEnrollmentService.isEnrolled(visit)) {
+            return new ResponseEntity<>("ebodac.enrollment.success.plannedDateChanged", HttpStatus.OK);
+        }
+        if (visit.getMotechProjectedDate().equals(existingVisit.getMotechProjectedDate())) {
+            return new ResponseEntity<>("ebodac.enrollment.error.plannedDateNotChanged", HttpStatus.BAD_REQUEST);
+        }
+        if (visit.getMotechProjectedDate().isBefore(LocalDate.now())) {
+            return new ResponseEntity<>("ebodac.enrollment.error.plannedDateInPast", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            ebodacEnrollmentService.reenrollSubject(visit);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        return new ResponseEntity<>("ebodac.reenrollVisit.successmMsg", HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
