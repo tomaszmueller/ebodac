@@ -1,6 +1,7 @@
 package org.motechproject.ebodac.service;
 
 
+import org.motechproject.ebodac.util.PdfTemplate;
 import org.motechproject.ebodac.util.XlsTemplate;
 import org.motechproject.mds.query.QueryParams;
 
@@ -20,7 +21,7 @@ public interface ExportService {
     void  exportEntityToExcel(XlsTemplate template, OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap,
                               String lookup, String lookupFields, QueryParams queryParams) throws IOException;
 
-    void  exportEntityToPDF(OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+    void  exportEntityToPDF(PdfTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                             String lookup, String lookupFields, QueryParams queryParams) throws IOException;
 
     void  exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,

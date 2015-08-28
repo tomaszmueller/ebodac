@@ -5,6 +5,8 @@ import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.ExcelTableWriter;
+import org.motechproject.ebodac.util.PdfTemplate;
+import org.motechproject.ebodac.util.TemplatedPdfTableWriter;
 import org.motechproject.ebodac.util.XlsTemplate;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
@@ -52,9 +54,9 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public void exportEntityToPDF(OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+    public void exportEntityToPDF(PdfTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        PdfTableWriter tableWriter = new PdfTableWriter(outputStream);
+        TemplatedPdfTableWriter tableWriter = new TemplatedPdfTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 

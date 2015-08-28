@@ -14,6 +14,7 @@ import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
 import org.motechproject.ebodac.util.DtoLookupHelper;
+import org.motechproject.ebodac.util.PdfTemplate;
 import org.motechproject.ebodac.util.XlsTemplate;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
@@ -209,18 +210,24 @@ public class InstanceController {
 
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
-                exportService.exportEntityToPDF(response.getOutputStream(), entityDtoType, entityType, headerMap,
+                PdfTemplate template = new PdfTemplate(EbodacConstants.PDF_TEMPLATE, response.getOutputStream());
+                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_TITLE, fileNameBeginning.replaceAll("([A-Z])", " $1"));
+                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_DISTRICT, "Kambia");
+                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_CHIEFDOM, "unknown");
+                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_COMMUNITY, "unknown");
+                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_PHU, "unknown");
+                exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
-                XlsTemplate template = new XlsTemplate("/report_template.xls");
-                template.setAdditionalCellValue("title", fileNameBeginning.replaceAll("([A-Z])", " $1"));
-                template.setAdditionalCellValue("district", "Kambia");
-                template.setAdditionalCellValue("chiefdom", "unknown");
-                template.setAdditionalCellValue("community", "unknown");
-                template.setAdditionalCellValue("phu", "unknown");
+                XlsTemplate template = new XlsTemplate(EbodacConstants.XLS_TEMPLATE);
+                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_TITLE, fileNameBeginning.replaceAll("([A-Z])", " $1"));
+                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_DISTRICT, "Kambia");
+                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_CHIEFDOM, "unknown");
+                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_COMMUNITY, "unknown");
+                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_PHU, "unknown");
                 exportService.exportEntityToExcel(template, response.getOutputStream(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             }
