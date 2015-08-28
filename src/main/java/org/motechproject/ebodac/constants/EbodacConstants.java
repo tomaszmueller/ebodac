@@ -45,6 +45,20 @@ public final class EbodacConstants {
     public static final String XLSX_EXPORT_FORMAT="xlsx";
     public static final String XLS_EXPORT_FORMAT="xls";
 
+    public static final String PDF_TEMPLATE="/report_template.pdf";
+    public static final String PDF_TEMPLATE_TITLE="#titleReport";
+    public static final String PDF_TEMPLATE_DISTRICT="#district";
+    public static final String PDF_TEMPLATE_CHIEFDOM="#chiefdom";
+    public static final String PDF_TEMPLATE_COMMUNITY="#community";
+    public static final String PDF_TEMPLATE_PHU="#phu";
+
+    public static final String XLS_TEMPLATE="/report_template.xls";
+    public static final String XLS_TEMPLATE_TITLE="title";
+    public static final String XLS_TEMPLATE_DISTRICT="district";
+    public static final String XLS_TEMPLATE_CHIEFDOM="chiefdom";
+    public static final String XLS_TEMPLATE_COMMUNITY="community";
+    public static final String XLS_TEMPLATE_PHU="phu";
+
     public static final String EBODAC_MODULE="EBODAC Module";
 
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
