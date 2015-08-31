@@ -107,7 +107,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(0, visitDataService.retrieveAll().size());
 
         Subject beforeUpdate = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         subjectDataService.create(beforeUpdate);
 
@@ -123,14 +123,17 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         Subject subject = subjectDataService.findSubjectBySubjectId("1000000161");
 
-        assertEquals(beforeUpdate.getSubjectId(),       subject.getSubjectId());
-        assertEquals(beforeUpdate.getName(),            subject.getName());
+        assertEquals(beforeUpdate.getSubjectId(), subject.getSubjectId());
+        assertEquals(beforeUpdate.getName(), subject.getName());
         assertEquals(beforeUpdate.getHouseholdName(),   subject.getHouseholdName());
         assertEquals(beforeUpdate.getHeadOfHousehold(), subject.getHeadOfHousehold());
         assertEquals(beforeUpdate.getAddress(),         subject.getAddress());
         assertEquals(beforeUpdate.getLanguageCode(),    subject.getLanguageCode());
         assertEquals(beforeUpdate.getCommunity(),       subject.getCommunity());
         assertEquals(beforeUpdate.getSiteId(),          subject.getSiteId());
+        assertEquals(beforeUpdate.getChiefdom(),    subject.getChiefdom());
+        assertEquals(beforeUpdate.getSection(),       subject.getSection());
+        assertEquals(beforeUpdate.getDistrict(),          subject.getDistrict());
     }
 
     private void checkSubjectData() {

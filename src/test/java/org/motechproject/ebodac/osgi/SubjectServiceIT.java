@@ -67,10 +67,10 @@ public class SubjectServiceIT extends BasePaxIT {
 
     private void resetSubjects() {
         firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001");
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
     }
 
     @Test
@@ -300,6 +300,9 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(expected.getLanguageCode(), actual.getLanguageCode());
         assertEquals(expected.getCommunity(),        actual.getCommunity());
         assertEquals(expected.getSiteId(), actual.getSiteId());
+        assertEquals(expected.getChiefdom(), actual.getChiefdom());
+        assertEquals(expected.getSection(),        actual.getSection());
+        assertEquals(expected.getDistrict(), actual.getDistrict());
     }
 
     private void checkRaveFields(Subject expected, Subject actual) {

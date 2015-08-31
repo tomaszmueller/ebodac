@@ -32,13 +32,19 @@ public class SubmitSubjectRequest {
 
     private String siteId;
 
+    private String chiefdom;
+
+    private String section;
+
+    private String district;
+
     private List<ValidationError> validationErrors = new ArrayList<>();
 
     public SubmitSubjectRequest() {
     }
 
     public SubmitSubjectRequest(String phoneNumber, String name, String householdName, String subjectId,
-                                String address, String language, String community, String headOfHousehold) {
+                                String address, String language, String community, String headOfHousehold, String chiefdom, String section, String district) {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.householdName = householdName;
@@ -47,6 +53,10 @@ public class SubmitSubjectRequest {
         this.language = language;
         this.community = community;
         this.headOfHousehold = headOfHousehold;
+        this.chiefdom = chiefdom;
+        this.section = section;
+        this.district = district;
+
     }
 
     public String getPhoneNumber() {
@@ -120,6 +130,19 @@ public class SubmitSubjectRequest {
     public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
+
+
+    public String getDistrict() { return district; }
+
+    public void setDistrict(String district) { this.district = district; }
+
+    public String getChiefdom() { return chiefdom; }
+
+    public void setChiefdom(String chiefdom) { this.chiefdom = chiefdom; }
+
+    public String getSection() { return section; }
+
+    public void setSection(String section) { this.section = section; }
 
     public List<ValidationError> getValidationErrors() {
         return validationErrors;
