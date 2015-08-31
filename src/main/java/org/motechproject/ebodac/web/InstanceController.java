@@ -3,7 +3,10 @@ package org.motechproject.ebodac.web;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.Visit;
@@ -93,7 +96,10 @@ public class InstanceController {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
         }
 
-        final String fileName = "Entity_" + entityId + "_instances";
+        String entityName = entityService.getEntity(entityId).getName();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+
+        final String fileName = entityName + DateTime.now().toString(dateTimeFormatter);
 
         if (Constants.ExportFormat.PDF.equals(outputFormat)) {
             response.setContentType("application/pdf");
