@@ -18,35 +18,35 @@ import java.util.List;
  */
 public interface SubjectDataService extends MotechDataService<Subject> {
 
-    @Lookup(name="Find Participant By Name")
+    @Lookup(name="Find Participants By Name")
     List<Subject> findSubjectsByName(@LookupField(name = "name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
     @Lookup(name="Find unique Participant By ParticipantId")
     Subject findSubjectBySubjectId(@LookupField(name = "subjectId") String subjectId);
 
-    @Lookup(name="Find Participant By Modified")
+    @Lookup(name="Find Participants By Modified")
     List<Subject> findSubjectsByModified(@LookupField(name = "changed") Boolean modified);
 
-    @Lookup(name="Find Participant By Primer Vaccination Date Range")
+    @Lookup(name="Find Participants By Primer Vaccination Date Range")
     List<Subject> findSubjectsByPrimerVaccinationDateRange(@LookupField(name = "primerVaccinationDate")
-                                                      Range<LocalDate> dateRange);
+                                                           Range<LocalDate> dateRange);
 
-    @Lookup(name="Find Participant By Booster Vaccination Date Range")
+    @Lookup(name="Find Participants By Booster Vaccination Date Range")
     List<Subject> findSubjectsByBoosterVaccinationDateRange(@LookupField(name = "boosterVaccinationDate")
-                                                       Range<LocalDate> dateRange);
+                                                            Range<LocalDate> dateRange);
 
-    @Lookup(name="Find Participant By Primer Vaccination Date")
+    @Lookup(name="Find Participants By Primer Vaccination Date")
     List<Subject> findSubjectsByPrimerVaccinationDate(@LookupField(name = "primerVaccinationDate") LocalDate dateRange);
 
-    @Lookup(name="Find Participant By Booster Vaccination Date")
+    @Lookup(name="Find Participants By Booster Vaccination Date")
     List<Subject> findSubjectsByBoosterVaccinationDate(@LookupField(name = "boosterVaccinationDate") LocalDate dateRange);
 
-    @Lookup(name="Find Participant By Address")
+    @Lookup(name="Find Participants By Address")
     List<Subject> findSubjectsByAddress(@LookupField(name = "address",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address);
 
-    @Lookup(name="Find Participant By ParticipantId")
+    @Lookup(name="Find Participants By ParticipantId")
     List<Subject> findSubjectsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 }

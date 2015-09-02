@@ -201,3 +201,90 @@ $scope.loadEditValueForm = function (field) {
 
     return $scope.loadEditValueFormDefault(field);
 };
+
+$scope.retrieveAndSetEntityData = function(entityUrl, callback) {
+    $scope.lookupBy = {};
+    $scope.selectedLookup = undefined;
+    $scope.lookupFields = [];
+    $scope.allEntityFields = [];
+
+    blockUI();
+
+    $http.get(entityUrl).success(function (data) {
+        $scope.selectedEntity = data;
+
+        $scope.setModuleEntity($scope.selectedEntity.module, $scope.selectedEntity.name);
+
+        $http.get('../mds/entities/'+$scope.selectedEntity.id+'/entityFields').success(function (data) {
+             $scope.allEntityFields = data;
+
+             if ($routeParams.entityId === undefined) {
+                var hash = window.location.hash.substring(2, window.location.hash.length) + "/" + $scope.selectedEntity.id;
+                $location.path(hash);
+                $location.replace();
+                window.history.pushState(null, "", $location.absUrl());
+             }
+
+             Entities.getAdvancedCommited({id: $scope.selectedEntity.id}, function(data) {
+                $scope.entityAdvanced = data;
+                $rootScope.filters = [];
+                $scope.setVisibleIfExistFilters();
+
+                if ($scope.selectedEntity.name === "Visit") {
+                    $http.get("../ebodac/getLookupsForVisits")
+                    .success(function(data) {
+                        $scope.entityAdvanced.indexes = data;
+                    });
+                }
+
+                var filterableFields = $scope.entityAdvanced.browsing.filterableFields,
+                    i, field, types;
+                for (i = 0; i < $scope.allEntityFields.length; i += 1) {
+                    field = $scope.allEntityFields[i];
+
+                    if ($.inArray(field.id, filterableFields) >= 0) {
+                        types = $scope.filtersForField(field);
+
+                        $rootScope.filters.push({
+                            displayName: field.basic.displayName,
+                            type: field.type.typeClass,
+                            field: field.basic.name,
+                            types: types
+                        });
+                    }
+                }
+             });
+
+             Entities.getDisplayFields({id: $scope.selectedEntity.id}, function(data) {
+                  var i, field, selectedName,
+                      dbUserPreferences = $scope.getDataBrowserUserPreferencesCookie($scope.selectedEntity);
+
+                  $scope.selectedFields = [];
+
+                  // filter data from db
+                  for (i = 0; i < data.length; i += 1) {
+                      field = data[i];
+                      if ($.inArray(field.basic.name, dbUserPreferences.unselected) === -1) {
+                          $scope.selectedFields.push(field);
+                      }
+                  }
+
+                  // additional selections
+                  for (i = 0; i < dbUserPreferences.selected.length; i += 1) {
+                      selectedName = dbUserPreferences.selected[i];
+                      // check if already selected
+                      if (!$scope.isFieldSelected(selectedName)) {
+                          $scope.selectFieldByName(selectedName);
+                      }
+                  }
+
+                  $scope.updateInstanceGridFields();
+              });
+
+              if (callback) {
+                  callback();
+              }
+          });
+          unblockUI();
+      });
+};

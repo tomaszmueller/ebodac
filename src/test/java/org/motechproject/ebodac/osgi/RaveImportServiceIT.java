@@ -83,7 +83,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(29, visits.size());
 
-        assertEquals(2, visitDataService.findVisitByType(VisitType.UNSCHEDULED_VISIT).size());
+        assertEquals(2, visitDataService.findVisitsByType(VisitType.UNSCHEDULED_VISIT).size());
     }
 
     @Test
