@@ -147,7 +147,7 @@ $scope.addEntityInstanceDefault = function () {
                 }
                 $http.post('../ebodac/reenrollSubject', visit)
                 .success(function(response) {
-                    motechAlert("ebodac.reenrollVisit.successmMsg", "ebodac.reenrollVisit.successTitle");
+                    motechAlert(response, "ebodac.reenrollVisit.successTitle");
                     $scope.saveCurrentRecord();
                 })
                 .error(function(response) {
