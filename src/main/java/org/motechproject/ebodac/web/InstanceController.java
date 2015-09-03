@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
@@ -99,7 +98,7 @@ public class InstanceController {
         String entityName = entityService.getEntity(entityId).getName();
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
 
-        final String fileName = entityName + DateTime.now().toString(dateTimeFormatter);
+        final String fileName = entityName + "_" + DateTime.now().toString(dateTimeFormatter);
 
         if (Constants.ExportFormat.PDF.equals(outputFormat)) {
             response.setContentType("application/pdf");
@@ -192,7 +191,9 @@ public class InstanceController {
                               String fileNameBeginning,
                               Class<?> entityDtoType, Class<?> entityType,
                               Map<String, String> headerMap) throws IOException {
-        final String fileName = fileNameBeginning + "_" + LocalDate.now().toString();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+        final String fileName = fileNameBeginning + "_" + DateTime.now().toString(dateTimeFormatter);
 
         if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
