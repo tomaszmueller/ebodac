@@ -105,19 +105,19 @@ public class HistoryServiceIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
-        List<Visit> visitList = visitDataService.findVisitByActualDate(new LocalDate(2015, 7, 13));
+        List<Visit> visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 7, 13));
         assertEquals(1,visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByActualDate(new LocalDate(2015, 6, 10));
+        visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 10));
         assertEquals(1,visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByActualDate(new LocalDate(2015, 6, 11));
+        visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 11));
         assertEquals(1, visitList.size());
         assertEquals(2, historyService.countHistoryRecords(visitList.get(0)));
 
-        visitList = visitDataService.findVisitByActualDate(new LocalDate(2015, 6, 12));
+        visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 12));
         assertEquals(1,visitList.size());
         assertEquals(1, historyService.countHistoryRecords(visitList.get(0)));
 

@@ -159,14 +159,14 @@ public class LookupServiceIT extends BasePaxIT{
 
         };
         String []lookups = {
-                "Find Visit By Type",
-                "Find Visit By Participant Id",
-                "Find Visit By Participant Address",
-                "Find Visit By Participant Name",
+                "Find Visits By Type",
+                "Find Visits By Participant Id",
+                "Find Visits By Participant Address",
+                "Find Visits By Participant Name",
                 "Find Visits By Planned Visit Date Range And Type",
                 "Find Visits By Planned Visit Date Range",
-                "Find Visit By Planned Visit Date And Type",
-                "Find Visit By Planned Visit Date"
+                "Find Visits By Planned Visit Date And Type",
+                "Find Visits By Planned Visit Date"
         };
         int []expectedResults = { 2, 2, 4, 2, 2, 3, 2, 2};
 
@@ -194,12 +194,12 @@ public class LookupServiceIT extends BasePaxIT{
                 "{\"address\":\"address\"}"
         };
         String []lookups = {
-                "Find Participant By Primer Vaccination Date",
-                "Find Participant By Booster Vaccination Date Range",
-                "Find Participant By Name",
-                "Find Participant By Booster Vaccination Date",
-                "Find Participant By Modified",
-                "Find Participant By Address",
+                "Find Participants By Primer Vaccination Date",
+                "Find Participants By Booster Vaccination Date Range",
+                "Find Participants By Name",
+                "Find Participants By Booster Vaccination Date",
+                "Find Participants By Modified",
+                "Find Participants By Address",
         };
         int []expectedResults = { 1, 2, 1, 1, 2, 2};
 
@@ -279,13 +279,13 @@ public class LookupServiceIT extends BasePaxIT{
                 "{\"subject.community\":\"community\"}"
         };
         String []lookups = {
-                "Find Visit By Participant Name",
-                "Find Visit By Participant Address",
+                "Find Visits By Participant Name",
+                "Find Visits By Participant Address",
                 "Find Visits By Planned Visit Date Range And Type",
                 "Find Visits By Planned Visit Date Range",
-                "Find Visit By Planned Visit Date And Type",
-                "Find Visit By Planned Visit Date",
-                "Find Visit By Participant Community"
+                "Find Visits By Planned Visit Date And Type",
+                "Find Visits By Planned Visit Date",
+                "Find Visits By Participant Community"
         };
         int []expectedResults = { 2, 4, 2, 3, 2, 2, 4};
 

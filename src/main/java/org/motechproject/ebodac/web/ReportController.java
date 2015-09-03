@@ -164,6 +164,27 @@ public class ReportController {
         return ret;
     }
 
+    @RequestMapping(value = "/getLookupsForVisits", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForVisits() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookupas;
+        try {
+            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForVisits();
+        for(LookupDto lookupDto : availableLookupas) {
+            if(lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
     private Records<?> getDailyClinicVisitScheduleReport(GridSettings settings) {
         Order order = null;
         if (StringUtils.isNotBlank(settings.getSortColumn())) {

@@ -33,11 +33,11 @@ public class Visit {
     @Field(displayName = "Actual Visit Date")
     private LocalDate date;
 
-    @NonEditable
-    @Field(displayName = "Planned Visit Date")
+    @NonEditable(display = false)
+    @Field(displayName = "RAVE Planned Date")
     private LocalDate dateProjected;
 
-    @Field
+    @Field(displayName = "Planned Visit Date")
     private LocalDate motechProjectedDate;
 
     @NonEditable(display = false)

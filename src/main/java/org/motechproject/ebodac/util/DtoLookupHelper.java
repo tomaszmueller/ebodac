@@ -24,7 +24,7 @@ public class DtoLookupHelper {
             settings.setFields("{}");
             fields = "{}";
         }
-        if(StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visit By Participant Address")) {
+        if(StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visits By Participant Address")) {
             String address = getAddressFromLookupFields(settings.getFields());
             if(StringUtils.isNotBlank(address) && !address.equals("null")) {
                 settings.setFields(fields.substring(0, fields.length() - 1) + ", \"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}");
@@ -40,7 +40,7 @@ public class DtoLookupHelper {
             settings.setFields(fields.substring(0, fields.length() - 1) + "\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\", \"subject.address\":\"\"}");
         }
         if(StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visit By Type And Address");
+            settings.setLookup("Find Visits By Type And Address");
         } else {
             settings.setLookup(settings.getLookup() + " Type And Address");
         }
@@ -64,12 +64,12 @@ public class DtoLookupHelper {
             settings.setFields("{}");
         }
         if(StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visit By Planned Visit Date Less");
+            settings.setLookup("Find Visits By Planned Visit Date Less");
             String fields = settings.getFields();
             String now = LocalDate.now().toString(formatter);
             settings.setFields(fields.substring(0, fields.length() - 1) + "\"motechProjectedDate\":\"" + now + "\" , \"date\":\"\"}");
         } else {
-            if (settings.getLookup().equals("Find Visit By Planned Visit Date") || settings.getLookup().equals("Find Visit By Planned Visit Date And Type")) {
+            if (settings.getLookup().equals("Find Visits By Planned Visit Date") || settings.getLookup().equals("Find Visits By Planned Visit Date And Type")) {
                 LocalDate date = getLocalDateFromLookupFields(settings.getFields(), "motechProjectedDate");
                 if (date == null) {
                     return null;

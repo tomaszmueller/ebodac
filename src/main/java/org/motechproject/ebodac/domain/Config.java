@@ -50,14 +50,6 @@ public class Config {
 
     private Boolean showWarnings = true;
 
-    public Boolean getShowWarnings() {
-        return showWarnings;
-    }
-
-    public void setShowWarnings(Boolean showWarnings) {
-        this.showWarnings = showWarnings;
-    }
-
     private Set<String> primerVaccinationReportsToUpdate;
 
     private Set<String> boosterVaccinationReportsToUpdate;
@@ -69,6 +61,8 @@ public class Config {
     private List<String> availableLookupsForFollowupsAfterPrimeInjectionReport;
 
     private List<String> availableLookupsForFollowupsMissedClinicVisitsReport;
+
+    private List<String> availableLookupsForVisits;
 
     private Boolean enableZetesJob = false;
 
@@ -226,6 +220,14 @@ public class Config {
         this.generateReports = generateReports;
     }
 
+    public Boolean getShowWarnings() {
+        return showWarnings;
+    }
+
+    public void setShowWarnings(Boolean showWarnings) {
+        this.showWarnings = showWarnings;
+    }
+
     public Set<String> getPrimerVaccinationReportsToUpdate() {
         if (primerVaccinationReportsToUpdate == null) {
             primerVaccinationReportsToUpdate = new HashSet<>();
@@ -260,6 +262,9 @@ public class Config {
     }
 
     public List<String> getAvailableLookupsForDailyClinicVisitScheduleReport() {
+        if (availableLookupsForDailyClinicVisitScheduleReport == null) {
+            availableLookupsForDailyClinicVisitScheduleReport = new ArrayList<>();
+        }
         return availableLookupsForDailyClinicVisitScheduleReport;
     }
 
@@ -268,6 +273,9 @@ public class Config {
     }
 
     public List<String> getAvailableLookupsForFollowupsAfterPrimeInjectionReport() {
+        if (availableLookupsForFollowupsAfterPrimeInjectionReport == null) {
+            availableLookupsForFollowupsAfterPrimeInjectionReport = new ArrayList<>();
+        }
         return availableLookupsForFollowupsAfterPrimeInjectionReport;
     }
 
@@ -276,11 +284,25 @@ public class Config {
     }
 
     public List<String> getAvailableLookupsForFollowupsMissedClinicVisitsReport() {
+        if (availableLookupsForFollowupsMissedClinicVisitsReport == null) {
+            availableLookupsForFollowupsMissedClinicVisitsReport = new ArrayList<>();
+        }
         return availableLookupsForFollowupsMissedClinicVisitsReport;
     }
 
     public void setAvailableLookupsForFollowupsMissedClinicVisitsReport(List<String> availableLookupsForFollowupsMissedClinicVisitsReport) {
         this.availableLookupsForFollowupsMissedClinicVisitsReport = availableLookupsForFollowupsMissedClinicVisitsReport;
+    }
+
+    public List<String> getAvailableLookupsForVisits() {
+        if (availableLookupsForVisits == null) {
+            availableLookupsForVisits = new ArrayList<>();
+        }
+        return availableLookupsForVisits;
+    }
+
+    public void setAvailableLookupsForVisits(List<String> availableLookupsForVisits) {
+        this.availableLookupsForVisits = availableLookupsForVisits;
     }
 
     public Boolean getEnableZetesJob() {
