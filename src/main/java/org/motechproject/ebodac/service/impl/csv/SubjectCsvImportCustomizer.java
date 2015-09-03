@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
-import org.motechproject.mds.service.CsvImportCustomizer;
+import org.motechproject.mds.service.DefaultCsvImportCustomizer;
 import org.motechproject.mds.service.MotechDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class SubjectCsvImportCustomizer implements CsvImportCustomizer {
+public class SubjectCsvImportCustomizer extends DefaultCsvImportCustomizer {
 
     @Autowired
     SubjectService subjectService;
