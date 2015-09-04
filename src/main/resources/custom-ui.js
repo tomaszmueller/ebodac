@@ -192,6 +192,8 @@ $scope.loadEditValueForm = function (field) {
     if(field.name === 'phoneNumber') {
         isPhoneNumberForm = true;
         return '../ebodac/resources/partials/widgets/field-phone-number.html';
+    } else if (field.name === 'visits') {
+        return '../ebodac/resources/partials/widgets/field-visits.html';
     }
 
     if(isPhoneNumberForm) {
