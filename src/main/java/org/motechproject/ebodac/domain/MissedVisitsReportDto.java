@@ -7,6 +7,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
+import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
 
 @JsonAutoDetect
 public class MissedVisitsReportDto{
@@ -50,6 +51,7 @@ public class MissedVisitsReportDto{
         return subject;
     }
 
+    @JsonSerialize(using = CustomVisitTypeSerializer.class)
     public VisitType getType() {
         return type;
     }
