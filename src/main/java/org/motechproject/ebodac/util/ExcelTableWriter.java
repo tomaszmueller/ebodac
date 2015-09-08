@@ -39,7 +39,6 @@ public class ExcelTableWriter implements TableWriter {
             headerCell.setCellValue(titles[i]);
             headerCell.setCellStyle(xlsTemplate.getCellStyleForName("header"));
             columnIndexMap.put(titles[i], i);
-            sheet.autoSizeColumn(i);
         }
     }
 
@@ -54,7 +53,6 @@ public class ExcelTableWriter implements TableWriter {
                 dataCell = row.createCell(columnIndex);
                 dataCell.setCellValue(entry.getValue());
                 dataCell.setCellStyle(xlsTemplate.getCellStyleForName("cell"));
-                sheet.autoSizeColumn(columnIndex);
             } else {
                 throw new EbodacExportException("No such column: " + entry.getKey());
             }
@@ -64,6 +62,10 @@ public class ExcelTableWriter implements TableWriter {
 
     @Override
     public void close() {
+        Sheet sheet = xlsTemplate.getSheet();
+        for (int i = 0; i < columnIndexMap.size(); i++) {
+            sheet.autoSizeColumn(i);
+        }
         try {
             xlsTemplate.getTemplateWorkbook().write(outputStream);
         } catch (IOException e) {
