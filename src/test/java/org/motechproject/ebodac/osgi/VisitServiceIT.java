@@ -47,14 +47,6 @@ public class VisitServiceIT extends BasePaxIT {
     @Inject
     private VisitDataService visitDataService;
 
-    private Subject firstSubject;
-
-    private Subject secondSubject;
-
-    private Visit firstVisit;
-
-    private Visit secondVisit;
-
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
     @Before
@@ -62,7 +54,6 @@ public class VisitServiceIT extends BasePaxIT {
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
-        resetTestFields();
     }
 
     @After
@@ -72,22 +63,21 @@ public class VisitServiceIT extends BasePaxIT {
         subjectDataService.deleteAll();
     }
 
-    private void resetTestFields() {
-        firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
-
-        secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
-
-        firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
-                LocalDate.parse("2014-10-18", formatter), "owner");
-
-        secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
-                LocalDate.parse("2014-10-20", formatter), "owner");
-    }
-
     @Test
     public void shouldCreateOrUpdate() {
+        Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+
+        Subject secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+
+        Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
+                LocalDate.parse("2014-10-18", formatter), "owner");
+
+        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-20", formatter), "owner");
+
+
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
@@ -128,9 +118,36 @@ public class VisitServiceIT extends BasePaxIT {
     }
 
     @Test
+    public void shouldFetchWithNullPhone() {
+        Subject subject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
+                null , "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+
+        Visit visit = VisitUtils.createVisit(subject, VisitType.SCREENING, null,
+                LocalDate.parse("2014-10-17", formatter), "owner");
+
+        visitService.create(visit);
+
+        List<Visit> visits = visitDataService.findVisitsByPlannedDateLessAndActualDateEqAndSubjectPhoneNumberEq(null,
+                new LocalDate("2015-10-19"), null);
+
+        assertEquals(1, visits.size());
+
+    }
+
+    @Test
     public void shouldDelete() {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
+
+        Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+
+        Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
+                LocalDate.parse("2014-10-18", formatter), "owner");
+
+        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-20", formatter), "owner");
+
 
         visitService.createOrUpdate(firstVisit);
         visitService.createOrUpdate(secondVisit);

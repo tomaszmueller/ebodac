@@ -26,9 +26,10 @@ public class RaveController {
     @Autowired
     private EbodacEmailClient ebodacEmailClient;
 
-    @RequestMapping(value = "/fetch-csv", method = RequestMethod.POST)
+    @RequestMapping(value = "/web-api/fetch-csv", method = RequestMethod.POST)
     @PreAuthorize(Constants.Roles.HAS_DATA_ACCESS)
     @ResponseBody
+
     public ResponseEntity<String> fetchCsv() throws IOException {
         ebodacService.fetchCSVUpdates();
         return new ResponseEntity<>(HttpStatus.OK);

@@ -32,6 +32,8 @@ import java.util.List;
 @Entity(recordHistory = true, name = "Participant")
 public class Subject {
 
+    public static final String PHONE_NUMBER_PROPERTY_NAME = "phoneNumber";
+
     /**
      * Fields captured in ZETES
      */
@@ -168,7 +170,11 @@ public class Subject {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        if (StringUtils.isEmpty(phoneNumber)) {
+            this.phoneNumber = null;
+        } else {
+            this.phoneNumber = phoneNumber;
+        }
     }
 
     public String getName() {

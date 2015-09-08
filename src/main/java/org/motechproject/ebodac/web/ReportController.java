@@ -110,7 +110,7 @@ public class ReportController {
         try {
             availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForDailyClinicVisitScheduleReport();
@@ -131,7 +131,7 @@ public class ReportController {
         try {
             availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsAfterPrimeInjectionReport();
@@ -152,7 +152,7 @@ public class ReportController {
         try {
             availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsMissedClinicVisitsReport();
@@ -173,7 +173,7 @@ public class ReportController {
         try {
             availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForVisits();
@@ -194,7 +194,7 @@ public class ReportController {
         try {
             return lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
         }
     }
@@ -212,7 +212,7 @@ public class ReportController {
             }
             return lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
         } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
         }
     }
@@ -229,8 +229,8 @@ public class ReportController {
             }
             QueryParams queryParams = new QueryParams(settings.getPage(), settings.getRows(), order);
             return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, settings.getLookup(), settings.getFields(), queryParams);
-        } catch (EbodacLookupException e) {
-            LOGGER.debug(e.getMessage(), e);
+        } catch (IOException | EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
         }
     }
