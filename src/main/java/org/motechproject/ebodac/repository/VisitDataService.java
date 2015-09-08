@@ -134,43 +134,64 @@ public interface VisitDataService extends MotechDataService<Visit> {
     List<Visit> findVisitsByPlannedVisitDateRangeAndType(@LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
                                                          @LookupField(name = "type") VisitType visitType);
 
-    @Lookup
-    List<Visit> findVisitsByPlannedVisitDateLess(@LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
-                                                 @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+    /**
+    *  Followups Missed Clinic Visits Report Lookups
+    */
 
+    // Default Lookup
+    @Lookup
+    List<Visit> findVisitsByPlannedDateLessAndActualDateEqAndSubjectPhoneNumberEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                                                                   @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                                   @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup(name = "Find Visits By Participant Name Less")
-    List<Visit> findVisitsBySubjectNameLess(@LookupField(name = "subject.name",
+    List<Visit> findVisitsBySubjectNameLess(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                            @LookupField(name = "subject.name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
                                             @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
                                             @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup(name = "Find Visits By Participant Community Less")
-    List<Visit> findVisitsBySubjectCommunityLess(@LookupField(name = "subject.community",
+    List<Visit> findVisitsBySubjectCommunityLess(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                                 @LookupField(name = "subject.community",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String community,
                                                  @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
                                                  @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup(name = "Find Visits By Participant Address Less")
-    List<Visit> findVisitsBySubjectAddressLess(@LookupField(name = "subject.address",
+    List<Visit> findVisitsBySubjectAddressLess(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                               @LookupField(name = "subject.address",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address,
                                                @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
                                                @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup
-    List<Visit> findVisitsByPlannedVisitDateEq(@LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
+    List<Visit> findVisitsByPlannedVisitDateEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                               @LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
                                                @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup
-    List<Visit> findVisitsByPlannedVisitDateAndTypeEq(@LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
+    List<Visit> findVisitsByPlannedVisitDateAndTypeEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                                      @LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
                                                       @LookupField(name = "type") VisitType visitType,
                                                       @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup
-    List<Visit> findVisitsByPlannedVisitDateRangeEq(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
+    List<Visit> findVisitsByPlannedVisitDateRangeEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                                    @LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
                                                     @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+    // TODO: rename this accordingly to new phone number parameter
     @Lookup
-    List<Visit> findVisitsByPlannedVisitDateRangeAndTypeEq(@LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
+    List<Visit> findVisitsByPlannedVisitDateRangeAndTypeEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
+                                                           @LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
                                                            @LookupField(name = "type") VisitType visitType,
                                                            @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
 }

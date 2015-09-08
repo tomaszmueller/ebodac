@@ -20,6 +20,9 @@ import org.motechproject.mds.util.SecurityMode;
 @Entity(recordHistory = true)
 public class Visit {
 
+    public static final String MOTECH_PROJECTED_DATE_PROPERTY_NAME = "motechProjectedDate";
+    public static final String ACTUAL_VISIT_DATE_PROPERTY_NAME = "date";
+
     @NonEditable
     @Field(displayName = "Participant")
     private Subject subject;
