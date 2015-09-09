@@ -57,8 +57,7 @@
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.community",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.address",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.primerVaccinationDate",
-      "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate",
-      "ebodac.web.reports.followupsAfterPrimeInjectionReport.followupVisitDate"],
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate"],
     "colModel": [{
       "name": "rowId",
       "index": "rowId",
@@ -118,11 +117,6 @@
       "index": "subject.boosterVaccinationDate",
       "align": "center",
       "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.boosterVaccinationDate){ return ''; } return cellValue.boosterVaccinationDate; }"
-    }, {
-      "name": "date",
-      "index": "date",
-      "align": "center",
-      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
     }]
   } ,
     "followupsMissedClinicVisitsReport" : {

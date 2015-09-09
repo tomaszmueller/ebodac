@@ -22,6 +22,9 @@ public class Visit {
 
     public static final String MOTECH_PROJECTED_DATE_PROPERTY_NAME = "motechProjectedDate";
     public static final String ACTUAL_VISIT_DATE_PROPERTY_NAME = "date";
+    public static final String VISIT_TYPE_PROPERTY_NAME = "type";
+    public static final String SUBJECT_PHONE_NUMBER_PROPERTY_NAME = "subject.phoneNumber";
+    public static final String SUBJECT_ADDRESS_PROPERTY_NAME = "subject.address";
 
     @NonEditable
     @Field(displayName = "Participant")

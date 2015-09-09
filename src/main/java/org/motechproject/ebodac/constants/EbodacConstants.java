@@ -92,7 +92,7 @@ public final class EbodacConstants {
             put("Address",                  "subject.address");
             put("Primer Vaccination Date",  "subject.primerVaccinationDate");
             put("Booster Vaccination Date", "subject.boosterVaccinationDate");
-            put("Date Of Follow-up Visit",  "date");
+            put("Date Of Follow-up Visit",  null);
         }
     };
 
