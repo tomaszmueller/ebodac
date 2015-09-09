@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
@@ -8,9 +9,13 @@ import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.Ignore;
 import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
 
+import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Unique;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Unique(name = "externalIdAndCampaignName", members = {"externalId", "campaignName" })
@@ -29,6 +34,13 @@ public class Enrollment {
 
     @Field
     private Time deliverTime;
+
+    @Field
+    private Enrollment parentEnrollment;
+
+    @Field
+    @Persistent(mappedBy = "parentEnrollment")
+    private Set<Enrollment> duplicatedEnrollments = new HashSet<>();;
 
     private Enrollment() {
     }
@@ -81,6 +93,27 @@ public class Enrollment {
         this.deliverTime = deliverTime;
     }
 
+    @JsonIgnore
+    public Enrollment getParentEnrollment() {
+        return parentEnrollment;
+    }
+
+    public void setParentEnrollment(Enrollment parentEnrollment) {
+        this.parentEnrollment = parentEnrollment;
+    }
+
+    @JsonIgnore
+    public Set<Enrollment> getDuplicatedEnrollments() {
+        if (duplicatedEnrollments == null) {
+            duplicatedEnrollments = new HashSet<>();
+        }
+        return duplicatedEnrollments;
+    }
+
+    public void setDuplicatedEnrollments(Set<Enrollment> duplicatedEnrollments) {
+        this.duplicatedEnrollments = duplicatedEnrollments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,11 +136,26 @@ public class Enrollment {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return externalId + " - " + campaignName + " - " + status;
+    }
+
     public CampaignEnrollment toCampaignEnrollment() {
         CampaignEnrollment enrollment = new CampaignEnrollment(externalId, campaignName);
         enrollment.setDeliverTime(deliverTime);
         enrollment.setReferenceDate(referenceDate);
 
         return enrollment;
+    }
+
+    @Ignore
+    public void addDuplicatedEnrollment(Enrollment enrollment) {
+        getDuplicatedEnrollments().add(enrollment);
+    }
+
+    @Ignore
+    public boolean hasDuplicatedEnrollments() {
+        return !getDuplicatedEnrollments().isEmpty();
     }
 }
