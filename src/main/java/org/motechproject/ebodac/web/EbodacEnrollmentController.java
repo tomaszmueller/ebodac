@@ -73,6 +73,9 @@ public class EbodacEnrollmentController {
         if (existingVisit == null) {
             return new ResponseEntity<>("ebodac.enrollment.error.noVisitInDB", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        if (existingVisit.getDate() != null) {
+            return new ResponseEntity<>("ebodac.enrollment.error.visitCompleted", HttpStatus.BAD_REQUEST);
+        }
         if (!ebodacEnrollmentService.isEnrolled(visit)) {
             return new ResponseEntity<>("ebodac.enrollment.success.plannedDateChanged", HttpStatus.OK);
         }
