@@ -5,6 +5,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import org.motechproject.ebodac.exception.EbodacExportException;
@@ -39,6 +40,7 @@ public class PdfTemplate {
         AcroFields form = pdfStamper.getAcroFields();
         try {
             form.setField(cellName, cellValue);
+            form.setFieldProperty(cellName, "setfflags", PdfFormField.FF_READ_ONLY, null);
         } catch (IOException | DocumentException e) {
             throw new EbodacExportException("No such additional cell: " + cellName, e);
         }
