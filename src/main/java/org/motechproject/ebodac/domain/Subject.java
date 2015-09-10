@@ -32,8 +32,6 @@ import java.util.List;
 @Entity(recordHistory = true, name = "Participant")
 public class Subject {
 
-    public static final String PHONE_NUMBER_PROPERTY_NAME = "phoneNumber";
-
     /**
      * Fields captured in ZETES
      */
@@ -226,7 +224,11 @@ public class Subject {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        if (StringUtils.isBlank(address)) {
+            this.address = null;
+        } else {
+            this.address = address;
+        }
     }
 
     public String getCommunity() {

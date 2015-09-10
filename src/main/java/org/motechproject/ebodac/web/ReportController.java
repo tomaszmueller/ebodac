@@ -211,7 +211,7 @@ public class ReportController {
                 return new Records<Object>(null);
             }
             return lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
-        } catch (EbodacLookupException e) {
+        } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
         }

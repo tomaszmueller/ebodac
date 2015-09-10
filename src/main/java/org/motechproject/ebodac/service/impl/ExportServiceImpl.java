@@ -106,9 +106,13 @@ public class ExportServiceImpl implements ExportService {
 
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
             String fieldName = entry.getValue();
+            if (fieldName == null) {
+                row.put(entry.getKey(), null);
+                continue;
+            }
             String[] fieldPath = fieldName.split("\\.");
             String value = null;
-            if(fieldPath.length == 2) {
+            if (fieldPath.length == 2) {
                 Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
                 Object fieldValue = objectMap.get(fieldPath[1]);
                 if(fieldValue != null) {

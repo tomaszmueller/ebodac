@@ -7,8 +7,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.api.Range;
-import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.web.domain.GridSettings;
 
@@ -18,34 +18,35 @@ import java.util.Map;
 
 public class DtoLookupHelper {
 
-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) {
-        String fields = settings.getFields();
-        if(StringUtils.isBlank(settings.getFields())) {
+    public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) throws IOException {
+        Map<String,String> fieldsMap = new HashMap<>();
+
+        if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
-            fields = "{}";
         }
-        if(StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visits By Participant Address")) {
+        if (StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visits By Participant Address")) {
             String address = getAddressFromLookupFields(settings.getFields());
-            if(StringUtils.isNotBlank(address) && !address.equals("null")) {
-                settings.setFields(fields.substring(0, fields.length() - 1) + ", \"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}");
-                settings.setLookup(settings.getLookup() + " And Type");
-                return settings;
+            if (StringUtils.isNotBlank(address) && !address.equals("null")) {
+                fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, address);
+                settings.setLookup(settings.getLookup() + " Phone Number And Type");
             } else {
                 return null;
             }
-        }
-        if(fields.length() > 2) {
-            settings.setFields(fields.substring(0, fields.length() - 1) + ", \"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\", \"subject.address\":\"\"}");
+        } else if (StringUtils.isBlank(settings.getLookup())) {
+            fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
+            settings.setLookup("Find Visits By Type Phone Number And Address");
         } else {
-            settings.setFields(fields.substring(0, fields.length() - 1) + "\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\", \"subject.address\":\"\"}");
+            String fields = settings.getFields();
+            fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+            fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
+            settings.setLookup(settings.getLookup() + " Type Phone Number And Address");
         }
-        if(StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visits By Type And Address");
-        } else {
-            settings.setLookup(settings.getLookup() + " Type And Address");
-        }
+
+        fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT.toString());
+        fieldsMap.put(Visit.SUBJECT_PHONE_NUMBER_PROPERTY_NAME, null);
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
     }
 
@@ -126,7 +127,7 @@ public class DtoLookupHelper {
                 }
             }
         }
-        fieldsMap.put(Subject.PHONE_NUMBER_PROPERTY_NAME, null);
+        fieldsMap.put(Visit.SUBJECT_PHONE_NUMBER_PROPERTY_NAME, null);
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
     }
