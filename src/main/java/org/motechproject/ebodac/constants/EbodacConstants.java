@@ -49,15 +49,11 @@ public final class EbodacConstants {
     public static final String PDF_TEMPLATE_TITLE="#titleReport";
     public static final String PDF_TEMPLATE_DISTRICT="#district";
     public static final String PDF_TEMPLATE_CHIEFDOM="#chiefdom";
-    public static final String PDF_TEMPLATE_COMMUNITY="#community";
-    public static final String PDF_TEMPLATE_PHU="#phu";
 
     public static final String XLS_TEMPLATE="/report_template.xls";
     public static final String XLS_TEMPLATE_TITLE="title";
     public static final String XLS_TEMPLATE_DISTRICT="district";
     public static final String XLS_TEMPLATE_CHIEFDOM="chiefdom";
-    public static final String XLS_TEMPLATE_COMMUNITY="community";
-    public static final String XLS_TEMPLATE_PHU="phu";
 
     public static final String EBODAC_MODULE="EBODAC Module";
 
@@ -73,41 +69,42 @@ public final class EbodacConstants {
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Planned Visit Date","motechProjectedDate");
-            put("Subject ID",       "subject.subjectId");
-            put("Subject Name",     "subject.name");
-            put("Phone Number",     "subject.phoneNumber");
-            put("Address",          "subject.address");
-            put("Visit type",       "type");
+            put("Participant ID",    "subject.subjectId");
+            put("Participant Name",  "subject.name");
+            put("Phone Number",      "subject.phoneNumber");
+            put("Address",           "subject.address");
+            put("Visit type",        "type");
+            put("Community",         "subject.community");
         }
     };
 
     public static final Map<String, String> FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Subject Name",             "subject.name");
+            put("Participant Name",         "subject.name");
             put("Household name",           "subject.householdName");
             put("Head Of Household",        "subject.headOfHousehold");
             put("DOB",                      "subject.dateOfBirth");
             put("Gender",                   "subject.gender");
-            put("Subject Community",        "subject.community");
             put("Address",                  "subject.address");
             put("Primer Vaccination Date",  "subject.primerVaccinationDate");
             put("Booster Vaccination Date", "subject.boosterVaccinationDate");
             put("Date Of Follow-up Visit",  null);
+            put("Community",                "subject.community");
         }
     };
 
     public static final Map<String, String> FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Subject Name",             "subject.name");
+            put("Participant Name",         "subject.name");
             put("Household name",           "subject.householdName");
             put("Head Of Household",        "subject.headOfHousehold");
             put("DOB",                      "subject.dateOfBirth");
             put("Gender",                   "subject.gender");
-            put("Subject Community",        "subject.community");
             put("Address",                  "subject.address");
             put("Visit type",               "type");
             put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
+            put("Community",                "subject.community");
         }
     };
 }
