@@ -6,7 +6,8 @@
       "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectName",
       "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectPhoneNumber",
       "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress",
-      "ebodac.web.reports.dailyClinicVisitScheduleReport.visitType"],
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.visitType",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.community"],
     "colModel": [{
       "name": "rowId",
       "index": "rowId",
@@ -45,6 +46,12 @@
       "name": "type",
       "index": "type",
       "align": "center"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }]
   },
     "followupsAfterPrimeInjectionReport" : {
@@ -54,10 +61,10 @@
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.headOfHousehold",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.dateOfBirth",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.gender",
-      "ebodac.web.reports.followupsAfterPrimeInjectionReport.community",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.address",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.primerVaccinationDate",
-      "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate"],
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.community"],
     "colModel": [{
       "name": "rowId",
       "index": "rowId",
@@ -93,12 +100,6 @@
       "index": "subject.gender",
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
-    }, {
-      "name": "subjectCommunity",
-      "jsonmap": "subject",
-      "index": "subject.community",
-      "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
       "name": "subjectAddress",
       "jsonmap": "subject",
@@ -117,6 +118,12 @@
       "index": "subject.boosterVaccinationDate",
       "align": "center",
       "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.boosterVaccinationDate){ return ''; } return cellValue.boosterVaccinationDate; }"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }]
   } ,
     "followupsMissedClinicVisitsReport" : {
@@ -126,11 +133,11 @@
       "ebodac.web.reports.followupsMissedClinicVisitsReport.headOfHousehold",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.dateOfBirth",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.gender",
-      "ebodac.web.reports.followupsMissedClinicVisitsReport.community",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.address",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.visitType",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.planedVisitDate",
-      "ebodac.web.reports.followupsMissedClinicVisitsReport.noOfDaysExceededVisit"],
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.noOfDaysExceededVisit",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.community"],
     "colModel": [{
       "name": "rowId",
       "index": "rowId",
@@ -166,12 +173,6 @@
       "index": "subject.gender",
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
-    }, {
-      "name": "subjectCommunity",
-      "jsonmap": "subject",
-      "index": "subject.community",
-      "align": "center",
-      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
       "name": "subjectAddress",
       "jsonmap": "subject",
@@ -191,6 +192,12 @@
       "name": "noOfDaysExceededVisit",
       "index": "noOfDaysExceededVisit",
       "align": "center"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }]
   }
 }

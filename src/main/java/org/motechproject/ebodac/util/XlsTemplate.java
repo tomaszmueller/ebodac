@@ -36,9 +36,7 @@ public class XlsTemplate {
                 {
                     put("title",    "B10");
                     put("district", "A14");
-                    put("chiefdom", "B14");
-                    put("community","C14");
-                    put("phu",      "D14");
+                    put("chiefdom", "C14");
                 }
             });
 
