@@ -13,6 +13,7 @@ import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
+import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -23,8 +24,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service("ebodacEnrollmentService")
 public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
@@ -34,6 +38,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
 
     private EnrollmentDataService enrollmentDataService;
+
+    private SubjectDataService subjectDataService;
 
     private MessageCampaignService messageCampaignService;
 
@@ -88,7 +94,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             }
 
             enrollment.setStatus(EnrollmentStatus.ENROLLED);
-            scheduleJobsForEnrollment(enrollment, true);
+            if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+                scheduleJobsForEnrollment(enrollment, true);
+            }
             enrollmentDataService.update(enrollment);
         }
         updateSubjectEnrollments(subjectEnrollments);
@@ -124,7 +132,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
         for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
             if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
-                unscheduleJobsForEnrollment(enrollment);
+                unscheduleJobsForEnrollmentAndChangeParent(enrollment);
 
                 enrollment.setStatus(EnrollmentStatus.UNENROLLED);
                 enrollmentDataService.update(enrollment);
@@ -198,6 +206,41 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         return enrollment != null && EnrollmentStatus.ENROLLED.equals(enrollment.getStatus());
     }
 
+    @Override
+    public boolean isEnrolled(String subjectId) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        return EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus());
+    }
+
+    @Override
+    public void changeDuplicatedEnrollmentsForNewPhoneNumber(Subject subject) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+
+        try {
+            for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
+                if (enrollment.getParentEnrollment() == null && enrollment.hasDuplicatedEnrollments()) {
+                    changeParentForDuplicatedEnrollments(enrollment, false);
+                    if (checkDuplicatedEnrollments(subject, enrollment, true)) {
+                        unscheduleJobsForEnrollment(enrollment);
+                    }
+                    enrollmentDataService.update(enrollment);
+                } else if (enrollment.getParentEnrollment() != null && EnrollmentStatus.ENROLLED.equals(enrollment.getParentEnrollment().getStatus())) {
+                    Enrollment parentEnrollment = enrollment.getParentEnrollment();
+                    parentEnrollment.getDuplicatedEnrollments().remove(enrollment);
+                    enrollment.setParentEnrollment(null);
+                    if (!checkDuplicatedEnrollments(subject, enrollment, true)) {
+                        scheduleJobsForEnrollment(enrollment, false);
+                    }
+                    enrollmentDataService.update(parentEnrollment);
+                    enrollmentDataService.update(enrollment);
+                }
+            }
+        } catch (EbodacEnrollmentException e) {
+            throw new EbodacEnrollmentException("Cannot change Participant phone number, because error occurred during changing parent for duplicated enrolments",
+                    e, "ebodac.updateSubject.cannotChangeParent");
+        }
+    }
+
     private void enrollSubject(Visit visit) {
         try {
             if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
@@ -251,7 +294,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         enrollment.setReferenceDate(referenceDate);
         enrollment.setDeliverTime(deliverTime);
 
-        scheduleJobsForEnrollment(enrollment, false);
+        if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+            scheduleJobsForEnrollment(enrollment, false);
+        }
 
         updateSubjectEnrollments(subjectEnrollments);
     }
@@ -284,6 +329,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         if (referenceDate != null && campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
             subjectEnrollments.removeEnrolment(enrollment);
+            subjectEnrollmentsDataService.update(subjectEnrollments);
+            enrollmentDataService.delete(enrollment);
             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
             campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
             enrollment = new Enrollment(subjectId, campaignName);
@@ -298,7 +345,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
-        scheduleJobsForEnrollment(enrollment, false);
+        if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+            scheduleJobsForEnrollment(enrollment, false);
+        }
 
         updateSubjectEnrollments(subjectEnrollments);
     }
@@ -330,7 +379,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (enrollment == null) {
             return false;
         } else if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
-            unscheduleJobsForEnrollment(enrollment);
+            unscheduleJobsForEnrollmentAndChangeParent(enrollment);
 
             enrollment.setStatus(status);
             updateSubjectEnrollments(subjectEnrollments);
@@ -364,6 +413,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because of unknown exception",
                     e, "ebodac.enroll.error.unknownException", enrollment.getExternalId(), enrollment.getCampaignName());
         }
+    }
+
+    private void unscheduleJobsForEnrollmentAndChangeParent(Enrollment enrollment) {
+        changeParentForDuplicatedEnrollments(enrollment, true);
+        unscheduleJobsForEnrollment(enrollment);
     }
 
     private void unscheduleJobsForEnrollment(Enrollment enrollment) {
@@ -425,6 +479,99 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         return configService.getConfig().getDisconVacCampaignsList().contains(campaignName);
     }
 
+    private void changeParentForDuplicatedEnrollments(Enrollment oldParent, boolean parentUnenrolled) {
+        if (oldParent.hasDuplicatedEnrollments()) {
+            Set<Enrollment> duplicatedEnrollments = oldParent.getDuplicatedEnrollments();
+            for (Enrollment e : duplicatedEnrollments) {
+                if (EnrollmentStatus.ENROLLED.equals(e.getStatus())) {
+                    try {
+                        scheduleJobsForEnrollment(e, false);
+                    } catch (EbodacEnrollmentException ex) {
+                        throw new EbodacEnrollmentException("Cannot unenroll Participant with id: %s from campaign with name: %s, because error occurred during enrolling new parent for duplicated enrolments",
+                                ex, "ebodac.unenroll.error.cannotEnrollNewParent", oldParent.getExternalId(), oldParent.getCampaignName());
+                    }
+
+                    e.setParentEnrollment(null);
+                    duplicatedEnrollments.remove(e);
+
+                    oldParent.setDuplicatedEnrollments(null);
+                    e.setDuplicatedEnrollments(duplicatedEnrollments);
+
+                    if (parentUnenrolled) {
+                        oldParent.setParentEnrollment(e);
+                        duplicatedEnrollments.add(oldParent);
+                    }
+
+                    enrollmentDataService.update(oldParent);
+                    enrollmentDataService.update(e);
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean checkDuplicatedEnrollments(Subject subject, Enrollment enrollment, boolean phoneNumberChanged) {
+        enrollment.setDuplicatedEnrollments(null);
+
+        if (enrollment.getParentEnrollment() != null && EnrollmentStatus.ENROLLED.equals(enrollment.getParentEnrollment().getStatus())) {
+            return true;
+        }
+
+        String phoneNumber = subject.getPhoneNumber();
+        LocalDate referenceDate = enrollment.getReferenceDate();
+        String campaignName = enrollment.getCampaignName();
+
+        List<Subject> subjects = subjectDataService.findSubjectsByPhoneNumber(phoneNumber);
+
+        if ((!phoneNumberChanged && subjects.size() == 1) || subjects.isEmpty()) {
+            return false;
+        }
+
+        Set<String> subjectIds = new HashSet<>();
+
+        for (Subject s : subjects) {
+            if (!s.getSubjectId().equals(subject.getSubjectId())) {
+                subjectIds.add(s.getSubjectId());
+            }
+        }
+
+        if (Pattern.compile(EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            campaignName = EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN;
+        } else if (Pattern.compile(EbodacConstants.FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            campaignName = EbodacConstants.FOLLOW_UP_CAMPAIGN;
+        }
+
+        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsByStatusReferenceDateCampaignNameAndSubjectIds(
+                EnrollmentStatus.ENROLLED, referenceDate, campaignName, subjectIds);
+
+        if (!enrollments.isEmpty()) {
+            Enrollment parentEnrolment = null;
+            if (enrollments.size() > 1) {
+                for (Enrollment e: enrollments) {
+                    if (e.getParentEnrollment() == null && e.hasDuplicatedEnrollments()) {
+                        parentEnrolment = e;
+                        break;
+                    }
+                }
+            } else {
+                parentEnrolment = enrollments.get(0);
+            }
+
+            if (parentEnrolment == null) {
+                throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because cannot find parent for duplicated enrollments",
+                        "ebodac.enroll.error.cannotFindParent", subject.getSubjectId(), campaignName);
+            }
+
+            enrollment.setParentEnrollment(parentEnrolment);
+            parentEnrolment.addDuplicatedEnrollment(enrollment);
+
+            enrollmentDataService.update(parentEnrolment);
+            return true;
+        }
+
+        return false;
+    }
+
     @Autowired
     public void setSubjectEnrollmentsDataService(SubjectEnrollmentsDataService subjectEnrollmentsDataService) {
         this.subjectEnrollmentsDataService = subjectEnrollmentsDataService;
@@ -433,6 +580,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Autowired
     public void setEnrollmentDataService(EnrollmentDataService enrollmentDataService) {
         this.enrollmentDataService = enrollmentDataService;
+    }
+
+    @Autowired
+    public void setSubjectDataService(SubjectDataService subjectDataService) {
+        this.subjectDataService = subjectDataService;
     }
 
     @Autowired

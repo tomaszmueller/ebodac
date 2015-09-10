@@ -5,6 +5,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Enrollment;
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
@@ -14,6 +15,7 @@ import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.LookupService;
+import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.service.VisitService;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
@@ -52,6 +54,9 @@ public class EbodacEnrollmentController {
 
     @Autowired
     private LookupService lookupService;
+
+    @Autowired
+    private SubjectService subjectService;
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/reenrollSubject", method = RequestMethod.POST)
@@ -291,6 +296,31 @@ public class EbodacEnrollmentController {
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
             return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('manageEbodac')")
+    @RequestMapping(value = "/subjectDataChanged", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> subjectDataChanged(@RequestBody Subject subject) {
+        if (ebodacEnrollmentService.isEnrolled(subject.getSubjectId())) {
+            try {
+                if (StringUtils.isBlank(subject.getPhoneNumber()) || subject.getLanguage() == null) {
+                    ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+
+                Subject oldSubject = subjectService.findSubjectBySubjectId(subject.getSubjectId());
+
+                if (!subject.getPhoneNumber().equals(oldSubject.getPhoneNumber())) {
+                    ebodacEnrollmentService.changeDuplicatedEnrollmentsForNewPhoneNumber(subject);
+                }
+            } catch (EbodacEnrollmentException e) {
+                LOGGER.debug(e.getMessage(), e);
+                return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

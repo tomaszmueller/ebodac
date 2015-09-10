@@ -49,4 +49,7 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     @Lookup(name="Find Participants By ParticipantId")
     List<Subject> findSubjectsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
+
+    @Lookup(name="Find Participants By exact Phone Number")
+    List<Subject> findSubjectsByPhoneNumber(@LookupField(name = "phoneNumber") String phoneNumber);
 }

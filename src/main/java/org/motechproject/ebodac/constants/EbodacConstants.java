@@ -57,6 +57,9 @@ public final class EbodacConstants {
 
     public static final String EBODAC_MODULE="EBODAC Module";
 
+    public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
+    public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
+
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
