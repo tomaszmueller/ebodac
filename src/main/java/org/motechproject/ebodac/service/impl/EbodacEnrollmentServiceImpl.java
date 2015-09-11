@@ -114,10 +114,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void enrollOrCompleteCampaignForSubject(Visit visit) {
-        if (visit.getDate() != null) {
-            if(!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                completeCampaignForSubject(visit);
-            }
+        if (visit.getDate() != null && !VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+            completeCampaignForSubject(visit);
         } else {
             enrollSubject(visit);
         }
