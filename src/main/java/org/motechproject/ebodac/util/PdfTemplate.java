@@ -5,6 +5,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfFormField;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
@@ -39,7 +40,9 @@ public class PdfTemplate {
     public void setAdditionalCellValue(String cellName, String cellValue) {
         AcroFields form = pdfStamper.getAcroFields();
         try {
+            BaseFont helveticaBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
             form.setField(cellName, cellValue);
+            form.setFieldProperty(cellName, "textfont", helveticaBold, null);
             form.setFieldProperty(cellName, "setfflags", PdfFormField.FF_READ_ONLY, null);
         } catch (IOException | DocumentException e) {
             throw new EbodacExportException("No such additional cell: " + cellName, e);
