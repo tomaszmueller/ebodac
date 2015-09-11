@@ -83,7 +83,7 @@ $scope.exportInstance = function() {
 
    if ($scope.actualExportColumns === 'selected') {
        angular.forEach($scope.selectedFields, function(selectedField) {
-           selectedFieldsName.push(selectedField.basic.name);
+           selectedFieldsName.push(selectedField.basic.displayName);
        });
 
        url = url + "&selectedFields=" + selectedFieldsName;
