@@ -17,11 +17,23 @@ if(!$('#inputMaskJs').length) {
 if ($scope.selectedEntity.name === "Participant" || $scope.selectedEntity.name === "Visit") {
     $scope.showBackToEntityListButton = false;
 } else {
+    $scope.showViewTrashButton = false;
     $scope.showImportButton = false;
     $scope.backToEntityList = function() {
         window.location.replace('#/ebodac/reports');
     };
 }
+
+if ($scope.selectedEntity.name === "ReportPrimerVaccination" || $scope.selectedEntity.name === "ReportBoosterVaccination") {
+    $scope.showFieldsButton = false;
+    $scope.availableExportFormats = ['csv','pdf','xls'];
+    var exportEntityModal = '../ebodac/resources/partials/modals/export-entity.html';
+    $scope.customModals.push(exportEntityModal);
+    $scope.exportEntityInstances = function () {
+        $('#exportEbodacInstanceModal').modal('show');
+    };
+}
+
 $scope.showAddInstanceButton = false;
 $scope.showDeleteInstanceButton = false;
 var importCsvModal = '../ebodac/resources/partials/modals/import-csv.html';
@@ -74,6 +86,11 @@ $scope.closeImportSubjectModal = function () {
     $('#importSubjectModal').modal('hide');
 };
 
+$scope.closeExportEbodacInstanceModal = function () {
+    $('#exportEbodacInstanceForm').resetForm();
+    $('#exportEbodacInstanceModal').modal('hide');
+};
+
 $scope.exportInstance = function() {
     var selectedFieldsName = [], url, sortColumn, sortDirection;
 
@@ -104,8 +121,13 @@ $scope.exportInstance = function() {
 
     $http.get(url)
     .success(function () {
-        $('#exportInstanceForm').resetForm();
-        $('#exportInstanceModal').modal('hide');
+        if ($scope.selectedEntity.name === "ReportPrimerVaccination" || $scope.selectedEntity.name === "ReportBoosterVaccination") {
+            $('#exportEbodacInstanceForm').resetForm();
+            $('#exportEbodacInstanceModal').modal('hide');
+        } else {
+            $('#exportInstanceForm').resetForm();
+            $('#exportInstanceModal').modal('hide');
+        }
         window.location.replace(url);
     })
     .error(function (response) {

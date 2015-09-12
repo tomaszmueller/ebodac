@@ -5,19 +5,17 @@ import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.ExcelTableWriter;
-import org.motechproject.ebodac.util.PdfTemplate;
-import org.motechproject.ebodac.util.TemplatedPdfTableWriter;
-import org.motechproject.ebodac.util.XlsTemplate;
+import org.motechproject.ebodac.util.PdfBasicTemplate;
+import org.motechproject.ebodac.util.PdfTableWriter;
+import org.motechproject.ebodac.util.XlsBasicTemplate;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.service.impl.csv.writer.CsvTableWriter;
-import org.motechproject.mds.service.impl.csv.writer.PdfTableWriter;
 import org.motechproject.mds.service.impl.csv.writer.TableWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -34,29 +32,9 @@ public class ExportServiceImpl implements ExportService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void exportEntityToPDF(OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap,
-                                                          String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        PdfTableWriter tableWriter = new PdfTableWriter(outputStream);
-        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
-    }
-
-    @Override
-    public void  exportEntityToCSV(Writer writer, Class<?> entityType, Map<String, String> headerMap,
-                                                          String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        CsvTableWriter tableWriter = new CsvTableWriter(writer);
-        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
-    }
-
-    @Override
-    public void exportEntityToExcel(XlsTemplate template, OutputStream outputStream, Class<?> entityType, Map<String, String> headerMap, String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        ExcelTableWriter tableWriter = new ExcelTableWriter(outputStream, template);
-        exportEntity(null, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
-    }
-
-    @Override
-    public void exportEntityToPDF(PdfTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+    public void exportEntityToPDF(PdfBasicTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        TemplatedPdfTableWriter tableWriter = new TemplatedPdfTableWriter(template);
+        PdfTableWriter tableWriter = new PdfTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
@@ -68,9 +46,9 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public void exportEntityToExcel(XlsTemplate template, OutputStream outputStream, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+    public void exportEntityToExcel(XlsBasicTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                     String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        ExcelTableWriter tableWriter = new ExcelTableWriter(outputStream, template);
+        ExcelTableWriter tableWriter = new ExcelTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 

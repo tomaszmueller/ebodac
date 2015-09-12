@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.util;
 
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -15,32 +14,26 @@ import org.apache.poi.ss.util.CellReference;
 import org.motechproject.ebodac.exception.EbodacExportException;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class XlsTemplate {
+public abstract class XlsBasicTemplate {
 
     private Map<String, CellStyle> styles;
     
-    private Workbook workbook;
+    private final Workbook workbook;
 
-    private Sheet sheet;
+    private final Sheet sheet;
 
-    public static final int INDEX_OF_HEADER_ROW = 15;
+    private final int indexOfHeaderRow;
 
-    public static final int INDEX_OF_FIRST_DATA_ROW = 16;
+    private final OutputStream outputStream;
 
-    private static final Map<String, String> CELL_ADDRESS_OF_ADDITIONAL_INFO =
-            Collections.unmodifiableMap(new HashMap<String, String>() {
-                {
-                    put("title",    "B10");
-                    put("district", "A14");
-                    put("chiefdom", "C14");
-                }
-            });
+    public XlsBasicTemplate(String templatePath, int indexOfHeaderRow, OutputStream outputStream) {
+        this.indexOfHeaderRow = indexOfHeaderRow;
+        this.outputStream = outputStream;
 
-    public XlsTemplate(String templatePath) {
         try {
            workbook = new HSSFWorkbook(getClass().getResourceAsStream(templatePath));
         } catch (IOException e) {
@@ -53,34 +46,41 @@ public class XlsTemplate {
         sheet.setFitToPage(true);
         sheet.setHorizontallyCenter(true);
     }
-    
-    public String getCellAddressForAdditionalInfo(String additionalInfoName) {
-        return CELL_ADDRESS_OF_ADDITIONAL_INFO.get(additionalInfoName);
+
+    public int getIndexOfHeaderRow() {
+        return indexOfHeaderRow;
     }
-    
-    public CellStyle getCellStyleForName(String styleName) {
-        return styles.get(styleName);
+
+    public int getIndexOfFirstDataRow() {
+        return indexOfHeaderRow + 1;
     }
-    
-    public Workbook getTemplateWorkbook() {
-        return workbook;
+
+    public CellStyle getCellStyleForHeader() {
+        return styles.get("header");
+    }
+
+    public CellStyle getCellStyleForCell() {
+        return styles.get("cell");
     }
 
     public Sheet getSheet() {
         return sheet;
     }
-    
-    public void setAdditionalCellValue(String cellName, String cellValue) {
-        String cellAddress = CELL_ADDRESS_OF_ADDITIONAL_INFO.get(cellName);
-        if(StringUtils.isNotBlank(cellAddress)) {
-            CellReference cr = new CellReference(cellAddress);
-            Row row = sheet.getRow(cr.getRow());
-            Cell cell = row.getCell(cr.getCol());
-            cell.setCellValue(cellValue);
-            sheet.autoSizeColumn(cr.getCol());
-        } else {
-            throw new EbodacExportException("No such additional cell: " + cellName);
+
+    public void close() {
+        try {
+            workbook.write(outputStream);
+        } catch (IOException e) {
+            throw new EbodacExportException(e.getMessage(), e);
         }
+    }
+
+    protected void setAdditionalCellValue(String cellAddress, String cellValue) {
+        CellReference cr = new CellReference(cellAddress);
+        Row row = sheet.getRow(cr.getRow());
+        Cell cell = row.getCell(cr.getCol());
+        cell.setCellValue(cellValue);
+        sheet.autoSizeColumn(cr.getCol());
     }
 
     private void setStyleMap() {

@@ -14,36 +14,48 @@ import org.motechproject.ebodac.exception.EbodacExportException;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class PdfTemplate {
-
-    private PdfReader pdfReader;
-
-    private PdfStamper pdfStamper;
+public abstract class PdfBasicTemplate {
 
     public static final Font TABLE_FONT = new Font(Font.FontFamily.HELVETICA, 8);
-
     public static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
 
-    public static final Rectangle FIRST_PAGE_RECTANGLE = new Rectangle(20, 36, 580, 475);
+    private final PdfReader pdfReader;
 
-    public static final Rectangle NEXT_PAGE_RECTANGLE = new Rectangle(20, 36, 580, 762);
+    private final PdfStamper pdfStamper;
 
-    public PdfTemplate(String templatePath, OutputStream outputStream) {
+    private final AcroFields acroFields;
+
+    private final Rectangle nextPageRectangle;
+
+    private final Rectangle firstPageRectangle;
+
+    public PdfBasicTemplate(String templatePath, Rectangle firstPageRectangle, OutputStream outputStream) {
+        nextPageRectangle = new Rectangle(20, 36, 580, 762);
+        this.firstPageRectangle = firstPageRectangle;
+
         try {
             pdfReader = new PdfReader(getClass().getResourceAsStream(templatePath));
             pdfStamper = new PdfStamper(pdfReader, outputStream);
+            acroFields = pdfStamper.getAcroFields();
         } catch (DocumentException | IOException e) {
             throw new EbodacExportException(e.getMessage(), e);
         }
     }
 
-    public void setAdditionalCellValue(String cellName, String cellValue) {
-        AcroFields form = pdfStamper.getAcroFields();
+    public Rectangle getNextPageRectangle() {
+        return nextPageRectangle;
+    }
+
+    public Rectangle getFirstPageRectangle() {
+        return firstPageRectangle;
+    }
+
+    protected void setAdditionalCellValue(String cellName, String cellValue) {
         try {
             BaseFont helveticaBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
-            form.setField(cellName, cellValue);
-            form.setFieldProperty(cellName, "textfont", helveticaBold, null);
-            form.setFieldProperty(cellName, "setfflags", PdfFormField.FF_READ_ONLY, null);
+            acroFields.setField(cellName, cellValue);
+            acroFields.setFieldProperty(cellName, "textfont", helveticaBold, null);
+            acroFields.setFieldProperty(cellName, "setfflags", PdfFormField.FF_READ_ONLY, null);
         } catch (IOException | DocumentException e) {
             throw new EbodacExportException("No such additional cell: " + cellName, e);
         }
