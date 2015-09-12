@@ -328,7 +328,7 @@
         };
 
         $scope.exportEntityInstances = function () {
-            $('#exportInstanceModal').modal('show');
+            $('#exportEbodacInstanceModal').modal('show');
         };
 
         $scope.changeExportRecords = function (records) {
@@ -339,9 +339,9 @@
             $scope.exportFormat = format;
         };
 
-        $scope.closeExportInstanceModal = function () {
-            $('#exportInstanceForm').resetForm();
-            $('#exportInstanceModal').modal('hide');
+        $scope.closeExportEbodacInstanceModal = function () {
+            $('#exportEbodacInstanceForm').resetForm();
+            $('#exportEbodacInstanceModal').modal('hide');
         };
 
         /**
@@ -379,8 +379,8 @@
 
             $http.get(url)
             .success(function () {
-                $('#exportInstanceForm').resetForm();
-                $('#exportInstanceModal').modal('hide');
+                $('#exportEbodacInstanceForm').resetForm();
+                $('#exportEbodacInstanceModal').modal('hide');
                 window.location.replace(url);
             })
             .error(function (response) {

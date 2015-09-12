@@ -42,18 +42,7 @@ public final class EbodacConstants {
 
     public static final String PDF_EXPORT_FORMAT="pdf";
     public static final String CSV_EXPORT_FORMAT="csv";
-    public static final String XLSX_EXPORT_FORMAT="xlsx";
     public static final String XLS_EXPORT_FORMAT="xls";
-
-    public static final String PDF_TEMPLATE="/report_template.pdf";
-    public static final String PDF_TEMPLATE_TITLE="#titleReport";
-    public static final String PDF_TEMPLATE_DISTRICT="#district";
-    public static final String PDF_TEMPLATE_CHIEFDOM="#chiefdom";
-
-    public static final String XLS_TEMPLATE="/report_template.xls";
-    public static final String XLS_TEMPLATE_TITLE="title";
-    public static final String XLS_TEMPLATE_DISTRICT="district";
-    public static final String XLS_TEMPLATE_CHIEFDOM="chiefdom";
 
     public static final String EBODAC_MODULE="EBODAC Module";
 
@@ -108,6 +97,34 @@ public final class EbodacConstants {
             put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
             put("Community",                "subject.community");
+        }
+    };
+
+    public static final Map<String, String> PRIMER_VACCINATION_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Date",                     "date");
+            put("People Vaccinated",        "peopleVaccinated");
+            put("Adult Males",              "adultMales");
+            put("Adult Females",            "adultFemales");
+            put("Children 12-17",           "children_12_17");
+            put("Children 6-11",            "children_6_11");
+            put("Children 1-5",             "children_1_5");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
+            put("Adult Unidentified",       "adultUnidentified");
+        }
+    };
+
+    public static final Map<String, String> BOOSTER_VACCINATION_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Date",                     "date");
+            put("People Boostered",         "peopleBoostered");
+            put("Adult Males",              "adultMales");
+            put("Adult Females",            "adultFemales");
+            put("Children 12-17",           "children_12_17");
+            put("Children 6-11",            "children_6_11");
+            put("Children 1-5",             "children_1_5");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
+            put("Adult Unidentified",       "adultUnidentified");
         }
     };
 }

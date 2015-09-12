@@ -8,6 +8,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
+import org.motechproject.ebodac.domain.ReportBoosterVaccination;
+import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
@@ -16,10 +18,15 @@ import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
 import org.motechproject.ebodac.util.DtoLookupHelper;
-import org.motechproject.ebodac.util.PdfTemplate;
-import org.motechproject.ebodac.util.XlsTemplate;
+import org.motechproject.ebodac.util.PdfBasicTemplate;
+import org.motechproject.ebodac.util.PdfReportATemplate;
+import org.motechproject.ebodac.util.PdfReportBTemplate;
+import org.motechproject.ebodac.util.XlsBasicTemplate;
+import org.motechproject.ebodac.util.XlsReportATemplate;
+import org.motechproject.ebodac.util.XlsReportBTemplate;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
+import org.motechproject.mds.dto.EntityDto;
 import org.motechproject.mds.ex.csv.CsvImportException;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.service.CsvImportExportService;
@@ -91,11 +98,10 @@ public class InstanceController {
                                       @RequestParam String exportRecords,
                                       @RequestParam String outputFormat,
                                       HttpServletResponse response) throws IOException {
-        if (!Constants.ExportFormat.isValidFormat(outputFormat)) {
-            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
-        }
 
-        String entityName = entityService.getEntity(entityId).getName();
+        EntityDto entityDto = entityService.getEntity(entityId);
+        String className = entityDto.getClassName();
+        String entityName = entityDto.getName();
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
 
         final String fileName = entityName + "_" + DateTime.now().toString(dateTimeFormatter);
@@ -113,24 +119,34 @@ public class InstanceController {
         Order order = StringUtils.isNotEmpty(settings.getSortColumn()) ? new Order(settings.getSortColumn(), settings.getSortDirection()) : null;
         QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
 
-        String className = entityService.getEntity(entityId).getClassName();
+        if (className.equals(ReportPrimerVaccination.class.getName())) {
+            exportEntity(settings, exportRecords, outputFormat, response, "PrimerVaccinationReport",
+                    null, ReportPrimerVaccination.class, EbodacConstants.PRIMER_VACCINATION_REPORT_MAP);
+        } else if (className.equals(ReportBoosterVaccination.class.getName())) {
+            exportEntity(settings, exportRecords, outputFormat, response, "BoosterVaccinationReport",
+                    null, ReportBoosterVaccination.class, EbodacConstants.BOOSTER_VACCINATION_REPORT_MAP);
+        } else if (Constants.ExportFormat.PDF.equals(outputFormat)) {
+            response.setContentType("application/pdf");
 
-        if (Constants.ExportFormat.PDF.equals(outputFormat)) {
             if(className.equals(Visit.class.getName())) {
                 csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
                         settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
             } else {
                 csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings));
+            }
+        } else if (EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            response.setContentType("text/csv");
+
+            if(className.equals(Visit.class.getName())) {
+                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
+                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
+            } else {
+                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
                         settings.getSelectedFields(), getFields(settings));
             }
         } else {
-            if(className.equals(Visit.class.getName())) {
-                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
-            } else {
-                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings));
-            }
+            throw new IllegalArgumentException("Invalid export format: " + outputFormat);
         }
     }
 
@@ -217,21 +233,31 @@ public class InstanceController {
 
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
-                PdfTemplate template = new PdfTemplate(EbodacConstants.PDF_TEMPLATE, response.getOutputStream());
-                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_TITLE, fileNameBeginning.replaceAll("([A-Z])", " $1"));
-                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_DISTRICT, "Kambia");
-                template.setAdditionalCellValue(EbodacConstants.PDF_TEMPLATE_CHIEFDOM, "Magbema");
+                PdfBasicTemplate template;
+                if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
+                    template = new PdfReportATemplate(response.getOutputStream());
+                    ((PdfReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
+                } else {
+                    template = new PdfReportBTemplate(response.getOutputStream());
+                    ((PdfReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
+                }
+
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
-                XlsTemplate template = new XlsTemplate(EbodacConstants.XLS_TEMPLATE);
-                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_TITLE, fileNameBeginning.replaceAll("([A-Z])", " $1"));
-                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_DISTRICT, "Kambia");
-                template.setAdditionalCellValue(EbodacConstants.XLS_TEMPLATE_CHIEFDOM, "Magbema");
-                exportService.exportEntityToExcel(template, response.getOutputStream(), entityDtoType, entityType, headerMap,
+                XlsBasicTemplate template;
+                if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
+                    template = new XlsReportATemplate(response.getOutputStream());
+                    ((XlsReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
+                } else {
+                    template = new XlsReportBTemplate(response.getOutputStream());
+                    ((XlsReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
+                }
+
+                exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             }
         } catch (IOException | EbodacLookupException | EbodacExportException e) {

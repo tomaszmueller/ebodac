@@ -7,23 +7,19 @@ import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.mds.service.impl.csv.writer.TableWriter;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ExcelTableWriter implements TableWriter {
 
-    private XlsTemplate xlsTemplate;
-
-    private OutputStream outputStream;
+    private XlsBasicTemplate xlsTemplate;
 
     private Map<String, Integer> columnIndexMap;
 
     private int currentRowIndex;
 
-    public ExcelTableWriter(OutputStream outputStream, XlsTemplate template) {
+    public ExcelTableWriter(XlsBasicTemplate template) {
         xlsTemplate = template;
-        this.outputStream = outputStream;
         currentRowIndex = 0;
     }
 
@@ -31,13 +27,13 @@ public class ExcelTableWriter implements TableWriter {
     public void writeHeader(String[] titles) throws IOException {
         columnIndexMap = new HashMap<>();
         Sheet sheet = xlsTemplate.getSheet();
-        Row headerRow = sheet.createRow(XlsTemplate.INDEX_OF_HEADER_ROW);
+        Row headerRow = sheet.createRow(xlsTemplate.getIndexOfHeaderRow());
         headerRow.setHeightInPoints(40);
         Cell headerCell;
         for (int i = 0; i < titles.length; i++) {
             headerCell = headerRow.createCell(i);
             headerCell.setCellValue(titles[i]);
-            headerCell.setCellStyle(xlsTemplate.getCellStyleForName("header"));
+            headerCell.setCellStyle(xlsTemplate.getCellStyleForHeader());
             columnIndexMap.put(titles[i], i);
         }
     }
@@ -45,14 +41,14 @@ public class ExcelTableWriter implements TableWriter {
     @Override
     public void writeRow(Map<String, String> map, String[] strings) throws IOException {
         Sheet sheet = xlsTemplate.getSheet();
-        Row row = sheet.createRow(XlsTemplate.INDEX_OF_FIRST_DATA_ROW + currentRowIndex);
+        Row row = sheet.createRow(xlsTemplate.getIndexOfFirstDataRow() + currentRowIndex);
         Cell dataCell;
         for(Map.Entry<String, String> entry : map.entrySet()) {
             Integer columnIndex = columnIndexMap.get(entry.getKey());
             if(columnIndex != null) {
                 dataCell = row.createCell(columnIndex);
                 dataCell.setCellValue(entry.getValue());
-                dataCell.setCellStyle(xlsTemplate.getCellStyleForName("cell"));
+                dataCell.setCellStyle(xlsTemplate.getCellStyleForCell());
             } else {
                 throw new EbodacExportException("No such column: " + entry.getKey());
             }
@@ -66,11 +62,7 @@ public class ExcelTableWriter implements TableWriter {
         for (int i = 0; i < columnIndexMap.size(); i++) {
             sheet.autoSizeColumn(i);
         }
-        try {
-            xlsTemplate.getTemplateWorkbook().write(outputStream);
-        } catch (IOException e) {
-            throw new EbodacExportException(e.getMessage(), e);
-        }
+        xlsTemplate.close();
     }
 
 }

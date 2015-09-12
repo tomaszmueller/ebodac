@@ -16,31 +16,28 @@ import org.motechproject.mds.service.impl.csv.writer.TableWriter;
 import java.io.IOException;
 import java.util.Map;
 
-public class TemplatedPdfTableWriter implements TableWriter {
+public class PdfTableWriter implements TableWriter {
 
-    private PdfTemplate template;
+    private PdfBasicTemplate template;
 
     private PdfPTable dataTable;
 
-    public TemplatedPdfTableWriter(PdfTemplate template) {
+    public PdfTableWriter(PdfBasicTemplate template) {
         this.template = template;
     }
 
     @Override
     public void writeRow(Map<String, String> row, String[] headers) throws IOException {
-        if(this.dataTable == null) {
+        if (this.dataTable == null) {
             this.writeHeader(headers);
         }
-        String[] arr = headers;
-        int len = headers.length;
 
-        for(int i = 0; i < len; ++i) {
-            String header = arr[i];
+        for (String header: headers) {
             String value = row.get(header);
             if(StringUtils.isBlank(value)) {
                 value = "\n";
             }
-            Paragraph paragraph = new Paragraph(value, PdfTemplate.TABLE_FONT);
+            Paragraph paragraph = new Paragraph(value, PdfBasicTemplate.TABLE_FONT);
             PdfPCell cell = new PdfPCell(paragraph);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -52,12 +49,9 @@ public class TemplatedPdfTableWriter implements TableWriter {
     public void writeHeader(String[] headers) throws IOException {
         this.dataTable = new PdfPTable(headers.length);
         this.dataTable.setWidthPercentage(100.0F);
-        String[] arr = headers;
-        int len = headers.length;
 
-        for(int i = 0; i < len; ++i) {
-            String header = arr[i];
-            PdfPCell cell = new PdfPCell(new Paragraph(header, PdfTemplate.HEADER_FONT));
+        for (String header: headers) {
+            PdfPCell cell = new PdfPCell(new Paragraph(header, PdfBasicTemplate.HEADER_FONT));
             cell.setBackgroundColor(BaseColor.GRAY);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             this.dataTable.addCell(cell);
@@ -68,14 +62,14 @@ public class TemplatedPdfTableWriter implements TableWriter {
     public void close() {
         try {
             ColumnText column = new ColumnText(template.getPdfStamper().getOverContent(1));
-            column.setSimpleColumn(PdfTemplate.FIRST_PAGE_RECTANGLE);
+            column.setSimpleColumn(template.getFirstPageRectangle());
             column.addElement(dataTable);
             int pageCount = 1;
             int status = column.go();
             while (ColumnText.hasMoreText(status)) {
                 status = triggerNewPage(column, ++pageCount);
             }
-            this.template.close();
+            template.close();
         } catch (DocumentException ex) {
             throw new DataExportException("Unable to add a table to the PDF file", ex);
         }
@@ -86,7 +80,7 @@ public class TemplatedPdfTableWriter implements TableWriter {
         stamper.insertPage(pageCount, template.getTemplatePageSize());
         PdfContentByte canvas = stamper.getOverContent(pageCount);
         column.setCanvas(canvas);
-        column.setSimpleColumn(PdfTemplate.NEXT_PAGE_RECTANGLE);
+        column.setSimpleColumn(template.getNextPageRectangle());
         return column.go();
     }
 }

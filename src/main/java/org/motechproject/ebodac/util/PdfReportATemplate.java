@@ -1,0 +1,25 @@
+package org.motechproject.ebodac.util;
+
+import com.itextpdf.text.Rectangle;
+
+import java.io.OutputStream;
+
+public class PdfReportATemplate extends PdfBasicTemplate {
+
+    private static final String TEMPLATE_PATH = "/report_templateA.pdf";
+    private static final Rectangle FIRST_PAGE_RECTANGLE = new Rectangle(20, 36, 580, 475);
+
+    private static final String PDF_TEMPLATE_TITLE = "#titleReport";
+    private static final String PDF_TEMPLATE_TYPE = "#type";
+    private static final String PDF_TEMPLATE_DISTRICT = "#district";
+
+    public PdfReportATemplate(OutputStream outputStream) {
+        super(TEMPLATE_PATH, FIRST_PAGE_RECTANGLE, outputStream);
+    }
+
+    public void setAdditionalCellValues(String title, String type, String district) {
+        setAdditionalCellValue(PDF_TEMPLATE_TITLE, title);
+        setAdditionalCellValue(PDF_TEMPLATE_TYPE, type);
+        setAdditionalCellValue(PDF_TEMPLATE_DISTRICT, district);
+    }
+}

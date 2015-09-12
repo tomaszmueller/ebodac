@@ -1,6 +1,10 @@
 package org.motechproject.ebodac.domain;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
+import org.motechproject.ebodac.util.CustomDateDeserializer;
+import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
@@ -71,10 +75,12 @@ public abstract class ReportVaccinationAbstract {
         this.adultUndifferentiated = adultUndifferentiated;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDate() {
         return date;
     }
 
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setDate(LocalDate date) {
         this.date = date;
     }
