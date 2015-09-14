@@ -7,20 +7,19 @@ import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
+import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
 import org.motechproject.mds.annotations.NonEditable;
-import org.motechproject.mds.annotations.UIDisplayable;
-import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.ReadAccess;
+import org.motechproject.mds.annotations.UIDisplayable;
 import org.motechproject.mds.util.SecurityMode;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Unique;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,17 +44,14 @@ public class Subject {
     private String subjectId;
 
     @UIDisplayable(position = 1)
-    @Pattern(regexp = "^\\D*$")
     @Field
     private String name;
 
     @UIDisplayable(position = 2)
-    @Pattern(regexp = "^\\D*$")
     @Field
     private String householdName;
 
     @UIDisplayable(position = 3)
-    @Pattern(regexp = "^\\D*$")
     @Field
     private String headOfHousehold;
 
