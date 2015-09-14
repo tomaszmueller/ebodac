@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * Sends sends & received configs to/from the UI.
- */
+    /**
+     *  Sends & receives configs to/from the UI.
+     */
 @Controller
 public class ConfigController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigController.class);

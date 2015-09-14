@@ -82,7 +82,6 @@ public interface VisitDataService extends MotechDataService<Visit> {
      *  Followups After Prime Injection Report Lookups
      */
 
-    // Default Lookup
     @Lookup
     List<Visit> findVisitsByTypePhoneNumberAndAddress(@LookupField(name = "type") VisitType visitType,
                                                       @LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
@@ -136,7 +135,6 @@ public interface VisitDataService extends MotechDataService<Visit> {
     *  Followups Missed Clinic Visits Report Lookups
     */
 
-    // Default Lookup
     @Lookup
     List<Visit> findVisitsByPlannedDateLessAndActualDateEqAndSubjectPhoneNumberEq(@LookupField(name = "subject.phoneNumber", customOperator = Constants.Operators.EQ) String phoneNumber,
                                                                                    @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
