@@ -207,7 +207,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public boolean isEnrolled(String subjectId) {
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
-        return EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus());
+        return subjectEnrollments != null && EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus());
     }
 
     @Override
