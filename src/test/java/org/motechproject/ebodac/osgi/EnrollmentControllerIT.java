@@ -54,9 +54,6 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.motechproject.commons.date.util.DateUtil.newDateTime;
-import static org.motechproject.testing.utils.TimeFaker.fakeNow;
-import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
@@ -144,20 +141,20 @@ public class EnrollmentControllerIT extends BasePaxIT {
                 null, "owner"));
 
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT, null,
-                LocalDate.parse("2015-10-19", formatter), "owner"));
+                LocalDate.parse("2115-10-19", formatter), "owner"));
 
         testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_DAY, null,
-                LocalDate.parse("2015-10-19", formatter), "owner"));
+                LocalDate.parse("2115-10-19", formatter), "owner"));
 
         Visit visit = testVisits.get(2);
-        visit.setMotechProjectedDate(LocalDate.parse("2015-10-10", formatter));
+        visit.setMotechProjectedDate(LocalDate.parse("2115-10-10", formatter));
     }
 
     private void addTestVisitsToDB() {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        for(Visit visit : testVisits) {
+        for (Visit visit : testVisits) {
             visitDataService.create(visit);
         }
 
@@ -169,8 +166,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         scheduler = (Scheduler) getQuartzScheduler(bundleContext);
         NameMatcher<JobKey> nameMatcher = NameMatcher.jobNameStartsWith("org.motechproject.messagecampaign");
         Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupStartsWith("default"));
-        for(JobKey jobKey : jobKeys) {
-            if(nameMatcher.isMatch(jobKey)) {
+        for (JobKey jobKey : jobKeys) {
+            if (nameMatcher.isMatch(jobKey)) {
                 scheduler.deleteJob(jobKey);
             }
         }
@@ -178,61 +175,51 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     @Test
     public void shouldNotReenrollVisit() throws IOException, InterruptedException {
-        try {
-            fakeNow(newDateTime(2015, 7, 31, 10, 0, 0));
-            checkResponse(400, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, 400));
+        checkResponse(400, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, 400));
 
-            checkResponse(400, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), 400));
+        checkResponse(400, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), 400));
 
-            Visit visit = testVisits.get(1);
-            visit.setMotechProjectedDate(null);
-            checkResponse(400, "ebodac.enrollment.error.EmptyPlannedDate",
-                    reenrollVisit(visit, 400));
+        Visit visit = testVisits.get(1);
+        visit.setMotechProjectedDate(null);
+        checkResponse(400, "ebodac.enrollment.error.EmptyPlannedDate",
+                reenrollVisit(visit, 400));
 
-            visit = testVisits.get(1);
-            visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
-            visit.setMotechProjectedDate(LocalDate.parse("2015-10-10", formatter));
-            checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
+        visit = testVisits.get(1);
+        visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
+        visit.setMotechProjectedDate(LocalDate.parse("2115-10-10", formatter));
+        checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
 
 
-            ebodacEnrollmentService.enrollSubject(secondSubject);
-            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(secondSubject.getSubjectId());
-            visit = testVisits.get(3);
+        ebodacEnrollmentService.enrollSubject(secondSubject);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(secondSubject.getSubjectId());
+        visit = testVisits.get(3);
 
-            visit.setMotechProjectedDate(LocalDate.parse("2014-10-19", formatter));
-            checkResponse(400, "ebodac.enrollment.error.plannedDateInPast",
-                    reenrollVisit(visit, 400));
+        visit.setMotechProjectedDate(LocalDate.parse("2010-10-19", formatter));
+        checkResponse(400, "ebodac.enrollment.error.plannedDateInPast",
+                reenrollVisit(visit, 400));
 
-            visit.setMotechProjectedDate(LocalDate.parse("2015-10-19", formatter));
-            checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
-                    reenrollVisit(testVisits.get(3), 400));
-        } finally {
-            stopFakingTime();
-        }
+        visit.setMotechProjectedDate(LocalDate.parse("2115-10-19", formatter));
+        checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
+                reenrollVisit(testVisits.get(3), 400));
     }
 
     @Test
     public void shouldReenrollVisit() throws IOException, InterruptedException {
-        try {
-            fakeNow(newDateTime(2015, 7, 31, 10, 0, 0));
-            assertEquals(0, enrollmentDataService.retrieveAll().size());
-            Visit visit = testVisits.get(3);
+        assertEquals(0, enrollmentDataService.retrieveAll().size());
+        Visit visit = testVisits.get(3);
 
-            ebodacEnrollmentService.enrollSubject(secondSubject);
-            visit.setMotechProjectedDate(LocalDate.parse("2015-10-11", formatter));
-            checkResponse(200, "", reenrollVisit(visit, 200));
+        ebodacEnrollmentService.enrollSubject(secondSubject);
+        visit.setMotechProjectedDate(LocalDate.parse("2115-10-11", formatter));
+        checkResponse(200, "", reenrollVisit(visit, 200));
 
-            List<Enrollment> enrollments = enrollmentDataService.retrieveAll();
-            assertEquals(2, enrollments.size());
+        List<Enrollment> enrollments = enrollmentDataService.retrieveAll();
+        assertEquals(2, enrollments.size());
 
-            checkCampaignEnrollment("1000000162", VisitType.PRIME_VACCINATION_DAY.getValue(),
-                    LocalDate.parse("2015-10-11", formatter), enrollments.get(0));
+        checkCampaignEnrollment("1000000162", VisitType.PRIME_VACCINATION_DAY.getValue(),
+                LocalDate.parse("2115-10-11", formatter), enrollments.get(0));
 
-            checkCampaignEnrollment("1000000162", EbodacConstants.BOOSTER_RELATED_MESSAGES,
-                    LocalDate.parse("2015-10-11", formatter), enrollments.get(1));
-        } finally {
-            stopFakingTime();
-        }
+        checkCampaignEnrollment("1000000162", EbodacConstants.BOOSTER_RELATED_MESSAGES,
+                LocalDate.parse("2115-10-11", formatter), enrollments.get(1));
     }
 
     private String reenrollVisit(Visit visit, int errorCode) throws IOException, InterruptedException {
@@ -252,7 +239,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     private void checkResponse(int code, String message, String response) {
         String[] codeAndMessage = response.split("__");
-        if(code != 200) {
+        if (code != 200) {
             assertEquals(2, codeAndMessage.length);
             assertEquals(code, Integer.parseInt(codeAndMessage[0]));
             assertEquals(message, codeAndMessage[1]);
