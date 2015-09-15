@@ -23,7 +23,6 @@ import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.RaveImportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.service.VisitService;
-import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.ops4j.pax.exam.ExamFactory;
@@ -46,10 +45,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
@@ -70,9 +70,6 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
     @Inject
     VisitService visitService;
-
-    @Inject
-    MessageCampaignService messageCampaignService;
 
     @Inject
     EnrollmentDataService enrollmentDataService;
@@ -569,6 +566,257 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
         assertFalse(ebodacEnrollmentService.isEnrolled(visit));
+    }
+
+    @Test
+    public void shouldNotCreateJobsForDuplicatedEnrollments() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+        Subject subject4 = createSubjectWithRequireData("4");
+        Subject subject5 = createSubjectWithRequireData("5");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicated.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicated.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments4 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject4.getSubjectId());
+        SubjectEnrollments subjectEnrollments5 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject5.getSubjectId());
+
+        assertEquals(10, subjectEnrollments1.getEnrollments().size());
+        assertEquals(10, subjectEnrollments2.getEnrollments().size());
+        assertEquals(10, subjectEnrollments3.getEnrollments().size());
+        assertEquals(10, subjectEnrollments4.getEnrollments().size());
+        assertEquals(10, subjectEnrollments5.getEnrollments().size());
+
+        for (Enrollment enrollment : subjectEnrollments1.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+            assertEquals(4, enrollment.getDuplicatedEnrollments().size());
+        }
+
+        for (Enrollment enrollment : subjectEnrollments2.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        }
+
+        for (Enrollment enrollment : subjectEnrollments3.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        }
+
+        for (Enrollment enrollment : subjectEnrollments4.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        }
+
+        for (Enrollment enrollment : subjectEnrollments5.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        }
+    }
+
+    @Test
+    public void shouldFindNewParentWhenOldUnenrolled() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+        assertEquals(1, subjectEnrollments3.getEnrollments().size());
+
+        Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+        Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
+
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+        assertEquals(2, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString3)));
+        assertEquals(enrollment1, enrollment3.getParentEnrollment());
+
+        ebodacEnrollmentService.unenrollSubject(subject1.getSubjectId());
+
+        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+        assertEquals(1, subjectEnrollments3.getEnrollments().size());
+
+        enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+        enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment1.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+        assertEquals(0, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+
+        if (enrollment2.getParentEnrollment() == null) {
+            assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString3)));
+            assertEquals(enrollment2, enrollment3.getParentEnrollment());
+        } else if (enrollment3.getParentEnrollment() == null) {
+            assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString3)));
+            assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+            assertEquals(enrollment3, enrollment2.getParentEnrollment());
+        } else {
+            fail();
+        }
+    }
+
+    @Test
+    public void shouldUnenrollDuplicatedEnrollment() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+        assertEquals(1, subjectEnrollments3.getEnrollments().size());
+
+        Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+        Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
+
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+        assertEquals(2, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString3)));
+        assertEquals(enrollment1, enrollment3.getParentEnrollment());
+
+        ebodacEnrollmentService.unenrollSubject(subject3.getSubjectId());
+
+        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+        assertEquals(1, subjectEnrollments3.getEnrollments().size());
+
+        enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+        enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment3.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString3)));
+    }
+
+    @Test
+    public void shouldUpdateGroupsWhenSubjectReenrolled() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+
+        Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+        assertEquals(1, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        ebodacEnrollmentService.reenrollSubjectWithNewDate(enrollment2.getExternalId(), enrollment2.getCampaignName(), new LocalDate(2115, 9, 22));
+
+        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+
+        assertEquals(1, subjectEnrollments1.getEnrollments().size());
+        assertEquals(1, subjectEnrollments2.getEnrollments().size());
+
+        enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
+        enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
+        assertEquals(null, enrollment2.getParentEnrollment());
     }
 
     private void clearJobs() throws SchedulerException {
