@@ -337,6 +337,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         if (referenceDate != null) {
             enrollment.setReferenceDate(referenceDate);
+            enrollment.setParentEnrollment(null);
         } else if (enrollment.getReferenceDate() == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because reference date is empty",
                     "ebodac.enroll.error.emptyReferenceDate", subjectId, enrollment.getCampaignName());
