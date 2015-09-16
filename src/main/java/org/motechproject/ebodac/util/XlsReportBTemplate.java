@@ -15,9 +15,9 @@ public class XlsReportBTemplate extends XlsBasicTemplate {
         super(XLS_TEMPLATE_PATH, INDEX_OF_HEADER_ROW, outputStream);
     }
 
-    public void setAdditionalCellValues(String title, String  distinct, String chiefdom) {
+    public void setAdditionalCellValues(String title, String  district, String chiefdom) {
         setAdditionalCellValue(XLS_TEMPLATE_TITLE, title);
-        setAdditionalCellValue(XLS_TEMPLATE_DISTRICT, distinct);
+        setAdditionalCellValue(XLS_TEMPLATE_DISTRICT, district);
         setAdditionalCellValue(XLS_TEMPLATE_CHIEFDOM, chiefdom);
     }
 }

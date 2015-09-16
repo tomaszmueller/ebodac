@@ -7,12 +7,14 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
@@ -76,6 +78,9 @@ public class InstanceController {
 
     @Autowired
     private EntityService entityService;
+
+    @Autowired
+    private ConfigService configService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -231,15 +236,17 @@ public class InstanceController {
         }
         QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
 
+        Config config = configService.getConfig();
+
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
                 PdfBasicTemplate template;
                 if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
                     template = new PdfReportATemplate(response.getOutputStream());
-                    ((PdfReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
+                    ((PdfReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict());
                 } else {
                     template = new PdfReportBTemplate(response.getOutputStream());
-                    ((PdfReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
+                    ((PdfReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom());
                 }
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
@@ -251,10 +258,10 @@ public class InstanceController {
                 XlsBasicTemplate template;
                 if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
                     template = new XlsReportATemplate(response.getOutputStream());
-                    ((XlsReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
+                    ((XlsReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict());
                 } else {
                     template = new XlsReportBTemplate(response.getOutputStream());
-                    ((XlsReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
+                    ((XlsReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom());
                 }
 
                 exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
