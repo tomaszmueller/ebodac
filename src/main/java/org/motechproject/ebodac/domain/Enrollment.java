@@ -17,7 +17,7 @@ import javax.jdo.annotations.Unique;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(maxFetchDepth = 1)
 @Unique(name = "externalIdAndCampaignName", members = {"externalId", "campaignName" })
 public class Enrollment {
 

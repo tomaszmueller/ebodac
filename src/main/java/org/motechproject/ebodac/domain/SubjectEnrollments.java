@@ -8,7 +8,7 @@ import org.motechproject.mds.annotations.Ignore;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "ParticipantEnrollments")
+@Entity(name = "ParticipantEnrollments", maxFetchDepth = 2)
 public class SubjectEnrollments {
 
     @Field(displayName = "Participant")
