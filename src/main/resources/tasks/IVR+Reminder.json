@@ -1,18 +1,19 @@
 {
   "description" : null,
   "name" : "IVR Reminder",
+  "failuresInRow" : 0,
   "actions" : [ {
     "name" : null,
     "displayName" : "ivr.task.initiate.call",
     "channelName" : "ivr.task.name",
     "moduleName" : "org.motechproject.ivr",
-    "moduleVersion" : "0.26.0",
+    "moduleVersion" : "0.26.2.SNAPSHOT",
     "subject" : "ivr_initiate_call",
     "serviceInterface" : null,
     "serviceMethod" : null,
     "values" : {
       "config" : "Voto",
-      "params" : "api_key:eb9546332ff2d4537cecc627e\nmessage_id:{{ad.1.org.motechproject.ebodac.domain.VotoMessage#1.votoIvrId}}\nchannel: ivr\nstatus_callback_url:https://ebodac.soldevelo.com/module/ivr/status/Voto\nsubscribers: [{\"phone\":\"{{ad.1.org.motechproject.ebodac.domain.Subject#0.phoneNumber}}\",\"language\":\"{{ad.1.org.motechproject.ebodac.domain.VotoLanguage#2.votoId}}\"}]\nsend_sms_if_voice_fails:1\ndetect_voicemail_action:1\nretry_attempts_short:3\nretry_delay_short:15\nretry_attempts_long:1"
+      "params" : "api_key:eb9546332ff2d4537cecc627e\nmessage_id:{{ad.1.org.motechproject.ebodac.domain.VotoMessage#1.votoIvrId}}\nstatus_callback_url:HAVE_TO_SET_IT_UP\nsubscribers: [{\"phone\":\"{{ad.1.org.motechproject.ebodac.domain.Subject#0.phoneNumber}}\",\"language\":\"{{ad.1.org.motechproject.ebodac.domain.VotoLanguage#2.votoId}}\"}]\nsend_sms_if_voice_fails:1\ndetect_voicemail_action:1\nretry_attempts_short:3\nretry_delay_short:15\nretry_attempts_long:1"
     }
   } ],
   "trigger" : {
@@ -20,7 +21,7 @@
     "displayName" : "msgCampaign.send.message",
     "channelName" : "msgCampaign.name",
     "moduleName" : "org.motechproject.message-campaign",
-    "moduleVersion" : "0.26.0",
+    "moduleVersion" : "0.26.2.SNAPSHOT",
     "subject" : "org.motechproject.messagecampaign.fired-campaign-message",
     "triggerListenerSubject" : "org.motechproject.messagecampaign.fired-campaign-message"
   },
@@ -56,13 +57,6 @@
         "negationOperator" : true,
         "operator" : "task.exist",
         "expression" : null
-      }, {
-        "displayName" : "trigger.MessageKey",
-        "key" : "trigger.MessageKey",
-        "type" : "UNICODE",
-        "negationOperator" : true,
-        "operator" : "task.contains",
-        "expression" : "202331"
       } ],
       "operator" : "AND"
     }, {
