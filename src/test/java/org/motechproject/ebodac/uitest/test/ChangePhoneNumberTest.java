@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.ebodac.page.LoginPage;
-import org.ebodac.test.TestBase;
+import org.motech.page.LoginPage;
+import org.motech.test.TestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +14,7 @@ import java.lang.Exception;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * Created by tomasz on 16.09.15.
- */
+
 public class ChangePhoneNumberTest extends TestBase {
 
     private LoginPage loginPage;
@@ -24,6 +22,8 @@ public class ChangePhoneNumberTest extends TestBase {
     private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
+    private final String L1adminUser = "admin";
+    private final String L1adminpassword = "testadmin";
     private String testNumber = "55577755";
     private String changedNumber;
 
@@ -34,7 +34,7 @@ public class ChangePhoneNumberTest extends TestBase {
         ebodacPage = new EBODACPage(driver);
         participantPage = new ParticipantPage(driver);
         participantEditPage = new ParticipantEditPage(driver);
-        login();
+        loginPage.login(L1adminUser, L1adminpassword);
     }
 
     @Test //Test for EBODAC-508

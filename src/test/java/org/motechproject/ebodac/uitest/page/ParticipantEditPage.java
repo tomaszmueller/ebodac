@@ -1,12 +1,10 @@
 package org.motechproject.ebodac.uitest.page;
 
-import org.ebodac.page.AbstractBasePage;
+import org.motech.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by tomasz on 21.09.15.
- */
+
 public class ParticipantEditPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";

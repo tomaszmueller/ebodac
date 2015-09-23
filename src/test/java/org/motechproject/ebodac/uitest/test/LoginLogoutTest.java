@@ -1,14 +1,12 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.ebodac.page.LoginPage;
-import org.ebodac.test.TestBase;
+import org.motech.page.LoginPage;
+import org.motech.test.TestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by tomasz on 16.09.15.
- */
+
 public class LoginLogoutTest extends TestBase {
     private LoginPage loginPage;
 
