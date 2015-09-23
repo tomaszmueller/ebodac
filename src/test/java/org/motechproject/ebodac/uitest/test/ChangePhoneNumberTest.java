@@ -11,6 +11,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
 import java.lang.Exception;
+import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -22,13 +23,16 @@ public class ChangePhoneNumberTest extends TestBase {
     private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
-    private final String L1adminUser = "admin";
-    private final String L1adminpassword = "testadmin";
+    private String L1adminUser;
+    private String L1adminpassword;
     private String testNumber = "55577755";
     private String changedNumber;
-
+    private Properties properties;
     @Before
     public void setUp() {
+        properties = new Properties();
+        L1adminUser = properties.getProperty("l1.admin.login");
+        L1adminpassword = properties.getProperty("l1.admin.password");
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         ebodacPage = new EBODACPage(driver);
