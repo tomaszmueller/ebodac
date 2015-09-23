@@ -70,6 +70,10 @@ public class Config {
 
     private Boolean enableReportJob = false;
 
+    private String district;
+
+    private String chiefdom;
+
     public Config() {
     }
 
@@ -327,5 +331,21 @@ public class Config {
 
     public void setEnableReportJob(Boolean enableReportJob) {
         this.enableReportJob = enableReportJob;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getChiefdom() {
+        return chiefdom;
+    }
+
+    public void setChiefdom(String chiefdom) {
+        this.chiefdom = chiefdom;
     }
 }
