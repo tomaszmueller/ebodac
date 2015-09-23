@@ -60,6 +60,7 @@ public class EbodacEventListener {
     @MotechListener(subjects = {EbodacConstants.DAILY_REPORT_EVENT})
     public void generateDailyReport(MotechEvent event) {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
+        LOGGER.info("Started generation of daily reports...");
         reportService.generateDailyReports();
         LOGGER.info("Daily Reports generation completed");
     }
