@@ -90,7 +90,10 @@ public class ConfigController {
         }
 
         if(configService.getConfig().getEnableReportJob()) {
-            DateTime reportStartDate = DateUtil.newDateTime(LocalDate.now().plusDays(1), Time.parseTime(configService.getConfig().getReportCalculationStartTime(), ":"));
+            DateTime reportStartDate = DateUtil.newDateTime(LocalDate.now(), Time.parseTime(configService.getConfig().getReportCalculationStartTime(), ":"));
+            if (reportStartDate.isBeforeNow()) {
+                reportStartDate = reportStartDate.plusDays(1);
+            }
             ebodacScheduler.scheduleDailyReportJob(reportStartDate);
         }
     }
