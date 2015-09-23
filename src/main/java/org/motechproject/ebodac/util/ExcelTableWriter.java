@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.motechproject.ebodac.exception.EbodacExportException;
+import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.mds.service.impl.csv.writer.TableWriter;
 
 import java.io.IOException;

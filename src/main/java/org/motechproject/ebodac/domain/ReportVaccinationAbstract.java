@@ -15,6 +15,8 @@ import javax.jdo.annotations.Unique;
 @Entity
 public abstract class ReportVaccinationAbstract {
 
+    public static final String DATE_PROPERTY_NAME = "date";
+
     @NonEditable
     @Unique
     @UIDisplayable(position = 0)

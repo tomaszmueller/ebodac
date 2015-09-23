@@ -1,4 +1,4 @@
-package org.motechproject.ebodac.util;
+package org.motechproject.ebodac.template;
 
 
 import com.itextpdf.text.DocumentException;
