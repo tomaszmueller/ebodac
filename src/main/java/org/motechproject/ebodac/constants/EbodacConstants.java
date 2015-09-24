@@ -58,6 +58,12 @@ public final class EbodacConstants {
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
+    public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";
+    public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";
+    public static final String FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME = "FollowupsAfterPrimeInjectionReport";
+    public static final String FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME = "FollowupsMissedClinicVisitsReport";
+
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Planned Visit Date","motechProjectedDate");

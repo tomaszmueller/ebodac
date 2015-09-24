@@ -10,6 +10,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfStamper;
 import org.apache.commons.lang.StringUtils;
+import org.motechproject.ebodac.template.PdfBasicTemplate;
 import org.motechproject.mds.ex.csv.DataExportException;
 import org.motechproject.mds.service.impl.csv.writer.TableWriter;
 

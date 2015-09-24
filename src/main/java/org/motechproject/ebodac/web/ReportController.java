@@ -13,7 +13,7 @@ import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.ReportService;
-import org.motechproject.ebodac.util.DtoLookupHelper;
+import org.motechproject.ebodac.helper.DtoLookupHelper;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.dto.LookupDto;
