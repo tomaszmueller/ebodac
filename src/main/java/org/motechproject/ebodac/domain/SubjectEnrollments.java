@@ -4,22 +4,29 @@ import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
+import org.motechproject.mds.annotations.NonEditable;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "ParticipantEnrollments", maxFetchDepth = 2)
+@Entity(name = "ParticipantEnrollments", nonEditable = true, maxFetchDepth = 2)
 public class SubjectEnrollments {
 
+    @NonEditable
     @Field(displayName = "Participant")
     private Subject subject;
 
     @Field
     private EnrollmentStatus status;
 
+    @NonEditable
     @Field
     @Cascade(delete = true)
     private Set<Enrollment> enrollments = new HashSet<>();
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public SubjectEnrollments() {
     }
@@ -50,6 +57,14 @@ public class SubjectEnrollments {
 
     public void setEnrollments(Set<Enrollment> enrollments) {
         this.enrollments = enrollments;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Ignore
