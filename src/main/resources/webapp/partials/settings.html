@@ -13,6 +13,22 @@
 
         <form name="form" class="form-horizontal inside" novalidate>
 
+            <h5 class="margin-before2">{{msg('ebodac.web.settings.localization')}}</h5>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="district">{{msg('ebodac.web.settings.district')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
+                    <input class="form-control" id="district" type="text" ng-model="config.district" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="chiefdom">{{msg('ebodac.web.settings.chiefdom')}}</label>
+                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
+                    <input class="form-control" id="chiefdom" type="text" ng-model="config.chiefdom" required>
+                </div>
+            </div>
+
             <h5 class="margin-before2">{{msg('ebodac.web.settings.zetes')}}</h5>
 
             <div class="form-group">
@@ -172,22 +188,6 @@
                     <select id="disconVacCampaigns" class="form-control" ui-select2 multiple select2-ng-change="campaignsChanged">
                         <option ng-repeat="campaign in availableCampaigns" value="{{campaign}}">{{campaign}}</option>
                     </select>
-                </div>
-            </div>
-
-            <h5 class="margin-before2">{{msg('ebodac.web.settings.localization')}}</h5>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="district">{{msg('ebodac.web.settings.district')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
-                    <input class="form-control" id="district" type="text" ng-model="config.district" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="chiefdom">{{msg('ebodac.web.settings.chiefdom')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
-                    <input class="form-control" id="chiefdom" type="text" ng-model="config.chiefdom" required>
                 </div>
             </div>
 
