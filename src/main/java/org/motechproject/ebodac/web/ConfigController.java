@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -51,6 +52,12 @@ public class ConfigController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Config updateConfig(@RequestBody Config config) {
+        String directory = config.getFtpsDirectory();
+        if (!directory.endsWith(File.separator)) {
+            directory += File.separator;
+        }
+        config.setFtpsDirectory(directory);
+
         configService.updateConfig(config);
 
         ebodacScheduler.unscheduleZetesUpdateJob();
