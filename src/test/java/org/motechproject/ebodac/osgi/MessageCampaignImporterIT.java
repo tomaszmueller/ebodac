@@ -15,10 +15,9 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
@@ -34,27 +33,25 @@ public class MessageCampaignImporterIT extends BasePaxIT {
     public void cleanBefore() throws Exception {
         messageCampaignImporter = new MessageCampaignImporter();
         messageCampaignImporter.bind(messageCampaignService, null);
-        for (CampaignRecord campaignRecord : messageCampaignService.getAllCampaignRecords())
-        {
+        CampaignRecord campaignRecord = messageCampaignService.getCampaignRecord("TestScreening");
+        if (campaignRecord != null) {
             messageCampaignService.deleteCampaign(campaignRecord.getName());
         }
+
     }
 
     @After
     public void cleanAfter() {
-        for (CampaignRecord campaignRecord : messageCampaignService.getAllCampaignRecords())
-        {
+        CampaignRecord campaignRecord = messageCampaignService.getCampaignRecord("TestScreening");
+        if (campaignRecord != null) {
             messageCampaignService.deleteCampaign(campaignRecord.getName());
         }
     }
 
     @Test
     public void shouldImportMessageCampaignRecords(){
-        List<CampaignRecord> campaignRecordList = messageCampaignService.getAllCampaignRecords();
-        assertEquals(0, campaignRecordList.size());
+        assertNull(messageCampaignService.getCampaignRecord("TestScreening"));
         messageCampaignImporter.importMessageCampaigns(getClass().getResourceAsStream("/message-campaign.json"));
-        campaignRecordList = messageCampaignService.getAllCampaignRecords();
-        assertEquals(1, campaignRecordList.size());
         assertNotNull(messageCampaignService.getCampaignRecord("TestScreening"));
     }
 
