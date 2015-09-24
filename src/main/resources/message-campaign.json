@@ -49,7 +49,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Weekly Message 2: More info",
+        "name": "Weekly Message 2: More info 1",
         "formats": [
           "IVR",
           "SMS"
@@ -62,7 +62,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Weekly Message 2: More info",
+        "name": "Weekly Message 2: More info 2",
         "formats": [
           "IVR",
           "SMS"
@@ -152,7 +152,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -165,7 +165,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -603,7 +603,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -616,7 +616,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -661,7 +661,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -674,7 +674,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -719,7 +719,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -732,7 +732,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -777,7 +777,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -790,7 +790,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -835,7 +835,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -848,7 +848,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
@@ -893,7 +893,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 1",
         "formats": [
           "IVR",
           "SMS"
@@ -906,7 +906,7 @@
         "startTime": "7:00"
       },
       {
-        "name": "Clinic Visit Missed appointment",
+        "name": "Clinic Visit Missed appointment 2",
         "formats": [
           "IVR",
           "SMS"
