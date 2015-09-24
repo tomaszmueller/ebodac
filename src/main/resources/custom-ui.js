@@ -250,6 +250,7 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
 
         $http.get('../mds/entities/'+$scope.selectedEntity.id+'/entityFields').success(function (data) {
              $scope.allEntityFields = data;
+             $scope.setAvailableFieldsForDisplay();
 
              if ($routeParams.entityId === undefined) {
                 var hash = window.location.hash.substring(2, window.location.hash.length) + "/" + $scope.selectedEntity.id;
