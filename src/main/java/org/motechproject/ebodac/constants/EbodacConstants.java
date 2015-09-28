@@ -58,6 +58,12 @@ public final class EbodacConstants {
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
+    public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";
+    public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";
+    public static final String FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME = "FollowupsAfterPrimeInjectionReport";
+    public static final String FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME = "FollowupsMissedClinicVisitsReport";
+
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Planned Visit Date","motechProjectedDate");
@@ -106,11 +112,11 @@ public final class EbodacConstants {
             put("People Vaccinated",        "peopleVaccinated");
             put("Adult Males",              "adultMales");
             put("Adult Females",            "adultFemales");
+            put("Adult Unidentified",       "adultUnidentified");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
             put("Children 12-17",           "children_12_17");
             put("Children 6-11",            "children_6_11");
             put("Children 1-5",             "children_1_5");
-            put("Adult Undifferentiated",   "adultUndifferentiated");
-            put("Adult Unidentified",       "adultUnidentified");
         }
     };
 
@@ -120,11 +126,11 @@ public final class EbodacConstants {
             put("People Boostered",         "peopleBoostered");
             put("Adult Males",              "adultMales");
             put("Adult Females",            "adultFemales");
+            put("Adult Unidentified",       "adultUnidentified");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
             put("Children 12-17",           "children_12_17");
             put("Children 6-11",            "children_6_11");
             put("Children 1-5",             "children_1_5");
-            put("Adult Undifferentiated",   "adultUndifferentiated");
-            put("Adult Unidentified",       "adultUnidentified");
         }
     };
 }

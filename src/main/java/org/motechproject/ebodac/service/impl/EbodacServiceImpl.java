@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.Date;
@@ -91,6 +92,9 @@ public class EbodacServiceImpl implements EbodacService {
         String username = config.getFtpsUsername();
         String password = config.getFtpsPassword();
         String directory = config.getFtpsDirectory();
+        if (!directory.endsWith(File.separator)) {
+            directory += File.separator;
+        }
         Integer port = config.getFtpsPort();
 
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);

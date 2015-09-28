@@ -1,4 +1,4 @@
-package org.motechproject.ebodac.util;
+package org.motechproject.ebodac.template;
 
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

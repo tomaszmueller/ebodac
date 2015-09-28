@@ -15,6 +15,8 @@ import javax.jdo.annotations.Unique;
 @Entity
 public abstract class ReportVaccinationAbstract {
 
+    public static final String DATE_PROPERTY_NAME = "date";
+
     @NonEditable
     @Unique
     @UIDisplayable(position = 0)
@@ -32,27 +34,27 @@ public abstract class ReportVaccinationAbstract {
     private Integer adultFemales;
 
     @NonEditable
-    @UIDisplayable(position = 6)
+    @UIDisplayable(position = 8)
     @Field(displayName = "Children 1-5")
     private Integer children_1_5;
 
     @NonEditable
-    @UIDisplayable(position = 5)
+    @UIDisplayable(position = 7)
     @Field(displayName = "Children 6-11")
     private Integer children_6_11;
 
     @NonEditable
-    @UIDisplayable(position = 4)
+    @UIDisplayable(position = 6)
     @Field(displayName = "Children 12-17")
     private Integer children_12_17;
 
     @NonEditable
-    @UIDisplayable(position = 8)
+    @UIDisplayable(position = 4)
     @Field
     private Integer adultUnidentified;
 
     @NonEditable
-    @UIDisplayable(position = 7)
+    @UIDisplayable(position = 5)
     @Field
     private Integer adultUndifferentiated;
 

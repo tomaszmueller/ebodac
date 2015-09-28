@@ -36,5 +36,7 @@
     "Find Visits By Planned Visit Date Range", "Find Visits By Actual Date Range And Type", "Find Visits By Planned Visit Date Range And Type", "Find Visits By Participant Id"],
   "enableZetesJob":false,
   "enableRaveJob":false,
-  "enableReportJob":false
+  "enableReportJob":false,
+  "district":"Kambia",
+  "chiefdom":"Magbema"
 }

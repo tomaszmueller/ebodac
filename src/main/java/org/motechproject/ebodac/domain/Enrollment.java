@@ -10,6 +10,7 @@ import org.motechproject.ebodac.util.CustomDateSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
+import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.messagecampaign.domain.campaign.CampaignEnrollment;
 
 import javax.jdo.annotations.Persistent;
@@ -17,7 +18,7 @@ import javax.jdo.annotations.Unique;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(maxFetchDepth = 1)
+@Entity(nonEditable = true, maxFetchDepth = 1)
 @Unique(name = "externalIdAndCampaignName", members = {"externalId", "campaignName" })
 public class Enrollment {
 
@@ -35,12 +36,18 @@ public class Enrollment {
     @Field
     private Time deliverTime;
 
+    @NonEditable
     @Field
     private Enrollment parentEnrollment;
 
+    @NonEditable
     @Field
     @Persistent(mappedBy = "parentEnrollment")
-    private Set<Enrollment> duplicatedEnrollments = new HashSet<>();;
+    private Set<Enrollment> duplicatedEnrollments = new HashSet<>();
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     private Enrollment() {
     }
@@ -112,6 +119,14 @@ public class Enrollment {
 
     public void setDuplicatedEnrollments(Set<Enrollment> duplicatedEnrollments) {
         this.duplicatedEnrollments = duplicatedEnrollments;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override

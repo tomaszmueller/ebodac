@@ -1,8 +1,8 @@
 package org.motechproject.ebodac.service;
 
 
-import org.motechproject.ebodac.util.PdfBasicTemplate;
-import org.motechproject.ebodac.util.XlsBasicTemplate;
+import org.motechproject.ebodac.template.PdfBasicTemplate;
+import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.mds.query.QueryParams;
 
 import java.io.IOException;

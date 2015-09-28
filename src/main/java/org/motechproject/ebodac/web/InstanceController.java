@@ -15,15 +15,12 @@ import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
+import org.motechproject.ebodac.helper.ExportTemplatesHelper;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
-import org.motechproject.ebodac.util.DtoLookupHelper;
-import org.motechproject.ebodac.util.PdfBasicTemplate;
-import org.motechproject.ebodac.util.PdfReportATemplate;
-import org.motechproject.ebodac.util.PdfReportBTemplate;
-import org.motechproject.ebodac.util.XlsBasicTemplate;
-import org.motechproject.ebodac.util.XlsReportATemplate;
-import org.motechproject.ebodac.util.XlsReportBTemplate;
+import org.motechproject.ebodac.helper.DtoLookupHelper;
+import org.motechproject.ebodac.template.PdfBasicTemplate;
+import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.CsvImportResults;
 import org.motechproject.mds.dto.EntityDto;
@@ -77,6 +74,9 @@ public class InstanceController {
     @Autowired
     private EntityService entityService;
 
+    @Autowired
+    private ExportTemplatesHelper exportTemplatesHelper;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping(value = "/instances/{entityId}/Participantcsvimport", method = RequestMethod.POST)
@@ -120,11 +120,11 @@ public class InstanceController {
         QueryParams queryParams = new QueryParams(1, StringUtils.equalsIgnoreCase(exportRecords, "all") ? null : Integer.valueOf(exportRecords), order);
 
         if (className.equals(ReportPrimerVaccination.class.getName())) {
-            exportEntity(settings, exportRecords, outputFormat, response, "PrimerVaccinationReport",
-                    null, ReportPrimerVaccination.class, EbodacConstants.PRIMER_VACCINATION_REPORT_MAP);
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.PRIMER_VACCINATION_REPORT_NAME,
+                    null, ReportPrimerVaccination.class, EbodacConstants.PRIMER_VACCINATION_REPORT_MAP, settings.getFields());
         } else if (className.equals(ReportBoosterVaccination.class.getName())) {
-            exportEntity(settings, exportRecords, outputFormat, response, "BoosterVaccinationReport",
-                    null, ReportBoosterVaccination.class, EbodacConstants.BOOSTER_VACCINATION_REPORT_MAP);
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.BOOSTER_VACCINATION_REPORT_REPORT_NAME,
+                    null, ReportBoosterVaccination.class, EbodacConstants.BOOSTER_VACCINATION_REPORT_MAP, settings.getFields());
         } else if (Constants.ExportFormat.PDF.equals(outputFormat)) {
             response.setContentType("application/pdf");
 
@@ -168,8 +168,9 @@ public class InstanceController {
                                                      @RequestParam String exportRecords,
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
-        exportEntity(settings, exportRecords, outputFormat, response, "DailyClinicVisitScheduleReport",
-                null, Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP);
+
+        exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME,
+                null, Visit.class, EbodacConstants.DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP, settings.getFields());
     }
 
     @RequestMapping(value = "/exportFollowupsAfterPrimeInjectionReport", method = RequestMethod.GET)
@@ -177,12 +178,14 @@ public class InstanceController {
                                                      @RequestParam String exportRecords,
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
+
+        String oldLookupFields = settings.getFields();
         settings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
         if(settings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsAfterPrimeInjectionReport",
-                    null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP);
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME,
+                    null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP, oldLookupFields);
         }
     }
 
@@ -191,22 +194,20 @@ public class InstanceController {
                                                          @RequestParam String exportRecords,
                                                          @RequestParam String outputFormat,
                                                          HttpServletResponse response) throws IOException {
+
+        String oldLookupFields = settings.getFields();
         settings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
         if(settings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, "FollowupsMissedClinicVisitsReport",
-                    MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP);
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME,
+                    MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
         }
     }
 
-    private void exportEntity(GridSettings settings,
-                              String exportRecords,
-                              String outputFormat,
-                              HttpServletResponse response,
-                              String fileNameBeginning,
-                              Class<?> entityDtoType, Class<?> entityType,
-                              Map<String, String> headerMap) throws IOException {
+    private void exportEntity(GridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
+                              String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+                              String oldLookupFields) throws IOException {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
         final String fileName = fileNameBeginning + "_" + DateTime.now().toString(dateTimeFormatter);
@@ -233,14 +234,8 @@ public class InstanceController {
 
         try {
             if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
-                PdfBasicTemplate template;
-                if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
-                    template = new PdfReportATemplate(response.getOutputStream());
-                    ((PdfReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
-                } else {
-                    template = new PdfReportBTemplate(response.getOutputStream());
-                    ((PdfReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
-                }
+                PdfBasicTemplate template = exportTemplatesHelper.createTemplateForPdf(fileNameBeginning, entityType,
+                        settings, exportRecords, oldLookupFields, response.getOutputStream());
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
@@ -248,14 +243,8 @@ public class InstanceController {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
             } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
-                XlsBasicTemplate template;
-                if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
-                    template = new XlsReportATemplate(response.getOutputStream());
-                    ((XlsReportATemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Daily", "Kambia");
-                } else {
-                    template = new XlsReportBTemplate(response.getOutputStream());
-                    ((XlsReportBTemplate) template).setAdditionalCellValues(fileNameBeginning.replaceAll("([A-Z])", " $1"), "Kambia", "Magbema");
-                }
+                XlsBasicTemplate template = exportTemplatesHelper.createTemplateForXls(fileNameBeginning, entityType,
+                        settings, exportRecords, oldLookupFields, response.getOutputStream());
 
                 exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);

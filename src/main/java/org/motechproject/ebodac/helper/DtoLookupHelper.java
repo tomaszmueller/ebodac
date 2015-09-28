@@ -1,4 +1,4 @@
-package org.motechproject.ebodac.util;
+package org.motechproject.ebodac.helper;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -67,10 +67,10 @@ public class DtoLookupHelper {
                 }
             }
         }
-        if(StringUtils.isBlank(settings.getFields())) {
+        if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
         }
-        if(StringUtils.isBlank(settings.getLookup())) {
+        if (StringUtils.isBlank(settings.getLookup())) {
             settings.setLookup("Find Visits By Planned Date Less And Actual Date Eq And Subject Phone Number Eq");
             fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
             fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
@@ -81,10 +81,8 @@ public class DtoLookupHelper {
                 case "Find Visits By Planned Visit Date And Type": {
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                    if (date == null) {
-                        return null;
-                    }
-                    if (date.isAfter(LocalDate.now())) {
+
+                    if (date == null || date.isAfter(LocalDate.now())) {
                         return null;
                     }
                     String fields = settings.getFields();
@@ -102,9 +100,9 @@ public class DtoLookupHelper {
                     if (dateRange == null) {
                         return null;
                     }
-                    if (dateRange.getMax().isAfter(LocalDate.now()) && dateRange.getMin().isAfter(LocalDate.now())) {
+                    if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
                         return null;
-                    } else if (dateRange.getMax().isAfter(LocalDate.now()) && dateRange.getMin().isBefore(LocalDate.now())) {
+                    } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
                         settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
                     }
                     String fields = settings.getFields();
@@ -162,7 +160,7 @@ public class DtoLookupHelper {
         if (StringUtils.isNotBlank(rangeMap.get("max"))) {
             max = formatter.parseLocalDate(rangeMap.get("max"));
         }
-        if(max != null && min != null && max.isBefore(min)) {
+        if (max != null && min != null && max.isBefore(min)) {
             return null;
         }
         return new Range<>(min, max);

@@ -57,6 +57,11 @@ public class LookupServiceImpl implements LookupService {
             if(queryParams.getPage() == null) {
                 queryParams = new QueryParams(1, queryParams.getPageSize(), queryParams.getOrder());
             }
+
+            if (entities == null) {
+                entities = new ArrayList<>();
+            }
+
             return new Records<>(queryParams.getPage(), rowCount, (int) recordCount, entities);
         }
 
@@ -72,6 +77,11 @@ public class LookupServiceImpl implements LookupService {
             page = 1;
             entities = mdsLookupService.retrieveAll(entityType.getName(), queryParams);
         }
+
+        if (entities == null) {
+            entities = new ArrayList<>();
+        }
+
         return new Records<>(page, rowCount, (int) recordCount, entities);
     }
 

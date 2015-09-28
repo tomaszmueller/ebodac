@@ -21,7 +21,7 @@ public class EbodacEmailClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEmailClient.class);
 
     public Boolean hasNewJobCompletionMessage(String host, String user, String password) {
-        LOGGER.debug("Started checking for job completion emails");
+        LOGGER.info("Started checking for job completion emails");
         Properties properties = new Properties();
 
         Session session = Session.getDefaultInstance(properties);
@@ -64,7 +64,7 @@ public class EbodacEmailClient {
             LOGGER.error("Exception occurred when fetching new emails: " + e.getMessage(), e);
         }
 
-        LOGGER.debug("Finished checking for job completion emails, result: " + jobCompletion);
+        LOGGER.info("Finished checking for job completion emails, result: " + jobCompletion);
         return jobCompletion;
     }
 
