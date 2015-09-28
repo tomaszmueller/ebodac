@@ -2,6 +2,7 @@ package org.motechproject.ebodac.domain;
 
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 
 @Entity
 public class VotoMessage {
@@ -14,6 +15,10 @@ public class VotoMessage {
 
     @Field
     private String messageKey;
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public String getVotoIvrId() {
         return votoIvrId;
@@ -37,5 +42,13 @@ public class VotoMessage {
 
     public void setMessageKey(String messageKey) {
         this.messageKey = messageKey;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }
