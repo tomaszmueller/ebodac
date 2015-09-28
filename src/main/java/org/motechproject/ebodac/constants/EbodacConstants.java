@@ -112,11 +112,11 @@ public final class EbodacConstants {
             put("People Vaccinated",        "peopleVaccinated");
             put("Adult Males",              "adultMales");
             put("Adult Females",            "adultFemales");
+            put("Adult Unidentified",       "adultUnidentified");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
             put("Children 12-17",           "children_12_17");
             put("Children 6-11",            "children_6_11");
             put("Children 1-5",             "children_1_5");
-            put("Adult Undifferentiated",   "adultUndifferentiated");
-            put("Adult Unidentified",       "adultUnidentified");
         }
     };
 
@@ -126,11 +126,11 @@ public final class EbodacConstants {
             put("People Boostered",         "peopleBoostered");
             put("Adult Males",              "adultMales");
             put("Adult Females",            "adultFemales");
+            put("Adult Unidentified",       "adultUnidentified");
+            put("Adult Undifferentiated",   "adultUndifferentiated");
             put("Children 12-17",           "children_12_17");
             put("Children 6-11",            "children_6_11");
             put("Children 1-5",             "children_1_5");
-            put("Adult Undifferentiated",   "adultUndifferentiated");
-            put("Adult Unidentified",       "adultUnidentified");
         }
     };
 }
