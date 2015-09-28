@@ -16,7 +16,7 @@ import java.util.Properties;
 import static junit.framework.Assert.assertEquals;
 
 
-public class ChangePhoneNumberTest extends TestBase {
+public class ChangePhoneNumberUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;

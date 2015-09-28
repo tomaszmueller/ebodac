@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class LoginLogoutTest extends TestBase {
+public class LoginLogoutUiTest extends TestBase {
     private LoginPage loginPage;
 
     @Before
