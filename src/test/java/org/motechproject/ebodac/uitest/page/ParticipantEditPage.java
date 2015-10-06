@@ -11,7 +11,9 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final By PHONE_NUMBER_FIELD = By.id("phoneNumberForm");
     static final By SAVE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div[2]/div/button");
     static final By CONFIRMATION_BUTTON = By.xpath("//div[@id='editSubjectModal']/div[2]/div/div[3]/button");
-
+    static final By LANGUAGE_FIELD = By.xpath("(//button[@type='button'])[2]");
+    static final String LANGUAGE_PATH = "//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[8]/div/ng-form/div/div/ul/li";
+    static final String LANGUAGE_PATH_END = "/a/label";
     public ParticipantEditPage(WebDriver driver) {
         super(driver);
     }
@@ -35,5 +37,23 @@ public class ParticipantEditPage extends AbstractBasePage {
     private void changeFocus() {
         findElement(By.className("form-control")).click();
         findElement(By.className("form-control")).sendKeys("");
+    }
+
+    public String changeLanguage(String languagePos) throws InterruptedException  {
+        clickWhenVisible(LANGUAGE_FIELD);
+        String language = chooseLanguage(languagePos);
+        Thread.sleep(500);
+        clickOn(SAVE_BUTTON);
+        clickWhenVisible(CONFIRMATION_BUTTON);
+        return language;
+    }
+
+    private String chooseLanguage(String languagePos) {
+        try {
+            clickOn(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END));
+            return findElement(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END + "/input")).getText();
+        } catch(Exception e) {
+            throw new AssertionError("No language at chosen position");
+        }
     }
 }

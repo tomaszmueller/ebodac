@@ -10,6 +10,7 @@ public class ParticipantPage extends AbstractBasePage {
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By PARTICIPANT = By.id("1");
     static final By PHONE_NUMBER = By.xpath("//tr[@id='1']/td[@aria-describedby='instancesTable_phoneNumber']");
+    static final By LANGUAGE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[@aria-describedby='instancesTable_language']");
     public ParticipantPage(WebDriver driver) {
         super(driver);
     }
@@ -32,5 +33,10 @@ public class ParticipantPage extends AbstractBasePage {
 
     public String getFirstParticipantNumber() {
         return findElement(PHONE_NUMBER).getText();
+    }
+
+
+    public String getFirstParticipantLanguage() {
+        return findElement(LANGUAGE).getText();
     }
 }
