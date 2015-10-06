@@ -47,6 +47,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -154,7 +155,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldNotReenrollWhenMotechProjectedDateWasChanged() throws IOException {
+    public void shouldNotReenrollWhenRaveProjectedDateWasChanged() throws IOException {
         Subject subject = createSubjectWithRequireData("1");
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
@@ -839,6 +840,142 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
         assertEquals(10, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+        }
+    }
+
+    @Test
+    public void shouldEnrollPrimeVaccinationDayCampaignByActualVisitDate() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationPlannedDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationPlannedDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(2, subjectEnrollments.getEnrollments().size());
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNull(enrollment);
+
+        inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationActualDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationActualDate.csv");
+        inputStream.close();
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(4, subjectEnrollments.getEnrollments().size());
+
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNotNull(enrollment);
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+    }
+
+    @Test(expected = EbodacEnrollmentException.class)
+    public void shouldNotReenrollPrimeVaccinationDayCampaign() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationActualDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationActualDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(4, subjectEnrollments.getEnrollments().size());
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNotNull(enrollment);
+        assertEquals(new LocalDate(2115, 10, 10), enrollment.getReferenceDate());
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+
+        ebodacEnrollmentService.reenrollSubjectWithNewDate(subject.getSubjectId(),
+                VisitType.PRIME_VACCINATION_DAY.getValue(), new LocalDate(2115, 11, 11));
+    }
+
+    @Test(expected = EbodacEnrollmentException.class)
+    public void shouldNotEnrollPrimeVaccinationDayCampaignWithNewDate() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationActualDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationActualDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(4, subjectEnrollments.getEnrollments().size());
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNotNull(enrollment);
+        assertEquals(new LocalDate(2115, 10, 10), enrollment.getReferenceDate());
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+
+        ebodacEnrollmentService.unenrollSubject(subject.getSubjectId(), VisitType.PRIME_VACCINATION_DAY.getValue());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNotNull(enrollment);
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+
+        ebodacEnrollmentService.enrollSubjectToCampaignWithNewDate(subject.getSubjectId(),
+                VisitType.PRIME_VACCINATION_DAY.getValue(), new LocalDate(2115, 11, 11));
+    }
+
+    @Test(expected = EbodacEnrollmentException.class)
+    public void shouldNotReenrollPrimeVaccinationDayCampaignWhenVisitUpdated() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationActualDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationActualDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(4, subjectEnrollments.getEnrollments().size());
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.PRIME_VACCINATION_DAY.getValue());
+        assertNotNull(enrollment);
+        assertEquals(new LocalDate(2115, 10, 10), enrollment.getReferenceDate());
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+
+        Visit visit = visitService.findVisitBySubjectIdAndVisitType(subject.getSubjectId(), VisitType.PRIME_VACCINATION_DAY);
+        visit.setMotechProjectedDate(new LocalDate(2115, 11, 11));
+
+        ebodacEnrollmentService.reenrollSubject(visit);
+    }
+
+    @Test
+    public void shouldNotEnrollWhenSubjectDoesNotHavePrimeVaccinationDate() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollNoPrimeVaccinationDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollNoPrimeVaccinationDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+    }
+
+    @Test
+    public void shouldEnrollWhenSubjectPrimeVaccinationDateIsAddedFromRave() throws IOException {
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollNoPrimeVaccinationDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollNoPrimeVaccinationDate.csv");
+        inputStream.close();
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        inputStream = getClass().getResourceAsStream("/enrollPrimeVaccinationActualDate.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollPrimeVaccinationActualDate.csv");
+        inputStream.close();
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(4, subjectEnrollments.getEnrollments().size());
 
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
