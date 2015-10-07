@@ -589,7 +589,43 @@ public class EnrollmentControllerIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldCreateEnrollmentRecordsForSubject() throws IOException, InterruptedException {
+    public void shouldCreateEnrollmentRecordsForSubjectWhenLanguageIsAdded() throws IOException, InterruptedException {
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        assertNotNull(subject);
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        subject.setPhoneNumber("123456789");
+        checkResponse(200, "", updateSubject(subject, 200));
+
+        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject.setPhoneNumber("123456789");
+        subjectDataService.update(subject);
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        subject.setLanguage(Language.English);
+        checkResponse(200, "", updateSubject(subject, 200));
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+        }
+    }
+
+    @Test
+    public void shouldCreateEnrollmentRecordsForSubjectWhenPhoneNumberIsAdded() throws IOException, InterruptedException {
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
@@ -602,9 +638,18 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertNull(subjectEnrollments);
 
         subject.setLanguage(Language.English);
-        subject.setPhoneNumber("123456789");
-
         checkResponse(200, "", updateSubject(subject, 200));
+
+        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject.setLanguage(Language.English);
+        subjectDataService.update(subject);
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        subject.setPhoneNumber("123456789");
+        checkResponse(200, "", updateSubject(subject, 200));
+        subjectDataService.update(subject);
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);

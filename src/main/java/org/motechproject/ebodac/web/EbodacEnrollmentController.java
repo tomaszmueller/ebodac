@@ -331,7 +331,7 @@ public class EbodacEnrollmentController {
         } else {
             Subject oldSubject = subjectService.findSubjectBySubjectId(subject.getSubjectId());
             if (subject.getVisits() != null && subject.getPrimerVaccinationDate() != null && StringUtils.isNotBlank(subject.getPhoneNumber())
-                    && subject.getLanguage() != null && (oldSubject.getLanguage() == null || StringUtils.isBlank(subject.getPhoneNumber()))) {
+                    && subject.getLanguage() != null && (oldSubject.getLanguage() == null || StringUtils.isBlank(oldSubject.getPhoneNumber()))) {
                 ebodacEnrollmentService.createEnrollmentRecordsForSubject(oldSubject);
             }
         }
