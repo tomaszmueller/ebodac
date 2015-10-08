@@ -47,7 +47,7 @@ public class ChangeLanguageUiTest extends TestBase {
         url = properties.getWebAppUrl();
         if(url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant());
+            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
         }
         if(homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(L1adminUser, L1adminpassword);
