@@ -63,6 +63,7 @@ public final class EbodacConstants {
     public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";
     public static final String FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME = "FollowupsAfterPrimeInjectionReport";
     public static final String FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME = "FollowupsMissedClinicVisitsReport";
+    public static final String M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME = "MandEMissedClinicVisitsReport";
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
@@ -99,6 +100,23 @@ public final class EbodacConstants {
             put("DOB",                      "subject.dateOfBirth");
             put("Gender",                   "subject.gender");
             put("Address",                  "subject.address");
+            put("Visit type",               "type");
+            put("Planned Visit Date",       "motechProjectedDate");
+            put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
+            put("Community",                "subject.community");
+        }
+    };
+
+    public static final Map<String, String> M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Participant Id",           "subject.subjectId");
+            put("Participant Name",         "subject.name");
+            put("Household name",           "subject.householdName");
+            put("Head Of Household",        "subject.headOfHousehold");
+            put("DOB",                      "subject.dateOfBirth");
+            put("Gender",                   "subject.gender");
+            put("Address",                  "subject.address");
+            put("Phone",                    "subject.phoneNumber");
             put("Visit type",               "type");
             put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit","noOfDaysExceededVisit");

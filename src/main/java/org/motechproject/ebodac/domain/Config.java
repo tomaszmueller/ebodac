@@ -62,6 +62,8 @@ public class Config {
 
     private List<String> availableLookupsForFollowupsMissedClinicVisitsReport;
 
+    private List<String> availableLookupsForMandEMissedClinicVisitsReport;
+
     private List<String> availableLookupsForVisits;
 
     private Boolean enableZetesJob = false;
@@ -296,6 +298,18 @@ public class Config {
 
     public void setAvailableLookupsForFollowupsMissedClinicVisitsReport(List<String> availableLookupsForFollowupsMissedClinicVisitsReport) {
         this.availableLookupsForFollowupsMissedClinicVisitsReport = availableLookupsForFollowupsMissedClinicVisitsReport;
+    }
+
+
+    public List<String> getAvailableLookupsForMandEMissedClinicVisitsReport() {
+        if (availableLookupsForMandEMissedClinicVisitsReport == null) {
+            availableLookupsForMandEMissedClinicVisitsReport = new ArrayList<>();
+        }
+        return availableLookupsForMandEMissedClinicVisitsReport;
+    }
+
+    public void setAvailableLookupsForMandEMissedClinicVisitsReport(List<String> availableLookupsForMandEMissedClinicVisitsReport) {
+        this.availableLookupsForMandEMissedClinicVisitsReport = availableLookupsForMandEMissedClinicVisitsReport;
     }
 
     public List<String> getAvailableLookupsForVisits() {
