@@ -55,6 +55,10 @@ public class HomePage extends AbstractBasePage {
         }
     }
 
+    public void openDataServicesModule() throws InterruptedException {
+        clickWhenVisible(DATA_SERVICES);
+    }
+
     public void openSecurity() throws InterruptedException {
         clickWhenVisible(SECURITY);
     }

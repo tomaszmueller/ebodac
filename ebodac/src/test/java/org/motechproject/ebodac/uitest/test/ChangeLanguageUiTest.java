@@ -12,14 +12,9 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Properties;
+
 
 import static junit.framework.Assert.assertEquals;
-
 
 public class ChangeLanguageUiTest extends TestBase {
 
@@ -47,7 +42,7 @@ public class ChangeLanguageUiTest extends TestBase {
         url = properties.getWebAppUrl();
         if(url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant());
+            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
         }
         if(homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(L1adminUser, L1adminpassword);

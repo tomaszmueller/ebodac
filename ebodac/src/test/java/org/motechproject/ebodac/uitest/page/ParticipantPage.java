@@ -11,6 +11,11 @@ public class ParticipantPage extends AbstractBasePage {
     static final By PARTICIPANT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
     static final By PHONE_NUMBER = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[@aria-describedby='instancesTable_phoneNumber']");
     static final By LANGUAGE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[@aria-describedby='instancesTable_language']");
+    static final By LOOKUP_DIALOG_BUTTON = By.id("lookupDialogButton");
+    static final By SELECT_LOOKUP_BUTTON = By.xpath("//div[@id='lookup-dialog']/div[2]/div/div/button");
+    static final By FIND_UNIQUE_PARTICIPANT_BY_PARTICIPANT_ID = By.linkText("Find unique Participant By ParticipantId");
+    static final By ID_FIELD = By.xpath("//input[@type='text']");
+    static final By FIND_BUTTON = By.xpath("//button[@ng-click='filterInstancesByLookup()']");
     public ParticipantPage(WebDriver driver) {
         super(driver);
     }
@@ -28,6 +33,26 @@ public class ParticipantPage extends AbstractBasePage {
             throw new AssertionError("No participants present");
         }
         clickWhenVisible(PARTICIPANT);
+    }
+
+
+
+    public boolean findParticipant(String id) throws InterruptedException {
+        clickWhenVisible(LOOKUP_DIALOG_BUTTON);
+        clickWhenVisible(SELECT_LOOKUP_BUTTON);
+        clickWhenVisible(FIND_UNIQUE_PARTICIPANT_BY_PARTICIPANT_ID);
+        findElement(ID_FIELD).clear();
+        findElement(ID_FIELD).sendKeys(id);
+        Thread.sleep(1000);
+        clickWhenVisible(FIND_BUTTON);
+        Thread.sleep(1000);
+        try {
+            Thread.sleep(500);
+            findElement(PARTICIPANT);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
 
 
