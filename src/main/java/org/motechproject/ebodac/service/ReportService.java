@@ -7,4 +7,8 @@ public interface ReportService {
     void generateDailyReports();
 
     void generateDailyReportsFromDate(LocalDate startDate);
+
+    void generateIvrAndSmsStatisticReports();
+
+    void generateIvrAndSmsStatisticReportsFromDate(LocalDate startDate);
 }

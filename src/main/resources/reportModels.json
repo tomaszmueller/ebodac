@@ -321,5 +321,87 @@
       "align": "center",
       "formatter":"dateOfUnenrollment", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
     }]
+  },
+  "ivrAndSmsStatisticReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.subjectId",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.phone",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.gender",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.age",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.community",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.messageId",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.sendDate",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.expectedDuration",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.timeListenedTo",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.receivedDate",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.noOfAttempts",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.sms",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.smsReceivedDate"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    },{
+      "name": "subjectId",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.subjectId){ return ''; } return cellValue.subjectId; }"
+    },{
+      "name": "phone",
+      "jsonmap": "subject",
+      "index": "subject.phoneNumber",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.phoneNumber){ return ''; } return cellValue.phoneNumber; }"
+    }, {
+      "name": "gender",
+      "jsonmap": "subject",
+      "index": "subject.gender",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
+    }, {
+      "name": "age",
+      "index": "age",
+      "align": "center"
+    }, {
+      "name": "community",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
+    }, {
+      "name": "messageId",
+      "index": "messageId",
+      "align": "center"
+    }, {
+      "name": "sendDate",
+      "index": "sendDate",
+      "align": "center"
+    }, {
+      "name": "expectedDuration",
+      "index": "expectedDuration",
+      "align": "center"
+    }, {
+      "name": "timeListenedTo",
+      "index": "timeListenedTo",
+      "align": "center"
+    }, {
+      "name": "receivedDate",
+      "index": "receivedDate",
+      "align": "center"
+    }, {
+      "name": "numberOfAttempts",
+      "index": "numberOfAttempts",
+      "align": "center"
+    }, {
+      "name": "sms",
+      "index": "sms",
+      "align": "center"
+    }, {
+      "name": "smsReceivedDate",
+      "index": "smsReceivedDate",
+      "align": "center"
+    }]
   }
 }
