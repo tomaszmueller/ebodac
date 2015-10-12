@@ -130,6 +130,7 @@ public class EbodacServiceImpl implements EbodacService {
                         ftpsClient.fetchFile(directory + filename, outputStream);
                         LOGGER.info("Parsing CSV file {}", filename);
                         raveImportService.importCsv(new StringReader(outputStream.toString()), filename);
+                        config.setGenerateReports(true);
                         LOGGER.info("Finished parsing CSV file {}", filename);
                         if (date.isAfter(lastUpdated)) {
                             lastUpdated = date;
