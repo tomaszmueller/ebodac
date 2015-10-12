@@ -82,14 +82,6 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    @Override
-    public void shouldGenerateReports() {
-        Config config = configService.getConfig();
-
-        config.setGenerateReports(true);
-        configService.updateConfig(config);
-    }
-
     private void updateBoosterVaccinationReportsForDates(Set<String> dates) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 

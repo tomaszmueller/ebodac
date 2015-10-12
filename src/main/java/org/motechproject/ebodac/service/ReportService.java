@@ -7,6 +7,4 @@ public interface ReportService {
     void generateDailyReports();
 
     void generateDailyReportsFromDate(LocalDate startDate);
-
-    void shouldGenerateReports();
 }
