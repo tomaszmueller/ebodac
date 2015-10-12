@@ -30,7 +30,7 @@ public interface EbodacEnrollmentService {
 
     void completeCampaign(String subjectId, String campaignName);
 
-    boolean isEnrolled(Visit visit);
+    boolean checkIfEnrolledAndUpdateEnrollment(Visit visit);
 
     boolean isEnrolled(String subjectId);
 

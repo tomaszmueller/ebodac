@@ -201,7 +201,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     @Override
-    public boolean isEnrolled(Visit visit) {
+    public boolean checkIfEnrolledAndUpdateEnrollment(Visit visit) {
+        if (VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) || VisitType.SCREENING.equals(visit.getType())) {
+            return false;
+        }
+
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(visit.getSubject().getSubjectId());
         String campaignName = visit.getType().getValue();
 
@@ -211,7 +215,40 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
 
-        return enrollment != null && EnrollmentStatus.ENROLLED.equals(enrollment.getStatus());
+        if (enrollment == null) {
+            return false;
+        }
+
+        if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+            return true;
+        }
+
+        if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !visit.getMotechProjectedDate().equals(enrollment.getReferenceDate())) {
+            if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+                EnrollmentStatus enrollmentStatus = enrollment.getStatus();
+
+                subjectEnrollments.removeEnrolment(enrollment);
+                subjectEnrollmentsDataService.update(subjectEnrollments);
+                enrollmentDataService.delete(enrollment);
+
+                String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
+                campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+                enrollment = new Enrollment(visit.getSubject().getSubjectId(), campaignName);
+                enrollment.setStatus(enrollmentStatus);
+                enrollment.setReferenceDate(visit.getMotechProjectedDate());
+
+                subjectEnrollments.addEnrolment(enrollment);
+                subjectEnrollmentsDataService.update(subjectEnrollments);
+            } else {
+                enrollment.setReferenceDate(visit.getMotechProjectedDate());
+                enrollment.setParentEnrollment(null);
+                enrollment.setDuplicatedEnrollments(null);
+
+                enrollmentDataService.update(enrollment);
+            }
+        }
+
+        return false;
     }
 
     @Override
