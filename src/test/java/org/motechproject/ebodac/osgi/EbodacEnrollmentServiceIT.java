@@ -558,17 +558,17 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         visit.setType(VisitType.BOOST_VACCINATION_DAY);
         visit.setMotechProjectedDate(new LocalDate(2115, 10, 10));
         visit.setSubject(subject);
-        assertFalse(ebodacEnrollmentService.isEnrolled(visit));
+        assertFalse(ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit));
 
         visitService.create(visit);
         subject = subjectService.findSubjectBySubjectId("1");
         ebodacEnrollmentService.enrollSubject(subject);
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
-        assertTrue(ebodacEnrollmentService.isEnrolled(visit));
+        assertTrue(ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit));
 
         ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
-        assertFalse(ebodacEnrollmentService.isEnrolled(visit));
+        assertFalse(ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit));
     }
 
     @Test

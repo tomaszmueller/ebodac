@@ -661,6 +661,70 @@ public class EnrollmentControllerIT extends BasePaxIT {
         }
     }
 
+    @Test
+    public void shouldUpdateUnenrolledEnrollmentWhenVisitProjectedDateIsChanged() throws IOException, InterruptedException {
+
+        Subject subject1 = new Subject();
+        subject1.setSubjectId("1");
+        subject1.setSiteId("SiteId");
+        subject1.setLanguage(Language.English);
+        subject1.setPhoneNumber("123456789");
+        subjectDataService.create(subject1);
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        assertNotNull(subject);
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+            assertEquals(new LocalDate(2115, 10, 10), enrollment.getReferenceDate());
+        }
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getValue());
+        assertEquals("Boost Vaccination Day Thursday", enrollment.getCampaignName());
+
+        Visit visit = subject.getVisits().get(0);
+        assertEquals(VisitType.BOOST_VACCINATION_DAY, visit.getType());
+
+        visit.setMotechProjectedDate(new LocalDate(2115, 10, 11));
+        checkResponse(200, "", reenrollVisit(visit, 200));
+        assertEquals(new LocalDate(2115, 10, 11), visit.getMotechProjectedDate());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getValue());
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+        assertEquals(new LocalDate(2115, 10, 11), enrollment.getReferenceDate());
+        assertEquals("Boost Vaccination Day Friday", enrollment.getCampaignName());
+
+        subject = subjectDataService.findSubjectBySubjectId("1");
+        visit = subject.getVisits().get(1);
+        assertEquals(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT, visit.getType());
+
+        visit.setMotechProjectedDate(new LocalDate(2115, 10, 15));
+        checkResponse(200, "", reenrollVisit(visit, 200));
+        assertEquals(new LocalDate(2115, 10, 15), visit.getMotechProjectedDate());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+        assertEquals(new LocalDate(2115, 10, 15), enrollment.getReferenceDate());
+    }
+
     private String updateSubject(Subject subject, int errorCode) throws IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(subject);

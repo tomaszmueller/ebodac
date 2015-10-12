@@ -81,7 +81,7 @@ public class EbodacEnrollmentController {
         if (existingVisit.getDate() != null) {
             return new ResponseEntity<>("ebodac.enrollment.error.visitCompleted", HttpStatus.BAD_REQUEST);
         }
-        if (!ebodacEnrollmentService.isEnrolled(visit)) {
+        if (!ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit)) {
             return new ResponseEntity<>("ebodac.enrollment.success.plannedDateChanged", HttpStatus.OK);
         }
         if (visit.getMotechProjectedDate().equals(existingVisit.getMotechProjectedDate())) {
