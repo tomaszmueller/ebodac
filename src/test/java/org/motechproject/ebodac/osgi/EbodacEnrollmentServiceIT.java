@@ -292,7 +292,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         enrollmentList = enrollmentDataService.findEnrollmentsBySubjectId("1");
         for (Enrollment enrollment : enrollmentList) {
-            assertEquals(EnrollmentStatus.COMPLETED, enrollment.getStatus());
+            assertEquals(EnrollmentStatus.WITHDRAWN_FROM_STUDY, enrollment.getStatus());
         }
     }
 
@@ -321,7 +321,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         enrollmentList = enrollmentDataService.findEnrollmentsBySubjectId("1");
         assertEquals(EnrollmentStatus.ENROLLED, enrollmentList.get(0).getStatus());
-        assertEquals(EnrollmentStatus.COMPLETED, enrollmentList.get(1).getStatus());
+        assertEquals(EnrollmentStatus.UNENROLLED_FROM_BOOSTER, enrollmentList.get(1).getStatus());
         assertEquals(EnrollmentStatus.ENROLLED, enrollmentList.get(2).getStatus());
     }
 
@@ -545,7 +545,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         subjectService.createOrUpdateForRave(subject);
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
 
-        assertEquals(EnrollmentStatus.COMPLETED, subjectEnrollments.getStatus());
+        assertEquals(EnrollmentStatus.WITHDRAWN_FROM_STUDY, subjectEnrollments.getStatus());
     }
 
     @Test
