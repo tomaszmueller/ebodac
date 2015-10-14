@@ -11,6 +11,7 @@ public class HomePage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home";
     static final By EBODAC = By.linkText("EBODAC");
+    static final By SECURITY = By.linkText("Security");
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -24,5 +25,7 @@ public class HomePage extends AbstractBasePage {
         clickWhenVisible(EBODAC);
     }
 
-
+    public void openSecurity() throws InterruptedException {
+        clickWhenVisible(SECURITY);
+    }
 }
