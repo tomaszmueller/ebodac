@@ -616,11 +616,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
-        assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
+        assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
 
         for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
-            assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+            assertEquals(EnrollmentStatus.INITIAL, enrollment.getStatus());
         }
     }
 
@@ -653,11 +653,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
-        assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
+        assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
 
         for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
-            assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
+            assertEquals(EnrollmentStatus.INITIAL, enrollment.getStatus());
         }
     }
 
@@ -723,6 +723,91 @@ public class EnrollmentControllerIT extends BasePaxIT {
         enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
         assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         assertEquals(new LocalDate(2115, 10, 15), enrollment.getReferenceDate());
+    }
+
+    @Test
+    public void shouldEnrollSubjectWithInitialStatus() throws IOException, InterruptedException {
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        assertNotNull(subject);
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        subject.setPhoneNumber("123456789");
+        subject.setLanguage(Language.English);
+        checkResponse(200, "", updateSubject(subject, 200));
+
+        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject.setPhoneNumber("123456789");
+        subject.setLanguage(Language.English);
+        subjectDataService.update(subject);
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.INITIAL, enrollment.getStatus());
+        }
+
+        ebodacEnrollmentService.enrollSubject(subject.getSubjectId());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+        }
+    }
+
+    @Test
+    public void shouldEnrollCampaignWithInitialStatus() throws IOException, InterruptedException {
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        assertNotNull(subject);
+
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNull(subjectEnrollments);
+
+        subject.setPhoneNumber("123456789");
+        subject.setLanguage(Language.English);
+        checkResponse(200, "", updateSubject(subject, 200));
+
+        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject.setPhoneNumber("123456789");
+        subject.setLanguage(Language.English);
+        subjectDataService.update(subject);
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        for (Enrollment enrollment: subjectEnrollments.getEnrollments()) {
+            assertEquals(EnrollmentStatus.INITIAL, enrollment.getStatus());
+        }
+
+        ebodacEnrollmentService.enrollSubjectToCampaign(subject.getSubjectId(), VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+
+        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        assertNotNull(subjectEnrollments);
+        assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
+        assertEquals(3, subjectEnrollments.getEnrollments().size());
+
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
     }
 
     private String updateSubject(Subject subject, int errorCode) throws IOException, InterruptedException {

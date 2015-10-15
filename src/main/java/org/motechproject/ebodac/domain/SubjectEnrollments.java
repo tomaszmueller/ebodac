@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.domain;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.motechproject.ebodac.util.CustomEnrollmentStatusSerializer;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
@@ -43,6 +45,7 @@ public class SubjectEnrollments {
         this.subject = subject;
     }
 
+    @JsonSerialize(using = CustomEnrollmentStatusSerializer.class)
     public EnrollmentStatus getStatus() {
         return status;
     }

@@ -7,6 +7,7 @@ import org.joda.time.LocalDate;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
+import org.motechproject.ebodac.util.CustomEnrollmentStatusSerializer;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Ignore;
@@ -74,6 +75,7 @@ public class Enrollment {
         this.campaignName = campaignName;
     }
 
+    @JsonSerialize(using = CustomEnrollmentStatusSerializer.class)
     public EnrollmentStatus getStatus() {
         return status;
     }
