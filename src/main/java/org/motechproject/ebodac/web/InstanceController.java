@@ -18,7 +18,6 @@ import org.motechproject.ebodac.helper.ExportTemplatesHelper;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
-import org.motechproject.ebodac.service.impl.csv.VisitCsvExportCustomizer;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
 import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
@@ -64,9 +63,6 @@ public class InstanceController {
 
     @Autowired
     private SubjectCsvImportCustomizer subjectCsvImportCustomizer;
-
-    @Autowired
-    private VisitCsvExportCustomizer visitCsvExportCustomizer;
 
     @Autowired
     private ExportService exportService;
@@ -128,23 +124,13 @@ public class InstanceController {
         } else if (Constants.ExportFormat.PDF.equals(outputFormat)) {
             response.setContentType("application/pdf");
 
-            if(className.equals(Visit.class.getName())) {
-                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
-            } else {
-                csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings));
-            }
+            csvImportExportService.exportPdf(entityId, response.getOutputStream(), settings.getLookup(), queryParams,
+                    settings.getSelectedFields(), getFields(settings));
         } else if (EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
 
-            if(className.equals(Visit.class.getName())) {
-                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings), visitCsvExportCustomizer);
-            } else {
-                csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
-                        settings.getSelectedFields(), getFields(settings));
-            }
+            csvImportExportService.exportCsv(entityId, response.getWriter(), settings.getLookup(), queryParams,
+                    settings.getSelectedFields(), getFields(settings));
         } else {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
         }
