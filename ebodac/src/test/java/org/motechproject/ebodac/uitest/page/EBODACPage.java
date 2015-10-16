@@ -13,6 +13,7 @@ public class EBODACPage extends AbstractBasePage {
 
     static final By PARTICIPANTS = By.linkText("Participants");
     static final By REPORTS = By.linkText("Reports");
+    static final By VISITS = By.linkText("Visits");
     public EBODACPage(WebDriver driver) {
         super(driver);
     }
@@ -24,6 +25,10 @@ public class EBODACPage extends AbstractBasePage {
 
     public void gotoReports() throws InterruptedException {
         clickWhenVisible(REPORTS);
+    }
+
+    public void showVisits() throws InterruptedException {
+        clickWhenVisible(VISITS);
     }
 
     @Override
