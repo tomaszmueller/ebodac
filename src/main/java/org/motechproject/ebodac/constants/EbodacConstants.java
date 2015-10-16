@@ -64,6 +64,7 @@ public final class EbodacConstants {
     public static final String FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME = "FollowupsAfterPrimeInjectionReport";
     public static final String FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME = "FollowupsMissedClinicVisitsReport";
     public static final String M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME = "MandEMissedClinicVisitsReport";
+    public static final String OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME = "ParticipantsWhoOptOutOfReceivingMotechMessagesReport";
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
@@ -149,6 +150,15 @@ public final class EbodacConstants {
             put("Children 12-17",           "children_12_17");
             put("Children 6-11",            "children_6_11");
             put("Children 1-5",             "children_1_5");
+        }
+    };
+
+    public static final Map<String, String> OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Participant Id",           "subject.subjectId");
+            put("Gender",                   "subject.gender");
+            put("Age",                      "age");
+            put("Date of Unenrollment",     "dateOfUnenrollment");
         }
     };
 }

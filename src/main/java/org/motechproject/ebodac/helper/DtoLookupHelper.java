@@ -7,13 +7,20 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.api.Range;
+import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.web.domain.GridSettings;
+import org.motechproject.mds.dto.LookupDto;
+import org.motechproject.mds.dto.LookupFieldDto;
+import org.motechproject.mds.dto.LookupFieldType;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DtoLookupHelper {
@@ -206,6 +213,82 @@ public class DtoLookupHelper {
         return settings;
     }
 
+    public static GridSettings changeLookupAndOrderForOptsOutOfMotechMessagesReport(GridSettings settings) throws IOException {
+        Map<String, Object> fieldsMap = new HashMap<>();
+
+        if ("age".equals(settings.getSortColumn())) {
+            settings.setSortColumn(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME);
+            if (settings.getSortDirection().equals("asc")) {
+                settings.setSortDirection("desc");
+            } else {
+                settings.setSortDirection("asc");
+            }
+        }
+
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
+
+        if (StringUtils.isBlank(settings.getLookup())) {
+            settings.setLookup("Find Enrollments By Status");
+        } else if (settings.getLookup().equals("Find Enrollments By Participant Age")) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+            Range<Long> range = getLongRangeFromLookupFields(settings.getFields(), SubjectEnrollments.SUBJECT_AGE_PROPERTY_NAME);
+
+            if (range == null) {
+                return null;
+            }
+
+            Long minAge = range.getMin();
+            Long maxAge = range.getMax();
+
+            Map<String, String> dateRange = new HashMap<>();
+
+            if (minAge != null) {
+                dateRange.put("max", LocalDate.now().minusYears(minAge.intValue()).toString(formatter));
+            } else {
+                dateRange.put("max", "");
+            }
+
+            if (maxAge != null) {
+                dateRange.put("min", LocalDate.now().minusYears(maxAge.intValue() + 1).plusDays(1).toString(formatter));
+            } else {
+                dateRange.put("min", "");
+            }
+
+            fieldsMap.put(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME, dateRange);
+            settings.setLookup("Find Enrollments By Participant Date Of Birth Range And Status");
+        } else {
+            String fields = settings.getFields();
+            fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+
+            String newLookupName = settings.getLookup() + " And Status";
+            settings.setLookup(newLookupName);
+        }
+
+        fieldsMap.put(SubjectEnrollments.STATUS_PROPERTY_NAME, EnrollmentStatus.UNENROLLED.toString());
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
+        return settings;
+    }
+
+    public static List<LookupDto> addLookupForOptsOutOfMotechMessagesReport(List<LookupDto> lookups) {
+        LookupFieldDto lookupField = new LookupFieldDto(null, "subject", LookupFieldType.RANGE, null, false, "age");
+        lookupField.setClassName("java.lang.Long");
+        lookupField.setDisplayName("Participant");
+        lookupField.setRelatedFieldDisplayName("Age");
+
+        List<LookupFieldDto> lookupFields = new ArrayList<>();
+        lookupFields.add(lookupField);
+
+        List<String> fieldsOrder = new ArrayList<>();
+        fieldsOrder.add("subject.age");
+
+        LookupDto lookup = new LookupDto("Find Enrollments By Participant Age", false, false, lookupFields, true, "findEnrollmentsBySubjectAge", fieldsOrder);
+        lookups.add(lookup);
+
+        return lookups;
+    }
+
     private static Object getObjectFromLookupFields(String lookupFields, String fieldName) {
         Map<String, Object> fieldsMap;
         try {
@@ -259,6 +342,25 @@ public class DtoLookupHelper {
         } catch (IOException e) {
             throw new EbodacLookupException("Invalid lookup params", e);
         }
+    }
+
+    private static Range<Long> getLongRangeFromLookupFields(String lookupFields, String name) {
+        Long min = null;
+        Long max = null;
+        Map<String, String> rangeMap = (Map < String, String>)getObjectFromLookupFields(lookupFields, name);
+
+        try {
+            if (StringUtils.isNotBlank(rangeMap.get("min"))) {
+                min = Long.valueOf(rangeMap.get("min"));
+            }
+            if (StringUtils.isNotBlank(rangeMap.get("max"))) {
+                max = Long.valueOf(rangeMap.get("max"));
+            }
+        } catch (NumberFormatException e) {
+            throw new EbodacLookupException("Invalid lookup params", e);
+        }
+
+        return new Range<>(min, max);
     }
 
     private static Map<String, Object> getFields(String lookupFields) throws IOException {

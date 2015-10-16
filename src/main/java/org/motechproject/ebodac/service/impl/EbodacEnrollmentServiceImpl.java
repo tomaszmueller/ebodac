@@ -144,6 +144,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 enrollmentDataService.update(enrollment);
             }
         }
+        subjectEnrollments.setDateOfUnenrollment(LocalDate.now());
         updateSubjectEnrollments(subjectEnrollments);
     }
 

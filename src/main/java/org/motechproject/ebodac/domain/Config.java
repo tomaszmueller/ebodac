@@ -64,7 +64,11 @@ public class Config {
 
     private List<String> availableLookupsForMandEMissedClinicVisitsReport;
 
+    private List<String> availableLookupsForOptsOutOfMotechMessagesReport;
+
     private List<String> availableLookupsForVisits;
+
+    private List<String> availableLookupsForSubjectEnrollments;
 
     private Boolean enableZetesJob = false;
 
@@ -312,6 +316,17 @@ public class Config {
         this.availableLookupsForMandEMissedClinicVisitsReport = availableLookupsForMandEMissedClinicVisitsReport;
     }
 
+    public List<String> getAvailableLookupsForOptsOutOfMotechMessagesReport() {
+        if (availableLookupsForOptsOutOfMotechMessagesReport == null) {
+            availableLookupsForOptsOutOfMotechMessagesReport = new ArrayList<>();
+        }
+        return availableLookupsForOptsOutOfMotechMessagesReport;
+    }
+
+    public void setAvailableLookupsForOptsOutOfMotechMessagesReport(List<String> availableLookupsForOptsOutOfMotechMessagesReport) {
+        this.availableLookupsForOptsOutOfMotechMessagesReport = availableLookupsForOptsOutOfMotechMessagesReport;
+    }
+
     public List<String> getAvailableLookupsForVisits() {
         if (availableLookupsForVisits == null) {
             availableLookupsForVisits = new ArrayList<>();
@@ -321,6 +336,17 @@ public class Config {
 
     public void setAvailableLookupsForVisits(List<String> availableLookupsForVisits) {
         this.availableLookupsForVisits = availableLookupsForVisits;
+    }
+
+    public List<String> getAvailableLookupsForSubjectEnrollments() {
+        if (availableLookupsForSubjectEnrollments == null) {
+            availableLookupsForSubjectEnrollments = new ArrayList<>();
+        }
+        return availableLookupsForSubjectEnrollments;
+    }
+
+    public void setAvailableLookupsForSubjectEnrollments(List<String> availableLookupsForSubjectEnrollments) {
+        this.availableLookupsForSubjectEnrollments = availableLookupsForSubjectEnrollments;
     }
 
     public Boolean getEnableZetesJob() {

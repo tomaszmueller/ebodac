@@ -7,6 +7,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
+import org.motechproject.ebodac.domain.OptsOutOfMotechMessagesReportDto;
+import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.helper.DtoLookupHelper;
@@ -87,6 +89,8 @@ public class ReportController {
                 return getFollowupsMissedClinicVisitsReport(settings);
             case "MandEMissedClinicVisitsReport" :
                 return getMandEMissedClinicVisitsReport(settings);
+            case "optsOutOfMotechMessagesReport" :
+                return getOptsOutOfMotechMessagesReport(settings);
             default:
                 return null;
         }
@@ -185,6 +189,29 @@ public class ReportController {
         return ret;
     }
 
+    @RequestMapping(value = "/getLookupsForOptsOutOfMotechMessagesReport", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForOptsOutOfMotechMessagesReport() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
+        try {
+            availableLookups = lookupService.getAvailableLookups(SubjectEnrollments.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        DtoLookupHelper.addLookupForOptsOutOfMotechMessagesReport(availableLookups);
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForOptsOutOfMotechMessagesReport();
+
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
     @RequestMapping(value = "/getLookupsForVisits", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
@@ -252,6 +279,21 @@ public class ReportController {
             }
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
             return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+        } catch (IOException | EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new Records<Object>(null);
+        }
+    }
+
+    private Records<?> getOptsOutOfMotechMessagesReport(GridSettings settings) {
+        try {
+            settings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
+            if(settings == null) {
+                return new Records<Object>(null);
+            }
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
+            return lookupService.getEntities(OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class,
+                    settings.getLookup(), settings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
