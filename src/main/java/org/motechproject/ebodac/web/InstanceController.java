@@ -191,6 +191,22 @@ public class InstanceController {
         }
     }
 
+    @RequestMapping(value = "/exportMandEMissedClinicVisitsReport", method = RequestMethod.GET)
+    public void exportMandEMissedClinicVisitsReport(GridSettings settings,
+                                                    @RequestParam String exportRecords,
+                                                    @RequestParam String outputFormat,
+                                                    HttpServletResponse response) throws IOException {
+
+        String oldLookupFields = settings.getFields();
+        settings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
+        if(settings == null) {
+            response.sendError(400, "Invalid lookups params");
+        } else {
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME,
+                    MissedVisitsReportDto.class, Visit.class, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
+        }
+    }
+
     private void exportEntity(GridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                               String oldLookupFields) throws IOException {

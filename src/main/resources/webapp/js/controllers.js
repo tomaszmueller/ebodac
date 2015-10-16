@@ -326,6 +326,10 @@
                 url = "../ebodac/getLookupsForFollowupsMissedClinicVisitsReport";
                 $scope.reportName = $scope.msg('ebodac.web.reports.followupsMissedClinicVisitsReport');
                 break;
+            case "MandEMissedClinicVisitsReport":
+                url = "../ebodac/getLookupsForMandEMissedClinicVisitsReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.MandEMissedClinicVisitsReport');
+                break;
         }
          $scope.getLookups(url);
 
@@ -379,6 +383,9 @@
                     break;
                 case "followupsMissedClinicVisitsReport":
                     url = "../ebodac/exportFollowupsMissedClinicVisitsReport";
+                    break;
+                case "MandEMissedClinicVisitsReport":
+                    url = "../ebodac/exportMandEMissedClinicVisitsReport";
                     break;
             }
             url = url + "?outputFormat=" + $scope.exportFormat;

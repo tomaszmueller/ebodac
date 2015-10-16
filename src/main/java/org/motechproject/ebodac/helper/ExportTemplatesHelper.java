@@ -15,9 +15,11 @@ import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
 import org.motechproject.ebodac.template.PdfReportATemplate;
 import org.motechproject.ebodac.template.PdfReportBTemplate;
+import org.motechproject.ebodac.template.PdfReportCTemplate;
 import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.ebodac.template.XlsReportATemplate;
 import org.motechproject.ebodac.template.XlsReportBTemplate;
+import org.motechproject.ebodac.template.XlsReportCTemplate;
 import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
@@ -58,10 +60,12 @@ public class ExportTemplatesHelper {
             template = new PdfReportATemplate(outputStream);
             ((PdfReportATemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
-        } else {
+        } else if (reportName.equals("DailyClinicVisitScheduleReport") || reportName.equals("FollowupsMissedClinicVisitsReport") || reportName.equals("FollowupsAfterPrimeInjectionReport")) {
             template = new PdfReportBTemplate(outputStream);
             ((PdfReportBTemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
+        } else {
+            template = new PdfReportCTemplate(outputStream);
         }
         return template;
     }
@@ -79,10 +83,12 @@ public class ExportTemplatesHelper {
             template = new XlsReportATemplate(outputStream);
             ((XlsReportATemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
-        } else {
+        } else if (reportName.equals("DailyClinicVisitScheduleReport") || reportName.equals("FollowupsMissedClinicVisitsReport") || reportName.equals("FollowupsAfterPrimeInjectionReport")) {
             template = new XlsReportBTemplate(outputStream);
             ((XlsReportBTemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
+        } else {
+            template = new XlsReportCTemplate(outputStream);
         }
         return template;
     }

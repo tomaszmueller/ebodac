@@ -199,5 +199,93 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }]
+  },
+  "MandEMissedClinicVisitsReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.subjectId",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.subjectName",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.householdName",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.headOfHousehold",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.dateOfBirth",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.gender",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.address",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.phoneNumber",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.visitType",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.planedVisitDate",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.noOfDaysExceededVisit",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.community"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    },{
+      "name": "subjectId",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.subjectId){ return ''; } return cellValue.subjectId; }"
+    },{
+      "name": "subjectName",
+      "jsonmap": "subject",
+      "index": "subject.name",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.name){ return ''; } return cellValue.name; }"
+    }, {
+      "name": "subjectHouseholdName",
+      "jsonmap": "subject",
+      "index": "subject.householdName",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.householdName){ return ''; } return cellValue.householdName; }"
+    }, {
+      "name": "subjectHeadOfHousehold",
+      "jsonmap": "subject",
+      "index": "subject.headOfHousehold",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.headOfHousehold){ return ''; } return cellValue.headOfHousehold; }"
+    }, {
+      "name": "subjectDateOfBirth",
+      "jsonmap": "subject",
+      "index": "subject.dateOfBirth",
+      "align": "center",
+      "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.dateOfBirth){ return ''; } return cellValue.dateOfBirth; }"
+    }, {
+      "name": "subjectGender",
+      "jsonmap": "subject",
+      "index": "subject.gender",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
+    }, {
+      "name": "subjectAddress",
+      "jsonmap": "subject",
+      "index": "subject.address",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.address){ return ''; } return cellValue.address; }"
+    }, {
+      "name": "subjectPhoneNumber",
+      "jsonmap": "subject",
+      "index": "subject.phoneNumber",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.phoneNumber){ return ''; } return cellValue.phoneNumber; }"
+    }, {
+      "name": "type",
+      "index": "type",
+      "align": "center"
+    }, {
+      "name": "planedVisitDate",
+      "index": "motechProjectedDate",
+      "align": "center",
+      "formatter":"planedVisitDate", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "noOfDaysExceededVisit",
+      "index": "noOfDaysExceededVisit",
+      "align": "center"
+    }, {
+      "name": "subjectCommunity",
+      "jsonmap": "subject",
+      "index": "subject.community",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
+    }]
   }
 }

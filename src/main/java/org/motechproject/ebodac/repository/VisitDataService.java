@@ -190,4 +190,50 @@ public interface VisitDataService extends MotechDataService<Visit> {
                                                            @LookupField(name = "type") VisitType visitType,
                                                            @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 
+
+    /**
+     *  M&E Missed Clinic Visits Report Lookups
+     */
+
+    @Lookup
+    List<Visit> findVisitsByPlannedVisitDateLessAndActualVisitDate(@LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                   @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup(name = "Find Visits By Participant Id And Planned Visit Date And Actual Visit Date")
+    List<Visit> findVisitsBySubjectIdAndPlannedVisitDateAndActualVisitDate(@LookupField(name = "subject.subjectId", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
+                                                                           @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                           @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup(name = "Find Visits By Participant Name And Planned Visit Date And Actual Visit Date")
+    List<Visit> findVisitsBySubjectNameAndPlannedVisitDateAndActualVisitDate(@LookupField(name = "subject.name", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
+                                                                             @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                             @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup(name = "Find Visits By Participant Community And Planned Visit Date And Actual Visit Date")
+    List<Visit> findVisitsBySubjectCommunityAndPlannedVisitDateAndActualVisitDate(@LookupField(name = "subject.community", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String community,
+                                                                                  @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                                  @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup(name = "Find Visits By Participant Address And Planned Visit Date And Actual Visit Date")
+    List<Visit> findVisitsBySubjectAddressAndPlannedVisitDateAndActualVisitDate(@LookupField(name = "subject.address", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String address,
+                                                                                @LookupField(name = "motechProjectedDate", customOperator = Constants.Operators.LT) LocalDate motechProjectedDate,
+                                                                                @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedVisitDateAndActualVisitDate(@LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
+                                                               @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedVisitDateAndTypeAndActualVisitDate(@LookupField(name = "motechProjectedDate") LocalDate motechProjectedDate,
+                                                                      @LookupField(name = "type") VisitType visitType,
+                                                                      @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedVisitDateRangeAndActualVisitDate(@LookupField(name = "motechProjectedDate") Range<LocalDate> dateRange,
+                                                                    @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
+
+    @Lookup
+    List<Visit> findVisitsByPlannedVisitDateRangeAndTypeAndActualVisitDate(@LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
+                                                                           @LookupField(name = "type") VisitType visitType,
+                                                                           @LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date);
 }

@@ -85,6 +85,8 @@ public class ReportController {
                 return getFollowupsAfterPrimeInjectionReport(settings);
             case "followupsMissedClinicVisitsReport" :
                 return getFollowupsMissedClinicVisitsReport(settings);
+            case "MandEMissedClinicVisitsReport" :
+                return getMandEMissedClinicVisitsReport(settings);
             default:
                 return null;
         }
@@ -162,6 +164,27 @@ public class ReportController {
         return ret;
     }
 
+    @RequestMapping(value = "/getLookupsForMandEMissedClinicVisitsReport", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForMandEMissedClinicVisitsReport() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookupas;
+        try {
+            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForMandEMissedClinicVisitsReport();
+        for(LookupDto lookupDto : availableLookupas) {
+            if(lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
     @RequestMapping(value = "/getLookupsForVisits", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
@@ -210,6 +233,20 @@ public class ReportController {
     private Records<?> getFollowupsMissedClinicVisitsReport(GridSettings settings) {
         try {
             settings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
+            if(settings == null) {
+                return new Records<Object>(null);
+            }
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
+            return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+        } catch (IOException | EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new Records<Object>(null);
+        }
+    }
+
+    private Records<?> getMandEMissedClinicVisitsReport(GridSettings settings) {
+        try {
+            settings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
             if(settings == null) {
                 return new Records<Object>(null);
             }

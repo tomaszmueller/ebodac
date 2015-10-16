@@ -130,6 +130,82 @@ public class DtoLookupHelper {
         return settings;
     }
 
+    public static GridSettings changeLookupAndOrderForMandEMissedClinicVisitsReport(GridSettings settings) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        Map<String,String> fieldsMap = new HashMap<>();
+
+        if (StringUtils.isNotBlank(settings.getSortColumn())) {
+            String sortColumn = settings.getSortColumn();
+            if (sortColumn.equals("planedVisitDate") || sortColumn.equals("noOfDaysExceededVisit")) {
+                settings.setSortColumn(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
+                if (sortColumn.equals("noOfDaysExceededVisit")) {
+                    if (settings.getSortDirection().equals("asc")) {
+                        settings.setSortDirection("desc");
+                    } else {
+                        settings.setSortDirection("asc");
+                    }
+                }
+            }
+        }
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
+        if (StringUtils.isBlank(settings.getLookup())) {
+            settings.setLookup("Find Visits By Planned Visit Date Less And Actual Visit Date");
+            fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
+        } else {
+            switch (settings.getLookup()) {
+                case "Find Visits By Planned Visit Date":
+                case "Find Visits By Planned Visit Date And Type": {
+                    LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
+                            Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
+
+                    if (date == null || date.isAfter(LocalDate.now())) {
+                        return null;
+                    }
+                    String fields = settings.getFields();
+                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+
+                    String newLookupName = settings.getLookup() + " And Actual Visit Date";
+                    settings.setLookup(newLookupName);
+                    break;
+                }
+                case "Find Visits By Planned Visit Date Range":
+                case "Find Visits By Planned Visit Date Range And Type": {
+                    Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
+                            Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
+                    if (dateRange == null) {
+                        return null;
+                    }
+                    if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
+                        return null;
+                    } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
+                        settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
+                    }
+                    String fields = settings.getFields();
+                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+
+                    String newLookupName = settings.getLookup() + " And Actual Visit Date";
+                    settings.setLookup(newLookupName);
+                    break;
+                }
+                default: {
+                    String fields = settings.getFields();
+                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+                    fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
+
+                    String newLookupName = settings.getLookup() + " And Planned Visit Date And Actual Visit Date";
+                    settings.setLookup(newLookupName);
+                    break;
+                }
+            }
+        }
+
+        fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
+        return settings;
+    }
+
     private static Object getObjectFromLookupFields(String lookupFields, String fieldName) {
         Map<String, Object> fieldsMap;
         try {

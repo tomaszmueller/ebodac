@@ -35,12 +35,13 @@ public abstract class XlsBasicTemplate {
         this.outputStream = outputStream;
 
         try {
-           workbook = new HSSFWorkbook(getClass().getResourceAsStream(templatePath));
+            workbook = new HSSFWorkbook(getClass().getResourceAsStream(templatePath));
         } catch (IOException e) {
             throw new EbodacExportException(e.getMessage(), e);
         }
         setStyleMap();
         sheet = workbook.getSheetAt(0);
+
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
         sheet.setFitToPage(true);
