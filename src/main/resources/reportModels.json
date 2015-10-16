@@ -287,5 +287,39 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }]
+  },
+  "optsOutOfMotechMessagesReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.optsOutOfMotechMessagesReport.subjectId",
+      "ebodac.web.reports.optsOutOfMotechMessagesReport.subjectGender",
+      "ebodac.web.reports.optsOutOfMotechMessagesReport.age",
+      "ebodac.web.reports.optsOutOfMotechMessagesReport.dateOfUnenrollment"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    },{
+      "name": "subjectId",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.subjectId){ return ''; } return cellValue.subjectId; }"
+    }, {
+      "name": "subjectGender",
+      "jsonmap": "subject",
+      "index": "subject.gender",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.gender){ return ''; } return cellValue.gender; }"
+    }, {
+      "name": "age",
+      "index": "age",
+      "align": "center"
+    }, {
+      "name": "dateOfUnenrollment",
+      "index": "dateOfUnenrollment",
+      "align": "center",
+      "formatter":"dateOfUnenrollment", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }]
   }
 }

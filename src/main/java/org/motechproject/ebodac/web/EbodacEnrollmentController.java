@@ -13,6 +13,7 @@ import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.exception.EbodacException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.SubjectService;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,6 +59,9 @@ public class EbodacEnrollmentController {
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private ConfigService configService;
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/reenrollSubject", method = RequestMethod.POST)
@@ -130,7 +135,23 @@ public class EbodacEnrollmentController {
     @RequestMapping(value = "/getLookupsForEnrollments", method = RequestMethod.GET)
     @ResponseBody
     public List<LookupDto> getLookupsForEnrollments() {
-        return lookupService.getAvailableLookups(SubjectEnrollments.class.getName());
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
+
+        try {
+            availableLookups = lookupService.getAvailableLookups(SubjectEnrollments.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForSubjectEnrollments();
+
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
     }
 
     @PreAuthorize("hasRole('manageEnrollments')")

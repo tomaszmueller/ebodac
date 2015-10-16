@@ -142,7 +142,6 @@
 
             if ($scope.isRangedLookup(field)) {
                 type = "range";
-                value = "date";
                 if (!$scope.lookupBy[$scope.buildLookupFieldName(field)]) {
                     $scope.lookupBy[$scope.buildLookupFieldName(field)] = {min: '', max: ''};
                 }
@@ -330,6 +329,10 @@
                 url = "../ebodac/getLookupsForMandEMissedClinicVisitsReport";
                 $scope.reportName = $scope.msg('ebodac.web.reports.MandEMissedClinicVisitsReport');
                 break;
+            case "optsOutOfMotechMessagesReport":
+                url = "../ebodac/getLookupsForOptsOutOfMotechMessagesReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.optsOutOfMotechMessagesReport');
+                break;
         }
          $scope.getLookups(url);
 
@@ -386,6 +389,9 @@
                     break;
                 case "MandEMissedClinicVisitsReport":
                     url = "../ebodac/exportMandEMissedClinicVisitsReport";
+                    break;
+                case "optsOutOfMotechMessagesReport":
+                    url = "../ebodac/exportOptsOutOfMotechMessagesReport";
                     break;
             }
             url = url + "?outputFormat=" + $scope.exportFormat;

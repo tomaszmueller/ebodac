@@ -8,8 +8,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
+import org.motechproject.ebodac.domain.OptsOutOfMotechMessagesReportDto;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
+import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
@@ -204,6 +206,22 @@ public class InstanceController {
         } else {
             exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME,
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
+        }
+    }
+
+    @RequestMapping(value = "/exportOptsOutOfMotechMessagesReport", method = RequestMethod.GET)
+    public void exportOptsOutOfMotechMessagesReport(GridSettings settings,
+                                                    @RequestParam String exportRecords,
+                                                    @RequestParam String outputFormat,
+                                                    HttpServletResponse response) throws IOException {
+
+        String oldLookupFields = settings.getFields();
+        settings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
+        if(settings == null) {
+            response.sendError(400, "Invalid lookups params");
+        } else {
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME,
+                    OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_MAP, oldLookupFields);
         }
     }
 
