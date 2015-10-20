@@ -80,6 +80,22 @@ public class Config {
 
     private String chiefdom;
 
+    private Boolean sendIvrCalls = true;
+
+    private String ivrSettingsName;
+
+    private String apiKey;
+
+    private String statusCallbackUrl;
+
+    private Boolean SendSmsIfVoiceFails = true;
+
+    private Boolean detectVoiceMail = true;
+
+    private Integer retryAttempts;
+
+    private Integer retryDelay;
+
     public Config() {
     }
 
@@ -387,5 +403,69 @@ public class Config {
 
     public void setChiefdom(String chiefdom) {
         this.chiefdom = chiefdom;
+    }
+
+    public Boolean getSendIvrCalls() {
+        return sendIvrCalls;
+    }
+
+    public void setSendIvrCalls(Boolean sendIvrCalls) {
+        this.sendIvrCalls = sendIvrCalls;
+    }
+
+    public String getIvrSettingsName() {
+        return ivrSettingsName;
+    }
+
+    public void setIvrSettingsName(String ivrSettingsName) {
+        this.ivrSettingsName = ivrSettingsName;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getStatusCallbackUrl() {
+        return statusCallbackUrl;
+    }
+
+    public void setStatusCallbackUrl(String statusCallbackUrl) {
+        this.statusCallbackUrl = statusCallbackUrl;
+    }
+
+    public Boolean getSendSmsIfVoiceFails() {
+        return SendSmsIfVoiceFails;
+    }
+
+    public void setSendSmsIfVoiceFails(Boolean sendSmsIfVoiceFails) {
+        SendSmsIfVoiceFails = sendSmsIfVoiceFails;
+    }
+
+    public Boolean getDetectVoiceMail() {
+        return detectVoiceMail;
+    }
+
+    public void setDetectVoiceMail(Boolean detectVoiceMail) {
+        this.detectVoiceMail = detectVoiceMail;
+    }
+
+    public Integer getRetryAttempts() {
+        return retryAttempts;
+    }
+
+    public void setRetryAttempts(Integer retryAttempts) {
+        this.retryAttempts = retryAttempts;
+    }
+
+    public Integer getRetryDelay() {
+        return retryDelay;
+    }
+
+    public void setRetryDelay(Integer retryDelay) {
+        this.retryDelay = retryDelay;
     }
 }

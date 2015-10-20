@@ -49,6 +49,21 @@ public final class EbodacConstants {
     public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
     public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
 
+    public static final String API_KEY = "api_key";
+    public static final String MESSAGE_ID = "message_id";
+    public static final String STATUS_CALLBACK_URL = "status_callback_url";
+    public static final String SUBSCRIBERS = "subscribers";
+    public static final String PHONE = "phone";
+    public static final String LANGUAGE = "language";
+    public static final String SEND_SMS_IF_VOICE_FAILS = "send_sms_if_voice_fails";
+    public static final String DETECT_VOICEMAIL = "detect_voicemail_action";
+    public static final String RETRY_ATTEMPTS_SHORT = "retry_attempts_short";
+    public static final String RETRY_DELAY_SHORT = "retry_delay_short";
+    public static final String RETRY_ATTEMPTS_LONG = "retry_attempts_long";
+    public static final String RETRY_ATTEMPTS_LONG_DEFAULT = "1";
+    public static final String SUBJECT_IDS = "subject_ids";
+    public static final String SUBJECT_PHONE_NUMBER = "subscriber_phone";
+
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",

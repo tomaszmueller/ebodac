@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
+import org.motechproject.ebodac.helper.IvrCallHelper;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.EbodacService;
@@ -36,6 +37,9 @@ public class EbodacEventListener {
 
     @Autowired
     private EbodacEnrollmentService enrollmentService;
+
+    @Autowired
+    private IvrCallHelper ivrCallHelper;
 
     @MotechListener(subjects = {EbodacConstants.ZETES_UPDATE_EVENT})
     public void zetesUpdate(MotechEvent event) {
@@ -71,5 +75,14 @@ public class EbodacEventListener {
         String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
 
         enrollmentService.completeCampaign(externalId, campaignName);
+    }
+
+    @MotechListener(subjects = EventKeys.SEND_MESSAGE)
+    public void initiateIvrCall(MotechEvent event) throws SchedulerException {
+        String campaignName = (String) event.getParameters().get(EventKeys.CAMPAIGN_NAME_KEY);
+        String messageKey = (String) event.getParameters().get(EventKeys.MESSAGE_KEY);
+        String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
+
+        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
     }
 }

@@ -45,5 +45,13 @@
   "enableRaveJob":false,
   "enableReportJob":false,
   "district":"Kambia",
-  "chiefdom":"Magbema"
+  "chiefdom":"Magbema",
+  "sendIvrCalls":true,
+  "ivrSettingsName":"Voto",
+  "apiKey":null,
+  "statusCallbackUrl":null,
+  "SendSmsIfVoiceFails":true,
+  "detectVoiceMail":true,
+  "retryAttempts":3,
+  "retryDelay":15
 }
