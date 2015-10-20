@@ -30,4 +30,8 @@ public interface EnrollmentDataService extends MotechDataService<Enrollment> {
                                                                                    @LookupField(name = "referenceDate") LocalDate referenceDate,
                                                                                    @LookupField(name = "campaignName", customOperator = Constants.Operators.MATCHES) String campaignName,
                                                                                    @LookupField(name = "externalId") Set<String> externalIds);
+
+    @Lookup(name="Find Enrollment By Participant Id And Campaign Name")
+    Enrollment findEnrollmentBySubjectIdAndCampaignName(@LookupField(name = "externalId") String externalId,
+                                                        @LookupField(name = "campaignName") String campaignName);
 }

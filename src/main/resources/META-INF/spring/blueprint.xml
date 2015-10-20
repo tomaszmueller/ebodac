@@ -54,6 +54,12 @@
     <osgi:reference id="enrollmentDataService"
                     interface="org.motechproject.ebodac.repository.EnrollmentDataService" />
 
+    <osgi:reference id="votoMessageDataService"
+                    interface="org.motechproject.ebodac.repository.VotoMessageDataService" />
+
+    <osgi:reference id="votoLanguageDataService"
+                    interface="org.motechproject.ebodac.repository.VotoLanguageDataService" />
+
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 
     <osgi:reference id="mdsLookupServiceImpl" interface="org.motechproject.mds.service.MDSLookupService" />
@@ -74,4 +80,6 @@
     </osgi:reference>
 
     <osgi:reference id="entityService" interface="org.motechproject.mds.service.EntityService"/>
+
+    <osgi:reference id="outboundCallService" interface="org.motechproject.ivr.service.OutboundCallService"/>
 </beans>
