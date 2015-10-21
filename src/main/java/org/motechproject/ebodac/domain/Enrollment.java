@@ -29,7 +29,11 @@ public class Enrollment {
     @Field(required = true)
     private String campaignName;
 
+    @Field
     private EnrollmentStatus status;
+
+    @Field
+    private EnrollmentStatus previousStatus;
 
     @Field
     private LocalDate referenceDate;
@@ -81,7 +85,19 @@ public class Enrollment {
     }
 
     public void setStatus(EnrollmentStatus status) {
+        if (status != null && !status.equals(this.status)) {
+            previousStatus = this.status;
+        }
         this.status = status;
+    }
+
+    @JsonSerialize(using = CustomEnrollmentStatusSerializer.class)
+    public EnrollmentStatus getPreviousStatus() {
+        return previousStatus;
+    }
+
+    public void setPreviousStatus(EnrollmentStatus previousStatus) {
+        this.previousStatus = previousStatus;
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)

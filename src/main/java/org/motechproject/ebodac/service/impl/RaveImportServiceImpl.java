@@ -110,8 +110,8 @@ public class RaveImportServiceImpl implements RaveImportService {
             Object parsedValue = null;
             if (csvValue != null && !csvValue.equalsIgnoreCase("null")) {
                 parsedValue = TypeHelper.parse(csvValue, f.getType());
-                PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);
             }
+            PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);
         } catch (Exception e) {
             String msg = String.format("Error when processing field: %s, value in CSV file is %s",
                     fieldName, csvValue);

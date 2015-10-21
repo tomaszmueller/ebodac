@@ -85,6 +85,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
             if (!EnrollmentStatus.UNENROLLED.equals(enrollment.getStatus()) && !EnrollmentStatus.INITIAL.equals(enrollment.getStatus())) {
+                enrollment.setPreviousStatus(EnrollmentStatus.ENROLLED);
                 continue;
             }
             if (enrollment.getReferenceDate() == null) {
@@ -93,6 +94,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             } else if (disconVac) {
                 if (checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
                     enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
+                    enrollment.setPreviousStatus(EnrollmentStatus.ENROLLED);
                     continue;
                 }
             }
@@ -142,6 +144,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
                 enrollment.setStatus(EnrollmentStatus.UNENROLLED);
                 enrollmentDataService.update(enrollment);
+            } else {
+                enrollment.setPreviousStatus(EnrollmentStatus.UNENROLLED);
             }
         }
         subjectEnrollments.setDateOfUnenrollment(LocalDate.now());
@@ -176,15 +180,91 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (newSubject.getPrimerVaccinationDate() != null && oldSubject.getPrimerVaccinationDate() == null) {
             enrollSubject(newSubject);
         }
+        if (newSubject.getDateOfDisconStd() == null && oldSubject.getDateOfDisconStd() != null) {
+            LOGGER.warn("Date of discontinuation Study was removed for Participant with id: {}", newSubject.getSubjectId());
+            rollbackEnrollmentStatusOrEnrollNew(newSubject, false);
+        }
+        if (newSubject.getDateOfDisconVac() == null && oldSubject.getDateOfDisconVac() != null) {
+            LOGGER.warn("Date of discontinuation Vaccination was removed for Participant with id: {}", newSubject.getSubjectId());
+            rollbackEnrollmentStatusOrEnrollNew(newSubject, true);
+        }
         if (newSubject.getDateOfDisconStd() != null && oldSubject.getDateOfDisconStd() == null) {
             if (newSubject.getVisits() != null) {
                 for (Visit visit: newSubject.getVisits()) {
                     completeCampaignForSubjectWithStatus(visit, EnrollmentStatus.WITHDRAWN_FROM_STUDY);
                 }
             }
+            LOGGER.info("Participant with id: {} was withdrawn from study", oldSubject.getSubjectId());
         } else if (newSubject.getDateOfDisconVac() != null && oldSubject.getDateOfDisconVac() == null) {
             for (String campaignName: configService.getConfig().getDisconVacCampaignsList()) {
                 completeCampaignForSubjectWithStatus(newSubject, campaignName, EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
+            }
+            LOGGER.info("Participant with id: {} was unenrolled from booster", oldSubject.getSubjectId());
+        }
+    }
+
+    private void rollbackEnrollmentStatusOrEnrollNew(Subject subject, boolean boosterDiscon) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+
+        if (subjectEnrollments == null) {
+            enrollSubject(subject);
+        } else if (subject.getVisits() != null) {
+            EnrollmentStatus statusToRollback = EnrollmentStatus.WITHDRAWN_FROM_STUDY;
+            if (boosterDiscon) {
+                statusToRollback = EnrollmentStatus.UNENROLLED_FROM_BOOSTER;
+            }
+            for (Visit visit : subject.getVisits()) {
+                if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+                    Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
+                    if (enrollment == null) {
+                        enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
+                    } else {
+                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
+                    }
+                    enrollment = subjectEnrollments.findEnrolmentByCampaignName(EbodacConstants.BOOSTER_RELATED_MESSAGES);
+                    if (enrollment == null) {
+                        enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
+                    } else {
+                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
+                    }
+                } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
+                    Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
+                    if (enrollment == null) {
+                        enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+                    } else {
+                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
+                    }
+                }
+            }
+            updateSubjectEnrollments(subjectEnrollments);
+        }
+    }
+
+    private void rollbackEnrollmentStatus(Subject subject, Enrollment enrollment, EnrollmentStatus statusToRollback) {
+        if (statusToRollback.equals(enrollment.getStatus())) {
+            EnrollmentStatus status = enrollment.getPreviousStatus();
+
+            if (status == null) {
+                status = EnrollmentStatus.ENROLLED;
+            }
+
+            enrollment.setStatus(status);
+
+            try {
+                if (EnrollmentStatus.ENROLLED.equals(status)) {
+                    boolean disconVac = checkSubjectRequiredDataAndDisconVacDate(subject);
+
+                    if (disconVac && checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
+                        enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
+                    } else if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+                        scheduleJobsForEnrollment(enrollment, true);
+                    }
+                }
+
+                enrollmentDataService.update(enrollment);
+            } catch (EbodacEnrollmentException e) {
+                LOGGER.debug("Cannot rollback status for Enrollment with id: {} and Campaign name: {}",
+                        enrollment.getExternalId(), enrollment.getCampaignName(), e);
             }
         }
     }
@@ -227,6 +307,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !visit.getMotechProjectedDate().equals(enrollment.getReferenceDate())) {
             if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
                 EnrollmentStatus enrollmentStatus = enrollment.getStatus();
+                EnrollmentStatus previousStatus = enrollment.getPreviousStatus();
 
                 subjectEnrollments.removeEnrolment(enrollment);
                 subjectEnrollmentsDataService.update(subjectEnrollments);
@@ -236,6 +317,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
                 enrollment = new Enrollment(visit.getSubject().getSubjectId(), campaignName);
                 enrollment.setStatus(enrollmentStatus);
+                enrollment.setPreviousStatus(previousStatus);
                 enrollment.setReferenceDate(visit.getMotechProjectedDate());
 
                 subjectEnrollments.addEnrolment(enrollment);
