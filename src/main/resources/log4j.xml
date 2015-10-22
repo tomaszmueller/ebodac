@@ -30,6 +30,10 @@
         <level value="INFO"/>
     </logger>
 
+    <logger name="org.motechproject.ebodac.service.impl.EbodacEnrollmentServiceImpl">
+        <level value="WARN"/>
+    </logger>
+
     <root>
         <priority value="ERROR"/>
         <appender-ref ref="CONSOLE"/>
