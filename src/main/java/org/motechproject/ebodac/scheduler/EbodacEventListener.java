@@ -78,7 +78,9 @@ public class EbodacEventListener {
     }
 
     @MotechListener(subjects = EventKeys.SEND_MESSAGE)
-    public void initiateIvrCall(MotechEvent event) throws SchedulerException {
+    public void initiateIvrCall(MotechEvent event) {
+        LOGGER.debug("Handling Motech event {}: {}", event.getSubject(), event.getParameters().toString());
+
         String campaignName = (String) event.getParameters().get(EventKeys.CAMPAIGN_NAME_KEY);
         String messageKey = (String) event.getParameters().get(EventKeys.MESSAGE_KEY);
         String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
