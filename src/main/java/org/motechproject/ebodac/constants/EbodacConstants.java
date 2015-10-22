@@ -85,7 +85,7 @@ public final class EbodacConstants {
         {
             put("Planned Visit Date","motechProjectedDate");
             put("Participant ID",    "subject.subjectId");
-            put("Participant Name",  "subject.name");
+            put("Name",              "subject.name");
             put("Phone Number",      "subject.phoneNumber");
             put("Address",           "subject.address");
             put("Visit type",        "type");
@@ -95,7 +95,7 @@ public final class EbodacConstants {
 
     public static final Map<String, String> FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Participant Name",         "subject.name");
+            put("Name",                     "subject.name");
             put("Household name",           "subject.householdName");
             put("Head Of Household",        "subject.headOfHousehold");
             put("DOB",                      "subject.dateOfBirth");
@@ -110,7 +110,7 @@ public final class EbodacConstants {
 
     public static final Map<String, String> FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Participant Name",         "subject.name");
+            put("Name",                     "subject.name");
             put("Household name",           "subject.householdName");
             put("Head Of Household",        "subject.headOfHousehold");
             put("DOB",                      "subject.dateOfBirth");
@@ -126,7 +126,7 @@ public final class EbodacConstants {
     public static final Map<String, String> M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
             put("Participant Id",           "subject.subjectId");
-            put("Participant Name",         "subject.name");
+            put("Name",                     "subject.name");
             put("Household name",           "subject.householdName");
             put("Head Of Household",        "subject.headOfHousehold");
             put("DOB",                      "subject.dateOfBirth");
