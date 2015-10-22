@@ -12,13 +12,14 @@ public class HomePage extends AbstractBasePage {
     public static final String URL_PATH = "/home";
     static final By EBODAC = By.linkText("EBODAC");
     static final By SECURITY = By.linkText("Security");
-    static final By DATA_SERVICES = By.linkText("Data Services");
+    public static final By DATA_SERVICES = By.linkText("Data Services");
     static final By EMAIL = By.linkText("Email");
     static final By MESSAGE_CAMPAIGN = By.linkText("Message Campaign");
     static final By IVR = By.linkText("IVR");
     static final By SMS = By.linkText("SMS");
     static final By SCHEDULER = By.linkText("Scheduler");
     static final By TASKS = By.linkText("Tasks");
+    static final By MODULES = By.linkText("Modules");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -120,6 +121,24 @@ public class HomePage extends AbstractBasePage {
             }
             return false;
         } catch(Exception e) {
+            return false;
+        }
+    }
+
+    public void clickOnEbodac() throws InterruptedException{
+        Thread.sleep(500);
+        clickOn(EBODAC);
+    }
+
+    public void clickModules() throws InterruptedException{
+        clickWhenVisible(MODULES);
+    }
+
+    public boolean isElementPresent(By by) {
+        try {
+            findElement(by);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
