@@ -301,7 +301,7 @@
         $scope.actualExportColumns = 'All';
         $scope.exportFormat = 'csv';
         $scope.checkboxModel = {
-            exportWithLookup : false,
+            exportWithLookup : true,
             exportWithOrder : false
         };
 
@@ -355,6 +355,7 @@
         };
 
         $scope.exportEntityInstances = function () {
+            $scope.checkboxModel.exportWithLookup = true;
             $('#exportEbodacInstanceModal').modal('show');
         };
 
@@ -405,7 +406,7 @@
                url = url + "&sortDirection=" + sortDirection;
            }
 
-           if ($scope.checkboxModel.exportWithLookup === true) {
+           if ($scope.selectedLookup !== undefined && $scope.checkboxModel.exportWithLookup === true) {
                url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
                url = url + "&fields=" + JSON.stringify($scope.lookupBy);
            }
