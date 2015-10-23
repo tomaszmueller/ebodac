@@ -23,17 +23,23 @@ public class UsersPage extends AbstractBasePage {
         return URL_ROOT + URL_PATH;
     }
 
-    public void addUser(String userName, String password, String roles) throws InterruptedException{
+    public boolean addUser(String userName, String password, String roles) throws InterruptedException{
         clickWhenVisible(ADD_USER);
         waitForElement(USERNAME);
         findElement(USERNAME).clear();
         findElement(USERNAME).sendKeys(userName);
+        if(findElement(USERNAME).getAttribute("class").contains("ng-invalid-pwd")) {
+            return false;
+        }
+        waitForElement(NEW_PASSWORD);
         findElement(NEW_PASSWORD).clear();
         findElement(NEW_PASSWORD).sendKeys(password);
+        waitForElement(CONFIRM_PASSWORD);
         findElement(CONFIRM_PASSWORD).clear();
         findElement(CONFIRM_PASSWORD).sendKeys(password);
         clickOn(By.xpath("//input[@value='" + roles + "']"));
-        clickOn(CONFIRM);
+        clickWhenVisible(CONFIRM);
         clickOn(POPUP);
+        return true;
     }
 }

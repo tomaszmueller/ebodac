@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.uitest.helper;
 
+import org.motech.page.LoginPage;
+import org.motech.page.TestProperties;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.SecurityPage;
 import org.motechproject.ebodac.uitest.page.UsersPage;
@@ -11,29 +13,38 @@ public class CreateUsersHelper {
     private HomePage homePage;
     private SecurityPage securityPage;
     private UsersPage usersPage;
+    private LoginPage loginPage;
 
     public CreateUsersHelper(WebDriver driver) {
         this.driver = driver;
         homePage = new HomePage(driver);
         securityPage = new SecurityPage(driver);
         usersPage = new UsersPage(driver);
+        loginPage = new LoginPage(driver);
     }
-    public void createUser(String userName, String password, String roles) throws InterruptedException {
+    public boolean createUser(String userName, String password, String roles) throws InterruptedException {
         homePage.openSecurity();
         securityPage.openUserManagement();
-        usersPage.addUser(userName,password,roles);
+        return usersPage.addUser(userName,password,roles);
     }
 
-    public void createAdminUser() throws InterruptedException {
-        createUser("admin","testadmin","EBODAC Administrator");
+    public boolean createAdminUser() throws InterruptedException {
+        return createUser("admin", "testadmin", "EBODAC Administrator");
     }
 
-    public void createAnalystUser() throws InterruptedException  {
-        createUser("analyst","testanalyst","EBODAC Site-Analyst");
+    public boolean createAnalystUser() throws InterruptedException  {
+        return createUser("analyst","testanalyst","EBODAC Site-Analyst");
     }
 
     public void createUsers() throws InterruptedException {
-        createAdminUser();
-        createAnalystUser();
+        if(createAdminUser()) {
+            createAnalystUser();
+        }
+    }
+
+    public void createUsersWithLogin(TestProperties properties) throws InterruptedException {
+        loginPage.login(properties.getUserName(), properties.getPassword());
+        createUsers();
+        loginPage.logOut();
     }
 }
