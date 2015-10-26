@@ -276,6 +276,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
             if (enrollment != null) {
                 enrollment.setStatus(EnrollmentStatus.COMPLETED);
+                enrollment.setDuplicatedEnrollments(null);
                 updateSubjectEnrollments(subjectEnrollments);
             }
         }
@@ -408,20 +409,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private void enrollSubject(Visit visit) {
-        try {
-            if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
-                enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
-            } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-                enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
-            }
-        } catch (EbodacEnrollmentException e) {
-            LOGGER.debug(e.getMessage(), e);
+        if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+            enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
+            enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
+        } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
+            enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
         }
     }
 
     private void enrollNew(Subject subject, String campaignName, LocalDate referenceDate) {
-        enrollNew(subject, campaignName, referenceDate, null);
+        try {
+            enrollNew(subject, campaignName, referenceDate, null);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+        }
     }
 
     private void enrollNew(Subject subject, String campaignName, LocalDate referenceDate, Time deliverTime) {
@@ -688,6 +689,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                     break;
                 }
             }
+            oldParent.setDuplicatedEnrollments(null);
         }
     }
 
@@ -697,6 +699,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (enrollment.getParentEnrollment() != null && EnrollmentStatus.ENROLLED.equals(enrollment.getParentEnrollment().getStatus())) {
             return true;
         }
+
+        enrollment.setParentEnrollment(null);
 
         String phoneNumber = subject.getPhoneNumber();
         LocalDate referenceDate = enrollment.getReferenceDate();
