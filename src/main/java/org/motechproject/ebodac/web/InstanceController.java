@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
+import org.motechproject.ebodac.domain.IvrAndSmsStatisticReportDto;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.OptsOutOfMotechMessagesReportDto;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
@@ -222,6 +224,22 @@ public class InstanceController {
         } else {
             exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME,
                     OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_MAP, oldLookupFields);
+        }
+    }
+
+    @RequestMapping(value = "/exportIvrAndSmsStatisticReport", method = RequestMethod.GET)
+    public void exportIvrAndSmsStatisticReport(GridSettings settings,
+                                               @RequestParam String exportRecords,
+                                               @RequestParam String outputFormat,
+                                               HttpServletResponse response) throws IOException {
+
+        String oldLookupFields = settings.getFields();
+        settings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
+        if(settings == null) {
+            response.sendError(400, "Invalid lookups params");
+        } else {
+            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_NAME,
+                    IvrAndSmsStatisticReportDto.class, IvrAndSmsStatisticReport.class, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_MAP, oldLookupFields);
         }
     }
 

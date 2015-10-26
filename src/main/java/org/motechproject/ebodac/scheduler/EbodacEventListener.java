@@ -66,6 +66,7 @@ public class EbodacEventListener {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
         LOGGER.info("Started generation of daily reports...");
         reportService.generateDailyReports();
+        reportService.generateIvrAndSmsStatisticReports();
         LOGGER.info("Daily Reports generation completed");
     }
 

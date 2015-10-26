@@ -46,6 +46,8 @@ public class Config {
 
     private String lastCalculationDate;
 
+    private String lastCalculationDateForIvrReports;
+
     private Boolean generateReports;
 
     private Boolean showWarnings = true;
@@ -236,6 +238,14 @@ public class Config {
 
     public void setLastCalculationDate(String lastCalculationDate) {
         this.lastCalculationDate = lastCalculationDate;
+    }
+
+    public String getLastCalculationDateForIvrReports() {
+        return lastCalculationDateForIvrReports;
+    }
+
+    public void setLastCalculationDateForIvrReports(String lastCalculationDateForIvrReports) {
+        this.lastCalculationDateForIvrReports = lastCalculationDateForIvrReports;
     }
 
     public Boolean getGenerateReports() {

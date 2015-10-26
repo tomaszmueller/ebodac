@@ -34,6 +34,10 @@
         <level value="WARN"/>
     </logger>
 
+    <logger name="org.motechproject.ebodac.service.impl.ReportServiceImpl">
+        <level value="WARN"/>
+    </logger>
+
     <root>
         <priority value="ERROR"/>
         <appender-ref ref="CONSOLE"/>

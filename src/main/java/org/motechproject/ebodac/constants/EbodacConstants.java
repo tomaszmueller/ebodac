@@ -73,6 +73,15 @@ public final class EbodacConstants {
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final String IVR_CALL_DETAIL_RECORD_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSS";
+    public static final String IVR_CALL_DETAIL_RECORD_MOTECH_TIMESTAMP_FIELD = "motechTimestamp";
+
+    public static final String IVR_CALL_DETAIL_RECORD_STATUS_INITIATED = "INITIATED";
+    public static final String IVR_CALL_DETAIL_RECORD_STATUS_FINISHED = "Finished";
+    public static final String IVR_CALL_DETAIL_RECORD_STATUS_FAILED = "Failed";
+    public static final String IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED = "Submitted";
+    public static final String IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS = "attempts";
+
     public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
     public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";
     public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";
@@ -80,6 +89,7 @@ public final class EbodacConstants {
     public static final String FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME = "FollowupsMissedClinicVisitsReport";
     public static final String M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME = "MandEMissedClinicVisitsReport";
     public static final String OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME = "ParticipantsWhoOptOutOfReceivingMotechMessagesReport";
+    public static final String IVR_AND_SMS_STATISTIC_REPORT_NAME = "NumberOfTimesParticipantsListenedToEachMessageReport";
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
@@ -174,6 +184,25 @@ public final class EbodacConstants {
             put("Gender",                   "subject.gender");
             put("Age",                      "age");
             put("Date of Unenrollment",     "dateOfUnenrollment");
+        }
+    };
+
+
+    public static final Map<String, String> IVR_AND_SMS_STATISTIC_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Participant Id",           "subject.subjectId");
+            put("Phone",                    "subject.phoneNumber");
+            put("Gender",                   "subject.gender");
+            put("Age",                      "age");
+            put("Location (Community)",     "subject.community");
+            put("Message ID",               "messageId");
+            put("Send Date",                "sendDate");
+            put("Expected Duration",        "expectedDuration");
+            put("Time Listened To",         "timeListenedTo");
+            put("Received Date",            "receivedDate");
+            put("No. of Attempts",          "numberOfAttempts");
+            put("SMS",                      "sms");
+            put("SMS Received Date",        "smsReceivedDate");
         }
     };
 }
