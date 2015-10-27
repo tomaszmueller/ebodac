@@ -35,18 +35,18 @@ public abstract class ReportVaccinationAbstract {
 
     @NonEditable
     @UIDisplayable(position = 8)
-    @Field(displayName = "Children 1-5")
-    private Integer children_1_5;
+    @Field(displayName = "Children 1-5", name = "children_1_5")
+    private Integer childrenFrom1To5;
 
     @NonEditable
     @UIDisplayable(position = 7)
-    @Field(displayName = "Children 6-11")
-    private Integer children_6_11;
+    @Field(displayName = "Children 6-11", name = "children_6_11")
+    private Integer childrenFrom6To11;
 
     @NonEditable
     @UIDisplayable(position = 6)
-    @Field(displayName = "Children 12-17")
-    private Integer children_12_17;
+    @Field(displayName = "Children 12-17", name = "children_12_17")
+    private Integer childrenFrom12To17;
 
     @NonEditable
     @UIDisplayable(position = 4)
@@ -65,14 +65,14 @@ public abstract class ReportVaccinationAbstract {
     public ReportVaccinationAbstract() {
     }
 
-    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
-                                     Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
+    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+                                     Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.date = date;
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
-        this.children_1_5 = children_1_5;
-        this.children_6_11 = children_6_11;
-        this.children_12_17 = children_12_17;
+        this.childrenFrom1To5 = childrenFrom1To5;
+        this.childrenFrom6To11 = childrenFrom6To11;
+        this.childrenFrom12To17 = childrenFrom12To17;
         this.adultUnidentified = adultUnidentified;
         this.adultUndifferentiated = adultUndifferentiated;
     }
@@ -103,28 +103,28 @@ public abstract class ReportVaccinationAbstract {
         this.adultFemales = adultFemales;
     }
 
-    public Integer getChildren_1_5() {
-        return children_1_5;
+    public Integer getChildrenFrom1To5() {
+        return childrenFrom1To5;
     }
 
-    public void setChildren_1_5(Integer children_1_5) {
-        this.children_1_5 = children_1_5;
+    public void setChildrenFrom1To5(Integer childrenFrom1To5) {
+        this.childrenFrom1To5 = childrenFrom1To5;
     }
 
-    public Integer getChildren_6_11() {
-        return children_6_11;
+    public Integer getChildrenFrom6To11() {
+        return childrenFrom6To11;
     }
 
-    public void setChildren_6_11(Integer children_6_11) {
-        this.children_6_11 = children_6_11;
+    public void setChildrenFrom6To11(Integer childrenFrom6To11) {
+        this.childrenFrom6To11 = childrenFrom6To11;
     }
 
-    public Integer getChildren_12_17() {
-        return children_12_17;
+    public Integer getChildrenFrom12To17() {
+        return childrenFrom12To17;
     }
 
-    public void setChildren_12_17(Integer children_12_17) {
-        this.children_12_17 = children_12_17;
+    public void setChildrenFrom12To17(Integer childrenFrom12To17) {
+        this.childrenFrom12To17 = childrenFrom12To17;
     }
 
     public Integer getAdultUnidentified() {
@@ -151,13 +151,13 @@ public abstract class ReportVaccinationAbstract {
         this.owner = owner;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
-                                 Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated) {
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+                                 Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
-        this.children_1_5 = children_1_5;
-        this.children_6_11 = children_6_11;
-        this.children_12_17 = children_12_17;
+        this.childrenFrom1To5 = childrenFrom1To5;
+        this.childrenFrom6To11 = childrenFrom6To11;
+        this.childrenFrom12To17 = childrenFrom12To17;
         this.adultUnidentified = adultUnidentified;
         this.adultUndifferentiated = adultUndifferentiated;
     }

@@ -90,7 +90,7 @@ public class Config {
 
     private String statusCallbackUrl;
 
-    private Boolean SendSmsIfVoiceFails = true;
+    private Boolean sendSmsIfVoiceFails = true;
 
     private Boolean detectVoiceMail = true;
 
@@ -448,11 +448,11 @@ public class Config {
     }
 
     public Boolean getSendSmsIfVoiceFails() {
-        return SendSmsIfVoiceFails;
+        return sendSmsIfVoiceFails;
     }
 
     public void setSendSmsIfVoiceFails(Boolean sendSmsIfVoiceFails) {
-        SendSmsIfVoiceFails = sendSmsIfVoiceFails;
+        this.sendSmsIfVoiceFails = sendSmsIfVoiceFails;
     }
 
     public Boolean getDetectVoiceMail() {

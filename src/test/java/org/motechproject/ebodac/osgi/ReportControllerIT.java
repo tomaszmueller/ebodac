@@ -166,10 +166,10 @@ public class ReportControllerIT extends BasePaxIT {
             assertEquals(4, boosterVaccinationReport.size());
 
             assertEquals(1,(long)primerVaccinationReport.get(0).getAdultMales());
-            assertEquals(1,(long)primerVaccinationReport.get(0).getChildren_6_11());
+            assertEquals(1,(long)primerVaccinationReport.get(0).getChildrenFrom6To11());
 
             assertEquals(1, (long) boosterVaccinationReport.get(3).getAdultMales());
-            assertEquals(1, (long) boosterVaccinationReport.get(3).getChildren_6_11());
+            assertEquals(1, (long) boosterVaccinationReport.get(3).getChildrenFrom6To11());
 
         } finally {
             stopFakingTime();

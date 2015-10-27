@@ -20,9 +20,9 @@ public class ReportBoosterVaccination extends ReportVaccinationAbstract {
     public ReportBoosterVaccination() {
     }
 
-    public ReportBoosterVaccination(LocalDate date, Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
-                                    Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleBoostered) {
-        super(date, adultMales, adultFemales, children_1_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated);
+    public ReportBoosterVaccination(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+                                    Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleBoostered) {
+        super(date, adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated);
         this.peopleBoostered = peopleBoostered;
     }
 
@@ -34,9 +34,9 @@ public class ReportBoosterVaccination extends ReportVaccinationAbstract {
         this.peopleBoostered = peopleBoostered;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer children_1_5, Integer children_6_11,
-                                 Integer children_12_17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleBoostered) {
-        updateReportData(adultMales, adultFemales, children_1_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated);
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+                                 Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleBoostered) {
+        updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated);
         this.peopleBoostered = peopleBoostered;
     }
 }
