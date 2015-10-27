@@ -40,42 +40,43 @@ public class LookupServiceImpl implements LookupService {
         List<T> entities;
         long recordCount;
         int rowCount;
-        if (StringUtils.isNotBlank(lookup) && queryParams != null) {
+        QueryParams newQueryParams = queryParams;
+        if (StringUtils.isNotBlank(lookup) && newQueryParams != null) {
             try {
-                entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), queryParams);
+                entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), newQueryParams);
                 recordCount = mdsLookupService.count(entityType.getName(), lookup, getFields(lookupFields));
             } catch (IOException e) {
                 throw new EbodacLookupException("Invalid lookup fields: " + lookupFields, e.getCause());
             }
 
-            if (queryParams.getPageSize() != null) {
-                rowCount = (int) Math.ceil(recordCount / (double) queryParams.getPageSize());
+            if (newQueryParams.getPageSize() != null) {
+                rowCount = (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
             } else {
                 rowCount = (int) recordCount;
             }
 
-            if(queryParams.getPage() == null) {
-                queryParams = new QueryParams(1, queryParams.getPageSize(), queryParams.getOrderList());
+            if(newQueryParams.getPage() == null) {
+                newQueryParams = new QueryParams(1, newQueryParams.getPageSize(), newQueryParams.getOrderList());
             }
 
             if (entities == null) {
                 entities = new ArrayList<>();
             }
 
-            return new Records<>(queryParams.getPage(), rowCount, (int) recordCount, entities);
+            return new Records<>(newQueryParams.getPage(), rowCount, (int) recordCount, entities);
         }
 
         recordCount = mdsLookupService.countAll(entityType.getName());
 
         int page;
-        if(queryParams != null && queryParams.getPageSize() != null && queryParams.getPage() != null) {
-            rowCount = (int) Math.ceil(recordCount / (double) queryParams.getPageSize());
-            page = queryParams.getPage();
-            entities = mdsLookupService.retrieveAll(entityType.getName(), queryParams);
+        if(newQueryParams != null && newQueryParams.getPageSize() != null && newQueryParams.getPage() != null) {
+            rowCount = (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
+            page = newQueryParams.getPage();
+            entities = mdsLookupService.retrieveAll(entityType.getName(), newQueryParams);
         } else {
             rowCount = (int) recordCount;
             page = 1;
-            entities = mdsLookupService.retrieveAll(entityType.getName(), queryParams);
+            entities = mdsLookupService.retrieveAll(entityType.getName(), newQueryParams);
         }
 
         if (entities == null) {

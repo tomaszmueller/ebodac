@@ -286,13 +286,14 @@ public class ReportController {
     }
 
     private Records<?> getFollowupsAfterPrimeInjectionReport(GridSettings settings) {
+        GridSettings newSettings = settings;
         try {
-            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
-            settings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
-            if(settings == null) {
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
+            newSettings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
+            if(newSettings == null) {
                 return new Records<Object>(null);
             }
-            return lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+            return lookupService.getEntities(Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
@@ -300,13 +301,14 @@ public class ReportController {
     }
 
     private Records<?> getFollowupsMissedClinicVisitsReport(GridSettings settings) {
+        GridSettings newSettings = settings;
         try {
-            settings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
-            if(settings == null) {
+            newSettings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
+            if(newSettings == null) {
                 return new Records<Object>(null);
             }
-            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
-            return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
+            return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
@@ -314,13 +316,14 @@ public class ReportController {
     }
 
     private Records<?> getMandEMissedClinicVisitsReport(GridSettings settings) {
+        GridSettings newSettings = settings;
         try {
-            settings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
-            if(settings == null) {
+            newSettings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
+            if(newSettings == null) {
                 return new Records<Object>(null);
             }
-            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
-            return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, settings.getLookup(), settings.getFields(), queryParams);
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
+            return lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
@@ -328,14 +331,15 @@ public class ReportController {
     }
 
     private Records<?> getOptsOutOfMotechMessagesReport(GridSettings settings) {
+        GridSettings newSettings = settings;
         try {
-            settings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
-            if(settings == null) {
+            newSettings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
+            if(newSettings == null) {
                 return new Records<Object>(null);
             }
-            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
             return lookupService.getEntities(OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class,
-                    settings.getLookup(), settings.getFields(), queryParams);
+                    newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
@@ -343,14 +347,15 @@ public class ReportController {
     }
 
     private Records<?> getIvrAndSmsStatisticReport(GridSettings settings) {
+        GridSettings newSettings = settings;
         try {
-            settings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
-            if(settings == null) {
+            newSettings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
+            if(newSettings == null) {
                 return new Records<Object>(null);
             }
-            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
             return lookupService.getEntities(IvrAndSmsStatisticReportDto.class, IvrAndSmsStatisticReport.class,
-                    settings.getLookup(), settings.getFields(), queryParams);
+                    newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);
