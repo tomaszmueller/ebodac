@@ -52,7 +52,7 @@ public class ExportServiceImpl implements ExportService {
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
-    private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter,String lookup,
+    private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
                                                       String lookupFields, QueryParams queryParams) throws IOException {
         Records<T> records;
         if(entityDtoType != null)
@@ -68,7 +68,7 @@ public class ExportServiceImpl implements ExportService {
             tableWriter.writeHeader(fields);
             for (T entity : entities) {
                 Map<String, String> row = buildRow(entity, headerMap);
-                tableWriter.writeRow(row,fields);
+                tableWriter.writeRow(row, fields);
             }
         } catch (IOException e) {
             throw new IOException("IO Error when writing data", e);

@@ -93,7 +93,7 @@ public final class EbodacConstants {
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Planned Visit Date","motechProjectedDate");
+            put("Planned Visit Date", "motechProjectedDate");
             put("Participant ID",    "subject.subjectId");
             put("Name",              "subject.name");
             put("Phone Number",      "subject.phoneNumber");
@@ -128,7 +128,7 @@ public final class EbodacConstants {
             put("Address",                  "subject.address");
             put("Visit type",               "type");
             put("Planned Visit Date",       "motechProjectedDate");
-            put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
+            put("No Of Days Exceeded Visit", "noOfDaysExceededVisit");
             put("Community",                "subject.community");
         }
     };
@@ -145,7 +145,7 @@ public final class EbodacConstants {
             put("Phone",                    "subject.phoneNumber");
             put("Visit type",               "type");
             put("Planned Visit Date",       "motechProjectedDate");
-            put("No Of Days Exceeded Visit","noOfDaysExceededVisit");
+            put("No Of Days Exceeded Visit", "noOfDaysExceededVisit");
             put("Community",                "subject.community");
         }
     };

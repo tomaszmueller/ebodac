@@ -28,7 +28,7 @@ public class DtoLookupHelper {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) throws IOException {
-        Map<String,String> fieldsMap = new HashMap<>();
+        Map<String, String> fieldsMap = new HashMap<>();
 
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
@@ -59,7 +59,7 @@ public class DtoLookupHelper {
 
     public static GridSettings changeLookupAndOrderForFollowupsMissedClinicVisitsReport(GridSettings settings) throws IOException {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        Map<String,String> fieldsMap = new HashMap<>();
+        Map<String, String> fieldsMap = new HashMap<>();
 
         if (StringUtils.isNotBlank(settings.getSortColumn())) {
             String sortColumn = settings.getSortColumn();
@@ -139,7 +139,7 @@ public class DtoLookupHelper {
 
     public static GridSettings changeLookupAndOrderForMandEMissedClinicVisitsReport(GridSettings settings) throws IOException {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        Map<String,String> fieldsMap = new HashMap<>();
+        Map<String, String> fieldsMap = new HashMap<>();
 
         if (StringUtils.isNotBlank(settings.getSortColumn())) {
             String sortColumn = settings.getSortColumn();
@@ -318,14 +318,14 @@ public class DtoLookupHelper {
     }
 
     private static String getAddressFromLookupFields(String lookupFields) {
-        return (String)getObjectFromLookupFields(lookupFields,"subject.address");
+        return (String) getObjectFromLookupFields(lookupFields, "subject.address");
     }
 
     private static Range<LocalDate> getDateRangeFromLookupFields(String lookupFields, String dateName) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         LocalDate min = null;
         LocalDate max = null;
-        Map<String, String> rangeMap = (Map < String, String>)getObjectFromLookupFields(lookupFields, dateName);
+        Map<String, String> rangeMap = (Map < String, String>) getObjectFromLookupFields(lookupFields, dateName);
         if (StringUtils.isNotBlank(rangeMap.get("min"))) {
             min = formatter.parseLocalDate(rangeMap.get("min"));
         }
@@ -344,9 +344,9 @@ public class DtoLookupHelper {
         try {
             fieldsMap = getFields(lookupFields);
         } catch (IOException e) {
-            throw new EbodacLookupException("Invalid lookup params",e);
+            throw new EbodacLookupException("Invalid lookup params", e);
         }
-        Map<String, String> rangeMap = (Map < String, String>)fieldsMap.get(dateName);
+        Map<String, String> rangeMap = (Map < String, String>) fieldsMap.get(dateName);
         rangeMap.remove("max");
         rangeMap.put("max", date.toString(formatter));
 
@@ -360,7 +360,7 @@ public class DtoLookupHelper {
     private static Range<Long> getLongRangeFromLookupFields(String lookupFields, String name) {
         Long min = null;
         Long max = null;
-        Map<String, String> rangeMap = (Map < String, String>)getObjectFromLookupFields(lookupFields, name);
+        Map<String, String> rangeMap = (Map < String, String>) getObjectFromLookupFields(lookupFields, name);
 
         try {
             if (StringUtils.isNotBlank(rangeMap.get("min"))) {
