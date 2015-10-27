@@ -51,7 +51,7 @@ public class ReportUpdateServiceImpl implements ReportUpdateService {
         String lastCalculationDate = config.getLastCalculationDate();
 
         if (StringUtils.isNotBlank(lastCalculationDate)) {
-            LocalDate newCalculationDate = LocalDate.parse(lastCalculationDate,formatter).plusDays(1);
+            LocalDate newCalculationDate = LocalDate.parse(lastCalculationDate, formatter).plusDays(1);
 
             LocalDate newPrimerVaccinationDate = newSubject.getPrimerVaccinationDate();
             LocalDate oldPrimerVaccinationDate = null;
