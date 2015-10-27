@@ -134,4 +134,40 @@ public class EbodacServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertTrue(visits.size() > 0);
     }
+
+    @Test
+    public void shouldFetchCSVFormStartDate() throws Exception {
+        DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
+        String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
+        InputStream in = getClass().getResourceAsStream("/sample.csv");
+        assertNotNull(in);
+
+        ftpsClient.sendFile(filename, in);
+        in.close();
+
+        Config config = configService.getConfig();
+        config.setFtpsPort(ftpsServer.getPort());
+        config.setFtpsHost(HOST);
+        config.setFtpsUsername(USER);
+        config.setFtpsPassword(USER);
+        config.setFtpsDirectory(CSV_DIR);
+        DateTime afterDate = DateTime.now().plusDays(1);
+        String lastCsvUpdate = afterDate.toString(EbodacConstants.CSV_DATE_FORMAT);
+        config.setLastCsvUpdate(lastCsvUpdate);
+        configService.updateConfig(config);
+
+        ebodacService.fetchCSVUpdates(DateTime.now().plusDays(1));
+
+        List<Subject> subjects = subjectDataService.retrieveAll();
+        assertEquals(0, subjects.size());
+        List<Visit> visits = visitDataService.retrieveAll();
+        assertEquals(0, visits.size());
+
+        ebodacService.fetchCSVUpdates(DateTime.now().minusDays(1));
+
+        subjects = subjectDataService.retrieveAll();
+        assertTrue(subjects.size() > 0);
+        visits = visitDataService.retrieveAll();
+        assertTrue(visits.size() > 0);
+    }
 }
