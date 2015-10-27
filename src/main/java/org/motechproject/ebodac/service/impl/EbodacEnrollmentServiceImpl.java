@@ -426,13 +426,15 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private void enrollNew(Subject subject, String campaignName, LocalDate referenceDate, Time deliverTime) {
+        String newCampaignName = campaignName;
+
         if (subject == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant to Campaign with name: %s, because participant is null",
-                    "ebodac.enroll.error.subjectNull", campaignName);
+                    "ebodac.enroll.error.subjectNull", newCampaignName);
         }
         if (referenceDate == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because reference date is empty",
-                    "ebodac.enroll.error.emptyReferenceDate", subject.getSubjectId(), campaignName);
+                    "ebodac.enroll.error.emptyReferenceDate", subject.getSubjectId(), newCampaignName);
         }
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
@@ -441,20 +443,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             subjectEnrollments = new SubjectEnrollments(subject);
         }
 
-        checkSubjectRequiredDataAndDisconVacDate(subject, campaignName);
+        checkSubjectRequiredDataAndDisconVacDate(subject, newCampaignName);
 
-        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(newCampaignName);
 
-        if (VisitType.BOOST_VACCINATION_DAY.getValue().equals(campaignName)) {
+        if (VisitType.BOOST_VACCINATION_DAY.getValue().equals(newCampaignName)) {
             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
-            campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
         }
 
         if (enrollment != null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because enrollment already exists",
-                    "ebodac.enroll.error.enrolmentAlreadyExist", subject.getSubjectId(), campaignName);
+                    "ebodac.enroll.error.enrolmentAlreadyExist", subject.getSubjectId(), newCampaignName);
         } else {
-            enrollment = new Enrollment(subject.getSubjectId(), campaignName);
+            enrollment = new Enrollment(subject.getSubjectId(), newCampaignName);
             subjectEnrollments.addEnrolment(enrollment);
         }
 
@@ -469,21 +471,22 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private void enrollUnenrolled(String subjectId, String campaignName, LocalDate referenceDate) {
+        String newCampaignName = campaignName;
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
         if (subjectEnrollments == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant, because not found unenrolled Participant with id: %s in campaign with name: %s",
-                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, campaignName);
+                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, newCampaignName);
         }
 
         Subject subject = subjectEnrollments.getSubject();
 
-        checkSubjectRequiredDataAndDisconVacDate(subject, campaignName);
+        checkSubjectRequiredDataAndDisconVacDate(subject, newCampaignName);
 
-        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(newCampaignName);
 
         if (enrollment == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant, because not found unenrolled Participant with id: %s in campaign with name: %s",
-                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, campaignName);
+                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, newCampaignName);
         }
         if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
             throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because participant is already enrolled in this campaign",
@@ -495,18 +498,18 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                     "ebodac.enroll.error.campaignCompleted", subjectId, enrollment.getCampaignName());
         }
 
-        if (referenceDate != null && campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+        if (referenceDate != null && newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
             subjectEnrollments.removeEnrolment(enrollment);
             subjectEnrollmentsDataService.update(subjectEnrollments);
             enrollmentDataService.delete(enrollment);
             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
-            campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
-            enrollment = new Enrollment(subjectId, campaignName);
+            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            enrollment = new Enrollment(subjectId, newCampaignName);
             subjectEnrollments.addEnrolment(enrollment);
         }
 
         if (referenceDate != null) {
-            if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignName) && !referenceDate.equals(enrollment.getReferenceDate())) {
+            if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(newCampaignName) && !referenceDate.equals(enrollment.getReferenceDate())) {
                 throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because reference date cannot be changed for Prime Vaccination Day Campaign",
                         "ebodac.enroll.error.primeVaccinationDateChanged", subjectId, enrollment.getCampaignName());
             }
@@ -655,10 +658,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private boolean checkIfCampaignInDisconVacList(String campaignName) {
-        if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
-            campaignName = VisitType.BOOST_VACCINATION_DAY.getValue();
+        String newCampaignName = campaignName;
+        if (newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getValue();
         }
-        return configService.getConfig().getDisconVacCampaignsList().contains(campaignName);
+        return configService.getConfig().getDisconVacCampaignsList().contains(newCampaignName);
     }
 
     private void changeParentForDuplicatedEnrollments(Enrollment oldParent, boolean parentUnenrolled) {

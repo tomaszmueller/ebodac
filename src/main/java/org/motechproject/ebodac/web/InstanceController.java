@@ -169,12 +169,13 @@ public class InstanceController {
                                                      @RequestParam String outputFormat,
                                                      HttpServletResponse response) throws IOException {
 
-        String oldLookupFields = settings.getFields();
-        settings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
-        if(settings == null) {
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
+        if(newSettings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME,
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME,
                     null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP, oldLookupFields);
         }
     }
@@ -185,12 +186,13 @@ public class InstanceController {
                                                          @RequestParam String outputFormat,
                                                          HttpServletResponse response) throws IOException {
 
-        String oldLookupFields = settings.getFields();
-        settings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
-        if(settings == null) {
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
+        if(newSettings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME,
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME,
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
         }
     }
@@ -201,12 +203,13 @@ public class InstanceController {
                                                     @RequestParam String outputFormat,
                                                     HttpServletResponse response) throws IOException {
 
-        String oldLookupFields = settings.getFields();
-        settings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
-        if(settings == null) {
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
+        if(newSettings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME,
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME,
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
         }
     }
@@ -217,12 +220,13 @@ public class InstanceController {
                                                     @RequestParam String outputFormat,
                                                     HttpServletResponse response) throws IOException {
 
-        String oldLookupFields = settings.getFields();
-        settings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
-        if(settings == null) {
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
+        if(newSettings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME,
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME,
                     OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_MAP, oldLookupFields);
         }
     }
@@ -233,12 +237,13 @@ public class InstanceController {
                                                @RequestParam String outputFormat,
                                                HttpServletResponse response) throws IOException {
 
-        String oldLookupFields = settings.getFields();
-        settings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
-        if(settings == null) {
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
+        if(newSettings == null) {
             response.sendError(400, "Invalid lookups params");
         } else {
-            exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_NAME,
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_NAME,
                     IvrAndSmsStatisticReportDto.class, IvrAndSmsStatisticReport.class, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_MAP, oldLookupFields);
         }
     }
