@@ -18,7 +18,7 @@ public class EbodacFtpsClient {
 
     private static final Integer CONNECT_TIMEOUT = 10000;
 
-    FTPSClient ftp = new FTPSClient(false);
+    private FTPSClient ftp = new FTPSClient(false);
 
     public void disconnect() {
         if (ftp.isConnected()) {
@@ -102,5 +102,13 @@ public class EbodacFtpsClient {
                 throw new FtpException("Could not send file: " + replyString);
             }
         }
+    }
+
+    public FTPSClient getFtp() {
+        return ftp;
+    }
+
+    public void setFtp(FTPSClient ftp) {
+        this.ftp = ftp;
     }
 }

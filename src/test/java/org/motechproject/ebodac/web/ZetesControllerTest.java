@@ -22,7 +22,7 @@ public class ZetesControllerTest {
     public void setUp(){
         initMocks(this);
         zetesController=new ZetesController();
-        zetesController.subjectService = subjectService;
+        zetesController.setSubjectService(subjectService);
     }
 
     @Test

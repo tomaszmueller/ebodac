@@ -14,8 +14,7 @@ import java.util.Map;
 @Component
 public class SubjectCsvImportCustomizer extends DefaultCsvImportCustomizer {
 
-    @Autowired
-    SubjectService subjectService;
+    private SubjectService subjectService;
 
     @Override
     public Object findExistingInstance(Map<String, String> row, MotechDataService motechDataService) {
@@ -35,5 +34,14 @@ public class SubjectCsvImportCustomizer extends DefaultCsvImportCustomizer {
     @Override
     public Object doUpdate(Object instance, MotechDataService motechDataService) {
         return subjectService.update((Subject) instance);
+    }
+
+    public SubjectService getSubjectService() {
+        return subjectService;
+    }
+
+    @Autowired
+    public void setSubjectService(SubjectService subjectService) {
+        this.subjectService = subjectService;
     }
 }
