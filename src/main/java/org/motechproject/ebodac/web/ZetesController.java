@@ -31,8 +31,7 @@ public class ZetesController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ZetesController.class);
 
-    @Autowired
-    SubjectService subjectService;
+    private SubjectService subjectService;
 
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'registrationSubmission')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
@@ -68,5 +67,14 @@ public class ZetesController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public SubjectService getSubjectService() {
+        return subjectService;
+    }
+
+    @Autowired
+    public void setSubjectService(SubjectService subjectService) {
+        this.subjectService = subjectService;
     }
 }

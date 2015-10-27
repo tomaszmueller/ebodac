@@ -12,27 +12,83 @@ class Views {
 abstract class SubjectMixin {
 
     @JsonView(Views.Zetes.class)
-    String subjectId;
+    private String subjectId;
 
     @JsonView(Views.Zetes.class)
-    String name;
+    private String name;
 
     @JsonView(Views.Zetes.class)
-    String householdName;
+    private String householdName;
 
     @JsonView(Views.Zetes.class)
-    String headOfHousehold;
+    private String headOfHousehold;
 
     @JsonView(Views.Zetes.class)
-    String phoneNumber;
+    private String phoneNumber;
 
     @JsonView(Views.Zetes.class)
-    String address;
+    private String address;
     
     @JsonView(Views.Zetes.class)
-    String community;
+    private String community;
 
     @JsonProperty("language")
     @JsonView(Views.Zetes.class)
     abstract String getLanguageCode();
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHouseholdName() {
+        return householdName;
+    }
+
+    public void setHouseholdName(String householdName) {
+        this.householdName = householdName;
+    }
+
+    public String getHeadOfHousehold() {
+        return headOfHousehold;
+    }
+
+    public void setHeadOfHousehold(String headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
 }
