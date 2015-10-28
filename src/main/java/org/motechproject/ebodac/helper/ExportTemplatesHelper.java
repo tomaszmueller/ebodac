@@ -44,8 +44,8 @@ public class ExportTemplatesHelper {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private final static String FROM = "min";
-    private final static String TO = "max";
+    private static final String FROM = "min";
+    private static final String TO = "max";
 
     public PdfBasicTemplate createTemplateForPdf(String reportName, Class<?> entityType, GridSettings settings,
                                                  String exportRecords, String oldLookupFields, OutputStream outputStream) {
