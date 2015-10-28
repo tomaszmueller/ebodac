@@ -27,6 +27,8 @@ public class DtoLookupHelper {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private DtoLookupHelper(){};
+
     public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) throws IOException {
         Map<String, String> fieldsMap = new HashMap<>();
 

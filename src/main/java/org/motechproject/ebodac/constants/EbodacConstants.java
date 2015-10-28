@@ -207,4 +207,6 @@ public final class EbodacConstants {
             put("SMS Received Date",        "smsReceivedDate");
         }
     };
+
+    private EbodacConstants(){};
 }
