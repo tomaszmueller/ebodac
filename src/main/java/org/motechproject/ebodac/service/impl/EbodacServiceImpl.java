@@ -79,11 +79,18 @@ public class EbodacServiceImpl implements EbodacService {
 
     @Override
     public void fetchCSVUpdates() {
+        fetchCSVUpdates(null);
+    }
+
+    @Override
+    public void fetchCSVUpdates(DateTime startDate) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(EbodacConstants.CSV_DATE_FORMAT);
         Config config = configService.getConfig();
         String lastCsvUpdate = config.getLastCsvUpdate();
         DateTime afterDate;
-        if (StringUtils.isNotBlank(lastCsvUpdate)) {
+        if (startDate != null) {
+            afterDate = startDate;
+        } else if (StringUtils.isNotBlank(lastCsvUpdate)) {
             afterDate = dateTimeFormatter.parseDateTime(config.getLastCsvUpdate());
         } else {
             afterDate = new DateTime(new Date(0));

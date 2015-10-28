@@ -28,6 +28,8 @@ public final class EbodacConstants {
     public static final Pattern CSV_FILENAME_PATTERN = Pattern.compile(".*_(.*_.*)\\.csv");
     public static final String CSV_DATE_FORMAT = "yyyyMMdd_HHmmss";
 
+    public static final String FETCH_CSV_START_DATE_FORMAT = "yyyy-MM-dd";
+
     public static final String FETCHED_EMAIL_FLAG = "fetched";
     public static final String JOB_SUCCESS_STATUS = "COMPLETION";
     public static final String JOB_FAILURE_STATUS = "FAILURE";
