@@ -351,13 +351,23 @@ public class EbodacEnrollmentController {
             }
         } else {
             Subject oldSubject = subjectService.findSubjectBySubjectId(subject.getSubjectId());
-            if (subject.getVisits() != null && subject.getPrimerVaccinationDate() != null && StringUtils.isNotBlank(subject.getPhoneNumber())
-                    && subject.getLanguage() != null && (oldSubject.getLanguage() == null || StringUtils.isBlank(oldSubject.getPhoneNumber()))) {
+            if (checkSubjectRequiredData(subject, oldSubject)) {
                 ebodacEnrollmentService.createEnrollmentRecordsForSubject(oldSubject);
             }
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean checkSubjectRequiredData(Subject newSubject, Subject oldSubject) {
+        if (newSubject.getVisits() != null && newSubject.getPrimerVaccinationDate() != null &&
+                StringUtils.isNotBlank(newSubject.getPhoneNumber()) && newSubject.getLanguage() != null) {
+            if (oldSubject.getLanguage() == null || StringUtils.isBlank(oldSubject.getPhoneNumber())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void updateVisit(String subjectId, String campaignName, LocalDate date) {

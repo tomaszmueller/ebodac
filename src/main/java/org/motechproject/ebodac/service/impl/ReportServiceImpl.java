@@ -264,7 +264,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    private void createIvrAndSmsStatisticReport(CallDetailRecord initialRecord) {
+    private void createIvrAndSmsStatisticReport(CallDetailRecord initialRecord) { //NO CHECKSTYLE CyclomaticComplexity
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.IVR_CALL_DETAIL_RECORD_TIME_FORMAT);
 
         String providerCallId = initialRecord.getProviderCallId();
