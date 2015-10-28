@@ -198,7 +198,7 @@ public final class EbodacConstants {
             put("Age",                      "age");
             put("Location (Community)",     "subject.community");
             put("Message ID",               "messageId");
-            put("Send Date",                "sendDate");
+            put("Sent Date",                "sendDate");
             put("Expected Duration",        "expectedDuration");
             put("Time Listened To",         "timeListenedTo");
             put("Received Date",            "receivedDate");
