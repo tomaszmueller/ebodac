@@ -131,7 +131,7 @@ public class ReportServiceImpl implements ReportService {
             try {
                 createIvrAndSmsStatisticReport(callDetailRecord);
             } catch (EbodacReportException e) {
-                LOGGER.warn(e.getMessage(), e);
+                LOGGER.warn(e.getMessage());
             }
         }
     }
