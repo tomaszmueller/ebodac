@@ -161,18 +161,7 @@ public class SubmitSubjectRequest {
         /**
          *  subjectId validations
          */
-
-        if (StringUtils.isBlank(subjectId)) {
-            validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NULL));
-        } else {
-            if (!StringUtils.isNumeric(subjectId)) {
-                validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
-            } else {
-                if (!Double.valueOf(Double.valueOf(subjectId) % 97D).equals(1D)) {
-                    validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
-                }
-            }
-        }
+        validateSubjectID();
 
         /**
          *  name validations
@@ -216,4 +205,20 @@ public class SubmitSubjectRequest {
 
         return validationErrors;
     }
+
+    public void validateSubjectID() {
+
+        if (StringUtils.isBlank(subjectId)) {
+            validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NULL));
+        } else {
+            if (!StringUtils.isNumeric(subjectId)) {
+                validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
+            } else {
+                if (!Double.valueOf(Double.valueOf(subjectId) % 97D).equals(1D)) {
+                    validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
+                }
+            }
+        }
+    }
+
 }

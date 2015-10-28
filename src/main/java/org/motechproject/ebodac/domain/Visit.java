@@ -108,7 +108,7 @@ public class Visit {
         this.owner = owner;
     }
 
-    @Override
+    @Override //NO CHECKSTYLE CyclomaticComplexity
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -63,19 +63,7 @@ public class DtoLookupHelper {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
 
-        if (StringUtils.isNotBlank(settings.getSortColumn())) {
-            String sortColumn = settings.getSortColumn();
-            if (sortColumn.equals("planedVisitDate") || sortColumn.equals("noOfDaysExceededVisit")) {
-                settings.setSortColumn(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                if (sortColumn.equals("noOfDaysExceededVisit")) {
-                    if (settings.getSortDirection().equals("asc")) {
-                        settings.setSortDirection("desc");
-                    } else {
-                        settings.setSortDirection("asc");
-                    }
-                }
-            }
-        }
+        changeOrderForFollowupsMissedClinicVisitsReport(settings);
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
         }
@@ -106,13 +94,8 @@ public class DtoLookupHelper {
                 case "Find Visits By Planned Visit Date Range And Type": {
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                    if (dateRange == null) {
+                    if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
                         return null;
-                    }
-                    if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
-                        return null;
-                    } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
-                        settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
                     }
                     String fields = settings.getFields();
                     fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
@@ -143,19 +126,7 @@ public class DtoLookupHelper {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
 
-        if (StringUtils.isNotBlank(settings.getSortColumn())) {
-            String sortColumn = settings.getSortColumn();
-            if (sortColumn.equals("planedVisitDate") || sortColumn.equals("noOfDaysExceededVisit")) {
-                settings.setSortColumn(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                if (sortColumn.equals("noOfDaysExceededVisit")) {
-                    if (settings.getSortDirection().equals("asc")) {
-                        settings.setSortDirection("desc");
-                    } else {
-                        settings.setSortDirection("asc");
-                    }
-                }
-            }
-        }
+        changeOrderForFollowupsMissedClinicVisitsReport(settings);
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
         }
@@ -183,13 +154,8 @@ public class DtoLookupHelper {
                 case "Find Visits By Planned Visit Date Range And Type": {
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                    if (dateRange == null) {
+                    if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
                         return null;
-                    }
-                    if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
-                        return null;
-                    } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
-                        settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
                     }
                     String fields = settings.getFields();
                     fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
@@ -302,6 +268,39 @@ public class DtoLookupHelper {
         lookups.add(lookup);
 
         return lookups;
+    }
+
+    private static boolean checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(Range<LocalDate> dateRange, GridSettings settings) {
+        GridSettings newSettings = settings;
+        if (dateRange == null) {
+            return false;
+        }
+        if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
+            return false;
+        } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
+            settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
+        }
+        return true;
+    }
+
+    private static void changeOrderForFollowupsMissedClinicVisitsReport(GridSettings settings)
+    {
+        if (StringUtils.isNotBlank(settings.getSortColumn())) {
+            String sortColumn = settings.getSortColumn();
+            if (sortColumn.equals("planedVisitDate") || sortColumn.equals("noOfDaysExceededVisit")) {
+                settings.setSortColumn(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
+                if (sortColumn.equals("noOfDaysExceededVisit")) {
+                    if (settings.getSortDirection().equals("asc")) {
+                        settings.setSortDirection("desc");
+                    } else {
+                        settings.setSortDirection("asc");
+                    }
+                }
+            }
+        }
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
     }
 
     private static Object getObjectFromLookupFields(String lookupFields, String fieldName) {
