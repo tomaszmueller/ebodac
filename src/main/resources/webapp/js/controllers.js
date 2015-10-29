@@ -415,7 +415,7 @@
 
            if ($scope.selectedLookup !== undefined && $scope.checkboxModel.exportWithLookup === true) {
                url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
-               url = url + "&fields=" + JSON.stringify($scope.lookupBy);
+               url = url + "&fields=" + encodeURIComponent(JSON.stringify($scope.lookupBy));
            }
 
             $http.get(url)
