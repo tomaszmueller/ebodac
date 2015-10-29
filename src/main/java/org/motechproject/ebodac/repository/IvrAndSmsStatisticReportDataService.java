@@ -25,7 +25,7 @@ public interface IvrAndSmsStatisticReportDataService extends MotechDataService<I
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String community);
 
     @Lookup
-    List<IvrAndSmsStatisticReport> findReportsBySendDate(@LookupField(name = "sendDate") Range<DateTime> sendDate);
+    List<IvrAndSmsStatisticReport> findReportsBySentDate(@LookupField(name = "sendDate") Range<DateTime> sendDate);
 
     @Lookup
     List<IvrAndSmsStatisticReport> findReportsByReceivedDate(@LookupField(name = "receivedDate") Range<DateTime> receivedDate);
