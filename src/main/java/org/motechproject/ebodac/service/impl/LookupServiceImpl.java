@@ -49,11 +49,7 @@ public class LookupServiceImpl implements LookupService {
                 throw new EbodacLookupException("Invalid lookup fields: " + lookupFields, e.getCause());
             }
 
-            if (newQueryParams.getPageSize() != null) {
-                rowCount = (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
-            } else {
-                rowCount = (int) recordCount;
-            }
+            rowCount = getRowCount(newQueryParams, recordCount);
 
             if(newQueryParams.getPage() == null) {
                 newQueryParams = new QueryParams(1, newQueryParams.getPageSize(), newQueryParams.getOrderList());
@@ -128,4 +124,13 @@ public class LookupServiceImpl implements LookupService {
     private Map<String, Object> getFields(String lookupFields) throws IOException {
         return objectMapper.readValue(lookupFields, new TypeReference<HashMap>() {});
     }
+
+    private int getRowCount(QueryParams newQueryParams, long recordCount) {
+        if (newQueryParams.getPageSize() != null) {
+            return (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
+        } else {
+            return (int) recordCount;
+        }
+    }
+
 }

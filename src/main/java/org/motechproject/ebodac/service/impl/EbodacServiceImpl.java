@@ -87,21 +87,14 @@ public class EbodacServiceImpl implements EbodacService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(EbodacConstants.CSV_DATE_FORMAT);
         Config config = configService.getConfig();
         String lastCsvUpdate = config.getLastCsvUpdate();
-        DateTime afterDate;
-        if (startDate != null) {
-            afterDate = startDate;
-        } else if (StringUtils.isNotBlank(lastCsvUpdate)) {
-            afterDate = dateTimeFormatter.parseDateTime(config.getLastCsvUpdate());
-        } else {
-            afterDate = new DateTime(new Date(0));
-        }
+        DateTime afterDate = getLastCsvUpdate(lastCsvUpdate, dateTimeFormatter, startDate);
+
         String hostname = config.getFtpsHost();
         String username = config.getFtpsUsername();
         String password = config.getFtpsPassword();
         String directory = config.getFtpsDirectory();
-        if (!directory.endsWith(File.separator)) {
-            directory += File.separator;
-        }
+        directory = addFileSeparatorIfNeeded(directory);
+
         Integer port = config.getFtpsPort();
 
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);
@@ -119,12 +112,8 @@ public class EbodacServiceImpl implements EbodacService {
             LOGGER.error("Could not list files: " + e.getMessage(), e);
             return;
         }
-        DateTime lastUpdated;
-        if (StringUtils.isNotBlank(lastCsvUpdate)) {
-            lastUpdated = dateTimeFormatter.parseDateTime(config.getLastCsvUpdate());
-        } else {
-            lastUpdated = new DateTime(new Date(0));
-        }
+        DateTime lastUpdated = getLastCsvUpdate(lastCsvUpdate, dateTimeFormatter, null);
+
         for (String filename: filenames) {
             Matcher m = EbodacConstants.CSV_FILENAME_PATTERN.matcher(filename);
             if (!m.matches()) {
@@ -155,6 +144,23 @@ public class EbodacServiceImpl implements EbodacService {
         config.setLastCsvUpdate(lastUpdated.toString(dateTimeFormatter));
         configService.updateConfig(config);
         LOGGER.info("Finished fetching CSV files from {}", hostname);
+    }
+
+    private String addFileSeparatorIfNeeded(String directory) {
+        if (!directory.endsWith(File.separator)) {
+            return (directory + File.separator);
+        }
+        return directory;
+    }
+
+    private DateTime getLastCsvUpdate(String lastCsvUpdate, DateTimeFormatter dateTimeFormatter, DateTime startDate) {
+        if (startDate != null) {
+            return startDate;
+        } else if (StringUtils.isNotBlank(lastCsvUpdate)) {
+            return dateTimeFormatter.parseDateTime(lastCsvUpdate);
+        } else {
+            return new DateTime(new Date(0));
+        }
     }
 
     private String parseZetesResponse(HttpResponse httpResponse) {

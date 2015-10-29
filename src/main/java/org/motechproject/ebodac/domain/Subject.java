@@ -406,7 +406,7 @@ public class Subject {
         return true;
     }
 
-    public boolean equalsForZetes(Subject subject) {
+    public boolean equalsForZetes(Subject subject) { //NO CHECKSTYLE CyclomaticComplexity
         if (language != subject.language) {
             return false;
         }
@@ -444,7 +444,7 @@ public class Subject {
         return true;
     }
 
-    public boolean equalsForRave(Subject subject) {
+    public boolean equalsForRave(Subject subject) { //NO CHECKSTYLE CyclomaticComplexity
         if (primerVaccinationDate != null ? !primerVaccinationDate.equals(subject.primerVaccinationDate) : subject.primerVaccinationDate != null) {
             return false;
         }
@@ -470,7 +470,7 @@ public class Subject {
         return true;
     }
 
-    @Override
+    @Override //NO CHECKSTYLE CyclomaticComplexity
     public int hashCode() {
         int result = subjectId.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
