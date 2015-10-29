@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DtoLookupHelper {
+public final class DtoLookupHelper {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
