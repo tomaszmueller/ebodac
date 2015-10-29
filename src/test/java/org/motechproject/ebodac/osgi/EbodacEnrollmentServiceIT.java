@@ -1056,6 +1056,13 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
     @Test
     public void shouldRollbackEnrolledWhenBoostDiscontinuationDateRemoved() throws IOException {
+        List<String> campaignList = new ArrayList<>();
+        campaignList.add("Booster related messages");
+        campaignList.add("Boost Vaccination Day");
+        Config config = new Config();
+        config.setDisconVacCampaignsList(campaignList);
+        configService.updateConfig(config);
+
         Subject subject = createSubjectWithRequireData("1");
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
@@ -1089,6 +1096,13 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
     @Test
     public void shouldRollbackUnenrolledWhenBoostDiscontinuationDateRemoved() throws IOException {
+        List<String> campaignList = new ArrayList<>();
+        campaignList.add("Booster related messages");
+        campaignList.add("Boost Vaccination Day");
+        Config config = new Config();
+        config.setDisconVacCampaignsList(campaignList);
+        configService.updateConfig(config);
+
         Subject subject = createSubjectWithRequireData("1");
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");

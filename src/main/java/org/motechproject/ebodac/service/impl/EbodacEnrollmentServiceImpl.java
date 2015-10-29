@@ -74,10 +74,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public void enrollSubject(String subjectId) {
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
-        if (subjectEnrollments == null || !(EnrollmentStatus.UNENROLLED.equals(subjectEnrollments.getStatus()) || EnrollmentStatus.INITIAL.equals(subjectEnrollments.getStatus()))) {
-            throw new EbodacEnrollmentException("Cannot enroll Participant, because no unenrolled Participant exist with id: %s",
-                    "ebodac.enroll.error.noUnenrolledSubject", subjectId);
-        }
+        checkSubjectEnrollmentsStatus(subjectEnrollments, subjectId);
 
         Subject subject = subjectEnrollments.getSubject();
 
@@ -91,12 +88,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             if (enrollment.getReferenceDate() == null) {
                 throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because reference date is empty",
                         "ebodac.enroll.error.emptyReferenceDate", subject.getSubjectId(), enrollment.getCampaignName());
-            } else if (disconVac) {
-                if (checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
-                    enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
-                    enrollment.setPreviousStatus(EnrollmentStatus.ENROLLED);
-                    continue;
-                }
+            } else if (disconVac && checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
+                enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
+                enrollment.setPreviousStatus(EnrollmentStatus.ENROLLED);
+                continue;
             }
 
             enrollment.setStatus(EnrollmentStatus.ENROLLED);
@@ -180,14 +175,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (newSubject.getPrimerVaccinationDate() != null && oldSubject.getPrimerVaccinationDate() == null) {
             enrollSubject(newSubject);
         }
-        if (newSubject.getDateOfDisconStd() == null && oldSubject.getDateOfDisconStd() != null) {
-            LOGGER.warn("Date of discontinuation Study was removed for Participant with id: {}", newSubject.getSubjectId());
-            rollbackEnrollmentStatusOrEnrollNew(newSubject, false);
-        }
-        if (newSubject.getDateOfDisconVac() == null && oldSubject.getDateOfDisconVac() != null) {
-            LOGGER.warn("Date of discontinuation Vaccination was removed for Participant with id: {}", newSubject.getSubjectId());
-            rollbackEnrollmentStatusOrEnrollNew(newSubject, true);
-        }
+        rollbackIfWithdrawalDateRemoved(oldSubject, newSubject);
         if (newSubject.getDateOfDisconStd() != null && oldSubject.getDateOfDisconStd() == null) {
             if (newSubject.getVisits() != null) {
                 for (Visit visit: newSubject.getVisits()) {
@@ -200,72 +188,6 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                 completeCampaignForSubjectWithStatus(newSubject, campaignName, EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
             }
             LOGGER.info("Participant with id: {} was unenrolled from booster", oldSubject.getSubjectId());
-        }
-    }
-
-    private void rollbackEnrollmentStatusOrEnrollNew(Subject subject, boolean boosterDiscon) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
-
-        if (subjectEnrollments == null) {
-            enrollSubject(subject);
-        } else if (subject.getVisits() != null) {
-            EnrollmentStatus statusToRollback = EnrollmentStatus.WITHDRAWN_FROM_STUDY;
-            if (boosterDiscon) {
-                statusToRollback = EnrollmentStatus.UNENROLLED_FROM_BOOSTER;
-            }
-            for (Visit visit : subject.getVisits()) {
-                if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                    Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
-                    if (enrollment == null) {
-                        enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
-                    } else {
-                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
-                    }
-                    enrollment = subjectEnrollments.findEnrolmentByCampaignName(EbodacConstants.BOOSTER_RELATED_MESSAGES);
-                    if (enrollment == null) {
-                        enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
-                    } else {
-                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
-                    }
-                } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-                    Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
-                    if (enrollment == null) {
-                        enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
-                    } else {
-                        rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
-                    }
-                }
-            }
-            updateSubjectEnrollments(subjectEnrollments);
-        }
-    }
-
-    private void rollbackEnrollmentStatus(Subject subject, Enrollment enrollment, EnrollmentStatus statusToRollback) {
-        if (statusToRollback.equals(enrollment.getStatus())) {
-            EnrollmentStatus status = enrollment.getPreviousStatus();
-
-            if (status == null) {
-                status = EnrollmentStatus.ENROLLED;
-            }
-
-            enrollment.setStatus(status);
-
-            try {
-                if (EnrollmentStatus.ENROLLED.equals(status)) {
-                    boolean disconVac = checkSubjectRequiredDataAndDisconVacDate(subject);
-
-                    if (disconVac && checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
-                        enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
-                    } else if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
-                        scheduleJobsForEnrollment(enrollment, true);
-                    }
-                }
-
-                enrollmentDataService.update(enrollment);
-            } catch (EbodacEnrollmentException e) {
-                LOGGER.debug("Cannot rollback status for Enrollment with id: {} and Campaign name: {}",
-                        enrollment.getExternalId(), enrollment.getCampaignName(), e);
-            }
         }
     }
 
@@ -484,19 +406,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(newCampaignName);
 
-        if (enrollment == null) {
-            throw new EbodacEnrollmentException("Cannot enroll Participant, because not found unenrolled Participant with id: %s in campaign with name: %s",
-                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, newCampaignName);
-        }
-        if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
-            throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because participant is already enrolled in this campaign",
-                    "ebodac.enroll.error.subjectAlreadyEnrolled", subjectId, enrollment.getCampaignName());
-        }
-        if (EnrollmentStatus.COMPLETED.equals(enrollment.getStatus()) || EnrollmentStatus.WITHDRAWN_FROM_STUDY.equals(enrollment.getStatus())
-                || EnrollmentStatus.UNENROLLED_FROM_BOOSTER.equals(enrollment.getStatus())) {
-            throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because this campaign is completed",
-                    "ebodac.enroll.error.campaignCompleted", subjectId, enrollment.getCampaignName());
-        }
+        checkIfUnenrolled(enrollment, subjectId, newCampaignName);
 
         if (referenceDate != null && newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
             subjectEnrollments.removeEnrolment(enrollment);
@@ -526,6 +436,22 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         updateSubjectEnrollments(subjectEnrollments);
+    }
+
+    private void checkIfUnenrolled(Enrollment enrollment, String subjectId, String campaignName) {
+        if (enrollment == null) {
+            throw new EbodacEnrollmentException("Cannot enroll Participant, because not found unenrolled Participant with id: %s in campaign with name: %s",
+                    "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, campaignName);
+        }
+        if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+            throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because participant is already enrolled in this campaign",
+                    "ebodac.enroll.error.subjectAlreadyEnrolled", subjectId, enrollment.getCampaignName());
+        }
+        if (EnrollmentStatus.COMPLETED.equals(enrollment.getStatus()) || EnrollmentStatus.WITHDRAWN_FROM_STUDY.equals(enrollment.getStatus())
+                || EnrollmentStatus.UNENROLLED_FROM_BOOSTER.equals(enrollment.getStatus())) {
+            throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because this campaign is completed",
+                    "ebodac.enroll.error.campaignCompleted", subjectId, enrollment.getCampaignName());
+        }
     }
 
     private void completeCampaignForSubjectWithStatus(Visit visit, EnrollmentStatus status) {
@@ -733,6 +659,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsByStatusReferenceDateCampaignNameAndSubjectIds(
                 EnrollmentStatus.ENROLLED, referenceDate, campaignName, subjectIds);
 
+        return findAndSetNewParent(enrollments, enrollment, subject.getSubjectId(), campaignName);
+    }
+
+    private boolean findAndSetNewParent(List<Enrollment> enrollments, Enrollment enrollment, String subjectId, String campaignName) {
         if (!enrollments.isEmpty()) {
             Enrollment parentEnrolment = null;
             if (enrollments.size() > 1) {
@@ -748,7 +678,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
             if (parentEnrolment == null) {
                 throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because cannot find parent for duplicated enrollments",
-                        "ebodac.enroll.error.cannotFindParent", subject.getSubjectId(), campaignName);
+                        "ebodac.enroll.error.cannotFindParent", subjectId, campaignName);
             }
 
             enrollment.setParentEnrollment(parentEnrolment);
@@ -759,6 +689,86 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         return false;
+    }
+
+    private void rollbackIfWithdrawalDateRemoved(Subject oldSubject, Subject newSubject) {
+        if (newSubject.getDateOfDisconStd() == null && oldSubject.getDateOfDisconStd() != null) {
+            LOGGER.warn("Date of discontinuation Study was removed for Participant with id: {}", newSubject.getSubjectId());
+            rollbackEnrollmentStatusOrEnrollNew(newSubject, false);
+        }
+        if (newSubject.getDateOfDisconVac() == null && oldSubject.getDateOfDisconVac() != null) {
+            LOGGER.warn("Date of discontinuation Vaccination was removed for Participant with id: {}", newSubject.getSubjectId());
+            rollbackEnrollmentStatusOrEnrollNew(newSubject, true);
+        }
+    }
+
+    private void rollbackEnrollmentStatusOrEnrollNew(Subject subject, boolean boosterDiscon) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+
+        if (subjectEnrollments == null) {
+            enrollSubject(subject);
+        } else if (subject.getVisits() != null) {
+            EnrollmentStatus statusToRollback = EnrollmentStatus.WITHDRAWN_FROM_STUDY;
+            if (boosterDiscon) {
+                statusToRollback = EnrollmentStatus.UNENROLLED_FROM_BOOSTER;
+            }
+            for (Visit visit : subject.getVisits()) {
+                if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getValue(), visit.getDate(), statusToRollback);
+                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate(), statusToRollback);
+                } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
+                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getValue(), visit.getMotechProjectedDate(), statusToRollback);
+                }
+            }
+            updateSubjectEnrollments(subjectEnrollments);
+        }
+    }
+
+    private void rollbackEnrollmentStatusOrEnrollNew(SubjectEnrollments subjectEnrollments, Subject subject, String campaignName,
+                                                     LocalDate referenceDate, EnrollmentStatus statusToRollback) {
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+
+        if (enrollment == null) {
+            enrollNew(subject, campaignName, referenceDate);
+        } else {
+            rollbackEnrollmentStatus(subject, enrollment, statusToRollback);
+        }
+    }
+
+    private void rollbackEnrollmentStatus(Subject subject, Enrollment enrollment, EnrollmentStatus statusToRollback) {
+        if (statusToRollback.equals(enrollment.getStatus())) {
+            EnrollmentStatus status = enrollment.getPreviousStatus();
+
+            if (status == null) {
+                status = EnrollmentStatus.ENROLLED;
+            }
+
+            enrollment.setStatus(status);
+
+            try {
+                if (EnrollmentStatus.ENROLLED.equals(status)) {
+                    boolean disconVac = checkSubjectRequiredDataAndDisconVacDate(subject);
+
+                    if (disconVac && checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
+                        enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
+                    } else if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+                        scheduleJobsForEnrollment(enrollment, true);
+                    }
+                }
+
+                enrollmentDataService.update(enrollment);
+            } catch (EbodacEnrollmentException e) {
+                LOGGER.debug("Cannot rollback status for Enrollment with id: {} and Campaign name: {}",
+                        enrollment.getExternalId(), enrollment.getCampaignName(), e);
+            }
+        }
+    }
+
+    private void checkSubjectEnrollmentsStatus(SubjectEnrollments subjectEnrollments, String subjectId) {
+        if (subjectEnrollments == null || !(EnrollmentStatus.UNENROLLED.equals(subjectEnrollments.getStatus()) || EnrollmentStatus.INITIAL.equals(subjectEnrollments.getStatus()))) {
+            throw new EbodacEnrollmentException("Cannot enroll Participant, because no unenrolled Participant exist with id: %s",
+                    "ebodac.enroll.error.noUnenrolledSubject", subjectId);
+        }
     }
 
     @Autowired
