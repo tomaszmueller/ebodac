@@ -17,7 +17,7 @@ public class IvrAndSmsStatisticReport {
     @Field
     private String messageId;
 
-    @Field
+    @Field(displayName = "Sent Date")
     private DateTime sendDate;
 
     @Field
