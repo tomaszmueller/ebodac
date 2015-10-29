@@ -260,9 +260,9 @@ public class ReportServiceIT extends BasePaxIT{
     private void checkUpdateBoosterVaccinationReportsForDates(LocalDate date) {
         ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findReportByDate(date);
 
-        assertEquals(7, (int) existingBoosterReport.getChildren_1_5());
-        assertEquals(7, (int) existingBoosterReport.getChildren_6_11());
-        assertEquals(7, (int) existingBoosterReport.getChildren_12_17());
+        assertEquals(7, (int) existingBoosterReport.getChildrenFrom1To5());
+        assertEquals(7, (int) existingBoosterReport.getChildrenFrom6To11());
+        assertEquals(7, (int) existingBoosterReport.getChildrenFrom12To17());
         assertEquals(7, (int) existingBoosterReport.getAdultFemales());
         assertEquals(7, (int) existingBoosterReport.getAdultMales());
         assertEquals(7, (int) existingBoosterReport.getAdultUndifferentiated());
@@ -274,9 +274,9 @@ public class ReportServiceIT extends BasePaxIT{
     private void checkUpdatePrimerVaccinationReportsForDates(LocalDate date) {
         ReportPrimerVaccination existingPrimerReport = primerVaccinationDataService.findReportByDate(date);
 
-        assertEquals(7, (int) existingPrimerReport.getChildren_1_5());
-        assertEquals(7, (int) existingPrimerReport.getChildren_6_11());
-        assertEquals(7, (int) existingPrimerReport.getChildren_12_17());
+        assertEquals(7, (int) existingPrimerReport.getChildrenFrom1To5());
+        assertEquals(7, (int) existingPrimerReport.getChildrenFrom6To11());
+        assertEquals(7, (int) existingPrimerReport.getChildrenFrom12To17());
         assertEquals(7, (int) existingPrimerReport.getAdultFemales());
         assertEquals(7, (int) existingPrimerReport.getAdultMales());
         assertEquals(7, (int) existingPrimerReport.getAdultUndifferentiated());

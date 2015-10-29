@@ -155,13 +155,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void generateOrUpdateBoosterVaccinationReport(List<Subject> subjects, LocalDate date) {
-        LocalDate age_6 = date.minusYears(6);
-        LocalDate age_12 = date.minusYears(12);
-        LocalDate age_18 = date.minusYears(18);
+        LocalDate age6 = date.minusYears(6);
+        LocalDate age12 = date.minusYears(12);
+        LocalDate age18 = date.minusYears(18);
 
-        int children_1_5 = 0;
-        int children_6_11 = 0;
-        int children_12_17 = 0;
+        int childrenFrom1To5 = 0;
+        int childrenFrom6To11 = 0;
+        int childrenFrom12To17 = 0;
         int adultMales = 0;
         int adultFemales = 0;
         int adultUndifferentiated = 0;
@@ -170,12 +170,12 @@ public class ReportServiceImpl implements ReportService {
         for (Subject subject : subjects) {
             if (subject.getDateOfBirth() == null) {
                 LOGGER.warn("Subject with id: {} has no birth date", subject.getSubjectId());
-            } else if (subject.getDateOfBirth().isAfter(age_6)) {
-                children_1_5++;
-            } else if (subject.getDateOfBirth().isAfter(age_12)) {
-                children_6_11++;
-            } else if (subject.getDateOfBirth().isAfter(age_18)) {
-                children_12_17++;
+            } else if (subject.getDateOfBirth().isAfter(age6)) {
+                childrenFrom1To5++;
+            } else if (subject.getDateOfBirth().isAfter(age12)) {
+                childrenFrom6To11++;
+            } else if (subject.getDateOfBirth().isAfter(age18)) {
+                childrenFrom12To17++;
             } else if (Gender.Male.equals(subject.getGender())) {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
@@ -187,12 +187,12 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
-        int peopleBoostered = children_1_5 + children_6_11 + children_12_17 + adultMales + adultFemales;
+        int peopleBoostered = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
 
         ReportBoosterVaccination existingReport = boosterVaccinationDataService.findReportByDate(date);
 
         if (existingReport != null) {
-            existingReport.updateReportData(adultMales, adultFemales, children_1_5, children_6_11, children_12_17,
+            existingReport.updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17,
                     adultUnidentified, adultUndifferentiated, peopleBoostered);
             boosterVaccinationDataService.update(existingReport);
 
@@ -200,7 +200,7 @@ public class ReportServiceImpl implements ReportService {
                     date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         } else {
             ReportBoosterVaccination reportBoosterVaccination = new ReportBoosterVaccination(date, adultMales, adultFemales,
-                    children_1_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleBoostered);
+                    childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated, peopleBoostered);
 
             boosterVaccinationDataService.create(reportBoosterVaccination);
 
@@ -210,13 +210,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void generateOrUpdatePrimerVaccinationReport(List<Subject> subjects, LocalDate date) {
-        LocalDate age_6 = date.minusYears(6);
-        LocalDate age_12 = date.minusYears(12);
-        LocalDate age_18 = date.minusYears(18);
+        LocalDate age6 = date.minusYears(6);
+        LocalDate age12 = date.minusYears(12);
+        LocalDate age18 = date.minusYears(18);
 
-        int children_1_5 = 0;
-        int children_6_11 = 0;
-        int children_12_17 = 0;
+        int childrenFrom1To5 = 0;
+        int childrenFrom6To11 = 0;
+        int childrenFrom12To17 = 0;
         int adultMales = 0;
         int adultFemales = 0;
         int adultUndifferentiated = 0;
@@ -225,12 +225,12 @@ public class ReportServiceImpl implements ReportService {
         for (Subject subject : subjects) {
             if (subject.getDateOfBirth() == null) {
                 LOGGER.warn("Subject with id: {} has no birth date", subject.getSubjectId());
-            } else if (subject.getDateOfBirth().isAfter(age_6)) {
-                children_1_5++;
-            } else if (subject.getDateOfBirth().isAfter(age_12)) {
-                children_6_11++;
-            } else if (subject.getDateOfBirth().isAfter(age_18)) {
-                children_12_17++;
+            } else if (subject.getDateOfBirth().isAfter(age6)) {
+                childrenFrom1To5++;
+            } else if (subject.getDateOfBirth().isAfter(age12)) {
+                childrenFrom6To11++;
+            } else if (subject.getDateOfBirth().isAfter(age18)) {
+                childrenFrom12To17++;
             } else if (Gender.Male.equals(subject.getGender())) {
                 adultMales++;
             } else if (Gender.Female.equals(subject.getGender())) {
@@ -242,12 +242,12 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
-        int peopleVaccinated = children_1_5 + children_6_11 + children_12_17 + adultMales + adultFemales;
+        int peopleVaccinated = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
 
         ReportPrimerVaccination existingReport = primerVaccinationDataService.findReportByDate(date);
 
         if (existingReport != null) {
-            existingReport.updateReportData(adultMales, adultFemales, children_1_5, children_6_11, children_12_17,
+            existingReport.updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17,
                     adultUnidentified, adultUndifferentiated, peopleVaccinated);
             primerVaccinationDataService.update(existingReport);
 
@@ -255,7 +255,7 @@ public class ReportServiceImpl implements ReportService {
                     date.toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
         } else {
             ReportPrimerVaccination reportPrimerVaccination = new ReportPrimerVaccination(date, adultMales, adultFemales,
-                    children_1_5, children_6_11, children_12_17, adultUnidentified, adultUndifferentiated, peopleVaccinated);
+                    childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated, peopleVaccinated);
 
             primerVaccinationDataService.create(reportPrimerVaccination);
 
