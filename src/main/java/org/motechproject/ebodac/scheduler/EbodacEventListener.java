@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
+import org.motechproject.ebodac.exception.EbodacInitiateCallException;
 import org.motechproject.ebodac.helper.IvrCallHelper;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -86,6 +87,10 @@ public class EbodacEventListener {
         String messageKey = (String) event.getParameters().get(EventKeys.MESSAGE_KEY);
         String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
 
-        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+        try {
+            ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+        } catch (EbodacInitiateCallException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 }

@@ -8,13 +8,19 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.VotoLanguage;
+import org.motechproject.ebodac.domain.VotoMessage;
+import org.motechproject.ebodac.exception.EbodacInitiateCallException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.VotoLanguageDataService;
 import org.motechproject.ebodac.repository.VotoMessageDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ivr.service.OutboundCallService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +29,8 @@ import java.util.Map;
 
 @Component
 public class IvrCallHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IvrCallHelper.class);
 
     @Autowired
     private ConfigService configService;
@@ -46,9 +54,9 @@ public class IvrCallHelper {
         Config config = configService.getConfig();
 
         if (config.getSendIvrCalls() != null && config.getSendIvrCalls()) {
-            Subject subject = subjectService.findSubjectBySubjectId(externalId);
-            String votoLanguageId = votoLanguageDataService.findVotoLanguageByLanguage(subject.getLanguage()).getVotoId();
-            String votoMessageId = votoMessageDataService.findVotoMessageByMessageKey(messageKey).getVotoIvrId();
+            Subject subject = getSubject(externalId);
+            String votoLanguageId = getVotoLanguageId(subject.getLanguage(), externalId);
+            String votoMessageId = getVotoMessageId(messageKey, externalId);
 
             JsonObject subscriber = new JsonObject();
             subscriber.addProperty(EbodacConstants.PHONE, subject.getPhoneNumber());
@@ -60,10 +68,11 @@ public class IvrCallHelper {
             Gson gson = new GsonBuilder().serializeNulls().create();
             String subscribers = gson.toJson(subscriberArray);
 
-            Enrollment enrollment = enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName);
-            StringBuilder subjectIds = new StringBuilder(enrollment.getExternalId());
+            StringBuilder subjectIds = new StringBuilder(externalId);
 
-            if (enrollment.getDuplicatedEnrollments() != null) {
+            Enrollment enrollment = enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName);
+
+            if (enrollment != null && enrollment.getDuplicatedEnrollments() != null) {
                 for (Enrollment e : enrollment.getDuplicatedEnrollments()) {
                     if (EnrollmentStatus.ENROLLED.equals(e.getStatus())) {
                         subjectIds.append(",");
@@ -85,7 +94,43 @@ public class IvrCallHelper {
             callParams.put(EbodacConstants.SUBJECT_IDS, subjectIds.toString());
             callParams.put(EbodacConstants.SUBJECT_PHONE_NUMBER, subject.getPhoneNumber());
 
+            LOGGER.info("Initiating call: {}", callParams.toString());
+
             outboundCallService.initiateCall(config.getIvrSettingsName(), callParams);
         }
+    }
+
+    private Subject getSubject(String subjectId) {
+        Subject subject = subjectService.findSubjectBySubjectId(subjectId);
+        if (subject == null) {
+            throw new EbodacInitiateCallException("Cannot initiate call, because Provider with id: %s not found", "", subjectId);
+        }
+
+        if (subject.getLanguage() == null) {
+            throw new EbodacInitiateCallException("Cannot initiate call for Provider with id: %s, because provider Language is null", "",
+                    subjectId);
+        }
+
+        return subject;
+    }
+
+    private String getVotoLanguageId(Language language, String subjectId) {
+        VotoLanguage votoLanguage = votoLanguageDataService.findVotoLanguageByLanguage(language);
+        if (votoLanguage == null) {
+            throw new EbodacInitiateCallException("Cannot initiate call for Provider with id: %s, because Voto Language for language: %s not found", "",
+                    subjectId, language.toString());
+        }
+
+        return votoLanguage.getVotoId();
+    }
+
+    private String getVotoMessageId(String messageKey, String subjectId) {
+        VotoMessage votoMessage = votoMessageDataService.findVotoMessageByMessageKey(messageKey);
+        if (votoMessage == null) {
+            throw new EbodacInitiateCallException("Cannot initiate call for Provider with id: %s, because Voto Message with key: %s not found", "",
+                    subjectId, messageKey);
+        }
+
+        return votoMessage.getVotoIvrId();
     }
 }
