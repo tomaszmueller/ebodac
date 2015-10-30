@@ -140,15 +140,15 @@ public class ReportController {
     @ResponseBody
     public List<LookupDto> getLookupsForDailyClinicVisitScheduleReport() {
         List<LookupDto> ret = new ArrayList<>();
-        List<LookupDto> availableLookupas;
+        List<LookupDto> availableLookups;
         try {
-            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForDailyClinicVisitScheduleReport();
-        for(LookupDto lookupDto : availableLookupas) {
+        for(LookupDto lookupDto : availableLookups) {
             if(lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
@@ -161,15 +161,15 @@ public class ReportController {
     @ResponseBody
     public List<LookupDto> getLookupsForFollowupsAfterPrimeInjectionReport() {
         List<LookupDto> ret = new ArrayList<>();
-        List<LookupDto> availableLookupas;
+        List<LookupDto> availableLookups;
         try {
-            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsAfterPrimeInjectionReport();
-        for(LookupDto lookupDto : availableLookupas) {
+        for(LookupDto lookupDto : availableLookups) {
             if(lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
@@ -182,15 +182,15 @@ public class ReportController {
     @ResponseBody
     public List<LookupDto> getLookupsForFollowupsMissedClinicVisitsReport() {
         List<LookupDto> ret = new ArrayList<>();
-        List<LookupDto> availableLookupas;
+        List<LookupDto> availableLookups;
         try {
-            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsMissedClinicVisitsReport();
-        for(LookupDto lookupDto : availableLookupas) {
+        for(LookupDto lookupDto : availableLookups) {
             if(lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
@@ -203,15 +203,15 @@ public class ReportController {
     @ResponseBody
     public List<LookupDto> getLookupsForMandEMissedClinicVisitsReport() {
         List<LookupDto> ret = new ArrayList<>();
-        List<LookupDto> availableLookupas;
+        List<LookupDto> availableLookups;
         try {
-            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForMandEMissedClinicVisitsReport();
-        for(LookupDto lookupDto : availableLookupas) {
+        for(LookupDto lookupDto : availableLookups) {
             if(lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
@@ -246,12 +246,21 @@ public class ReportController {
     @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @ResponseBody
     public List<LookupDto> getLookupsForIvrAndSmsStatisticReport() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
         try {
-            return lookupService.getAvailableLookups(IvrAndSmsStatisticReport.class.getName());
+            availableLookups =  lookupService.getAvailableLookups(IvrAndSmsStatisticReport.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForIvrAndSmsStatisticReport();
+        for (LookupDto lookupDto : availableLookups) {
+            if(lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
     }
 
     @RequestMapping(value = "/getLookupsForVisits", method = RequestMethod.GET)
@@ -259,15 +268,15 @@ public class ReportController {
     @ResponseBody
     public List<LookupDto> getLookupsForVisits() {
         List<LookupDto> ret = new ArrayList<>();
-        List<LookupDto> availableLookupas;
+        List<LookupDto> availableLookups;
         try {
-            availableLookupas = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForVisits();
-        for(LookupDto lookupDto : availableLookupas) {
+        for(LookupDto lookupDto : availableLookups) {
             if(lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }

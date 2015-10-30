@@ -32,6 +32,8 @@
     "Find Visits By Planned Visit Date And Type", "Find Visits By Planned Visit Date Range",
     "Find Visits By Planned Visit Date Range And Type","Find Visits By Participant Name",
     "Find Visits By Participant Address", "Find Visits By Participant Community"],
+  "availableLookupsForIvrAndSmsStatisticReport": ["Find Reports By ParticipantId", "Find Reports By Participant Phone Number",
+    "Find Reports By Participant Community", "Find Reports By Sent Date", "Find Reports By Received Date"],
   "availableLookupsForMandEMissedClinicVisitsReport" : ["Find Visits By Participant Id", "Find Visits By Planned Visit Date",
     "Find Visits By Planned Visit Date And Type", "Find Visits By Planned Visit Date Range",
     "Find Visits By Planned Visit Date Range And Type","Find Visits By Participant Name",

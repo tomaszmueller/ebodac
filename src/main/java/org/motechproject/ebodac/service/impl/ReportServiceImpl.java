@@ -265,7 +265,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void createIvrAndSmsStatisticReport(CallDetailRecord initialRecord) { //NO CHECKSTYLE CyclomaticComplexity
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.IVR_CALL_DETAIL_RECORD_TIME_FORMAT);
+        DateTimeFormatter motechTimestampFormatter = DateTimeFormat.forPattern(EbodacConstants.IVR_CALL_DETAIL_RECORD_TIME_FORMAT);
+        DateTimeFormatter votoTimestampFormatter = DateTimeFormat.forPattern(EbodacConstants.VOTO_TIMESTAMP_FORMAT);
 
         String providerCallId = initialRecord.getProviderCallId();
         Map<String, String> providerExtraData = initialRecord.getProviderExtraData();
@@ -304,7 +305,7 @@ public class ReportServiceImpl implements ReportService {
         List<CallDetailRecord> finished = new ArrayList<>();
         boolean sms = false;
         String messageId = providerExtraData.get(EbodacConstants.MESSAGE_ID);
-        DateTime sendDate = DateTime.parse(initialRecord.getMotechTimestamp(), formatter);
+        DateTime sendDate = DateTime.parse(initialRecord.getMotechTimestamp(), motechTimestampFormatter);
         int attempts = 0;
         DateTime receivedDate = null;
         DateTime smsReceivedDate = null;
@@ -317,7 +318,12 @@ public class ReportServiceImpl implements ReportService {
             }
             if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED)) {
                 sms = true;
-                smsReceivedDate = DateTime.parse(callDetailRecord.getMotechTimestamp(), formatter);
+                String providerTimestamp = callDetailRecord.getProviderExtraData().get(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP);
+                if (StringUtils.isBlank(providerTimestamp)) {
+                    throw new EbodacReportException("Cannot generate report for Call Detail Record with Provider Call Id: %s for Providers with Ids %s, because end_timestamp for SMS Record not found",
+                            "", providerCallId, subjectIds);
+                }
+                smsReceivedDate = DateTime.parse(providerTimestamp, votoTimestampFormatter);
             } else if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED)) {
                 finished.add(callDetailRecord);
             } else if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED)) {
@@ -358,7 +364,12 @@ public class ReportServiceImpl implements ReportService {
             }
 
             callRecord = finished.get(0);
-            receivedDate = DateTime.parse(callRecord.getMotechTimestamp(), formatter);
+            String providerTimestamp = callRecord.getProviderExtraData().get(EbodacConstants.IVR_CALL_DETAIL_RECORD_START_TIMESTAMP);
+            if (StringUtils.isBlank(providerTimestamp)) {
+                throw new EbodacReportException("Cannot generate report for Call Detail Record with Provider Call Id: %s for Providers with Ids %s, because start_timestamp for Call Record not found",
+                        "", providerCallId, subjectIds);
+            }
+            receivedDate = DateTime.parse(providerTimestamp, votoTimestampFormatter);
 
             if (StringUtils.isNotBlank(callRecord.getCallDuration())) {
                 timeListenedTo = Double.parseDouble(callRecord.getCallDuration());
@@ -375,9 +386,16 @@ public class ReportServiceImpl implements ReportService {
         }
 
         for(Subject subject : subjects) {
-            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(subject, messageId, sendDate,
-                    expectedDuration, timeListenedTo, receivedDate, attempts, sms, smsReceivedDate);
-            ivrAndSmsStatisticReportDataService.create(ivrAndSmsStatisticReport);
+            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallId(providerCallId);
+            if (ivrAndSmsStatisticReport == null) {
+                ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(providerCallId, subject, messageId, sendDate,
+                        expectedDuration, timeListenedTo, receivedDate, attempts, sms, smsReceivedDate);
+                ivrAndSmsStatisticReportDataService.create(ivrAndSmsStatisticReport);
+            } else {
+                ivrAndSmsStatisticReport.updateReportData(providerCallId, subject, messageId, sendDate, expectedDuration,
+                        timeListenedTo, receivedDate, attempts, sms, smsReceivedDate);
+                ivrAndSmsStatisticReportDataService.update(ivrAndSmsStatisticReport);
+            }
         }
     }
 

@@ -7,9 +7,15 @@ import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.util.SecurityMode;
 
+import javax.jdo.annotations.Unique;
+
 @Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
 @Entity(nonEditable = true)
 public class IvrAndSmsStatisticReport {
+
+    @Unique
+    @Field
+    private String providerCallId;
 
     @Field(displayName = "Participant")
     private Subject subject;
@@ -42,8 +48,9 @@ public class IvrAndSmsStatisticReport {
     @Field
     private String owner;
 
-    public IvrAndSmsStatisticReport(Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo,
-                                    DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration,
+                                    double timeListenedTo, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+        this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
         this.sendDate = sendDate;
@@ -53,6 +60,14 @@ public class IvrAndSmsStatisticReport {
         this.numberOfAttempts = numberOfAttempts;
         this.sms = sms;
         this.smsReceivedDate = smsReceivedDate;
+    }
+
+    public String getProviderCallId() {
+        return providerCallId;
+    }
+
+    public void setProviderCallId(String providerCallId) {
+        this.providerCallId = providerCallId;
     }
 
     public String getMessageId() {
@@ -133,5 +148,19 @@ public class IvrAndSmsStatisticReport {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration,
+                                 double timeListenedTo, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+        this.providerCallId = providerCallId;
+        this.subject = subject;
+        this.messageId = messageId;
+        this.sendDate = sendDate;
+        this.expectedDuration = expectedDuration;
+        this.timeListenedTo = timeListenedTo;
+        this.receivedDate = receivedDate;
+        this.numberOfAttempts = numberOfAttempts;
+        this.sms = sms;
+        this.smsReceivedDate = smsReceivedDate;
     }
 }
