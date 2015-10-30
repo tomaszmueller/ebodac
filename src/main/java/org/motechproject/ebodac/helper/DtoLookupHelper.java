@@ -79,7 +79,8 @@ public final class DtoLookupHelper {
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
-                    if (date == null || date.isAfter(LocalDate.now())) {
+                    LocalDate maxDate = LocalDate.now().minusDays(1);
+                    if (date == null || date.isAfter(maxDate)) {
                         return null;
                     }
                     String fields = settings.getFields();
@@ -140,7 +141,8 @@ public final class DtoLookupHelper {
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
-                    if (date == null || date.isAfter(LocalDate.now())) {
+                    LocalDate maxDate = LocalDate.now().minusDays(1);
+                    if (date == null || date.isAfter(maxDate)) {
                         return null;
                     }
                     String fields = settings.getFields();
@@ -271,14 +273,14 @@ public final class DtoLookupHelper {
     }
 
     private static boolean checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(Range<LocalDate> dateRange, GridSettings settings) {
-        GridSettings newSettings = settings;
         if (dateRange == null) {
             return false;
         }
-        if (dateRange.getMin() != null && dateRange.getMin().isAfter(LocalDate.now())) {
+        LocalDate maxDate = LocalDate.now().minusDays(1);
+        if (dateRange.getMin() != null && dateRange.getMin().isAfter(maxDate)) {
             return false;
-        } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(LocalDate.now())) {
-            settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now()));
+        } else if (dateRange.getMax() == null || dateRange.getMax().isAfter(maxDate)) {
+            settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, maxDate));
         }
         return true;
     }
