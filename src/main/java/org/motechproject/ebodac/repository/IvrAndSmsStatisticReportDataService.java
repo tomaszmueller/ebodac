@@ -29,4 +29,7 @@ public interface IvrAndSmsStatisticReportDataService extends MotechDataService<I
 
     @Lookup
     List<IvrAndSmsStatisticReport> findReportsByReceivedDate(@LookupField(name = "receivedDate") Range<DateTime> receivedDate);
+
+    @Lookup
+    IvrAndSmsStatisticReport findReportByProviderCallId(@LookupField(name = "providerCallId") String providerCallId);
 }

@@ -83,6 +83,10 @@ public final class EbodacConstants {
     public static final String IVR_CALL_DETAIL_RECORD_STATUS_FAILED = "Failed";
     public static final String IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED = "Submitted";
     public static final String IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS = "attempts";
+    public static final String IVR_CALL_DETAIL_RECORD_END_TIMESTAMP = "end_timestamp";
+    public static final String IVR_CALL_DETAIL_RECORD_START_TIMESTAMP = "start_timestamp";
+
+    public static final String VOTO_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
     public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";

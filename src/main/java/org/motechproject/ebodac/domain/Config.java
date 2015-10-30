@@ -64,6 +64,8 @@ public class Config {
 
     private List<String> availableLookupsForFollowupsMissedClinicVisitsReport;
 
+    private List<String> availableLookupsForIvrAndSmsStatisticReport;
+
     private List<String> availableLookupsForMandEMissedClinicVisitsReport;
 
     private List<String> availableLookupsForOptsOutOfMotechMessagesReport;
@@ -330,6 +332,16 @@ public class Config {
         this.availableLookupsForFollowupsMissedClinicVisitsReport = availableLookupsForFollowupsMissedClinicVisitsReport;
     }
 
+    public List<String> getAvailableLookupsForIvrAndSmsStatisticReport() {
+        if (availableLookupsForIvrAndSmsStatisticReport == null) {
+            availableLookupsForIvrAndSmsStatisticReport = new ArrayList<>();
+        }
+        return availableLookupsForIvrAndSmsStatisticReport;
+    }
+
+    public void setAvailableLookupsForIvrAndSmsStatisticReport(List<String> availableLookupsForIvrAndSmsStatisticReport) {
+        this.availableLookupsForIvrAndSmsStatisticReport = availableLookupsForIvrAndSmsStatisticReport;
+    }
 
     public List<String> getAvailableLookupsForMandEMissedClinicVisitsReport() {
         if (availableLookupsForMandEMissedClinicVisitsReport == null) {
