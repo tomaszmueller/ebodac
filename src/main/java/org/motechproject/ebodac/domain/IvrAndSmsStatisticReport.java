@@ -33,6 +33,9 @@ public class IvrAndSmsStatisticReport {
     private double timeListenedTo;
 
     @Field
+    private double messagePercentListened;
+
+    @Field
     private DateTime receivedDate;
 
     @Field
@@ -48,14 +51,15 @@ public class IvrAndSmsStatisticReport {
     @Field
     private String owner;
 
-    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration,
-                                    double timeListenedTo, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo,
+                                    double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
         this.sendDate = sendDate;
         this.expectedDuration = expectedDuration;
         this.timeListenedTo = timeListenedTo;
+        this.messagePercentListened = messagePercentListened;
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
         this.sms = sms;
@@ -100,6 +104,14 @@ public class IvrAndSmsStatisticReport {
 
     public void setTimeListenedTo(double timeListenedTo) {
         this.timeListenedTo = timeListenedTo;
+    }
+
+    public double getMessagePercentListened() {
+        return messagePercentListened;
+    }
+
+    public void setMessagePercentListened(double messagePercentListened) {
+        this.messagePercentListened = messagePercentListened;
     }
 
     public DateTime getReceivedDate() {
@@ -150,14 +162,15 @@ public class IvrAndSmsStatisticReport {
         this.owner = owner;
     }
 
-    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration,
-                                 double timeListenedTo, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo,
+                                 double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
         this.sendDate = sendDate;
         this.expectedDuration = expectedDuration;
         this.timeListenedTo = timeListenedTo;
+        this.messagePercentListened = messagePercentListened;
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
         this.sms = sms;

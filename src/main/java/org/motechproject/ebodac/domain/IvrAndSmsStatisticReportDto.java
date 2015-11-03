@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.motechproject.ebodac.util.CustomDateTimeSerializer;
+import org.motechproject.ebodac.util.CustomDoubleSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
 
 @JsonAutoDetect
@@ -25,10 +26,13 @@ public class IvrAndSmsStatisticReportDto {
     private DateTime sendDate;
 
     @JsonProperty
-    private double expectedDuration;
+    private Double expectedDuration;
 
     @JsonProperty
-    private double timeListenedTo;
+    private Double timeListenedTo;
+
+    @JsonProperty
+    private Double messagePercentListened;
 
     @JsonProperty
     private DateTime receivedDate;
@@ -44,7 +48,7 @@ public class IvrAndSmsStatisticReportDto {
 
     public IvrAndSmsStatisticReportDto(IvrAndSmsStatisticReport ivrAndSmsStatisticReport) {
         subject = ivrAndSmsStatisticReport.getSubject();
-        if (subject.getDateOfBirth() == null) {
+        if (subject == null || subject.getDateOfBirth() == null) {
             age = 0;
         } else {
             age = Years.yearsBetween(subject.getDateOfBirth(), LocalDate.now()).getYears();
@@ -53,6 +57,7 @@ public class IvrAndSmsStatisticReportDto {
         sendDate = ivrAndSmsStatisticReport.getSendDate();
         expectedDuration = ivrAndSmsStatisticReport.getExpectedDuration();
         timeListenedTo = ivrAndSmsStatisticReport.getTimeListenedTo();
+        messagePercentListened = ivrAndSmsStatisticReport.getMessagePercentListened();
         receivedDate = ivrAndSmsStatisticReport.getReceivedDate();
         numberOfAttempts = ivrAndSmsStatisticReport.getNumberOfAttempts();
         if (ivrAndSmsStatisticReport.getSms()) {
@@ -81,12 +86,19 @@ public class IvrAndSmsStatisticReportDto {
         return sendDate;
     }
 
-    public double getExpectedDuration() {
+    @JsonSerialize(using = CustomDoubleSerializer.class)
+    public Double getExpectedDuration() {
         return expectedDuration;
     }
 
-    public double getTimeListenedTo() {
+    @JsonSerialize(using = CustomDoubleSerializer.class)
+    public Double getTimeListenedTo() {
         return timeListenedTo;
+    }
+
+    @JsonSerialize(using = CustomDoubleSerializer.class)
+    public Double getMessagePercentListened() {
+        return messagePercentListened;
     }
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
