@@ -333,6 +333,7 @@
       "ebodac.web.reports.IvrAndSmsStatisticReport.sendDate",
       "ebodac.web.reports.IvrAndSmsStatisticReport.expectedDuration",
       "ebodac.web.reports.IvrAndSmsStatisticReport.timeListenedTo",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.messagePercentListened",
       "ebodac.web.reports.IvrAndSmsStatisticReport.receivedDate",
       "ebodac.web.reports.IvrAndSmsStatisticReport.noOfAttempts",
       "ebodac.web.reports.IvrAndSmsStatisticReport.sms",
@@ -385,6 +386,10 @@
     }, {
       "name": "timeListenedTo",
       "index": "timeListenedTo",
+      "align": "center"
+    }, {
+      "name": "messagePercentListened",
+      "index": "messagePercentListened",
       "align": "center"
     }, {
       "name": "receivedDate",
