@@ -56,6 +56,8 @@ public class Config {
 
     private Set<String> boosterVaccinationReportsToUpdate;
 
+    private Set<String> ivrAndSmsStatisticReportsToUpdate;
+
     private List<String> disconVacCampaignsList;
 
     private List<String> availableLookupsForDailyClinicVisitScheduleReport;
@@ -286,6 +288,17 @@ public class Config {
 
     public void setBoosterVaccinationReportsToUpdate(Set<String> boosterVaccinationReportsToUpdate) {
         this.boosterVaccinationReportsToUpdate = boosterVaccinationReportsToUpdate;
+    }
+
+    public Set<String> getIvrAndSmsStatisticReportsToUpdate() {
+        if (ivrAndSmsStatisticReportsToUpdate == null) {
+            ivrAndSmsStatisticReportsToUpdate = new HashSet<>();
+        }
+        return ivrAndSmsStatisticReportsToUpdate;
+    }
+
+    public void setIvrAndSmsStatisticReportsToUpdate(Set<String> ivrAndSmsStatisticReportsToUpdate) {
+        this.ivrAndSmsStatisticReportsToUpdate = ivrAndSmsStatisticReportsToUpdate;
     }
 
     public List<String> getDisconVacCampaignsList() {
