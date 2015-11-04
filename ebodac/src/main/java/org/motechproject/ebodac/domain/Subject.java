@@ -40,7 +40,7 @@ public class Subject {
     @Unique
     @NonEditable
     @UIDisplayable(position = 0)
-    @Field(required = true, displayName = "Participant Id")
+    @Field(required = true, displayName = EbodacConstants.SUBJECT_ID_FIELD_DISPLAY_NAME)
     private String subjectId;
 
     @UIDisplayable(position = 1)
@@ -157,6 +157,28 @@ public class Subject {
         this.section = section;
         this.district = district;
         setSiteId(siteId);
+    }
+
+    public Subject(Subject subject) {
+        subjectId = subject.getSubjectId();
+        name = subject.getName();
+        householdName = subject.getHouseholdName();
+        headOfHousehold = subject.getHeadOfHousehold();
+        phoneNumber = subject.getPhoneNumber();
+        address = subject.getAddress();
+        language = subject.getLanguage();
+        community = subject.getCommunity();
+        chiefdom = subject.getChiefdom();
+        section = subject.getSection();
+        district = subject.getDistrict();
+        setSiteId(subject.getSiteId());
+        gender = subject.getGender();
+        stageId = subject.getStageId();
+        dateOfBirth = subject.getDateOfBirth();
+        primerVaccinationDate = subject.getPrimerVaccinationDate();
+        boosterVaccinationDate = subject.getBoosterVaccinationDate();
+        dateOfDisconStd = subject.getDateOfDisconStd();
+        dateOfDisconVac = subject.getDateOfDisconVac();
     }
 
     public String getPhoneNumber() {

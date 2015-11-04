@@ -333,41 +333,15 @@ public class EbodacEnrollmentController {
     @RequestMapping(value = "/subjectDataChanged", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> subjectDataChanged(@RequestBody Subject subject) {
-        if (ebodacEnrollmentService.isEnrolled(subject.getSubjectId())) {
-            try {
-                if (StringUtils.isBlank(subject.getPhoneNumber()) || subject.getLanguage() == null) {
-                    ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
-                    return new ResponseEntity<>(HttpStatus.OK);
-                }
-
-                Subject oldSubject = subjectService.findSubjectBySubjectId(subject.getSubjectId());
-
-                if (!subject.getPhoneNumber().equals(oldSubject.getPhoneNumber())) {
-                    ebodacEnrollmentService.changeDuplicatedEnrollmentsForNewPhoneNumber(subject);
-                }
-            } catch (EbodacEnrollmentException e) {
-                LOGGER.debug(e.getMessage(), e);
-                return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        } else {
+        try {
             Subject oldSubject = subjectService.findSubjectBySubjectId(subject.getSubjectId());
-            if (checkSubjectRequiredData(subject, oldSubject)) {
-                ebodacEnrollmentService.createEnrollmentRecordsForSubject(oldSubject);
-            }
+            ebodacEnrollmentService.updateEnrollmentsWhenSubjectDataChanged(subject, oldSubject, false);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+            return new ResponseEntity<>(getMessageFromException(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private boolean checkSubjectRequiredData(Subject newSubject, Subject oldSubject) {
-        if (newSubject.getVisits() != null && newSubject.getPrimerVaccinationDate() != null &&
-                StringUtils.isNotBlank(newSubject.getPhoneNumber()) && newSubject.getLanguage() != null) {
-            if (oldSubject.getLanguage() == null || StringUtils.isBlank(oldSubject.getPhoneNumber())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void updateVisit(String subjectId, String campaignName, LocalDate date) {
