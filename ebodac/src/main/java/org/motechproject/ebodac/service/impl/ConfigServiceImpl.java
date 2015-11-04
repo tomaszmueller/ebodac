@@ -45,7 +45,7 @@ public class ConfigServiceImpl implements ConfigService {
         }
     }
 
-    @MotechListener(subjects = {ConfigurationConstants.FILE_CHANGED_EVENT_SUBJECT})
+    @MotechListener(subjects = { ConfigurationConstants.FILE_CHANGED_EVENT_SUBJECT })
     public void handleFileChanged(MotechEvent event) {
         String filePath = (String) event.getParameters().get(ConfigurationConstants.FILE_PATH);
         if (!StringUtils.isBlank(filePath) && filePath.endsWith(EBODAC_CONFIG_FILE_PATH)) {

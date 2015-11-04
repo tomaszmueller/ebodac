@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class ExcelTableWriter implements TableWriter {
 
+    private static final float HEIGHT_IN_POINTS = 40F;
+
     private XlsBasicTemplate xlsTemplate;
 
     private Map<String, Integer> columnIndexMap;
@@ -29,7 +31,7 @@ public class ExcelTableWriter implements TableWriter {
         columnIndexMap = new HashMap<>();
         Sheet sheet = xlsTemplate.getSheet();
         Row headerRow = sheet.createRow(xlsTemplate.getIndexOfHeaderRow());
-        headerRow.setHeightInPoints(40);
+        headerRow.setHeightInPoints(HEIGHT_IN_POINTS);
         Cell headerCell;
         for (int i = 0; i < titles.length; i++) {
             headerCell = headerRow.createCell(i);
@@ -44,9 +46,9 @@ public class ExcelTableWriter implements TableWriter {
         Sheet sheet = xlsTemplate.getSheet();
         Row row = sheet.createRow(xlsTemplate.getIndexOfFirstDataRow() + currentRowIndex);
         Cell dataCell;
-        for(Map.Entry<String, String> entry : map.entrySet()) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             Integer columnIndex = columnIndexMap.get(entry.getKey());
-            if(columnIndex != null) {
+            if (columnIndex != null) {
                 dataCell = row.createCell(columnIndex);
                 dataCell.setCellValue(entry.getValue());
                 dataCell.setCellStyle(xlsTemplate.getCellStyleForCell());

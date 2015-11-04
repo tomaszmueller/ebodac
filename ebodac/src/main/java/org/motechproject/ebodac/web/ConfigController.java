@@ -78,7 +78,7 @@ public class ConfigController {
 
     private void scheduleJobs() {
 
-        if(configService.getConfig().getEnableZetesJob()) {
+        if (configService.getConfig().getEnableZetesJob()) {
             String zetesUrl = configService.getConfig().getZetesUrl();
             String zetesUsername = configService.getConfig().getZetesUsername();
             String zetesPassword = configService.getConfig().getZetesPassword();
@@ -91,12 +91,12 @@ public class ConfigController {
             ebodacScheduler.scheduleZetesUpdateJob(startDate, zetesUrl, zetesUsername, zetesPassword);
         }
 
-        if(configService.getConfig().getEnableRaveJob()) {
+        if (configService.getConfig().getEnableRaveJob()) {
             Integer interval = configService.getConfig().getEmailCheckInterval();
             ebodacScheduler.scheduleEmailCheckJob(interval);
         }
 
-        if(configService.getConfig().getEnableReportJob()) {
+        if (configService.getConfig().getEnableReportJob()) {
             DateTime reportStartDate = DateUtil.newDateTime(LocalDate.now(), Time.parseTime(configService.getConfig().getReportCalculationStartTime(), ":"));
             if (reportStartDate.isBeforeNow()) {
                 reportStartDate = reportStartDate.plusDays(1);

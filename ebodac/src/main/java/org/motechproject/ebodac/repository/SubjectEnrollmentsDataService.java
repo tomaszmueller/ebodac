@@ -14,18 +14,18 @@ import java.util.List;
 
 public interface SubjectEnrollmentsDataService extends MotechDataService<SubjectEnrollments> {
 
-    @Lookup(name="Find unique Enrollment By Participant Id")
+    @Lookup(name = "Find unique Enrollment By Participant Id")
     SubjectEnrollments findEnrollmentBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
 
-    @Lookup(name="Find Enrollments By Participant Id")
+    @Lookup(name = "Find Enrollments By Participant Id")
     List<SubjectEnrollments> findEnrollmentsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
-    @Lookup(name="Find Enrollments By Participant Name")
+    @Lookup(name = "Find Enrollments By Participant Name")
     List<SubjectEnrollments> findEnrollmentsBySubjectName(@LookupField(name = "subject.name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
-    @Lookup(name="Find Enrollments By Participant Gender")
+    @Lookup(name = "Find Enrollments By Participant Gender")
     List<SubjectEnrollments> findEnrollmentsBySubjectGender(@LookupField(name = "subject.gender") Gender gender);
 
     @Lookup
@@ -34,12 +34,12 @@ public interface SubjectEnrollmentsDataService extends MotechDataService<Subject
     @Lookup
     List<SubjectEnrollments> findEnrollmentsByStatus(@LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name="Find Enrollments By Participant Id And Status")
+    @Lookup(name = "Find Enrollments By Participant Id And Status")
     List<SubjectEnrollments> findEnrollmentsBySubjectIdAndStatus(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
                                                                  @LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name="Find Enrollments By Participant Gender And Status")
+    @Lookup(name = "Find Enrollments By Participant Gender And Status")
     List<SubjectEnrollments> findEnrollmentsBySubjectGenderAndStatus(@LookupField(name = "subject.gender") Gender gender,
                                                                      @LookupField(name = "status") EnrollmentStatus status);
 
@@ -47,7 +47,7 @@ public interface SubjectEnrollmentsDataService extends MotechDataService<Subject
     List<SubjectEnrollments> findEnrollmentsByDateOfUnenrollmentAndStatus(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment,
                                                                           @LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name="Find Enrollments By Participant Date Of Birth Range And Status")
+    @Lookup(name = "Find Enrollments By Participant Date Of Birth Range And Status")
     List<SubjectEnrollments> findEnrollmentsBySubjectDateOfBirthRangeAndStatus(@LookupField(name = "subject.dateOfBirth") Range<LocalDate> dateOfBirth,
                                                                                @LookupField(name = "status") EnrollmentStatus status);
 }

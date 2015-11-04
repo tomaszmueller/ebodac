@@ -16,7 +16,7 @@ import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.util.SecurityMode;
 
 
-@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
+@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
 @Entity(recordHistory = true)
 public class Visit {
 
@@ -33,7 +33,7 @@ public class Visit {
 
     @NonEditable
     @Field(displayName = "Visit Type")
-    @EnumDisplayName(enumField="value")
+    @EnumDisplayName(enumField = "value")
     private VisitType type;
 
     @NonEditable

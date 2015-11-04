@@ -172,8 +172,8 @@ public class InstanceController {
         GridSettings newSettings = settings;
         String oldLookupFields = newSettings.getFields();
         newSettings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
-        if(newSettings == null) {
-            response.sendError(400, "Invalid lookups params");
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
         } else {
             exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_NAME,
                     null, Visit.class, EbodacConstants.FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT_MAP, oldLookupFields);
@@ -189,8 +189,8 @@ public class InstanceController {
         GridSettings newSettings = settings;
         String oldLookupFields = newSettings.getFields();
         newSettings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
-        if(newSettings == null) {
-            response.sendError(400, "Invalid lookups params");
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
         } else {
             exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME,
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
@@ -206,8 +206,8 @@ public class InstanceController {
         GridSettings newSettings = settings;
         String oldLookupFields = newSettings.getFields();
         newSettings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
-        if(newSettings == null) {
-            response.sendError(400, "Invalid lookups params");
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
         } else {
             exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_NAME,
                     MissedVisitsReportDto.class, Visit.class, EbodacConstants.M_AND_E_MISSED_CLINIC_VISITS_REPORT_MAP, oldLookupFields);
@@ -223,8 +223,8 @@ public class InstanceController {
         GridSettings newSettings = settings;
         String oldLookupFields = newSettings.getFields();
         newSettings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
-        if(newSettings == null) {
-            response.sendError(400, "Invalid lookups params");
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
         } else {
             exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME,
                     OptsOutOfMotechMessagesReportDto.class, SubjectEnrollments.class, EbodacConstants.OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_MAP, oldLookupFields);
@@ -240,15 +240,15 @@ public class InstanceController {
         GridSettings newSettings = settings;
         String oldLookupFields = newSettings.getFields();
         newSettings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
-        if(newSettings == null) {
-            response.sendError(400, "Invalid lookups params");
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
         } else {
             exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_NAME,
                     IvrAndSmsStatisticReportDto.class, IvrAndSmsStatisticReport.class, EbodacConstants.IVR_AND_SMS_STATISTIC_REPORT_MAP, oldLookupFields);
         }
     }
 
-    private void exportEntity(GridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
+    private void exportEntity(GridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response, //NO CHECKSTYLE ParameterNumber
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                               String oldLookupFields) throws IOException {
 
@@ -257,9 +257,9 @@ public class InstanceController {
 
         if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
-        } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
-        } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/vnd.ms-excel");
         } else {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
@@ -279,10 +279,10 @@ public class InstanceController {
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (EbodacConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (EbodacConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
                 XlsBasicTemplate template = exportTemplatesHelper.createTemplateForXls(fileNameBeginning, entityType,
                         settings, exportRecords, oldLookupFields, response.getOutputStream());
 
@@ -299,7 +299,7 @@ public class InstanceController {
         if (gridSettings.getFields() == null) {
             return null;
         } else {
-            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 }

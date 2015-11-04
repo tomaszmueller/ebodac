@@ -11,7 +11,8 @@ import java.io.IOException;
 public final class JsonUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
 
-    private JsonUtils(){};
+    private JsonUtils() {
+    }
 
     public static String convertSubjectForZetes(Subject s) {
         ObjectMapper mapper = new ObjectMapper();

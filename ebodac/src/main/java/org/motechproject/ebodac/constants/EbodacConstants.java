@@ -42,11 +42,11 @@ public final class EbodacConstants {
 
     public static final String BOOSTER_RELATED_MESSAGES = "Booster related messages";
 
-    public static final String PDF_EXPORT_FORMAT="pdf";
-    public static final String CSV_EXPORT_FORMAT="csv";
-    public static final String XLS_EXPORT_FORMAT="xls";
+    public static final String PDF_EXPORT_FORMAT = "pdf";
+    public static final String CSV_EXPORT_FORMAT = "csv";
+    public static final String XLS_EXPORT_FORMAT = "xls";
 
-    public static final String EBODAC_MODULE="EBODAC Module";
+    public static final String EBODAC_MODULE = "EBODAC Module";
 
     public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
     public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
@@ -213,5 +213,6 @@ public final class EbodacConstants {
         }
     };
 
-    private EbodacConstants(){};
+    private EbodacConstants() {
+    }
 }

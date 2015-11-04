@@ -51,7 +51,7 @@ public class LookupServiceImpl implements LookupService {
 
             rowCount = getRowCount(newQueryParams, recordCount);
 
-            if(newQueryParams.getPage() == null) {
+            if (newQueryParams.getPage() == null) {
                 newQueryParams = new QueryParams(1, newQueryParams.getPageSize(), newQueryParams.getOrderList());
             }
 
@@ -65,7 +65,7 @@ public class LookupServiceImpl implements LookupService {
         recordCount = mdsLookupService.countAll(entityType.getName());
 
         int page;
-        if(newQueryParams != null && newQueryParams.getPageSize() != null && newQueryParams.getPage() != null) {
+        if (newQueryParams != null && newQueryParams.getPageSize() != null && newQueryParams.getPage() != null) {
             rowCount = (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
             page = newQueryParams.getPage();
             entities = mdsLookupService.retrieveAll(entityType.getName(), newQueryParams);
@@ -101,7 +101,7 @@ public class LookupServiceImpl implements LookupService {
             }
         } catch (InstantiationException | IllegalAccessException |
                 InvocationTargetException e) {
-           throw new EbodacLookupException("Can not create: " + entityDtoType.getName() +" using: " + entityType.getName(), e);
+           throw new EbodacLookupException("Can not create: " + entityDtoType.getName() + " using: " + entityType.getName(), e);
         }
         return new Records<>(baseRecords.getPage(), baseRecords.getTotal(), baseRecords.getRecords(), entityDtoList);
     }
@@ -115,14 +115,14 @@ public class LookupServiceImpl implements LookupService {
 
     private EntityDto getEntityByEntityClassName(String entityName) {
         EntityDto entity = entityService.getEntityByClassName(entityName);
-        if(entity == null) {
-            throw new EbodacLookupException( "Can not find entity named: " + entityName);
+        if (entity == null) {
+            throw new EbodacLookupException("Can not find entity named: " + entityName);
         }
         return entity;
     }
 
     private Map<String, Object> getFields(String lookupFields) throws IOException {
-        return objectMapper.readValue(lookupFields, new TypeReference<HashMap>() {});
+        return objectMapper.readValue(lookupFields, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
     }
 
     private int getRowCount(QueryParams newQueryParams, long recordCount) {

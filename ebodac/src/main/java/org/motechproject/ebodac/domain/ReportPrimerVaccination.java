@@ -8,7 +8,7 @@ import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.util.SecurityMode;
 
-@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
+@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
 @Entity
 public class ReportPrimerVaccination extends ReportVaccinationAbstract {
 
@@ -20,7 +20,7 @@ public class ReportPrimerVaccination extends ReportVaccinationAbstract {
     public ReportPrimerVaccination() {
     }
 
-    public ReportPrimerVaccination(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+    public ReportPrimerVaccination(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11, //NO CHECKSTYLE ParameterNumber
                                    Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleVaccinated) {
         super(date, adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated);
         this.peopleVaccinated = peopleVaccinated;
@@ -34,7 +34,7 @@ public class ReportPrimerVaccination extends ReportVaccinationAbstract {
         this.peopleVaccinated = peopleVaccinated;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11, //NO CHECKSTYLE ParameterNumber
                                  Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated, Integer peopleVaccinated) {
         updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17, adultUnidentified, adultUndifferentiated);
         this.peopleVaccinated = peopleVaccinated;

@@ -12,15 +12,15 @@ import java.util.List;
 
 public interface IvrAndSmsStatisticReportDataService extends MotechDataService<IvrAndSmsStatisticReport> {
 
-    @Lookup(name="Find Reports By ParticipantId")
+    @Lookup(name = "Find Reports By ParticipantId")
     List<IvrAndSmsStatisticReport> findReportsBySubjectId(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
-    @Lookup(name="Find Reports By Participant Phone Number")
+    @Lookup(name = "Find Reports By Participant Phone Number")
     List<IvrAndSmsStatisticReport> findReportsSubjectPhoneNumber(@LookupField(name = "subject.phoneNumber",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String phoneNumber);
 
-    @Lookup(name="Find Reports By Participant Community")
+    @Lookup(name = "Find Reports By Participant Community")
     List<IvrAndSmsStatisticReport> findReportsBySubjectCommunity(@LookupField(name = "subject.community",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String community);
 

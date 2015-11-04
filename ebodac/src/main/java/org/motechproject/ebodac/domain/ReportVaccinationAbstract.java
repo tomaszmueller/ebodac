@@ -65,8 +65,8 @@ public abstract class ReportVaccinationAbstract {
     public ReportVaccinationAbstract() {
     }
 
-    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
-                                     Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated) {
+    public ReportVaccinationAbstract(LocalDate date, Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, //NO CHECKSTYLE ParameterNumber
+                                     Integer childrenFrom6To11, Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.date = date;
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;
@@ -151,7 +151,7 @@ public abstract class ReportVaccinationAbstract {
         this.owner = owner;
     }
 
-    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11,
+    public void updateReportData(Integer adultMales, Integer adultFemales, Integer childrenFrom1To5, Integer childrenFrom6To11, //NO CHECKSTYLE ParameterNumber
                                  Integer childrenFrom12To17, Integer adultUnidentified, Integer adultUndifferentiated) {
         this.adultMales = adultMales;
         this.adultFemales = adultFemales;

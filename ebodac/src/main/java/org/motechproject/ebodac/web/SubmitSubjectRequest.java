@@ -14,6 +14,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubmitSubjectRequest {
 
+    private static final double VALIDATION_FACTOR = 97D;
+
     private String subjectId;
 
     private String name;
@@ -43,8 +45,8 @@ public class SubmitSubjectRequest {
     public SubmitSubjectRequest() {
     }
 
-    public SubmitSubjectRequest(String phoneNumber, String name, String householdName, String subjectId,
-                                String address, String language, String community, String headOfHousehold, String chiefdom, String section, String district) {
+    public SubmitSubjectRequest(String phoneNumber, String name, String householdName, String subjectId, String address, //NO CHECKSTYLE ParameterNumber
+                                String language, String community, String headOfHousehold, String chiefdom, String section, String district) {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.householdName = householdName;
@@ -214,7 +216,7 @@ public class SubmitSubjectRequest {
             if (!StringUtils.isNumeric(subjectId)) {
                 validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
             } else {
-                if (!Double.valueOf(Double.valueOf(subjectId) % 97D).equals(1D)) {
+                if (!(new Double(1D)).equals(Double.valueOf(Double.valueOf(subjectId) % VALIDATION_FACTOR))) {
                     validationErrors.add(new ValidationError(ValidationError.SUBJECT_ID_NOT_VERIFIED));
                 }
             }

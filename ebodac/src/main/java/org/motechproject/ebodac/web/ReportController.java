@@ -148,8 +148,8 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForDailyClinicVisitScheduleReport();
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -169,8 +169,8 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsAfterPrimeInjectionReport();
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -190,8 +190,8 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForFollowupsMissedClinicVisitsReport();
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -211,8 +211,8 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForMandEMissedClinicVisitsReport();
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -256,7 +256,7 @@ public class ReportController {
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForIvrAndSmsStatisticReport();
         for (LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -276,8 +276,8 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForVisits();
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }
@@ -299,7 +299,7 @@ public class ReportController {
         try {
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
             newSettings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
-            if(newSettings == null) {
+            if (newSettings == null) {
                 return new Records<Object>(null);
             }
             return lookupService.getEntities(Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
@@ -313,7 +313,7 @@ public class ReportController {
         GridSettings newSettings = settings;
         try {
             newSettings = DtoLookupHelper.changeLookupAndOrderForFollowupsMissedClinicVisitsReport(settings);
-            if(newSettings == null) {
+            if (newSettings == null) {
                 return new Records<Object>(null);
             }
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
@@ -328,7 +328,7 @@ public class ReportController {
         GridSettings newSettings = settings;
         try {
             newSettings = DtoLookupHelper.changeLookupAndOrderForMandEMissedClinicVisitsReport(settings);
-            if(newSettings == null) {
+            if (newSettings == null) {
                 return new Records<Object>(null);
             }
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
@@ -343,7 +343,7 @@ public class ReportController {
         GridSettings newSettings = settings;
         try {
             newSettings = DtoLookupHelper.changeLookupAndOrderForOptsOutOfMotechMessagesReport(settings);
-            if(newSettings == null) {
+            if (newSettings == null) {
                 return new Records<Object>(null);
             }
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
@@ -359,7 +359,7 @@ public class ReportController {
         GridSettings newSettings = settings;
         try {
             newSettings = DtoLookupHelper.changeLookupAndOrderForIvrAndSmsStatisticReport(settings);
-            if(newSettings == null) {
+            if (newSettings == null) {
                 return new Records<Object>(null);
             }
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
@@ -375,7 +375,7 @@ public class ReportController {
         if (json == null) {
             return null;
         } else {
-            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 }
