@@ -337,7 +337,8 @@
       "ebodac.web.reports.IvrAndSmsStatisticReport.receivedDate",
       "ebodac.web.reports.IvrAndSmsStatisticReport.noOfAttempts",
       "ebodac.web.reports.IvrAndSmsStatisticReport.sms",
-      "ebodac.web.reports.IvrAndSmsStatisticReport.smsReceivedDate"],
+      "ebodac.web.reports.IvrAndSmsStatisticReport.smsReceivedDate",
+      "ebodac.web.reports.IvrAndSmsStatisticReport.stageId"],
     "colModel": [{
       "name": "rowId",
       "index": "rowId",
@@ -407,6 +408,12 @@
       "name": "smsReceivedDate",
       "index": "smsReceivedDate",
       "align": "center"
+    }, {
+      "name": "stageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
     }]
   }
 }
