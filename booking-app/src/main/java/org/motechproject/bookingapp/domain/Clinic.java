@@ -9,18 +9,42 @@ import java.util.List;
 public class Clinic {
 
     @Field(required = true)
+    private Site site;
+
+    @Field(required = true)
     private String location;
 
+    @Field
     private List<Room> rooms;
+
+    @Field
     private Integer maxScreeningVisits;
+
+    @Field
     private Integer maxPrimeVisits;
+
+    @Field
     private Integer maxPrimeFollowUpVisits;
+
+    @Field
     private Integer maxBoosterVisits;
+
+    @Field
     private Integer maxBoosterFollowUpVisits;
+
+    @Field
     private Integer maxBoosterSecondFollowUpVisits;
+
+    @Field
     private Integer maxBoosterThirdFollowUpVisits;
+
+    @Field
     private Integer maxLongTermFollowUpVisits;
+
+    @Field
     private Integer maxLongTermSecondFollowUpVisits;
+
+    @Field
     private Integer maxLongTestThirdFollowUpVisits;
 
     public String getLocation() {
