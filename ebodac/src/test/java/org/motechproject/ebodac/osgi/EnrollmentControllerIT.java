@@ -27,6 +27,7 @@ import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -67,6 +68,10 @@ import static org.junit.Assert.assertTrue;
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
 public class EnrollmentControllerIT extends BasePaxIT {
+
+    @Inject
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+
     @Inject
     private SubjectDataService subjectDataService;
 
@@ -120,6 +125,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     @Before
     public void cleanBefore() throws SchedulerException {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         enrollmentDataService.deleteAll();
@@ -131,6 +137,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     @After
     public void cleanAfter() throws SchedulerException {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         enrollmentDataService.deleteAll();
