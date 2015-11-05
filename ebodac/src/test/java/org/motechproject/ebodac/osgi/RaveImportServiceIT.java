@@ -13,6 +13,7 @@ import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -40,6 +41,9 @@ import static org.junit.Assert.assertSame;
 public class RaveImportServiceIT extends BasePaxIT {
 
     @Inject
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+
+    @Inject
     private RaveImportService raveImportService;
 
     @Inject
@@ -53,6 +57,7 @@ public class RaveImportServiceIT extends BasePaxIT {
 
     @Before
     public void cleanBefore() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
@@ -60,6 +65,7 @@ public class RaveImportServiceIT extends BasePaxIT {
 
     @After
     public void cleanAfter() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();

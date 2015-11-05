@@ -17,6 +17,7 @@ import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -64,24 +65,27 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     private ConfigService configService;
 
     @Inject
-    EbodacEnrollmentService ebodacEnrollmentService;
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
 
     @Inject
-    SubjectService subjectService;
+    private EbodacEnrollmentService ebodacEnrollmentService;
 
     @Inject
-    VisitService visitService;
+    private SubjectService subjectService;
 
     @Inject
-    EnrollmentDataService enrollmentDataService;
+    private VisitService visitService;
 
     @Inject
-    SubjectEnrollmentsDataService subjectEnrollmentsDataService;
+    private EnrollmentDataService enrollmentDataService;
 
     @Inject
-    RaveImportService raveImportService;
+    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
 
-    Scheduler scheduler;
+    @Inject
+    private RaveImportService raveImportService;
+
+    private Scheduler scheduler;
 
     private Config savedConfig;
 
@@ -89,6 +93,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     public void cleanBefore() throws SchedulerException {
         scheduler = (Scheduler) getQuartzScheduler(bundleContext);
         clearJobs();
+        ivrAndSmsStatisticReportDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         enrollmentDataService.deleteAll();
         subjectService.deleteAll();
@@ -98,6 +103,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     @After
     public void cleanAfter() throws SchedulerException {
         clearJobs();
+        ivrAndSmsStatisticReportDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         enrollmentDataService.deleteAll();
         subjectService.deleteAll();

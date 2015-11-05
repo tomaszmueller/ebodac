@@ -11,6 +11,7 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -35,6 +36,9 @@ import static junit.framework.Assert.assertNotNull;
 public class SubjectServiceIT extends BasePaxIT {
 
     @Inject
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+
+    @Inject
     private SubjectService subjectService;
 
     @Inject
@@ -52,6 +56,7 @@ public class SubjectServiceIT extends BasePaxIT {
 
     @Before
     public void cleanBefore() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
@@ -60,6 +65,7 @@ public class SubjectServiceIT extends BasePaxIT {
 
     @After
     public void cleanAfter() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();

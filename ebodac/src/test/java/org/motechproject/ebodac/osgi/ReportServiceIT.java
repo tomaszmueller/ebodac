@@ -12,6 +12,7 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
@@ -44,6 +45,9 @@ import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
 public class ReportServiceIT extends BasePaxIT{
+
+    @Inject
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
 
     @Inject
     private SubjectDataService subjectDataService;
@@ -79,6 +83,7 @@ public class ReportServiceIT extends BasePaxIT{
     @Before
     public void setUp() throws Exception {
         savedConfig = configService.getConfig();
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
@@ -90,6 +95,7 @@ public class ReportServiceIT extends BasePaxIT{
     @After
     public void tearDown() throws Exception {
         configService.updateConfig(savedConfig);
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -38,6 +39,9 @@ import static org.junit.Assert.assertEquals;
 public class HistoryServiceIT extends BasePaxIT {
 
     @Inject
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+
+    @Inject
     private RaveImportService raveImportService;
 
     @Inject
@@ -54,6 +58,7 @@ public class HistoryServiceIT extends BasePaxIT {
 
     @Before
     public void cleanBefore() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
@@ -61,6 +66,7 @@ public class HistoryServiceIT extends BasePaxIT {
 
     @After
     public void cleanAfter() {
+        ivrAndSmsStatisticReportDataService.deleteAll();
         visitDataService.deleteAll();
         subjectEnrollmentsDataService.deleteAll();
         subjectDataService.deleteAll();
