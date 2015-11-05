@@ -174,7 +174,7 @@ public class EbodacServiceImpl implements EbodacService {
             if (StringUtils.isEmpty(response)) {
                 return "Empty response body with status different than 204";
             }
-            if (httpResponse.getContentType().equals("application/json")) {
+            if ("application/json".equals(httpResponse.getContentType())) {
                 try {
                     JsonElement jsonElement = new JsonParser().parse(response);
                     JsonObject jsonObject = jsonElement.getAsJsonObject();

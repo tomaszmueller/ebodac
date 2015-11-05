@@ -10,7 +10,7 @@ import org.motechproject.ebodac.util.CustomSubjectSerializer;
 import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
 
 @JsonAutoDetect
-public class MissedVisitsReportDto{
+public class MissedVisitsReportDto {
 
     @JsonProperty
     private int noOfDaysExceededVisit;
@@ -26,7 +26,7 @@ public class MissedVisitsReportDto{
 
     public MissedVisitsReportDto(Visit entityObject) {
         motechProjectedDate = entityObject.getMotechProjectedDate();
-        if(motechProjectedDate == null) {
+        if (motechProjectedDate == null) {
             noOfDaysExceededVisit = 0;
         } else {
             noOfDaysExceededVisit = Days.daysBetween(motechProjectedDate, LocalDate.now()).getDays();

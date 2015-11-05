@@ -40,7 +40,7 @@ public class RaveImportServiceImpl implements RaveImportService {
     public void importCsv(Reader reader, String filename) {
         try (CsvMapReader csvMapReader = new CsvMapReader(reader, CsvPreference.STANDARD_PREFERENCE)) {
             Map<String, String> row;
-            final String headers[] = csvMapReader.getHeader(true);
+            final String [] headers = csvMapReader.getHeader(true);
 
             while ((row = csvMapReader.read(headers)) != null) {
                 String subjectId = null;
@@ -108,7 +108,7 @@ public class RaveImportServiceImpl implements RaveImportService {
         try {
             Field f = o.getClass().getDeclaredField(fieldName);
             Object parsedValue = null;
-            if (csvValue != null && !csvValue.equalsIgnoreCase("null")) {
+            if (csvValue != null && !"null".equalsIgnoreCase(csvValue)) {
                 parsedValue = TypeHelper.parse(csvValue, f.getType());
             }
             PropertyUtil.setProperty(o, StringUtils.uncapitalize(f.getName()), parsedValue);

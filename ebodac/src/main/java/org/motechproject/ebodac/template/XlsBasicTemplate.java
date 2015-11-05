@@ -20,8 +20,10 @@ import java.util.Map;
 
 public abstract class XlsBasicTemplate {
 
+    private static final short FONT_HEIGHT_IN_POINTS = 11;
+
     private Map<String, CellStyle> styles;
-    
+
     private final Workbook workbook;
 
     private final Sheet sheet;
@@ -88,7 +90,7 @@ public abstract class XlsBasicTemplate {
         styles = new HashMap<>();
         CellStyle style;
         Font monthFont = workbook.createFont();
-        monthFont.setFontHeightInPoints((short) 11);
+        monthFont.setFontHeightInPoints(FONT_HEIGHT_IN_POINTS);
         monthFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style = workbook.createCellStyle();
         style.setAlignment(CellStyle.ALIGN_CENTER);

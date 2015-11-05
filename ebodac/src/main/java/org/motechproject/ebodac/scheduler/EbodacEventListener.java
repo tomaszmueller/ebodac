@@ -42,7 +42,7 @@ public class EbodacEventListener {
     @Autowired
     private IvrCallHelper ivrCallHelper;
 
-    @MotechListener(subjects = {EbodacConstants.ZETES_UPDATE_EVENT})
+    @MotechListener(subjects = { EbodacConstants.ZETES_UPDATE_EVENT })
     public void zetesUpdate(MotechEvent event) {
         Object zetesUrl = event.getParameters().get(EbodacConstants.ZETES_URL);
         Object username = event.getParameters().get(EbodacConstants.ZETES_USERNAME);
@@ -50,7 +50,7 @@ public class EbodacEventListener {
         ebodacService.sendUpdatedSubjects(zetesUrl.toString(), username.toString(), password.toString());
     }
 
-    @MotechListener(subjects = {EbodacConstants.EMAIL_CHECK_EVENT})
+    @MotechListener(subjects = { EbodacConstants.EMAIL_CHECK_EVENT })
     public void emailCheck(MotechEvent event) {
         Config config = configService.getConfig();
         String host = config.getEmailHost();
@@ -62,7 +62,7 @@ public class EbodacEventListener {
         }
     }
 
-    @MotechListener(subjects = {EbodacConstants.DAILY_REPORT_EVENT})
+    @MotechListener(subjects = { EbodacConstants.DAILY_REPORT_EVENT })
     public void generateDailyReport(MotechEvent event) {
         DateTime startDate = (DateTime) event.getParameters().get(EbodacConstants.DAILY_REPORT_EVENT_START_DATE);
         LOGGER.info("Started generation of daily reports...");

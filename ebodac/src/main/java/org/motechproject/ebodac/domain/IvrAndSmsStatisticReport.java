@@ -9,7 +9,7 @@ import org.motechproject.mds.util.SecurityMode;
 
 import javax.jdo.annotations.Unique;
 
-@Access(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
+@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
 @Entity(nonEditable = true)
 public class IvrAndSmsStatisticReport {
 
@@ -51,8 +51,8 @@ public class IvrAndSmsStatisticReport {
     @Field
     private String owner;
 
-    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo,
-                                    double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, //NO CHECKSTYLE ParameterNumber
+                                    double timeListenedTo, double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
@@ -162,8 +162,8 @@ public class IvrAndSmsStatisticReport {
         this.owner = owner;
     }
 
-    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo,
-                                 double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, //NO CHECKSTYLE ParameterNumber
+                                 double timeListenedTo, double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;

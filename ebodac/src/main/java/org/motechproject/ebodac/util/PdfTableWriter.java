@@ -19,6 +19,8 @@ import java.util.Map;
 
 public class PdfTableWriter implements TableWriter {
 
+    private static final float WIDTH_PERCENTAGE = 100.0F;
+
     private PdfBasicTemplate template;
 
     private PdfPTable dataTable;
@@ -35,7 +37,7 @@ public class PdfTableWriter implements TableWriter {
 
         for (String header: headers) {
             String value = row.get(header);
-            if(StringUtils.isBlank(value)) {
+            if (StringUtils.isBlank(value)) {
                 value = "\n";
             }
             Paragraph paragraph = new Paragraph(value, PdfBasicTemplate.TABLE_FONT);
@@ -49,7 +51,7 @@ public class PdfTableWriter implements TableWriter {
     @Override
     public void writeHeader(String[] headers) throws IOException {
         this.dataTable = new PdfPTable(headers.length);
-        this.dataTable.setWidthPercentage(100.0F);
+        this.dataTable.setWidthPercentage(WIDTH_PERCENTAGE);
 
         for (String header: headers) {
             PdfPCell cell = new PdfPCell(new Paragraph(header, PdfBasicTemplate.HEADER_FONT));

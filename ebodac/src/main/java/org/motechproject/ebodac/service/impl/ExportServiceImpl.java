@@ -55,7 +55,7 @@ public class ExportServiceImpl implements ExportService {
     private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
                                                       String lookupFields, QueryParams queryParams) throws IOException {
         Records<T> records;
-        if(entityDtoType != null) {
+        if (entityDtoType != null) {
             records = (Records<T>) lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
         } else {
             records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
@@ -92,12 +92,12 @@ public class ExportServiceImpl implements ExportService {
             if (fieldPath.length == 2) {
                 Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
                 Object fieldValue = objectMap.get(fieldPath[1]);
-                if(fieldValue != null) {
+                if (fieldValue != null) {
                     value = fieldValue.toString();
                 }
             } else {
                 Object entryValue = entityMap.get(entry.getValue());
-                if(entryValue != null) {
+                if (entryValue != null) {
                     value = entryValue.toString();
                 }
             }

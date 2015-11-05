@@ -138,7 +138,7 @@ public class SubjectServiceImpl implements SubjectService {
         QueryParams queryParams = new QueryParams(new Order("primerVaccinationDate", Order.Direction.ASC));
         List<Subject> subjects = subjectDataService.retrieveAll(queryParams);
         if (subjects != null && !subjects.isEmpty()) {
-            for(Subject subject : subjects) {
+            for (Subject subject : subjects) {
                 if (subject.getPrimerVaccinationDate() != null) {
                     return subject.getPrimerVaccinationDate();
                 }
@@ -153,5 +153,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void deleteAll(){ subjectDataService.deleteAll(); }
+    public void deleteAll() {
+        subjectDataService.deleteAll();
+    }
 }

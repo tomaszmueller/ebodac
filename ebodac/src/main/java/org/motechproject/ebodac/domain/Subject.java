@@ -26,8 +26,8 @@ import java.util.List;
 /**
  * Models data for registration of Subject in EBODAC
  */
-@ReadAccess(value = SecurityMode.PERMISSIONS, members = {"manageEbodac"})
-@Access(value = SecurityMode.PERMISSIONS, members = {"manageSubjects"})
+@ReadAccess(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
+@Access(value = SecurityMode.PERMISSIONS, members = { "manageSubjects" })
 @Entity(recordHistory = true, name = "Participant")
 public class Subject {
 
@@ -142,7 +142,7 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(String subjectId, String name, String householdName, String headOfHousehold,
+    public Subject(String subjectId, String name, String householdName, String headOfHousehold, //NO CHECKSTYLE ParameterNumber
                    String phoneNumber, String address, Language language, String community, String siteId,
                    String chiefdom, String section, String district) {
         this.subjectId = subjectId;

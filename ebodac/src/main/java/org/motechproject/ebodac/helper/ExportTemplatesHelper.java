@@ -60,7 +60,7 @@ public class ExportTemplatesHelper {
             template = new PdfReportATemplate(outputStream);
             ((PdfReportATemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
-        } else if (reportName.equals("DailyClinicVisitScheduleReport") || reportName.equals("FollowupsMissedClinicVisitsReport") || reportName.equals("FollowupsAfterPrimeInjectionReport")) {
+        } else if ("DailyClinicVisitScheduleReport".equals(reportName) || "FollowupsMissedClinicVisitsReport".equals(reportName) || "FollowupsAfterPrimeInjectionReport".equals(reportName)) {
             template = new PdfReportBTemplate(outputStream);
             ((PdfReportBTemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
@@ -83,7 +83,7 @@ public class ExportTemplatesHelper {
             template = new XlsReportATemplate(outputStream);
             ((XlsReportATemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), "Daily", config.getDistrict(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
-        } else if (reportName.equals("DailyClinicVisitScheduleReport") || reportName.equals("FollowupsMissedClinicVisitsReport") || reportName.equals("FollowupsAfterPrimeInjectionReport")) {
+        } else if ("DailyClinicVisitScheduleReport".equals(reportName) || "FollowupsMissedClinicVisitsReport".equals(reportName) || "FollowupsAfterPrimeInjectionReport".equals(reportName)) {
             template = new XlsReportBTemplate(outputStream);
             ((XlsReportBTemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
@@ -104,9 +104,9 @@ public class ExportTemplatesHelper {
                 return findMinAndMaxDate(entityType, settings, exportRecords, oldLookupFields, Visit.SUBJECT_PRIME_VACCINATION_DATE_PROPERTY_NAME);
             case EbodacConstants.FOLLOW_UPS_MISSED_CLINIC_VISITS_REPORT_NAME:
                 return findMinAndMaxDate(entityType, settings, exportRecords, oldLookupFields, Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
+            default:
+                return new HashMap<>();
         }
-
-        return new HashMap<>();
     }
 
     private <T> Map<String, String> findMinAndMaxDate(Class<T> entityType, GridSettings settings, String exportRecords,
@@ -165,7 +165,7 @@ public class ExportTemplatesHelper {
         Map<String, Object> entityMap;
         try {
             String json = objectMapper.writeValueAsString(entity);
-            entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {});
+            entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         } catch (IOException e) {
             throw new EbodacExportException("Error creating headers for report", e);
         }
@@ -184,7 +184,7 @@ public class ExportTemplatesHelper {
 
     private Map<String, Object> getFields(String lookupFields) {
         try {
-            return objectMapper.readValue(lookupFields, new TypeReference<HashMap>() {});
+            return objectMapper.readValue(lookupFields, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         } catch (IOException e) {
             throw new EbodacExportException("Error creating headers for report", e);
         }

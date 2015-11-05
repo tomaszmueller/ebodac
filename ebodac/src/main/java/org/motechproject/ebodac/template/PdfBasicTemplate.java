@@ -19,18 +19,17 @@ public abstract class PdfBasicTemplate {
     public static final Font TABLE_FONT = new Font(Font.FontFamily.HELVETICA, 8);
     public static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
 
+    private static final Rectangle NEXT_PAGE_RECTANGLE = new Rectangle(20, 36, 580, 762);
+
     private final PdfReader pdfReader;
 
     private final PdfStamper pdfStamper;
 
     private final AcroFields acroFields;
 
-    private final Rectangle nextPageRectangle;
-
     private final Rectangle firstPageRectangle;
 
     public PdfBasicTemplate(String templatePath, Rectangle firstPageRectangle, OutputStream outputStream) {
-        nextPageRectangle = new Rectangle(20, 36, 580, 762);
         this.firstPageRectangle = firstPageRectangle;
 
         try {
@@ -43,7 +42,7 @@ public abstract class PdfBasicTemplate {
     }
 
     public Rectangle getNextPageRectangle() {
-        return nextPageRectangle;
+        return NEXT_PAGE_RECTANGLE;
     }
 
     public Rectangle getFirstPageRectangle() {

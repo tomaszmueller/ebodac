@@ -27,7 +27,8 @@ public final class DtoLookupHelper {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private DtoLookupHelper(){};
+    private DtoLookupHelper() {
+    }
 
     public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) throws IOException {
         Map<String, String> fieldsMap = new HashMap<>();
@@ -35,9 +36,9 @@ public final class DtoLookupHelper {
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
         }
-        if (StringUtils.isNotBlank(settings.getLookup()) && settings.getLookup().equals("Find Visits By Participant Address")) {
+        if (StringUtils.isNotBlank(settings.getLookup()) && "Find Visits By Participant Address".equals(settings.getLookup())) {
             String address = getAddressFromLookupFields(settings.getFields());
-            if (StringUtils.isNotBlank(address) && !address.equals("null")) {
+            if (StringUtils.isNotBlank(address) && !"null".equals(address)) {
                 fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, address);
                 settings.setLookup(settings.getLookup() + " Phone Number And Type");
             } else {
@@ -47,8 +48,7 @@ public final class DtoLookupHelper {
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
             settings.setLookup("Find Visits By Type Phone Number And Address");
         } else {
-            String fields = settings.getFields();
-            fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+            fieldsMap = getFieldsMap(settings.getFields());
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
             settings.setLookup(settings.getLookup() + " Type Phone Number And Address");
         }
@@ -62,6 +62,7 @@ public final class DtoLookupHelper {
     public static GridSettings changeLookupAndOrderForFollowupsMissedClinicVisitsReport(GridSettings settings) throws IOException {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
+        String newLookupName;
 
         changeOrderForFollowupsMissedClinicVisitsReport(settings);
         if (StringUtils.isBlank(settings.getFields())) {
@@ -73,9 +74,11 @@ public final class DtoLookupHelper {
             fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
             settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         } else {
+            fieldsMap = getFieldsMap(settings.getFields());
+
             switch (settings.getLookup()) {
                 case "Find Visits By Planned Visit Date":
-                case "Find Visits By Planned Visit Date And Type": {
+                case "Find Visits By Planned Visit Date And Type":
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
@@ -83,40 +86,29 @@ public final class DtoLookupHelper {
                     if (date == null || date.isAfter(maxDate)) {
                         return null;
                     }
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
                     fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
 
-                    String newLookupName = settings.getLookup() + " Eq";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " Eq";
                     break;
-                }
                 case "Find Visits By Planned Visit Date Range":
-                case "Find Visits By Planned Visit Date Range And Type": {
+                case "Find Visits By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
                     if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
                         return null;
                     }
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
                     fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
 
-                    String newLookupName = settings.getLookup() + " Eq";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " Eq";
                     break;
-                }
-                default: {
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+                default:
                     fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
                     fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
 
-                    String newLookupName = settings.getLookup() + " Less";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " Less";
                     break;
-                }
             }
+            settings.setLookup(newLookupName);
         }
         fieldsMap.put(Visit.SUBJECT_PHONE_NUMBER_PROPERTY_NAME, null);
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
@@ -126,6 +118,7 @@ public final class DtoLookupHelper {
     public static GridSettings changeLookupAndOrderForMandEMissedClinicVisitsReport(GridSettings settings) throws IOException {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
+        String newLookupName;
 
         changeOrderForFollowupsMissedClinicVisitsReport(settings);
         if (StringUtils.isBlank(settings.getFields())) {
@@ -135,9 +128,11 @@ public final class DtoLookupHelper {
             settings.setLookup("Find Visits By Planned Visit Date Less And Actual Visit Date");
             fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
         } else {
+            fieldsMap = getFieldsMap(settings.getFields());
+
             switch (settings.getLookup()) {
                 case "Find Visits By Planned Visit Date":
-                case "Find Visits By Planned Visit Date And Type": {
+                case "Find Visits By Planned Visit Date And Type":
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
@@ -145,37 +140,26 @@ public final class DtoLookupHelper {
                     if (date == null || date.isAfter(maxDate)) {
                         return null;
                     }
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
 
-                    String newLookupName = settings.getLookup() + " And Actual Visit Date";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " And Actual Visit Date";
                     break;
-                }
                 case "Find Visits By Planned Visit Date Range":
-                case "Find Visits By Planned Visit Date Range And Type": {
+                case "Find Visits By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
                     if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
                         return null;
                     }
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
 
-                    String newLookupName = settings.getLookup() + " And Actual Visit Date";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " And Actual Visit Date";
                     break;
-                }
-                default: {
-                    String fields = settings.getFields();
-                    fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+                default:
                     fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
 
-                    String newLookupName = settings.getLookup() + " And Planned Visit Date And Actual Visit Date";
-                    settings.setLookup(newLookupName);
+                    newLookupName = settings.getLookup() + " And Planned Visit Date And Actual Visit Date";
                     break;
-                }
             }
+            settings.setLookup(newLookupName);
         }
 
         fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
@@ -188,7 +172,7 @@ public final class DtoLookupHelper {
 
         if ("age".equals(settings.getSortColumn())) {
             settings.setSortColumn(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME);
-            if (settings.getSortDirection().equals("asc")) {
+            if ("asc".equals(settings.getSortDirection())) {
                 settings.setSortDirection("desc");
             } else {
                 settings.setSortDirection("asc");
@@ -201,7 +185,7 @@ public final class DtoLookupHelper {
 
         if (StringUtils.isBlank(settings.getLookup())) {
             settings.setLookup("Find Enrollments By Status");
-        } else if (settings.getLookup().equals("Find Enrollments By Participant Age")) {
+        } else if ("Find Enrollments By Participant Age".equals(settings.getLookup())) {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
             Range<Long> range = getLongRangeFromLookupFields(settings.getFields(), SubjectEnrollments.SUBJECT_AGE_PROPERTY_NAME);
 
@@ -229,8 +213,7 @@ public final class DtoLookupHelper {
             fieldsMap.put(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME, dateRange);
             settings.setLookup("Find Enrollments By Participant Date Of Birth Range And Status");
         } else {
-            String fields = settings.getFields();
-            fieldsMap = OBJECT_MAPPER.readValue(fields, new TypeReference<HashMap>() {});
+            fieldsMap = getFields(settings.getFields());
 
             String newLookupName = settings.getLookup() + " And Status";
             settings.setLookup(newLookupName);
@@ -244,7 +227,7 @@ public final class DtoLookupHelper {
     public static GridSettings changeLookupAndOrderForIvrAndSmsStatisticReport(GridSettings settings) throws IOException {
         if ("age".equals(settings.getSortColumn())) {
             settings.setSortColumn(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME);
-            if (settings.getSortDirection().equals("asc")) {
+            if ("asc".equals(settings.getSortDirection())) {
                 settings.setSortDirection("desc");
             } else {
                 settings.setSortDirection("asc");
@@ -289,10 +272,10 @@ public final class DtoLookupHelper {
     {
         if (StringUtils.isNotBlank(settings.getSortColumn())) {
             String sortColumn = settings.getSortColumn();
-            if (sortColumn.equals("planedVisitDate") || sortColumn.equals("noOfDaysExceededVisit")) {
+            if ("planedVisitDate".equals(sortColumn) || "noOfDaysExceededVisit".equals(sortColumn)) {
                 settings.setSortColumn(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
-                if (sortColumn.equals("noOfDaysExceededVisit")) {
-                    if (settings.getSortDirection().equals("asc")) {
+                if ("noOfDaysExceededVisit".equals(sortColumn)) {
+                    if ("asc".equals(settings.getSortDirection())) {
                         settings.setSortDirection("desc");
                     } else {
                         settings.setSortDirection("asc");
@@ -380,6 +363,10 @@ public final class DtoLookupHelper {
     }
 
     private static Map<String, Object> getFields(String lookupFields) throws IOException {
-        return OBJECT_MAPPER.readValue(lookupFields, new TypeReference<HashMap>() {});
+        return OBJECT_MAPPER.readValue(lookupFields, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
+    }
+
+    private static Map<String, String> getFieldsMap(String lookupFields) throws IOException {
+        return OBJECT_MAPPER.readValue(lookupFields, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
     }
 }

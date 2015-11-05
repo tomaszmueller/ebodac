@@ -41,6 +41,12 @@ public class ReportServiceImpl implements ReportService {
 
     private static final DateTimeFormatter SIMPLE_DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
+    private static final int SIX_YEARS = 6;
+    private static final int TWELVE_YEARS = 12;
+    private static final int EIGHTEEN_YEARS = 18;
+
+    private static final int HUNDRED_PERCENT = 100;
+
     private ReportPrimerVaccinationDataService primerVaccinationDataService;
 
     private ReportBoosterVaccinationDataService boosterVaccinationDataService;
@@ -91,7 +97,7 @@ public class ReportServiceImpl implements ReportService {
     public void generateDailyReportsFromDate(LocalDate startDate) {
         LocalDate now = DateUtil.now().toLocalDate();
 
-        for(LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
+        for (LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
             generateOrUpdatePrimerVaccinationReport(subjectService.findSubjectsPrimerVaccinatedAtDay(date), date);
             generateOrUpdateBoosterVaccinationReport(subjectService.findSubjectsBoosterVaccinatedAtDay(date), date);
         }
@@ -121,7 +127,7 @@ public class ReportServiceImpl implements ReportService {
         } else {
             LocalDate now = DateUtil.now().toLocalDate();
 
-            for(LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
+            for (LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
                 String dateString = SIMPLE_DATE_FORMATTER.print(date);
                 callDetailRecords.addAll(callDetailRecordDataService.findByMotechTimestampAndCallStatus(dateString, EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED));
             }
@@ -155,9 +161,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void generateOrUpdateBoosterVaccinationReport(List<Subject> subjects, LocalDate date) {
-        LocalDate age6 = date.minusYears(6);
-        LocalDate age12 = date.minusYears(12);
-        LocalDate age18 = date.minusYears(18);
+        LocalDate age6 = date.minusYears(SIX_YEARS);
+        LocalDate age12 = date.minusYears(TWELVE_YEARS);
+        LocalDate age18 = date.minusYears(EIGHTEEN_YEARS);
 
         int childrenFrom1To5 = 0;
         int childrenFrom6To11 = 0;
@@ -210,9 +216,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void generateOrUpdatePrimerVaccinationReport(List<Subject> subjects, LocalDate date) {
-        LocalDate age6 = date.minusYears(6);
-        LocalDate age12 = date.minusYears(12);
-        LocalDate age18 = date.minusYears(18);
+        LocalDate age6 = date.minusYears(SIX_YEARS);
+        LocalDate age12 = date.minusYears(TWELVE_YEARS);
+        LocalDate age18 = date.minusYears(EIGHTEEN_YEARS);
 
         int childrenFrom1To5 = 0;
         int childrenFrom6To11 = 0;
@@ -378,7 +384,7 @@ public class ReportServiceImpl implements ReportService {
                     messagePercentListened = Double.parseDouble(callRecord.getMessagePercentListened());
                     String messageSecondsCompleted = callRecord.getProviderExtraData().get(EbodacConstants.IVR_CALL_DETAIL_RECORD_MESSAGE_SECOND_COMPLETED);
                     if (StringUtils.isNotBlank(messageSecondsCompleted)) {
-                        expectedDuration = Double.parseDouble(messageSecondsCompleted) * 100 / messagePercentListened;
+                        expectedDuration = Double.parseDouble(messageSecondsCompleted) * HUNDRED_PERCENT / messagePercentListened;
                     }
                 }
             }
@@ -389,7 +395,7 @@ public class ReportServiceImpl implements ReportService {
             attempts = Integer.parseInt(attemptsString);
         }
 
-        for(Subject subject : subjects) {
+        for (Subject subject : subjects) {
             IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallId(providerCallId);
             if (ivrAndSmsStatisticReport == null) {
                 ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(providerCallId, subject, messageId, sendDate,
