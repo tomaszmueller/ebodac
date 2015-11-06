@@ -133,13 +133,28 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
+        Config config = configService.getConfig();
+        Set<String> reportsToUpdate = config.getIvrAndSmsStatisticReportsToUpdate();
+        config.setIvrAndSmsStatisticReportsToUpdate(null);
+        configService.updateConfig(config);
+
+        if (startDate != null && !reportsToUpdate.isEmpty()) {
+            callDetailRecords.addAll(callDetailRecordDataService.findByMotechCallIds(reportsToUpdate));
+        }
+
         for (CallDetailRecord callDetailRecord : callDetailRecords) {
             try {
                 createIvrAndSmsStatisticReport(callDetailRecord);
+                reportsToUpdate.remove(callDetailRecord.getMotechCallId());
             } catch (EbodacReportException e) {
                 LOGGER.warn(e.getMessage());
             }
         }
+
+        config = configService.getConfig();
+        reportsToUpdate.addAll(config.getIvrAndSmsStatisticReportsToUpdate());
+        config.setIvrAndSmsStatisticReportsToUpdate(reportsToUpdate);
+        configService.updateConfig(config);
     }
 
     private void updateBoosterVaccinationReportsForDates(Set<String> dates) {
@@ -325,12 +340,6 @@ public class ReportServiceImpl implements ReportService {
             }
             if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED)) {
                 sms = true;
-                String providerTimestamp = callDetailRecord.getProviderExtraData().get(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP);
-                if (StringUtils.isBlank(providerTimestamp)) {
-                    throw new EbodacReportException("Cannot generate report for Call Detail Record with Provider Call Id: %s for Providers with Ids %s, because end_timestamp for SMS Record not found",
-                            "", providerCallId, subjectIds);
-                }
-                smsReceivedDate = DateTime.parse(providerTimestamp, votoTimestampFormatter);
             } else if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED)) {
                 finished.add(callDetailRecord);
             } else if (callDetailRecord.getCallStatus().contains(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED)) {
@@ -352,11 +361,19 @@ public class ReportServiceImpl implements ReportService {
             }
             if (failed.size() == 2) {
                 sms = false;
-                smsReceivedDate = null;
                 LOGGER.warn("Failed to sent SMS for Call Detail Record with Provider Call Id: {} for Providers with Ids {}", providerCallId, subjectIds);
-            }
-            if (finished.isEmpty()) {
+            } else if (finished.isEmpty()) {
                 LOGGER.warn("SMS is sent but not yet received for Call Detail Record with Provider Call Id: {} for Providers with Ids {}", providerCallId, subjectIds);
+                Config config = configService.getConfig();
+                config.getIvrAndSmsStatisticReportsToUpdate().add(initialRecord.getMotechCallId());
+                configService.updateConfig(config);
+            } else {
+                String providerTimestamp = finished.get(0).getProviderExtraData().get(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP);
+                if (StringUtils.isBlank(providerTimestamp)) {
+                    throw new EbodacReportException("Cannot generate report for Call Detail Record with Provider Call Id: %s for Providers with Ids %s, because end_timestamp for SMS Record not found",
+                            "", providerCallId, subjectIds);
+                }
+                smsReceivedDate = DateTime.parse(providerTimestamp, votoTimestampFormatter);
             }
 
             callRecord = failed.get(0);
