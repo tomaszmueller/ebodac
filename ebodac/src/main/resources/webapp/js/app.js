@@ -3,7 +3,7 @@
 
     /* App Module */
     var ebodac = angular.module('ebodac', ['motech-dashboard', 'ebodac.controllers', 'ebodac.directives',
-    'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'mds', 'mds.utils', 'sms']), subjectId, visitId,
+    'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'sms']), subjectId, visitId,
     reportBoosterVaccinationId, reportPrimerVaccinationId, callDetailRecordId, smsRecordId;
 
     $.ajax({
