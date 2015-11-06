@@ -14,6 +14,7 @@ public final class EbodacConstants {
     public static final String UI_CONFIG = "custom-ui.js";
 
     public static final String SUBJECT_ID_FIELD_NAME = "subjectId";
+    public static final String SUBJECT_ID_FIELD_DISPLAY_NAME = "Participant Id";
 
     public static final String SITE_ID_FOR_STAGE_I = "B05-SL10001";
 

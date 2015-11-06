@@ -95,7 +95,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             }
 
             enrollment.setStatus(EnrollmentStatus.ENROLLED);
-            if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+            if (!checkDuplicatedEnrollments(subject, enrollment)) {
                 scheduleJobsForEnrollment(enrollment, true);
             }
             enrollmentDataService.update(enrollment);
@@ -271,7 +271,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
                 if (enrollment.getParentEnrollment() == null && enrollment.hasDuplicatedEnrollments()) {
                     changeParentForDuplicatedEnrollments(enrollment, false);
-                    if (checkDuplicatedEnrollments(subject, enrollment, true)) {
+                    if (checkDuplicatedEnrollments(subject, enrollment)) {
                         unscheduleJobsForEnrollment(enrollment);
                     }
                     enrollmentDataService.update(enrollment);
@@ -279,7 +279,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                     Enrollment parentEnrollment = enrollment.getParentEnrollment();
                     parentEnrollment.getDuplicatedEnrollments().remove(enrollment);
                     enrollment.setParentEnrollment(null);
-                    if (!checkDuplicatedEnrollments(subject, enrollment, true)) {
+                    if (!checkDuplicatedEnrollments(subject, enrollment)) {
                         scheduleJobsForEnrollment(enrollment, false);
                     }
                     enrollmentDataService.update(parentEnrollment);
@@ -328,6 +328,27 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         updateSubjectEnrollments(subjectEnrollments);
+    }
+
+    @Override
+    public void updateEnrollmentsWhenSubjectDataChanged(Subject newSubject, Subject oldSubject, boolean subjectImported) {
+        if (isEnrolled(newSubject.getSubjectId())) {
+            if (StringUtils.isBlank(newSubject.getPhoneNumber()) || newSubject.getLanguage() == null) {
+                unenrollSubject(newSubject.getSubjectId());
+            } else {
+                if (!newSubject.getPhoneNumber().equals(oldSubject.getPhoneNumber())) {
+                    changeDuplicatedEnrollmentsForNewPhoneNumber(newSubject);
+                }
+            }
+        } else {
+            if (checkIfSubjectRequiredDataWasAdded(newSubject, oldSubject)) {
+                if (subjectImported) {
+                    createEnrollmentRecordsForSubject(newSubject);
+                } else {
+                    createEnrollmentRecordsForSubject(oldSubject);
+                }
+            }
+        }
     }
 
     private void enrollSubject(Visit visit) {
@@ -385,7 +406,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         enrollment.setReferenceDate(referenceDate);
         enrollment.setDeliverTime(deliverTime);
 
-        if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+        if (!checkDuplicatedEnrollments(subject, enrollment)) {
             scheduleJobsForEnrollment(enrollment, false);
         }
 
@@ -431,7 +452,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
-        if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+        if (!checkDuplicatedEnrollments(subject, enrollment)) {
             scheduleJobsForEnrollment(enrollment, false);
         }
 
@@ -623,7 +644,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
-    private boolean checkDuplicatedEnrollments(Subject subject, Enrollment enrollment, boolean phoneNumberChanged) {
+    private boolean checkDuplicatedEnrollments(Subject subject, Enrollment enrollment) {
         enrollment.setDuplicatedEnrollments(null);
 
         if (enrollment.getParentEnrollment() != null && EnrollmentStatus.ENROLLED.equals(enrollment.getParentEnrollment().getStatus())) {
@@ -638,16 +659,16 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         List<Subject> subjects = subjectDataService.findSubjectsByPhoneNumber(phoneNumber);
 
-        if ((!phoneNumberChanged && subjects.size() == 1) || subjects.isEmpty()) {
-            return false;
-        }
-
         Set<String> subjectIds = new HashSet<>();
 
         for (Subject s : subjects) {
             if (!s.getSubjectId().equals(subject.getSubjectId())) {
                 subjectIds.add(s.getSubjectId());
             }
+        }
+
+        if (subjectIds.isEmpty()) {
+            return false;
         }
 
         if (Pattern.compile(EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
@@ -751,7 +772,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
                     if (disconVac && checkIfCampaignInDisconVacList(enrollment.getCampaignName())) {
                         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
-                    } else if (!checkDuplicatedEnrollments(subject, enrollment, false)) {
+                    } else if (!checkDuplicatedEnrollments(subject, enrollment)) {
                         scheduleJobsForEnrollment(enrollment, true);
                     }
                 }
@@ -769,6 +790,17 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             throw new EbodacEnrollmentException("Cannot enroll Participant, because no unenrolled Participant exist with id: %s",
                     "ebodac.enroll.error.noUnenrolledSubject", subjectId);
         }
+    }
+
+    private boolean checkIfSubjectRequiredDataWasAdded(Subject newSubject, Subject oldSubject) {
+        if (newSubject.getVisits() != null && newSubject.getPrimerVaccinationDate() != null &&
+                StringUtils.isNotBlank(newSubject.getPhoneNumber()) && newSubject.getLanguage() != null) {
+            if (oldSubject.getLanguage() == null || StringUtils.isBlank(oldSubject.getPhoneNumber())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Autowired
