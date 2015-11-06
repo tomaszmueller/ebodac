@@ -20,6 +20,7 @@ import org.junit.runners.Suite;
         RaveImportServiceIT.class,
         ReportControllerIT.class,
         ReportServiceIT.class,
+        SubjectCsvImportCustomizerIT.class,
         SubjectServiceIT.class,
         TaskImporterIT.class,
         VisitServiceIT.class
