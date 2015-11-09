@@ -96,7 +96,7 @@ public class HistoryServiceIT extends BasePaxIT {
         in.close();
 
         subjectsHistoryRecords.clear();
-        for(Subject subject : subjectDataService.retrieveAll()) {
+        for (Subject subject : subjectDataService.retrieveAll()) {
             subjectsHistoryRecords.add(historyService.getHistoryForInstance(subject, qp));
         }
         assertEquals(4, subjectsHistoryRecords.get(0).size());
@@ -112,11 +112,11 @@ public class HistoryServiceIT extends BasePaxIT {
         in.close();
 
         List<Visit> visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 7, 13));
-        assertEquals(1,visitList.size());
+        assertEquals(1, visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
         visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 10));
-        assertEquals(1,visitList.size());
+        assertEquals(1, visitList.size());
         assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
 
         visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 11));
@@ -124,7 +124,7 @@ public class HistoryServiceIT extends BasePaxIT {
         assertEquals(2, historyService.countHistoryRecords(visitList.get(0)));
 
         visitList = visitDataService.findVisitsByActualDate(new LocalDate(2015, 6, 12));
-        assertEquals(1,visitList.size());
+        assertEquals(1, visitList.size());
         assertEquals(1, historyService.countHistoryRecords(visitList.get(0)));
 
     }

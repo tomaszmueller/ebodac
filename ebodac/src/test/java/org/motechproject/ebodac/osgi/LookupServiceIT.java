@@ -47,7 +47,7 @@ import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class LookupServiceIT extends BasePaxIT{
+public class LookupServiceIT extends BasePaxIT {
 
     @Inject
     private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
@@ -142,7 +142,7 @@ public class LookupServiceIT extends BasePaxIT{
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        for(Visit visit : testVisits) {
+        for (Visit visit : testVisits) {
             visitDataService.create(visit);
         }
 
@@ -174,14 +174,14 @@ public class LookupServiceIT extends BasePaxIT{
                 "Find Visits By Planned Visit Date And Type",
                 "Find Visits By Planned Visit Date"
         };
-        int []expectedResults = { 2, 2, 4, 2, 2, 3, 2, 2};
+        int []expectedResults = {2, 2, 4, 2, 2, 3, 2, 2};
 
-        List<LookupDto> lookupDtos= lookupService.getAvailableLookups(Visit.class.getName());
+        List<LookupDto> lookupDtos = lookupService.getAvailableLookups(Visit.class.getName());
 
         List<Visit> visitList1 = visitDataService.retrieveAll();
 
         QueryParams queryParams = new QueryParams(1, null);
-        for( int i = 0 ; i < lookups.length; i ++) {
+        for (int i = 0; i < lookups.length; i++) {
             Records<Visit> records = lookupService.getEntities(Visit.class, lookups[i], fields[i], queryParams);
             List<Visit> visitList = records.getRows();
             assertEquals(expectedResults[i], visitList.size());
@@ -207,11 +207,11 @@ public class LookupServiceIT extends BasePaxIT{
                 "Find Participants By Modified",
                 "Find Participants By Address",
         };
-        int []expectedResults = { 1, 2, 1, 1, 2, 2};
+        int []expectedResults = {1, 2, 1, 1, 2, 2};
 
         List<Subject> subject = subjectDataService.retrieveAll();
         QueryParams queryParams = new QueryParams(1, null);
-        for( int i = 0 ; i < lookups.length; i ++) {
+        for (int i = 0; i < lookups.length; i++) {
             Records<Subject> records = lookupService.getEntities(Subject.class, lookups[i], fields[i], queryParams);
             List<Subject> subjectList = records.getRows();
             assertEquals(expectedResults[i], subjectList.size());
@@ -293,10 +293,10 @@ public class LookupServiceIT extends BasePaxIT{
                 "Find Visits By Planned Visit Date",
                 "Find Visits By Participant Community"
         };
-        int []expectedResults = { 2, 4, 2, 3, 2, 2, 4};
+        int []expectedResults = {2, 4, 2, 3, 2, 2, 4};
 
         QueryParams queryParams = new QueryParams(1, null);
-        for( int i = 0 ; i < lookups.length; i ++) {
+        for (int i = 0; i < lookups.length; i++) {
             Records<?> records = lookupService.getEntities(MissedVisitsReportDto.class, Visit.class, lookups[i], fields[i], queryParams);
             List<?> missedVisitsReportDtos = records.getRows();
             assertEquals(expectedResults[i], missedVisitsReportDtos.size());

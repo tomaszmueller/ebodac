@@ -34,7 +34,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldSetParticipantEnrolledStatus() throws Exception{
+    public void shouldSetParticipantEnrolledStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");
@@ -69,7 +69,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldSetParticipantUnenrolledStatus() throws Exception{
+    public void shouldSetParticipantUnenrolledStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");
@@ -110,7 +110,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldSetParticipantInitialStatus() throws Exception{
+    public void shouldSetParticipantInitialStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");
@@ -153,7 +153,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldSetParticipantWithdrawnFromStudyStatus() throws Exception{
+    public void shouldSetParticipantWithdrawnFromStudyStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");
@@ -198,7 +198,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldSetParticipantCompletedStatus() throws Exception{
+    public void shouldSetParticipantCompletedStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");
@@ -245,7 +245,7 @@ public class EbodacEnrollmentServiceTest {
     }
 
     @Test
-    public void shouldNotSetParticipantUnenrolledFormBoosterStatus() throws Exception{
+    public void shouldNotSetParticipantUnenrolledFormBoosterStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
         Enrollment enrollment = new Enrollment("1", "campaign 1");

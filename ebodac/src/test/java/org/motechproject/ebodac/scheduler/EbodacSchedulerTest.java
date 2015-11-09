@@ -31,7 +31,7 @@ public class EbodacSchedulerTest {
     private EbodacScheduler ebodacScheduler;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         initMocks(this);
         ebodacScheduler = new EbodacScheduler(motechSchedulerService);
     }

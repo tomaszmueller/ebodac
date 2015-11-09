@@ -180,7 +180,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(2, subjects.size());
         assertEquals(11, visits.size());
 
-        for(Visit visit : visits) {
+        for (Visit visit : visits) {
             /* in row with this visit is bad date formatting so it shouldn't be in collection */
             assertFalse(visit.getType().equals(VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT)); // this visit shouldn't be in collection
         }

@@ -48,7 +48,7 @@ public class TaskImporterIT extends BasePaxIT {
 
     @After
     public void cleanAfter() {
-        for(Long id : tasksId) {
+        for (Long id : tasksId) {
             taskService.deleteTask(id);
         }
     }

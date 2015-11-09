@@ -44,7 +44,7 @@ import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
-public class ReportServiceIT extends BasePaxIT{
+public class ReportServiceIT extends BasePaxIT {
 
     @Inject
     private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
@@ -127,12 +127,12 @@ public class ReportServiceIT extends BasePaxIT{
 
             reportService.generateDailyReportsFromDate(startDate);
 
-            LocalDate now = LocalDate.parse("2015-06-29",formatter);
+            LocalDate now = LocalDate.parse("2015-06-29", formatter);
             for (LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
                 checkUpdateBoosterVaccinationReportsForDates(date);
                 checkUpdatePrimerVaccinationReportsForDates(date);
             }
-        }finally {
+        } finally {
             stopFakingTime();
         }
     }
@@ -153,7 +153,7 @@ public class ReportServiceIT extends BasePaxIT{
             reportService.generateDailyReports();
             assertEquals(5, primerVaccinationDataService.retrieveAll().size());
             assertEquals(5, boosterVaccinationDataService.retrieveAll().size());
-            for(int i=2;i<6;i++) {
+            for (int i = 2; i < 6; i++) {
                 assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
                 assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
             }
@@ -182,16 +182,16 @@ public class ReportServiceIT extends BasePaxIT{
             raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
             in.close();
 
-            config=configService.getConfig();
+            config = configService.getConfig();
             assertEquals(2, config.getPrimerVaccinationReportsToUpdate().size());
             assertEquals(3, config.getBoosterVaccinationReportsToUpdate().size());
 
             reportService.generateDailyReports();
-            config=configService.getConfig();
+            config = configService.getConfig();
             assertEquals(0, config.getPrimerVaccinationReportsToUpdate().size());
             assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
 
-            for(int i = 2; i < 6; i++) {
+            for (int i = 2; i < 6; i++) {
                 assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
                 assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
             }
@@ -225,7 +225,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertEquals(7, primerVaccinationDataService.retrieveAll().size());
             assertEquals(7, boosterVaccinationDataService.retrieveAll().size());
 
-            for(int i = 21; i < 28; i++) {
+            for (int i = 21; i < 28; i++) {
                 assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
                 assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
             }
@@ -254,7 +254,7 @@ public class ReportServiceIT extends BasePaxIT{
             assertEquals(3, primerVaccinationDataService.retrieveAll().size());
             assertEquals(3, boosterVaccinationDataService.retrieveAll().size());
 
-            for(int i = 25; i < 28; i++) {
+            for (int i = 25; i < 28; i++) {
                 assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
                 assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
             }
