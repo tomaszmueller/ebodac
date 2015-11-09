@@ -49,7 +49,7 @@ public class MessageCampaignImporterIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldImportMessageCampaignRecords(){
+    public void shouldImportMessageCampaignRecords() {
         assertNull(messageCampaignService.getCampaignRecord("TestScreening"));
         messageCampaignImporter.importMessageCampaigns(getClass().getResourceAsStream("/message-campaign.json"));
         assertNotNull(messageCampaignService.getCampaignRecord("TestScreening"));

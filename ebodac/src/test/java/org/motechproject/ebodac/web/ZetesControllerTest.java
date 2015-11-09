@@ -19,9 +19,9 @@ public class ZetesControllerTest {
     private ZetesController zetesController;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         initMocks(this);
-        zetesController=new ZetesController();
+        zetesController = new ZetesController();
         zetesController.setSubjectService(subjectService);
     }
 

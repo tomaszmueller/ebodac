@@ -168,11 +168,11 @@ public class ReportControllerIT extends BasePaxIT {
             List<ReportPrimerVaccination> primerVaccinationReport =  primerVaccinationDataService.retrieveAll();
             List<ReportBoosterVaccination> boosterVaccinationReport = boosterVaccinationDataService.retrieveAll();
 
-            assertEquals(4,primerVaccinationReport.size());
+            assertEquals(4, primerVaccinationReport.size());
             assertEquals(4, boosterVaccinationReport.size());
 
-            assertEquals(1,(long)primerVaccinationReport.get(0).getAdultMales());
-            assertEquals(1,(long)primerVaccinationReport.get(0).getChildrenFrom6To11());
+            assertEquals(1, (long) primerVaccinationReport.get(0).getAdultMales());
+            assertEquals(1, (long) primerVaccinationReport.get(0).getChildrenFrom6To11());
 
             assertEquals(1, (long) boosterVaccinationReport.get(3).getAdultMales());
             assertEquals(1, (long) boosterVaccinationReport.get(3).getChildrenFrom6To11());
@@ -262,7 +262,7 @@ public class ReportControllerIT extends BasePaxIT {
     public void shouldGetVisitsByPlannedDateRange() throws IOException, InterruptedException {
         addTestVisitsToDB();
         String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"}}",
-                "Find Visits By Planned Visit Date Range",1, 5);
+                "Find Visits By Planned Visit Date Range", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(1, visits.size());
@@ -334,12 +334,12 @@ public class ReportControllerIT extends BasePaxIT {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(module);
-        Records<Visit> records = mapper.readValue(jsonInput, new TypeReference<Records<Visit>>(){});
+        Records<Visit> records = mapper.readValue(jsonInput, new TypeReference<Records<Visit>>() { });
         return records;
     }
 
     private String getVisitsWithoutLookup(int page, int rows) throws IOException, InterruptedException {
-        return getVisitsByLookup("{}","",page,rows);
+        return getVisitsByLookup("{}", "", page, rows);
     }
 
     private String getVisitsByLookup(String fields, String lookupType, int page, int rows) throws IOException, InterruptedException {
@@ -378,7 +378,7 @@ public class ReportControllerIT extends BasePaxIT {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
 
-        for(Visit visit : testVisits) {
+        for (Visit visit : testVisits) {
             visitDataService.create(visit);
         }
 
