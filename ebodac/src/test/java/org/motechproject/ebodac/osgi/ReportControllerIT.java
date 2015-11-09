@@ -46,6 +46,7 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerSuite;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +164,7 @@ public class ReportControllerIT extends BasePaxIT {
             assertEquals(2, subjectDataService.retrieveAll().size());
 
             HttpResponse response = getReports("2014-10-17");
-            assertEquals(200, response.getStatusLine().getStatusCode());
+            assertEquals(HttpServletResponse.SC_OK, response.getStatusLine().getStatusCode());
 
             List<ReportPrimerVaccination> primerVaccinationReport =  primerVaccinationDataService.retrieveAll();
             List<ReportBoosterVaccination> boosterVaccinationReport = boosterVaccinationDataService.retrieveAll();
@@ -190,10 +191,10 @@ public class ReportControllerIT extends BasePaxIT {
         assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
 
         HttpResponse response = getReports("10-17-2014");
-        assertEquals(400, response.getStatusLine().getStatusCode());
+        assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatusLine().getStatusCode());
 
         response = getReports("");
-        assertEquals(400, response.getStatusLine().getStatusCode());
+        assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -210,7 +211,7 @@ public class ReportControllerIT extends BasePaxIT {
             assertEquals(2, subjectDataService.retrieveAll().size());
 
             HttpResponse response = getReports("2015-10-17");
-            assertEquals(200, response.getStatusLine().getStatusCode());
+            assertEquals(HttpServletResponse.SC_OK, response.getStatusLine().getStatusCode());
 
             assertEquals(0, primerVaccinationDataService.retrieveAll().size());
             assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
