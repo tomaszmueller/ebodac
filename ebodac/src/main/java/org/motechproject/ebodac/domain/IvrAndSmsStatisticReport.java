@@ -11,9 +11,9 @@ import javax.jdo.annotations.Unique;
 
 @Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
 @Entity(nonEditable = true)
+@Unique(name = "providerCallIdAndSubject", members = {"providerCallId", "subject" })
 public class IvrAndSmsStatisticReport {
 
-    @Unique
     @Field
     private String providerCallId;
 
