@@ -50,6 +50,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.matchers.NameMatcher;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -194,19 +195,19 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     @Test
     public void shouldNotReenrollVisit() throws IOException, InterruptedException {
-        checkResponse(400, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, 400));
+        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, HttpServletResponse.SC_BAD_REQUEST));
 
-        checkResponse(400, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), 400));
+        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), HttpServletResponse.SC_BAD_REQUEST));
 
         Visit visit = testVisits.get(1);
         visit.setMotechProjectedDate(null);
-        checkResponse(400, "ebodac.enrollment.error.EmptyPlannedDate",
-                reenrollVisit(visit, 400));
+        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.EmptyPlannedDate",
+                reenrollVisit(visit, HttpServletResponse.SC_BAD_REQUEST));
 
         visit = testVisits.get(1);
         visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
         visit.setMotechProjectedDate(LocalDate.parse("2115-10-10", formatter));
-        checkResponse(500, "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, 500));
+        checkResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ));
 
 
         ebodacEnrollmentService.enrollSubject(secondSubject);
@@ -214,12 +215,12 @@ public class EnrollmentControllerIT extends BasePaxIT {
         visit = testVisits.get(3);
 
         visit.setMotechProjectedDate(LocalDate.parse("2010-10-19", formatter));
-        checkResponse(400, "ebodac.enrollment.error.plannedDateInPast",
-                reenrollVisit(visit, 400));
+        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.plannedDateInPast",
+                reenrollVisit(visit, HttpServletResponse.SC_BAD_REQUEST));
 
         visit.setMotechProjectedDate(LocalDate.parse("2115-10-19", formatter));
-        checkResponse(400, "ebodac.enrollment.error.plannedDateNotChanged",
-                reenrollVisit(testVisits.get(3), 400));
+        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.plannedDateNotChanged",
+                reenrollVisit(testVisits.get(3), HttpServletResponse.SC_BAD_REQUEST));
     }
 
     @Test
@@ -229,7 +230,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         ebodacEnrollmentService.enrollSubject(secondSubject);
         visit.setMotechProjectedDate(LocalDate.parse("2115-10-11", formatter));
-        checkResponse(200, "", reenrollVisit(visit, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", reenrollVisit(visit, HttpServletResponse.SC_OK));
 
         List<Enrollment> enrollments = enrollmentDataService.retrieveAll();
         assertEquals(1, enrollments.size());
@@ -269,8 +270,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject1.setLanguage(null);
         subject2.setPhoneNumber(null);
 
-        checkResponse(200, "", updateSubject(subject1, 200));
-        checkResponse(200, "", updateSubject(subject2, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
         subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
@@ -287,7 +288,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject.setLanguage(Language.English);
         subjectDataService.create(subject);
 
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
     }
 
     @Test
@@ -336,7 +337,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(enrollment1, enrollment2.getParentEnrollment());
 
         subject2.setPhoneNumber("987654321");
-        checkResponse(200, "", updateSubject(subject2, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
         subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
@@ -401,7 +402,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(enrollment1, enrollment2.getParentEnrollment());
 
         subject1.setPhoneNumber("987654321");
-        checkResponse(200, "", updateSubject(subject1, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
         subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
@@ -481,7 +482,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(0, enrollment3.getDuplicatedEnrollments().size());
 
         subject2.setPhoneNumber("987654321");
-        checkResponse(200, "", updateSubject(subject2, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
         subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
@@ -568,7 +569,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(0, enrollment3.getDuplicatedEnrollments().size());
 
         subject1.setPhoneNumber("987654321");
-        checkResponse(200, "", updateSubject(subject1, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
         subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
@@ -609,7 +610,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
         subject = subjectDataService.findSubjectBySubjectId("1");
         subject.setPhoneNumber("123456789");
@@ -619,7 +620,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertNull(subjectEnrollments);
 
         subject.setLanguage(Language.English);
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
@@ -645,7 +646,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertNull(subjectEnrollments);
 
         subject.setLanguage(Language.English);
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
         subject = subjectDataService.findSubjectBySubjectId("1");
         subject.setLanguage(Language.English);
@@ -655,7 +656,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
         subjectDataService.update(subject);
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
@@ -709,7 +710,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(VisitType.BOOST_VACCINATION_DAY, visit.getType());
 
         visit.setMotechProjectedDate(new LocalDate(2115, 10, 11));
-        checkResponse(200, "", reenrollVisit(visit, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", reenrollVisit(visit, HttpServletResponse.SC_OK));
         assertEquals(new LocalDate(2115, 10, 11), visit.getMotechProjectedDate());
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
@@ -723,7 +724,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT, visit.getType());
 
         visit.setMotechProjectedDate(new LocalDate(2115, 10, 15));
-        checkResponse(200, "", reenrollVisit(visit, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", reenrollVisit(visit, HttpServletResponse.SC_OK));
         assertEquals(new LocalDate(2115, 10, 15), visit.getMotechProjectedDate());
 
         subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
@@ -747,7 +748,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
         subject = subjectDataService.findSubjectBySubjectId("1");
         subject.setPhoneNumber("123456789");
@@ -790,7 +791,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
-        checkResponse(200, "", updateSubject(subject, 200));
+        checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
         subject = subjectDataService.findSubjectBySubjectId("1");
         subject.setPhoneNumber("123456789");
@@ -849,7 +850,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     private void checkResponse(int code, String message, String response) {
         String[] codeAndMessage = response.split("__");
-        if (code != 200) {
+        if (code != HttpServletResponse.SC_OK) {
             assertEquals(2, codeAndMessage.length);
             assertEquals(code, Integer.parseInt(codeAndMessage[0]));
             assertEquals(message, codeAndMessage[1]);

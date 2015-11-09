@@ -36,6 +36,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @PrepareForTest(IvrCallHelper.class)
 public class IvrCallHelperTest {
 
+    private final static int RETRY_ATTEMPTS = 3;
+    private final static int RETRY_DELAY = 15;
+
     @InjectMocks
     private IvrCallHelper ivrCallHelper = new IvrCallHelper();
 
@@ -102,7 +105,7 @@ public class IvrCallHelperTest {
         config.setSendSmsIfVoiceFails(true);
         config.setDetectVoiceMail(true);
         config.setRetryAttempts(3);
-        config.setRetryDelay(15);
+        config.setRetryDelay(RETRY_DELAY);
         when(configService.getConfig()).thenReturn(config);
 
         Map<String, String> callParams = new HashMap<>();
@@ -183,8 +186,8 @@ public class IvrCallHelperTest {
         config.setStatusCallbackUrl("url");
         config.setSendSmsIfVoiceFails(true);
         config.setDetectVoiceMail(true);
-        config.setRetryAttempts(3);
-        config.setRetryDelay(15);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
         when(configService.getConfig()).thenReturn(config);
 
         Map<String, String> callParams = new HashMap<>();
@@ -244,8 +247,8 @@ public class IvrCallHelperTest {
         config.setStatusCallbackUrl("url");
         config.setSendSmsIfVoiceFails(true);
         config.setDetectVoiceMail(true);
-        config.setRetryAttempts(3);
-        config.setRetryDelay(15);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
         when(configService.getConfig()).thenReturn(config);
 
         Map<String, String> callParams = new HashMap<>();
@@ -316,8 +319,8 @@ public class IvrCallHelperTest {
         config.setStatusCallbackUrl("url");
         config.setSendSmsIfVoiceFails(true);
         config.setDetectVoiceMail(true);
-        config.setRetryAttempts(3);
-        config.setRetryDelay(15);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
         when(configService.getConfig()).thenReturn(config);
 
         Map<String, String> callParams = new HashMap<>();
