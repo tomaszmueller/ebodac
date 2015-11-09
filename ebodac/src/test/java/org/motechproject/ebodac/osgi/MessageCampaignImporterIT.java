@@ -25,9 +25,9 @@ import static org.junit.Assert.assertNull;
 public class MessageCampaignImporterIT extends BasePaxIT {
 
     @Inject
-    MessageCampaignService messageCampaignService;
+    private MessageCampaignService messageCampaignService;
 
-    MessageCampaignImporter messageCampaignImporter;
+    private MessageCampaignImporter messageCampaignImporter;
 
     @Before
     public void cleanBefore() throws Exception {

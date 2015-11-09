@@ -48,7 +48,7 @@ public class EbodacSchedulerTest {
         String zetesUsername = "username";
         String zetesPassword = "password";
 
-        ebodacScheduler.scheduleZetesUpdateJob(startDate,zetesUrl,zetesUsername,zetesPassword);
+        ebodacScheduler.scheduleZetesUpdateJob(startDate, zetesUrl, zetesUsername, zetesPassword);
 
         Map<String, Object> eventParameters = new HashMap<>();
         eventParameters.put(EbodacConstants.ZETES_URL, zetesUrl);

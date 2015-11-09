@@ -26,8 +26,7 @@ public class ZetesControllerTest {
     }
 
     @Test
-    public void shouldGenerateSubjectFromZetes()
-    {
+    public void shouldGenerateSubjectFromZetes() {
         SubmitSubjectRequest submitSubjectRequest = new SubmitSubjectRequest("123456789", "Kasia",
                 "Kowalska", "123", "Warszawa 19", "eng", "community", "Nowak", "chiefdom", "section", "district");
 

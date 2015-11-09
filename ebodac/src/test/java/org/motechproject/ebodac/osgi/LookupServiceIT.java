@@ -71,10 +71,10 @@ public class LookupServiceIT extends BasePaxIT {
     private  ReportPrimerVaccinationDataService reportPrimerVaccinationDataService;
 
     @Inject
-    ReportPrimerVaccinationDataService primerVaccinationDataService;
+    private ReportPrimerVaccinationDataService primerVaccinationDataService;
 
     @Inject
-    ReportBoosterVaccinationDataService boosterVaccinationDataService;
+    private ReportBoosterVaccinationDataService boosterVaccinationDataService;
 
     @Inject
     private SubjectEnrollmentsDataService subjectEnrollmentsDataService;

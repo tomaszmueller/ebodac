@@ -84,8 +84,7 @@ public class HistoryServiceIT extends BasePaxIT {
 
         List<List<Subject>> subjectsHistoryRecords = new ArrayList<List<Subject>>();
 
-        for (Subject subject : subjectDataService.retrieveAll())
-        {
+        for (Subject subject : subjectDataService.retrieveAll()) {
             subjectsHistoryRecords.add(historyService.getHistoryForInstance(subject, qp));
         }
         assertEquals(3, subjectsHistoryRecords.get(0).size());

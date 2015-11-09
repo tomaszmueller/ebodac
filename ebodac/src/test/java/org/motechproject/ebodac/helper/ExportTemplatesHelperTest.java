@@ -58,7 +58,7 @@ public class ExportTemplatesHelperTest {
     private static final String LAST_DATE = "2015-09-30";
 
     @Test
-    public void shouldSetFromAndToHeadersFromLookupByDate() throws Throwable {
+    public void shouldSetFromAndToHeadersFromLookupByDate() throws Exception {
         GridSettings settings = new GridSettings();
 
         Config config = new Config();
@@ -108,7 +108,7 @@ public class ExportTemplatesHelperTest {
     }
 
     @Test
-    public void shouldSetFromAndToHeadersFromLookupByDateRange() throws Throwable {
+    public void shouldSetFromAndToHeadersFromLookupByDateRange() throws Exception {
         GridSettings settings = new GridSettings();
 
         Config config = new Config();
@@ -158,7 +158,7 @@ public class ExportTemplatesHelperTest {
     }
 
     @Test
-    public void shouldSetFromAndToHeadersEmptyWhenNoRecordsExported() throws Throwable {
+    public void shouldSetFromAndToHeadersEmptyWhenNoRecordsExported() throws Exception {
         GridSettings settings = new GridSettings();
 
         Config config = new Config();
@@ -218,7 +218,7 @@ public class ExportTemplatesHelperTest {
     }
 
     @Test
-    public void shouldSetFromAndToHeadersEmptyWhenAllDatesEmpty() throws Throwable {
+    public void shouldSetFromAndToHeadersEmptyWhenAllDatesEmpty() throws Exception {
         GridSettings settings = new GridSettings();
 
         Config config = new Config();
@@ -284,7 +284,7 @@ public class ExportTemplatesHelperTest {
     }
 
     @Test
-    public void shouldSetFromHeaderToSmallestNotEmptyDate() throws Throwable {
+    public void shouldSetFromHeaderToSmallestNotEmptyDate() throws Exception {
         GridSettings settings = new GridSettings();
 
         Config config = new Config();
