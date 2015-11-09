@@ -8,7 +8,9 @@ import org.motechproject.ebodac.domain.VisitType;
 
 import static junit.framework.Assert.assertEquals;
 
-public class VisitUtils {
+public final class VisitUtils {
+
+    private VisitUtils(){}
 
     public static Visit createVisit(Subject subject, VisitType type, LocalDate date,
                               LocalDate projectedDate, String owner) {

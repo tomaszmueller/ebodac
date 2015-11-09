@@ -89,7 +89,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
     private EbodacEnrollmentService ebodacEnrollmentService;
 
     @Inject
-    RaveImportService raveImportService;
+    private RaveImportService raveImportService;
 
     @Inject
     private BundleContext bundleContext;
