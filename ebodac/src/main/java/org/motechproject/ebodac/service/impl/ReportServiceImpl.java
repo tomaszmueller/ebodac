@@ -114,6 +114,7 @@ public class ReportServiceImpl implements ReportService {
             generateIvrAndSmsStatisticReportsFromDate(null);
         }
 
+        config = configService.getConfig();
         config.setLastCalculationDateForIvrReports(LocalDate.now().toString(SIMPLE_DATE_FORMATTER));
         configService.updateConfig(config);
     }
@@ -305,13 +306,17 @@ public class ReportServiceImpl implements ReportService {
         List<Subject> subjects = new ArrayList<>();
 
         if (StringUtils.isBlank(subjectIds)) {
-            throw new EbodacReportException("Cannot generate report for Call Detail Record with Motech Call Id: %s, because No Participant Id found In Provider Extra Data Map",
+            throw new EbodacReportException("Cannot generate report for Call Detail Record with Motech Call Id: %s, because no ParticipantId found In Provider Extra Data Map",
                     "", initialRecord.getMotechCallId());
         }
 
         for (String subjectId : subjectIds.split(",")) {
             Subject subject = subjectService.findSubjectBySubjectId(subjectId.trim());
-            subjects.add(subject);
+            if (subject != null) {
+                subjects.add(subject);
+            } else {
+                LOGGER.warn("Cannot generate report for Provider Call Id: {} and ParticipantId: {}, because no Participant with this Id found", providerCallId, subjectId);
+            }
         }
 
         if (subjects.isEmpty()) {
@@ -413,7 +418,7 @@ public class ReportServiceImpl implements ReportService {
         }
 
         for (Subject subject : subjects) {
-            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallId(providerCallId);
+            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallIdAndSubjectId(providerCallId, subject.getSubjectId());
             if (ivrAndSmsStatisticReport == null) {
                 ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(providerCallId, subject, messageId, sendDate,
                         expectedDuration, timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsReceivedDate);
