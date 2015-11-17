@@ -135,10 +135,6 @@ public class HomePage extends AbstractBasePage {
         }
     }
 
-    public void clickOnEbodac() throws InterruptedException{
-        Thread.sleep(500);
-        clickOn(EBODAC);
-    }
 
     public void clickModules() throws InterruptedException{
         clickWhenVisible(MODULES);

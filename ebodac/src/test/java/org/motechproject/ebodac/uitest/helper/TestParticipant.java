@@ -16,7 +16,7 @@ public class TestParticipant {
     public TestParticipant() {
         id = "1110079999";
         name = "TestTest";
-        language = "English";
+        language = "eng";
         phoneNumber = "999888777";
         siteId = "OTHER";
         householdName = "Kingdom";
