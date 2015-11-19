@@ -12,12 +12,19 @@ public class EBODACPage extends AbstractBasePage {
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
     static final By PARTICIPANTS = By.linkText("Participants");
+    static final By ENROLLMENTS = By.linkText("Enrollment");
+
     public EBODACPage(WebDriver driver) {
         super(driver);
     }
 
     public void showParticipants() throws InterruptedException {
         clickWhenVisible(PARTICIPANTS);
+
+    }
+
+    public void showEnrollments() throws InterruptedException {
+        clickWhenVisible(ENROLLMENTS);
 
     }
 
