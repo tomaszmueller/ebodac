@@ -44,8 +44,8 @@ public class ScreeningController {
 
         int page = settings.getPage();
         int pageSize = settings.getRows();
-        String sortColumn = settings.getSidx();
-        String sortOrder = settings.getSort();
+        String sortColumn = settings.getSortColumn();
+        String sortDirection = settings.getSortDirection();
 
         if (settings.getDateFilter() != null) {
             defaultDateFilter = settings.getDateFilter();
@@ -68,7 +68,7 @@ public class ScreeningController {
             dateRange = new Range<>(startDate, endDate);
         }
 
-        List<Screening> screenings = screeningService.getScreenings(page, pageSize, sortColumn, sortOrder, dateRange);
+        List<Screening> screenings = screeningService.getScreenings(page, pageSize, sortColumn, sortDirection, dateRange);
 
         long recordCount = screeningService.countScreeningsForDateRange(dateRange);
         int rowCount = (int) Math.ceil(recordCount / (double) pageSize);
