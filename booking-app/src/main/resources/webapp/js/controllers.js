@@ -173,7 +173,7 @@
         }
     });
 
-    controllers.controller('BookingAppClinicVisitScheduleCtrl', function ($scope, $http) {
+    controllers.controller('BookingAppClinicVisitScheduleCtrl', function ($scope, $http, $filter) {
         $scope.subjects = [];
         $scope.selectedSubject = {};
         $scope.primeVac = {};
@@ -222,6 +222,7 @@
                 var winPrint = window.open("../booking-app/resources/partials/visitScheduleCard.html");
 
                 winPrint.onload = function() {
+                    $('#versionDate', winPrint.document).html($filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
                     $('#subjectId', winPrint.document).html($scope.selectedSubject.subjectId);
                     $('#subjectName', winPrint.document).html($scope.selectedSubject.name);
                     $('#primeActualDate', winPrint.document).html($scope.primeVac.date);
