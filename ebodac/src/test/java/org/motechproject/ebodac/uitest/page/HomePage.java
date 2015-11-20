@@ -20,6 +20,7 @@ public class HomePage extends AbstractBasePage {
     static final By SCHEDULER = By.linkText("Scheduler");
     static final By TASKS = By.linkText("Tasks");
     static final By MODULES = By.linkText("Modules");
+    static final By ADMIN = By.linkText("Admin");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -42,6 +43,10 @@ public class HomePage extends AbstractBasePage {
         } catch(Exception e) {
             return false;
         }
+    }
+
+    public void openAdmin() throws InterruptedException{
+        clickWhenVisible(ADMIN);
     }
 
     public boolean isDataServicesModulePresent() throws InterruptedException {
