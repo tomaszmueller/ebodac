@@ -258,17 +258,17 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
         $scope.setModuleEntity($scope.selectedEntity.module, $scope.selectedEntity.name);
 
         $http.get('../mds/entities/'+$scope.selectedEntity.id+'/entityFields').success(function (data) {
-             $scope.allEntityFields = data;
-             $scope.setAvailableFieldsForDisplay();
+            $scope.allEntityFields = data;
+            $scope.setAvailableFieldsForDisplay();
 
-             if ($routeParams.entityId === undefined) {
+            if ($routeParams.entityId === undefined) {
                 var hash = window.location.hash.substring(2, window.location.hash.length) + "/" + $scope.selectedEntity.id;
                 $location.path(hash);
                 $location.replace();
                 window.history.pushState(null, "", $location.absUrl());
-             }
+            }
 
-             Entities.getAdvancedCommited({id: $scope.selectedEntity.id}, function(data) {
+            Entities.getAdvancedCommited({id: $scope.selectedEntity.id}, function(data) {
                 $scope.entityAdvanced = data;
                 $rootScope.filters = [];
                 $scope.setVisibleIfExistFilters();
@@ -296,38 +296,22 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
                         });
                     }
                 }
-             });
+                $scope.selectedFields = [];
+                for (i = 0; i < $scope.allEntityFields.length; i += 1) {
+                    field = $scope.allEntityFields[i];
+                    if ($.inArray(field.basic.name, $scope.entityAdvanced.userPreferences.visibleFields) !== -1) {
+                        $scope.selectedFields.push(field);
+                    }
+                }
+                $scope.updateInstanceGridFields();
 
-             Entities.getDisplayFields({id: $scope.selectedEntity.id}, function(data) {
-                  var i, field, selectedName,
-                      dbUserPreferences = $scope.getDataBrowserUserPreferencesCookie($scope.selectedEntity);
+                if (callback) {
+                    callback();
+                }
 
-                  $scope.selectedFields = [];
-
-                  // filter data from db
-                  for (i = 0; i < data.length; i += 1) {
-                      field = data[i];
-                      if ($.inArray(field.basic.name, dbUserPreferences.unselected) === -1) {
-                          $scope.selectedFields.push(field);
-                      }
-                  }
-
-                  // additional selections
-                  for (i = 0; i < dbUserPreferences.selected.length; i += 1) {
-                      selectedName = dbUserPreferences.selected[i];
-                      // check if already selected
-                      if (!$scope.isFieldSelected(selectedName)) {
-                          $scope.selectFieldByName(selectedName);
-                      }
-                  }
-
-                  $scope.updateInstanceGridFields();
-              });
-
-              if (callback) {
-                  callback();
-              }
-          });
-          unblockUI();
-      });
+                unblockUI();
+            });
+        });
+        unblockUI();
+    });
 };
