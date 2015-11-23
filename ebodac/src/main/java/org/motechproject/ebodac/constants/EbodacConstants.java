@@ -207,10 +207,12 @@ public final class EbodacConstants {
             put("Sent Date",                "sendDate");
             put("Expected Duration",        "expectedDuration");
             put("Time Listened To",         "timeListenedTo");
+            put("Percent Listened",         "messagePercentListened");
             put("Received Date",            "receivedDate");
             put("No. of Attempts",          "numberOfAttempts");
             put("SMS",                      "sms");
             put("SMS Received Date",        "smsReceivedDate");
+            put("Stage ID",                 "subject.stageId");
         }
     };
 
