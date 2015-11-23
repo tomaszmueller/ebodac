@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-
 public class ParticipantEditPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
@@ -19,6 +18,12 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final String LANGUAGE_PATH_END = "/a/label";
     static final By DELETE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/div/button[2]");
     static final By DELETE_CONFIRMATION_BUTTON = By.xpath("//div[@id='deleteInstanceModal']/div[2]/div/div[3]/button");
+    static final By DATE = By.linkText("1");
+    static final By POPUP_OK = By.id("popup_ok");
+    static final By PICK_DATA = By.cssSelector(".ui-state-active");
+    static final By POPUP_CONTENT = By.id("popup_content");
+    static final By DATE_TABLE = By.xpath("//div[3]/div/ng-form/div/input");
+    static final By PLANNED_VISITS_DATE = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input");
     public ParticipantEditPage(WebDriver driver) {
         super(driver);
     }
@@ -74,5 +79,48 @@ public class ParticipantEditPage extends AbstractBasePage {
         findElement(DELETE_BUTTON).sendKeys(Keys.RETURN);
         waitForElement(DELETE_CONFIRMATION_BUTTON);
         clickOn(DELETE_CONFIRMATION_BUTTON);
+    }
+
+    public void changeVisit() {
+        clickOn(SAVE_BUTTON);
+        clickOn(POPUP_OK);
+    }
+
+    public void clickPlannedVisitDate() throws InterruptedException{
+        Thread.sleep(500);
+        clickWhenVisible(PLANNED_VISITS_DATE);
+        Thread.sleep(500);
+        clickOn(DATE);
+    }
+
+    public void clickOK() throws InterruptedException{
+        Thread.sleep(500);
+        clickOn(POPUP_OK);
+    }
+
+    public boolean dateEnroll() {
+        try {
+            return driver.findElement(POPUP_CONTENT).getText().contains("Error occurred during re-enrolling: Cannot re-enroll Participant for that Visit, because motech projected date wasnt changed");
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public String getChoosenData() {
+        return driver.findElement(PICK_DATA).getText();
+    }
+
+    public void enter() throws InterruptedException{
+        int  day = 1;
+        do {
+            day++;
+            Thread.sleep(500);
+            clickOn(DATE_TABLE);
+            WebElement date  = findElement(By.linkText(""+day+""));
+            date.click();
+            clickOn(SAVE_BUTTON);
+            clickOn(POPUP_OK);
+        }
+        while (dateEnroll());
     }
 }
