@@ -239,7 +239,7 @@ public class ReportControllerIT extends BasePaxIT {
     public void shouldGetVisitsByPlannedDate() throws IOException, InterruptedException {
         addTestVisitsToDB();
         String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"201" +
-                "4-10-21\"}", "Find Visits By Planned Visit Date", 1, 5);
+                "4-10-21\"}", "Find By Planned Visit Date", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(1, visits.size());
@@ -251,7 +251,7 @@ public class ReportControllerIT extends BasePaxIT {
     public void shouldGetVisitsByPlannedDateAndType() throws IOException, InterruptedException {
         addTestVisitsToDB();
         String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"2014-10-21\",\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
-                "Find Visits By Planned Visit Date And Type", 1, 5);
+                "Find By Planned Visit Date And Type", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(1, visits.size());
@@ -263,7 +263,7 @@ public class ReportControllerIT extends BasePaxIT {
     public void shouldGetVisitsByPlannedDateRange() throws IOException, InterruptedException {
         addTestVisitsToDB();
         String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"}}",
-                "Find Visits By Planned Visit Date Range", 1, 5);
+                "Find By Planned Visit Date Range", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(1, visits.size());
@@ -275,7 +275,7 @@ public class ReportControllerIT extends BasePaxIT {
     public void shouldGetVisitsByPlannedDateRangeAndType() throws IOException, InterruptedException {
         addTestVisitsToDB();
         String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"},\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
-                "Find Visits By Planned Visit Date Range And Type", 1, 5);
+                "Find By Planned Visit Date Range And Type", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(1, visits.size());
@@ -286,7 +286,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectAddress() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.address\":\"address1\"}", "Find Visits By Participant Address", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.address\":\"address1\"}", "Find By Participant Address", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
@@ -297,7 +297,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectName() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.name\":\"Rafal\"}", "Find Visits By Participant Name", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.name\":\"Rafal\"}", "Find By Participant Name", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
@@ -308,7 +308,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsBySubjectId() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"subject.subjectId\":\"1000000162\"}", "Find Visits By Participant Id", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"subject.subjectId\":\"1000000162\"}", "Find By Participant Id", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());
@@ -319,7 +319,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsByType() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"type\":\"SCREENING\"}", "Find Visits By Type", 1, 5);
+        String jsonInput = getVisitsByLookup("{\"type\":\"SCREENING\"}", "Find By Type", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
         assertEquals(2, visits.size());

@@ -106,7 +106,7 @@ public class SubjectServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        Subject subjectFromDataService = subjectDataService.findSubjectBySubjectId("1000000162");
+        Subject subjectFromDataService = subjectDataService.findBySubjectId("1000000162");
         assertNotNull(subjectFromDataService);
 
         checkZetesFields(secondSubject, subjectFromDataService);
@@ -121,7 +121,7 @@ public class SubjectServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        subjectFromDataService = subjectDataService.findSubjectBySubjectId("1000000162");
+        subjectFromDataService = subjectDataService.findBySubjectId("1000000162");
         assertNotNull(subjectFromDataService);
 
         checkZetesFields(secondSubject, subjectFromDataService);
@@ -155,7 +155,7 @@ public class SubjectServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        Subject subjectFromDataService = subjectDataService.findSubjectBySubjectId("1000000162");
+        Subject subjectFromDataService = subjectDataService.findBySubjectId("1000000162");
         assertNotNull(subjectFromDataService);
 
         checkZetesFields(secondSubject, subjectFromDataService);
@@ -169,7 +169,7 @@ public class SubjectServiceIT extends BasePaxIT {
         subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        subjectFromDataService = subjectDataService.findSubjectBySubjectId("1000000162");
+        subjectFromDataService = subjectDataService.findBySubjectId("1000000162");
         assertNotNull(subjectFromDataService);
 
         checkZetesFields(secondSubject, subjectFromDataService);

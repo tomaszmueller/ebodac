@@ -87,15 +87,15 @@ public class IvrCallHelperTest {
         VotoLanguage votoLanguage = new VotoLanguage();
         votoLanguage.setLanguage(Language.English);
         votoLanguage.setVotoId(votoLanguageId);
-        when(votoLanguageDataService.findVotoLanguageByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
 
         VotoMessage votoMessage = new VotoMessage();
         votoMessage.setMessageKey(messageKey);
         votoMessage.setVotoIvrId(votoMessageId);
-        when(votoMessageDataService.findVotoMessageByMessageKey(messageKey)).thenReturn(votoMessage);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
         Enrollment enrollment = new Enrollment(externalId, campaignName);
-        when(enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
         config.setSendIvrCalls(true);
@@ -148,12 +148,12 @@ public class IvrCallHelperTest {
         VotoLanguage votoLanguage = new VotoLanguage();
         votoLanguage.setLanguage(Language.English);
         votoLanguage.setVotoId(votoLanguageId);
-        when(votoLanguageDataService.findVotoLanguageByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
 
         VotoMessage votoMessage = new VotoMessage();
         votoMessage.setMessageKey(messageKey);
         votoMessage.setVotoIvrId(votoMessageId);
-        when(votoMessageDataService.findVotoMessageByMessageKey(messageKey)).thenReturn(votoMessage);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
         Enrollment parent = new Enrollment(externalId, campaignName);
 
@@ -177,7 +177,7 @@ public class IvrCallHelperTest {
 
         parent.setDuplicatedEnrollments(enrollments);
 
-        when(enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(parent);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(parent);
 
         Config config = new Config();
         config.setSendIvrCalls(true);
@@ -230,15 +230,15 @@ public class IvrCallHelperTest {
         VotoLanguage votoLanguage = new VotoLanguage();
         votoLanguage.setLanguage(Language.English);
         votoLanguage.setVotoId(votoLanguageId);
-        when(votoLanguageDataService.findVotoLanguageByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
 
         VotoMessage votoMessage = new VotoMessage();
         votoMessage.setMessageKey(messageKey);
         votoMessage.setVotoIvrId(votoMessageId);
-        when(votoMessageDataService.findVotoMessageByMessageKey(messageKey)).thenReturn(votoMessage);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
         Enrollment enrollment = new Enrollment(externalId, campaignName);
-        when(enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
         config.setSendIvrCalls(true);
@@ -302,15 +302,15 @@ public class IvrCallHelperTest {
         VotoLanguage votoLanguage = new VotoLanguage();
         votoLanguage.setLanguage(Language.English);
         votoLanguage.setVotoId(votoLanguageId);
-        when(votoLanguageDataService.findVotoLanguageByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
 
         VotoMessage votoMessage = new VotoMessage();
         votoMessage.setMessageKey(messageKey);
         votoMessage.setVotoIvrId(votoMessageId);
-        when(votoMessageDataService.findVotoMessageByMessageKey(messageKey)).thenReturn(votoMessage);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
         Enrollment enrollment = new Enrollment(externalId, campaignName);
-        when(enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
         config.setSendIvrCalls(false);

@@ -12,28 +12,28 @@ import java.util.List;
 
 public interface IvrAndSmsStatisticReportDataService extends MotechDataService<IvrAndSmsStatisticReport> {
 
-    @Lookup(name = "Find Reports By ParticipantId")
-    List<IvrAndSmsStatisticReport> findReportsBySubjectId(@LookupField(name = "subject.subjectId",
+    @Lookup(name = "Find By ParticipantId")
+    List<IvrAndSmsStatisticReport> findBySubjectId(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
-    @Lookup(name = "Find Reports By Participant Phone Number")
-    List<IvrAndSmsStatisticReport> findReportsSubjectPhoneNumber(@LookupField(name = "subject.phoneNumber",
+    @Lookup(name = "Find By Participant Phone Number")
+    List<IvrAndSmsStatisticReport> findBySubjectPhoneNumber(@LookupField(name = "subject.phoneNumber",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String phoneNumber);
 
-    @Lookup(name = "Find Reports By Participant Community")
-    List<IvrAndSmsStatisticReport> findReportsBySubjectCommunity(@LookupField(name = "subject.community",
+    @Lookup(name = "Find By Participant Community")
+    List<IvrAndSmsStatisticReport> findBySubjectCommunity(@LookupField(name = "subject.community",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String community);
 
     @Lookup
-    List<IvrAndSmsStatisticReport> findReportsBySentDate(@LookupField(name = "sendDate") Range<DateTime> sendDate);
+    List<IvrAndSmsStatisticReport> findBySentDate(@LookupField(name = "sendDate") Range<DateTime> sendDate);
 
     @Lookup
-    List<IvrAndSmsStatisticReport> findReportsByReceivedDate(@LookupField(name = "receivedDate") Range<DateTime> receivedDate);
+    List<IvrAndSmsStatisticReport> findByReceivedDate(@LookupField(name = "receivedDate") Range<DateTime> receivedDate);
 
     @Lookup
-    List<IvrAndSmsStatisticReport> findReportsByProviderCallId(@LookupField(name = "providerCallId") String providerCallId);
+    List<IvrAndSmsStatisticReport> findByProviderCallId(@LookupField(name = "providerCallId") String providerCallId);
 
-    @Lookup(name = "Find Reports By ProviderCallId And ParticipantId")
-    IvrAndSmsStatisticReport findReportByProviderCallIdAndSubjectId(@LookupField(name = "providerCallId") String providerCallId,
-                                                                    @LookupField(name = "subject.subjectId") String subjectId);
+    @Lookup(name = "Find By ProviderCallId And ParticipantId")
+    IvrAndSmsStatisticReport findByProviderCallIdAndSubjectId(@LookupField(name = "providerCallId") String providerCallId,
+                                                              @LookupField(name = "subject.subjectId") String subjectId);
 }

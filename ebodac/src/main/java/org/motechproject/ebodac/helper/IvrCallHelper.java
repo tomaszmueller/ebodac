@@ -70,7 +70,7 @@ public class IvrCallHelper {
 
             StringBuilder subjectIds = new StringBuilder(externalId);
 
-            Enrollment enrollment = enrollmentDataService.findEnrollmentBySubjectIdAndCampaignName(externalId, campaignName);
+            Enrollment enrollment = enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName);
 
             if (enrollment != null && enrollment.getDuplicatedEnrollments() != null) {
                 for (Enrollment e : enrollment.getDuplicatedEnrollments()) {
@@ -115,7 +115,7 @@ public class IvrCallHelper {
     }
 
     private String getVotoLanguageId(Language language, String subjectId) {
-        VotoLanguage votoLanguage = votoLanguageDataService.findVotoLanguageByLanguage(language);
+        VotoLanguage votoLanguage = votoLanguageDataService.findByLanguage(language);
         if (votoLanguage == null) {
             throw new EbodacInitiateCallException("Cannot initiate call for Provider with id: %s, because Voto Language for language: %s not found", "",
                     subjectId, language.toString());
@@ -125,7 +125,7 @@ public class IvrCallHelper {
     }
 
     private String getVotoMessageId(String messageKey, String subjectId) {
-        VotoMessage votoMessage = votoMessageDataService.findVotoMessageByMessageKey(messageKey);
+        VotoMessage votoMessage = votoMessageDataService.findByMessageKey(messageKey);
         if (votoMessage == null) {
             throw new EbodacInitiateCallException("Cannot initiate call for Provider with id: %s, because Voto Message with key: %s not found", "",
                     subjectId, messageKey);

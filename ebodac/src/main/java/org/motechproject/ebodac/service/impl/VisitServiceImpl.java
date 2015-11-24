@@ -74,7 +74,7 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public Visit findVisitBySubjectIdAndVisitType(String subjectId, VisitType visitType) {
-        Subject subject = subjectDataService.findSubjectBySubjectId(subjectId);
+        Subject subject = subjectDataService.findBySubjectId(subjectId);
         List<Visit> visits = subject.getVisits();
 
         if (visits != null) {

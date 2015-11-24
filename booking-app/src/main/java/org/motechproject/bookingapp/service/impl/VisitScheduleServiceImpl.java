@@ -35,7 +35,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
     @Override
     public Map<String, String> getPrimeVaccinationDateAndDateRange(String subjectId) {
 
-        Subject subject = subjectDataService.findSubjectBySubjectId(subjectId);
+        Subject subject = subjectDataService.findBySubjectId(subjectId);
 
         LocalDate primeVacDate = null;
         LocalDate earliestDate = null;

@@ -36,7 +36,7 @@ public final class DtoLookupHelper {
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
         }
-        if (StringUtils.isNotBlank(settings.getLookup()) && "Find Visits By Participant Address".equals(settings.getLookup())) {
+        if (StringUtils.isNotBlank(settings.getLookup()) && "Find By Participant Address".equals(settings.getLookup())) {
             String address = getAddressFromLookupFields(settings.getFields());
             if (StringUtils.isNotBlank(address) && !"null".equals(address)) {
                 fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, address);
@@ -46,7 +46,7 @@ public final class DtoLookupHelper {
             }
         } else if (StringUtils.isBlank(settings.getLookup())) {
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
-            settings.setLookup("Find Visits By Type Phone Number And Address");
+            settings.setLookup("Find By Type Phone Number And Address");
         } else {
             fieldsMap = getFieldsMap(settings.getFields());
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
@@ -69,7 +69,7 @@ public final class DtoLookupHelper {
             settings.setFields("{}");
         }
         if (StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visits By Planned Date Less And Actual Date Eq And Subject Phone Number Eq");
+            settings.setLookup("Find By Planned Date Less And Actual Date Eq And Subject Phone Number Eq");
             fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
             fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
             settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
@@ -77,8 +77,8 @@ public final class DtoLookupHelper {
             fieldsMap = getFieldsMap(settings.getFields());
 
             switch (settings.getLookup()) {
-                case "Find Visits By Planned Visit Date":
-                case "Find Visits By Planned Visit Date And Type":
+                case "Find By Planned Visit Date":
+                case "Find By Planned Visit Date And Type":
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
@@ -90,8 +90,8 @@ public final class DtoLookupHelper {
 
                     newLookupName = settings.getLookup() + " Eq";
                     break;
-                case "Find Visits By Planned Visit Date Range":
-                case "Find Visits By Planned Visit Date Range And Type":
+                case "Find By Planned Visit Date Range":
+                case "Find By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
                     if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
@@ -125,14 +125,14 @@ public final class DtoLookupHelper {
             settings.setFields("{}");
         }
         if (StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visits By Planned Visit Date Less And Actual Visit Date");
+            settings.setLookup("Find By Planned Visit Date Less And Actual Visit Date");
             fieldsMap.put(Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, LocalDate.now().toString(formatter));
         } else {
             fieldsMap = getFieldsMap(settings.getFields());
 
             switch (settings.getLookup()) {
-                case "Find Visits By Planned Visit Date":
-                case "Find Visits By Planned Visit Date And Type":
+                case "Find By Planned Visit Date":
+                case "Find By Planned Visit Date And Type":
                     LocalDate date = getLocalDateFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
 
@@ -143,8 +143,8 @@ public final class DtoLookupHelper {
 
                     newLookupName = settings.getLookup() + " And Actual Visit Date";
                     break;
-                case "Find Visits By Planned Visit Date Range":
-                case "Find Visits By Planned Visit Date Range And Type":
+                case "Find By Planned Visit Date Range":
+                case "Find By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
                     if (!checkAndUpdateDateRangeForFollowupsMissedClinicVisitsReport(dateRange, settings)) {
@@ -184,8 +184,8 @@ public final class DtoLookupHelper {
         }
 
         if (StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Enrollments By Status");
-        } else if ("Find Enrollments By Participant Age".equals(settings.getLookup())) {
+            settings.setLookup("Find By Status");
+        } else if ("Find By Participant Age".equals(settings.getLookup())) {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
             Range<Long> range = getLongRangeFromLookupFields(settings.getFields(), SubjectEnrollments.SUBJECT_AGE_PROPERTY_NAME);
 
@@ -211,7 +211,7 @@ public final class DtoLookupHelper {
             }
 
             fieldsMap.put(SubjectEnrollments.SUBJECT_DATE_OF_BIRTH_PROPERTY_NAME, dateRange);
-            settings.setLookup("Find Enrollments By Participant Date Of Birth Range And Status");
+            settings.setLookup("Find By Participant Date Of Birth Range And Status");
         } else {
             fieldsMap = getFields(settings.getFields());
 
@@ -249,7 +249,7 @@ public final class DtoLookupHelper {
         List<String> fieldsOrder = new ArrayList<>();
         fieldsOrder.add("subject.age");
 
-        LookupDto lookup = new LookupDto("Find Enrollments By Participant Age", false, false, lookupFields, true, "findEnrollmentsBySubjectAge", fieldsOrder);
+        LookupDto lookup = new LookupDto("Find By Participant Age", false, false, lookupFields, true, "findBySubjectAge", fieldsOrder);
         lookups.add(lookup);
 
         return lookups;
