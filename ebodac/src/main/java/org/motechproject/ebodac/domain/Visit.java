@@ -149,6 +149,9 @@ public class Visit {
         if (dateProjected != null ? !dateProjected.equals(visit.dateProjected) : visit.dateProjected != null) {
             return true;
         }
+        if (motechProjectedDate != null ? !motechProjectedDate.equals(visit.motechProjectedDate) : visit.motechProjectedDate != null) {
+            return true;
+        }
 
         return false;
     }

@@ -40,10 +40,10 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public Visit createOrUpdate(Visit visit) {
-        if (visit.getMotechProjectedDate() == null) {
-            visit.setMotechProjectedDate(visit.getDateProjected());
-        }
         if (visit.getSubject() != null) {
+            if (visit.getMotechProjectedDate() == null && visit.getSubject().getPrimerVaccinationDate() != null) {
+                visit.setMotechProjectedDate(visit.getDateProjected());
+            }
             List<Visit> visits = visit.getSubject().getVisits();
             if (visits.contains(visit)) {
                 Visit existingVisit = visits.get(visits.indexOf(visit));
