@@ -45,14 +45,17 @@ public class IvrAndSmsStatisticReport {
     private boolean sms;
 
     @Field
+    private boolean smsFailed;
+
+    @Field
     private DateTime smsReceivedDate;
 
     @NonEditable(display = false)
     @Field
     private String owner;
 
-    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, //NO CHECKSTYLE ParameterNumber
-                                    double timeListenedTo, double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public IvrAndSmsStatisticReport(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo, //NO CHECKSTYLE ParameterNumber
+                                    double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, boolean smsFailed, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
@@ -63,6 +66,7 @@ public class IvrAndSmsStatisticReport {
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
         this.sms = sms;
+        this.smsFailed = smsFailed;
         this.smsReceivedDate = smsReceivedDate;
     }
 
@@ -138,6 +142,14 @@ public class IvrAndSmsStatisticReport {
         this.sms = sms;
     }
 
+    public boolean isSmsFailed() {
+        return smsFailed;
+    }
+
+    public void setSmsFailed(boolean smsFailed) {
+        this.smsFailed = smsFailed;
+    }
+
     public DateTime getSmsReceivedDate() {
         return smsReceivedDate;
     }
@@ -162,8 +174,8 @@ public class IvrAndSmsStatisticReport {
         this.owner = owner;
     }
 
-    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, //NO CHECKSTYLE ParameterNumber
-                                 double timeListenedTo, double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, DateTime smsReceivedDate) {
+    public void updateReportData(String providerCallId, Subject subject, String messageId, DateTime sendDate, double expectedDuration, double timeListenedTo, //NO CHECKSTYLE ParameterNumber
+                                 double messagePercentListened, DateTime receivedDate, int numberOfAttempts, boolean sms, boolean smsFailed, DateTime smsReceivedDate) {
         this.providerCallId = providerCallId;
         this.subject = subject;
         this.messageId = messageId;
@@ -174,6 +186,7 @@ public class IvrAndSmsStatisticReport {
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
         this.sms = sms;
+        this.smsFailed = smsFailed;
         this.smsReceivedDate = smsReceivedDate;
     }
 }
