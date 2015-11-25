@@ -330,6 +330,7 @@ public class ReportServiceImpl implements ReportService {
         List<CallDetailRecord> failed = new ArrayList<>();
         List<CallDetailRecord> finished = new ArrayList<>();
         boolean sms = false;
+        boolean smsFailed = false;
         String messageId = providerExtraData.get(EbodacConstants.MESSAGE_ID);
         DateTime sendDate = DateTime.parse(initialRecord.getMotechTimestamp(), motechTimestampFormatter);
         int attempts = 0;
@@ -365,7 +366,7 @@ public class ReportServiceImpl implements ReportService {
                         "", providerCallId, subjectIds, recordsCount.toString());
             }
             if (failed.size() == 2) {
-                sms = false;
+                smsFailed = true;
                 LOGGER.warn("Failed to sent SMS for Call Detail Record with Provider Call Id: {} for Providers with Ids {}", providerCallId, subjectIds);
             } else if (finished.isEmpty()) {
                 LOGGER.warn("SMS is sent but not yet received for Call Detail Record with Provider Call Id: {} for Providers with Ids {}", providerCallId, subjectIds);
@@ -382,6 +383,10 @@ public class ReportServiceImpl implements ReportService {
             }
 
             callRecord = failed.get(0);
+        } else if (recordsCount == 2 && failed.size() == 2) {
+            callRecord = failed.get(0);
+            smsFailed = true;
+            LOGGER.warn("Failed to sent SMS for Call Detail Record with Provider Call Id: {} for Providers with Ids {}", providerCallId, subjectIds);
         } else {
             if (recordsCount > 1) {
                 throw new EbodacReportException("Cannot generate report for Call Detail Record with Provider Call Id: %s for Providers with Ids %s, because there is too much records with failed/finished status (%s)",
@@ -421,11 +426,11 @@ public class ReportServiceImpl implements ReportService {
             IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallIdAndSubjectId(providerCallId, subject.getSubjectId());
             if (ivrAndSmsStatisticReport == null) {
                 ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(providerCallId, subject, messageId, sendDate,
-                        expectedDuration, timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsReceivedDate);
+                        expectedDuration, timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsFailed, smsReceivedDate);
                 ivrAndSmsStatisticReportDataService.create(ivrAndSmsStatisticReport);
             } else {
                 ivrAndSmsStatisticReport.updateReportData(providerCallId, subject, messageId, sendDate, expectedDuration,
-                        timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsReceivedDate);
+                        timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsFailed, smsReceivedDate);
                 ivrAndSmsStatisticReportDataService.update(ivrAndSmsStatisticReport);
             }
         }
