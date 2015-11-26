@@ -167,5 +167,21 @@
     "methodsRequired": [
       "POST"
     ]
+  },
+
+  {
+    "active": true,
+    "pattern": "/**/ebodac/web-api/status",
+    "supportedSchemes": [
+      "NO_SECURITY"
+    ],
+    "protocol": "HTTP",
+    "priority": 2,
+    "rest": false,
+    "origin": "SYSTEM_MODULE_EBODAC",
+    "version": "0.26",
+    "methodsRequired": [
+      "GET"
+    ]
   }
 ]
