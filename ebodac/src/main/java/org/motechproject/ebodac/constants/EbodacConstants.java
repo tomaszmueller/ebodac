@@ -26,6 +26,8 @@ public final class EbodacConstants {
     public static final String ZETES_PASSWORD = "zetes_password";
     public static final String START_TIME = "start_time";
 
+    public static final String FTP_FILE_SEPARATOR = "/";
+
     public static final Pattern CSV_FILENAME_PATTERN = Pattern.compile(".*_(.*_.*)\\.csv");
     public static final String CSV_DATE_FORMAT = "yyyyMMdd_HHmmss";
 

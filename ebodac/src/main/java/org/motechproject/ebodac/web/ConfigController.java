@@ -6,6 +6,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.scheduler.EbodacScheduler;
 import org.motechproject.ebodac.service.ConfigService;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -53,8 +53,8 @@ public class ConfigController {
     @ResponseBody
     public Config updateConfig(@RequestBody Config config) {
         String directory = config.getFtpsDirectory();
-        if (directory != null && !directory.endsWith(File.separator)) {
-            directory += File.separator;
+        if (directory != null && !directory.endsWith(EbodacConstants.FTP_FILE_SEPARATOR)) {
+            directory += EbodacConstants.FTP_FILE_SEPARATOR;
         }
         config.setFtpsDirectory(directory);
 
