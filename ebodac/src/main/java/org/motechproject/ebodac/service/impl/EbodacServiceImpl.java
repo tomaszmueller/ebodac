@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.Date;
@@ -147,8 +146,8 @@ public class EbodacServiceImpl implements EbodacService {
     }
 
     private String addFileSeparatorIfNeeded(String directory) {
-        if (!directory.endsWith(File.separator)) {
-            return (directory + File.separator);
+        if (!directory.endsWith(EbodacConstants.FTP_FILE_SEPARATOR)) {
+            return (directory + EbodacConstants.FTP_FILE_SEPARATOR);
         }
         return directory;
     }
