@@ -112,6 +112,60 @@ public final class DtoLookupHelper {
         return settings;
     }
 
+    public static BookingGridSettings changeLookupForVisitReschedule(BookingGridSettings settings) throws IOException {  //NO CHECKSTYLE CyclomaticComplexity
+        Map<String, Object> fieldsMap = new HashMap<>();
+
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
+
+        if (StringUtils.isBlank(settings.getLookup())) {
+            settings.setLookup("Find By Planned Date And Visit Type Set");
+            fieldsMap.put(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME, null);
+            fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+        } else {
+            fieldsMap = getFields(settings.getFields());
+            switch (settings.getLookup()) {
+                case "Find By Visit Type":
+                    String type = (String) fieldsMap.get(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME);
+                    if (StringUtils.isBlank(type) || !BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN.contains(VisitType.valueOf(type))) {
+                        fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, null);
+                    }
+                    fieldsMap.put(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME, null);
+                    settings.setLookup(settings.getLookup() + " And Planned Date");
+                    break;
+                case "Find By Visit Planned Date":
+                    String plannedDate = (String) fieldsMap.get(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME);
+                    if (StringUtils.isBlank(plannedDate)) {
+                        settings.setLookup("Find By Planned Date And Visit Type Set");
+                        fieldsMap.put(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME, null);
+                    } else {
+                        settings.setLookup(settings.getLookup() + " And Visit Type Set");
+                    }
+                    fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+                    break;
+                case "Find By Visit Planned Date Range":
+                    Map<String, String> dateRange = (Map<String, String>) fieldsMap.get(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME);
+                    if (dateRange == null || (StringUtils.isBlank(dateRange.get("min")) && StringUtils.isBlank(dateRange.get("max")))) {
+                        settings.setLookup("Find By Planned Date And Visit Type Set");
+                        fieldsMap.put(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME, null);
+                    } else {
+                        settings.setLookup(settings.getLookup() + " And Visit Type Set");
+                    }
+                    fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+                    break;
+                default:
+                    fieldsMap.put(VisitBookingDetails.VISIT_PLANNED_DATE_PROPERTY_NAME, null);
+                    fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+                    settings.setLookup(settings.getLookup() + " And Planned Date And Visit Type Set");
+                    break;
+            }
+        }
+
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
+        return settings;
+    }
+
     private static Map<String, Object> getFields(String lookupFields) throws IOException {
         return OBJECT_MAPPER.readValue(lookupFields, new TypeReference<HashMap>() {}); //NO CHECKSTYLE WhitespaceAround
     }

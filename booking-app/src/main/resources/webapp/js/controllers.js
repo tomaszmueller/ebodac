@@ -144,7 +144,7 @@
                 };
     });
 
-    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites) {
+    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites, MDSUtils) {
 
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['pdf','xls'];
@@ -285,7 +285,7 @@
         $scope.getLookups = function(url) {
             $http.get(url)
             .success(function(data) {
-                        $scope.lookups = data;
+                $scope.lookups = data;
             });
         }
 
@@ -756,6 +756,64 @@
         $scope.checkSubjectAndPrimeVacDate = function() {
             return $scope.checkSubject() && $scope.primeVac.date !== undefined && $scope.primeVac.date !== null && $scope.primeVac.date !== "";
         }
+
+    });
+
+    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http) {
+        $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
+
+        $scope.newForm = function() {
+            $scope.form = {};
+            $scope.form.dto = {};
+        };
+
+        $scope.saveVisitReschedule = function(ignoreLimitation) {
+            function sendRequest() {
+                $http.post('../booking-app/saveVisitReschedule/' + ignoreLimitation, $scope.form.dto)
+                    .success(function(data) {
+                        if (data && (typeof(data) === 'string')) {
+                            jConfirm($scope.msg('bookingApp.visitReschedule.confirmMsg', data), $scope.msg('bookingApp.visitReschedule.confirmTitle'),
+                                function (response) {
+                                    if (response) {
+                                        $scope.saveVisitReschedule(true);
+                                    }
+                                });
+                        } else {
+                            $("#visitReschedule").trigger('reloadGrid');
+                            $scope.form.dto = undefined;
+                        }
+                    })
+                    .error(function(response) {
+                        motechAlert('bookingApp.visitReschedule.updateError', 'bookingApp.error', response);
+                    });
+            }
+
+            if (ignoreLimitation) {
+                sendRequest();
+            } else {
+                motechConfirm("bookingApp.visitReschedule.confirm.shouldSavePlannedDate", "bookingApp.confirm",
+                    function(confirmed) {
+                        sendRequest();
+                })
+            }
+        };
+
+        $scope.formIsFilled = function() {
+            return $scope.form
+                && $scope.form.dto
+                && $scope.form.dto.plannedDate
+                && $scope.form.dto.startTime
+                && $scope.form.dto.clinicId
+                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true;
+        };
+
+        $scope.exportInstance = function() {
+            var sortColumn, sortDirection, url = "../booking-app/exportInstances/visitReschedule";
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            $scope.exportInstanceWithUrl(url);
+        };
 
     });
 

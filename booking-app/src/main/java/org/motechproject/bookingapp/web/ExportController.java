@@ -13,6 +13,7 @@ import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
 import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
+import org.motechproject.bookingapp.domain.VisitRescheduleDto;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.template.PdfExportTemplate;
 import org.motechproject.bookingapp.template.XlsExportTemplate;
@@ -68,6 +69,16 @@ public class ExportController {
                 PrimeVaccinationScheduleDto.class, VisitBookingDetails.class, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_FIELDS_MAP);
     }
 
+    @RequestMapping(value = "/exportInstances/visitReschedule", method = RequestMethod.GET)
+    public void exportVisitReschedule(BookingGridSettings settings, @RequestParam String exportRecords,
+                                      @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
+
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForVisitReschedule(settings);
+
+        exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.VISIT_RESCHEDULE_NAME,
+                VisitRescheduleDto.class, VisitBookingDetails.class, BookingAppConstants.VISIT_RESCHEDULE_FIELDS_MAP);
+    }
+
     @RequestMapping(value = "/exportInstances/unscheduledVisits", method = RequestMethod.GET)
     public void exportUnscheduledVisits(BookingGridSettings settings, @RequestParam String exportRecords,
                                                @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
@@ -77,7 +88,6 @@ public class ExportController {
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.UNSCHEDULED_VISITS_NAME,
                 UnscheduledVisitDto.class, UnscheduledVisit.class, BookingAppConstants.UNSCHEDULED_VISIT_FIELDS_MAP);
     }
-
 
     private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap) throws IOException {
