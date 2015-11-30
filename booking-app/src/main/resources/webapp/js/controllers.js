@@ -445,6 +445,9 @@
         $scope.savePrimeVaccinationSchedule = function(ignoreLimitation) {
 
             function sendRequest() {
+                if($scope.form.dto.participantGender != "Female") {
+                    $scope.form.dto.femaleChildBearingAge = "No";
+                }
                 $http.post('../booking-app/primeVaccinationSchedule/' + ignoreLimitation, $scope.form.dto)
                     .success(function(data) {
                         if (data && (typeof(data) === 'string')) {
