@@ -202,7 +202,8 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         LocalDate actualScreeningDate = visitDataService
                 .findVisitBySubjectIdAndType(dto.getParticipantId(), VisitType.SCREENING).getDate();
 
-        LocalDate earliestDate = dto.getFemaleChildBearingAge() ? actualScreeningDate.plusDays(14) : actualScreeningDate.plusDays(1);
+        LocalDate earliestDate = dto.getFemaleChildBearingAge() != null && dto.getFemaleChildBearingAge()
+                ? actualScreeningDate.plusDays(14) : actualScreeningDate.plusDays(1);
         LocalDate latestDate = actualScreeningDate.plusDays(28);
 
         if (dto.getDate().isBefore(earliestDate) || dto.getDate().isAfter(latestDate)) {
