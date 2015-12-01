@@ -59,6 +59,7 @@
                         <Context-Path>ebodac</Context-Path>
                         <Export-Package>
                             org.motechproject.ebodac.service;version=${project.version},
+                            org.motechproject.ebodac.service.impl.csv;version=${project.version},
                             org.motechproject.ebodac.repository;version=${project.version},
                             org.motechproject.ebodac.domain;version=${project.version},
                             org.motechproject.ebodac.importer;version=${project.version},
