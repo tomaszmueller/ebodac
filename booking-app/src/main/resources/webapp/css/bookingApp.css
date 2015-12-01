@@ -56,7 +56,7 @@
     vertical-align: middle;
 }
 
-#datepicker[readonly] {
+.datepicker[readonly] {
     background-color: white;
     cursor: auto;
 }
