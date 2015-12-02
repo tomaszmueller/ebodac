@@ -113,7 +113,7 @@ public class ScreeningServiceImpl implements ScreeningService {
 
             if (screeningList != null) {
                 int numberOfRooms = clinic.getNumberOfRooms();
-                int maxVisits = clinic.getMaxScreeningVisits() * numberOfRooms;
+                int maxVisits = clinic.getMaxScreeningVisits();
                 int patients = 0;
 
                 for (Screening s : screeningList) {
