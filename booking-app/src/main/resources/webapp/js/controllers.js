@@ -153,9 +153,10 @@
         */
         $scope.showLookupDialog = function() {
             $("#lookup-dialog")
-            .css({'top': ($("#lookupDialogButton").offset().top - $("#main-content").offset().top)-40,
-            'left': ($("#lookupDialogButton").offset().left - $("#main-content").offset().left)-70})
+            .css({'top': ($("#lookupDialogButton").offset().top - $("#main-content").offset().top) - 40,
+            'left': ($("#lookupDialogButton").offset().left - $("#main-content").offset().left) - 15})
             .toggle();
+            $("div.arrow").css({'left': 50});
         };
 
         /**
