@@ -17,7 +17,7 @@ public final class BookingAppConstants {
     public static final String XLS_EXPORT_FORMAT="xls";
 
     public static final String SCREENING_NAME = "Screening";
-    public static final String PRIME_VACCINATION_SCHEDULE_NAME = "Prime Vaccination Schedule";
+    public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";
 
     public static final String SCREENING_TAB_PERMISSION = "screeningBookingTab";
     public static final String PRIME_VAC_TAB_PERMISSION = "primeVaccinationBookingTab";
