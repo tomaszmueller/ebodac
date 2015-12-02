@@ -87,6 +87,8 @@
                             colNames: jsonColNames,
                             colModel: jsonColModel,
                             pager: '#' + attrs.reportGrid,
+                            rowNum: 50,
+                            rowList: [10, 20, 50, 100],
                             viewrecords: true,
                             loadonce: false,
                             resizeStop: function() {
@@ -200,6 +202,8 @@
                         }
                     },
                     pager: '#' + attrs.enrollmentGrid,
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
                     viewrecords: true,
                     loadonce: false,
                     resizeStop: function() {
