@@ -167,7 +167,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
 
             Clinic clinic = clinicDataService.findById(dto.getClinicId());
             int numberOfRooms = clinic.getNumberOfRooms();
-            int maxVisits = clinic.getMaxPrimeVisits() * numberOfRooms;
+            int maxVisits = clinic.getMaxPrimeVisits();
             int patients = 0;
 
             for (VisitBookingDetails visit : visits) {
