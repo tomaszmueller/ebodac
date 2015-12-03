@@ -2,11 +2,11 @@ package org.motechproject.bookingapp.web;
 
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
+import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.service.PrimeVaccinationScheduleService;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
-import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.web.domain.Records;
@@ -14,6 +14,7 @@ import org.motechproject.mds.dto.LookupDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class PrimeVaccinationScheduleController {
         List<LookupDto> ret = new ArrayList<>();
         List<LookupDto> availableLookups;
         try {
-            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
+            availableLookups = lookupService.getAvailableLookups(VisitBookingDetails.class.getName());
         } catch (EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return null;
@@ -77,8 +79,10 @@ public class PrimeVaccinationScheduleController {
     }
 
     @ExceptionHandler
-    public void handleException(Exception e) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public String handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
+        return e.getMessage();
     }
-
 }

@@ -48,8 +48,6 @@
 
     <osgi:service ref="visitScheduleOffsetService" interface="org.motechproject.bookingapp.service.VisitScheduleOffsetService" />
 
-    <osgi:service ref="visitBookingDetailsService" interface="org.motechproject.bookingapp.service.VisitBookingDetailsService" />
-
     <osgi:service ref="visitRescheduleService" interface="org.motechproject.bookingapp.service.VisitRescheduleService" />
 
     <osgi:service ref="bookingAppLifecycleListener" interface="org.motechproject.bookingapp.listener.BookingAppLifecycleListener" />

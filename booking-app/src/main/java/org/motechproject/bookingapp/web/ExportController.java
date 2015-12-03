@@ -63,7 +63,7 @@ public class ExportController {
     public void exportPrimeVaccinationSchedule(BookingGridSettings settings, @RequestParam String exportRecords,
                                                @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
 
-        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForPrimeVaccinationScheduleExport(settings);
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForPrimeVaccinationSchedule(settings);
 
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_NAME,
                 PrimeVaccinationScheduleDto.class, VisitBookingDetails.class, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_FIELDS_MAP);

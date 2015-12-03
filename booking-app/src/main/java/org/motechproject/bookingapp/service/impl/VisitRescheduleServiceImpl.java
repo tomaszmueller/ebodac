@@ -10,7 +10,6 @@ import org.motechproject.bookingapp.domain.VisitScheduleOffset;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
-import org.motechproject.bookingapp.service.VisitBookingDetailsService;
 import org.motechproject.bookingapp.service.VisitRescheduleService;
 import org.motechproject.bookingapp.service.VisitScheduleOffsetService;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
@@ -40,9 +39,6 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
     @Autowired
     private EbodacEnrollmentService ebodacEnrollmentService;
-
-    @Autowired
-    private VisitBookingDetailsService visitBookingDetailsService;
 
     @Autowired
     private VisitBookingDetailsDataService visitBookingDetailsDataService;
@@ -76,23 +72,23 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
     @Override
     public VisitRescheduleDto saveVisitReschedule(VisitRescheduleDto visitRescheduleDto, Boolean ignoreLimitation) {
+        VisitBookingDetails visitBookingDetails = visitBookingDetailsDataService.findById(visitRescheduleDto.getVisitBookingDetailsId());
+
+        if (visitBookingDetails == null) {
+            throw new IllegalArgumentException("Cannot reschedule, because details for Visit not found");
+        }
+
         Clinic clinic = clinicDataService.findById(visitRescheduleDto.getClinicId());
 
         if (!ignoreLimitation) {
             checkNumberOfPatients(visitRescheduleDto, clinic);
         }
 
-        Visit visit = visitDataService.findById(visitRescheduleDto.getVisitId());
-        VisitBookingDetails visitBookingDetails = visitBookingDetailsDataService.findById(visitRescheduleDto.getVisitBookingDetailsId());
-
+        Visit visit = visitBookingDetails.getVisit();
         validateDate(visitRescheduleDto, visit);
         updateVisitPlannedDate(visit, visitRescheduleDto);
 
-        if (visitBookingDetails != null) {
-            return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto, clinic));
-        } else {
-            return new VisitRescheduleDto(createVisitDetailsFromDto(visitRescheduleDto, visit, clinic));
-        }
+        return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto, clinic));
     }
 
     private void checkNumberOfPatients(VisitRescheduleDto dto, Clinic clinic) {
@@ -145,15 +141,6 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
                     earliestDate, latestDate, dto.getPlannedDate()));
         }
-    }
-
-    private VisitBookingDetails createVisitDetailsFromDto(VisitRescheduleDto dto, Visit visit, Clinic clinic) {
-        VisitBookingDetails details = new VisitBookingDetails();
-        details.setStartTime(dto.getStartTime());
-        details.setEndTime(dto.getEndTime());
-        details.setClinic(clinic);
-        details.setVisit(visit);
-        return visitBookingDetailsDataService.create(details);
     }
 
     private VisitBookingDetails updateVisitDetailsWithDto(VisitBookingDetails details, VisitRescheduleDto dto, Clinic clinic) {
