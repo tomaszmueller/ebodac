@@ -39,4 +39,6 @@
 
     <osgi:service ref="visitBookingDetailsService" interface="org.motechproject.bookingapp.service.VisitBookingDetailsService" />
 
+    <osgi:service ref="bookingAppLifecycleListener" interface="org.motechproject.bookingapp.listener.BookingAppLifecycleListener" />
+
 </beans>
