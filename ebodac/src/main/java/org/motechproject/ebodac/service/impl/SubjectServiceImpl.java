@@ -2,7 +2,10 @@ package org.motechproject.ebodac.service.impl;
 
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.ReportUpdateService;
 import org.motechproject.ebodac.service.SubjectService;
@@ -22,6 +25,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectDataService subjectDataService;
+
+    @Autowired
+    private VisitDataService visitDataService;
 
     @Autowired
     private ReportUpdateService reportUpdateService;
@@ -54,10 +60,19 @@ public class SubjectServiceImpl implements SubjectService {
 
             ebodacEnrollmentService.enrollSubject(subjectInDb);
 
-            return update(subjectInDb);
+            subjectInDb = update(subjectInDb);
         } else {
-            return create(newSubject);
+            subjectInDb = create(newSubject);
         }
+
+        for (VisitType visitType: VisitType.values()) {
+            if (!VisitType.UNSCHEDULED_VISIT.equals(visitType)) {
+                Visit visit = new Visit(visitType, subjectInDb);
+                visitDataService.create(visit);
+            }
+        }
+
+        return subjectInDb;
     }
 
     @Override
