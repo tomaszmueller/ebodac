@@ -14,5 +14,9 @@
   {
     "roleName": "Booking App - Advanced Settings user",
     "permissionNames": ["bookingAdvancedSettings"]
+  },
+  {
+    "roleName": "Booking App - Unscheduled Visits user",
+    "permissionNames": ["unscheduledVisitsTab"]
   }
 ]

@@ -53,7 +53,7 @@ public final class DtoLookupHelper {
         return settings;
     }
 
-    public static BookingGridSettings changeLookupForScreening(BookingGridSettings settings) throws IOException {
+    public static BookingGridSettings changeLookupForScreeningAndUnscheduled(BookingGridSettings settings) throws IOException {
         Map<String, Object> fieldsMap = new HashMap<>();
         DateFilter dateFilter = settings.getDateFilter();
 

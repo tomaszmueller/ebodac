@@ -18,16 +18,19 @@ public final class BookingAppConstants {
 
     public static final String SCREENING_NAME = "Screening";
     public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";
+    public static final String UNSCHEDULED_VISITS_NAME = "Unscheduled_Visits";
 
     public static final String SCREENING_TAB_PERMISSION = "screeningBookingTab";
     public static final String PRIME_VAC_TAB_PERMISSION = "primeVaccinationBookingTab";
     public static final String CLINIC_VISIT_SCHEDULE_TAB_PERMISSION = "clinicVisitBookingTab";
     public static final String ADVANCED_SETTINGS_TAB_PERMISSION = "bookingAdvancedSettings";
+    public static final String UNSCHEDULED_VISITS_TAB_PERMISSION = "unscheduledVisitsTab";
 
     public static final String HAS_SCREENING_TAB_ROLE = "hasRole('" + SCREENING_TAB_PERMISSION + "')";
     public static final String HAS_PRIME_VAC_TAB_ROLE = "hasRole('" + PRIME_VAC_TAB_PERMISSION + "')";
     public static final String HAS_CLINIC_VISIT_SCHEDULE_TAB_ROLE = "hasRole('" + CLINIC_VISIT_SCHEDULE_TAB_PERMISSION + "')";
     public static final String HAS_ADVANCED_SETTINGS_TAB_ROLE = "hasRole('" + ADVANCED_SETTINGS_TAB_PERMISSION + "')";
+    public static final String HAS_UNSCHEDULED_VISITS_TAB_ROLE = "hasRole('" + UNSCHEDULED_VISITS_TAB_PERMISSION + "')";
 
     public static final Map<String, String> SCREENING_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
@@ -54,11 +57,26 @@ public final class BookingAppConstants {
         }
     };
 
+    public static final Map<String, String> UNSCHEDULED_VISIT_FIELDS_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Site ID",                 "siteName");
+            put("Clinic",                  "clinicName");
+            put("Participant Id",          "participantId");
+            put("Visit Date",              "date");
+            put("Start Time",              "startTime");
+            put("End Time",                "endTime");
+            put("Purpose of the visit",    "purpose");
+        }
+    };
+
     public static final List<String> AVAILABLE_LOOKUPS_FOR_PRIME_VACCINATION_SCHEDULE = new ArrayList<>(Arrays.asList(
             "Find Visits By Participant Id", "Find Visits By Participant Name"));
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_SCREENINGS = new ArrayList<>(Arrays.asList(
             "Find By Clinic Location", "Find By Volunteer Name"));
+
+    public static final List<String> AVAILABLE_LOOKUPS_FOR_UNSCHEDULED = new ArrayList<>(Arrays.asList(
+            "Find By Participant Id", "Find By Clinic Location"));
 
     private BookingAppConstants() {
     }

@@ -3,6 +3,147 @@
 
     var controllers = angular.module('bookingApp.controllers', []);
 
+    controllers.controller('BookingAppUnscheduledVisitCtrl', function ($scope, $timeout, $http , ScreenedParticipants) {
+
+        $scope.getLookups("../booking-app/unscheduledVisits/getLookupsForUnscheduled");
+
+        $scope.filters = [{
+            name: $scope.msg('bookingApp.screening.today'),
+            dateFilter: "TODAY"
+        },{
+            name: $scope.msg('bookingApp.screening.tomorrow'),
+            dateFilter: "TOMORROW"
+        },{
+            name: $scope.msg('bookingApp.screening.thisWeek'),
+            dateFilter: "THIS_WEEK"
+        },{
+            name: $scope.msg('bookingApp.screening.dateRange'),
+            dateFilter: "DATE_RANGE"
+        }];
+
+        $scope.participants = ScreenedParticipants.query();
+
+        $scope.selectedFilter = $scope.filters[0];
+
+        $scope.selectFilter = function(value) {
+            $scope.selectedFilter = $scope.filters[value];
+            if (value !== 3) {
+                $("#unscheduledVisit").trigger('reloadGrid');
+            }
+        };
+
+        $scope.newForm = function(type) {
+            $scope.form = {};
+            $scope.form.type = type;
+            $scope.form.dto = {};
+        };
+
+        $scope.addUnscheduled = function() {
+            $scope.newForm("add");
+            $('#unscheduledVisitModal').modal('show');
+            $scope.reloadSelects();
+        };
+
+        $scope.editUnscheduled = function(id) {
+            $scope.newForm("edit");
+            $scope.form.dto = Screenings.get({id: id}, function() {
+                $scope.reloadSelects();
+                $('#unscheduledVisitModal').modal('show');
+            });
+        };
+
+        $scope.saveUnscheduledVisit = function() {
+            var confirmMsg;
+
+            function sendRequest() {
+                $http.post('../booking-app/unscheduledVisits/new/', $scope.form.dto)
+                    .success(function(data){
+                        $("#unscheduledVisit").trigger('reloadGrid');
+                        $scope.form.updated = data;
+                        $scope.form.dto = undefined;
+                    })
+                    .error(function(response) {
+                        motechAlert('bookingApp.uncheduledVisit.scheduleError', 'bookingApp.error', response);
+                    });
+            }
+
+            if ($scope.form.type == "add") {
+                confirmMsg = "bookingApp.uncheduledVisit.confirm.shouldScheduleScreening";
+            } else if ($scope.form.type == "edit") {
+                confirmMsg = "bookingApp.uncheduledVisit.confirm.shouldUpdateScreening";
+            }
+
+            sendRequest();
+        };
+
+        $scope.formIsFilled = function() {
+            return $scope.form
+                && $scope.form.dto
+                && $scope.form.dto.participantId
+                && $scope.form.dto.date
+                && $scope.form.dto.startTime
+                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
+                && $scope.form.dto.clinicId
+        };
+
+        $scope.reloadSelects = function() {
+            $timeout(function() {
+                $('#siteSelect').trigger('change');
+                $('#clinicSelect').trigger('change');
+                $('#participantSelect').trigger('change');
+            });
+        };
+
+        $scope.printFrom = function(source) {
+
+            if (source === "updated") {
+                rowData = $scope.form.updated;
+            } else {
+                var rowData = jQuery("#unscheduledVisit").jqGrid ('getRowData', source);
+            }
+
+            var winPrint = window.open("../booking-app/resources/partials/unscheduledVisitCard.html");
+            winPrint.onload = function() {
+                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
+                $('#location', winPrint.document).html(rowData.siteName + ' - ' + rowData.clinicName);
+                $('#visitType', winPrint.document).html('Unscheduled');
+                $('#participantId', winPrint.document).html(rowData.participantId);
+                $('#scheduledDate', winPrint.document).html(rowData.date);
+
+                winPrint.focus();
+                winPrint.print();
+            }
+        }
+
+        $scope.exportInstance = function() {
+                    var sortColumn, sortDirection, url = "../booking-app/exportInstances/unscheduledVisits";
+                    url = url + "?outputFormat=" + $scope.exportFormat;
+                    url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+                    if ($scope.checkboxModel.exportWithFilter === true) {
+                        url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                        if ($scope.selectedFilter.startDate) {
+                            url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                        }
+
+                        if ($scope.selectedFilter.endDate) {
+                            url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                        }
+                    }
+
+                    if ($scope.checkboxModel.exportWithOrder === true) {
+                        sortColumn = $('#unscheduledVisit').getGridParam('sortname');
+                        sortDirection = $('#unscheduledVisit').getGridParam('sortorder');
+
+                        url = url + "&sortColumn=" + sortColumn;
+                        url = url + "&sortDirection=" + sortDirection;
+                    }
+
+                    $scope.exportInstanceWithUrl(url);
+                };
+    });
+
     controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites) {
 
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];

@@ -46,7 +46,7 @@ public class ScreeningController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Records<Screening> getScreenings(BookingGridSettings settings) throws IOException{
-        return screeningService.getScreenings(DtoLookupHelper.changeLookupForScreening(settings));
+        return screeningService.getScreenings(DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

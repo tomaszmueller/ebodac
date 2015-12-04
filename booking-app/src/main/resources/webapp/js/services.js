@@ -15,4 +15,8 @@
         return $resource('../booking-app/sites', {}, {});
     });
 
+    services.factory('ScreenedParticipants', function($resource) {
+        return $resource('../booking-app/participants/screened', {}, {});
+    });
+
 }());
