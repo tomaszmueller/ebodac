@@ -16,9 +16,13 @@ public final class BookingAppConstants {
 
     public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
 
-    public static final String PDF_EXPORT_FORMAT="pdf";
-    public static final String CSV_EXPORT_FORMAT="csv";
-    public static final String XLS_EXPORT_FORMAT="xls";
+    public static final String PDF_EXPORT_FORMAT = "pdf";
+    public static final String CSV_EXPORT_FORMAT = "csv";
+    public static final String XLS_EXPORT_FORMAT = "xls";
+
+    public static final int EARLIEST_DATE = 1;
+    public static final int EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE = 14;
+    public static final int LATEST_DATE = 28;
 
     public static final String SCREENING_NAME = "Screening";
     public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";

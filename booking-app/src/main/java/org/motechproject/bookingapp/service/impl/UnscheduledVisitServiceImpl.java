@@ -56,7 +56,7 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
     @Override
     public UnscheduledVisitDto addOrUpdate(UnscheduledVisitDto dto) {
 
-        if (StringUtils.isEmpty(dto.getId())){
+        if (StringUtils.isEmpty(dto.getId())) {
             return add(dto);
         } else {
             return update(dto);
