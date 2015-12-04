@@ -10,6 +10,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.Screening;
+import org.motechproject.bookingapp.domain.UnscheduledVisit;
+import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.template.PdfExportTemplate;
@@ -51,7 +53,7 @@ public class ExportController {
     public void exportScreening(BookingGridSettings settings, @RequestParam String exportRecords,
                                 @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
 
-        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreening(settings);
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings);
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.SCREENING_NAME,
                 null, Screening.class, BookingAppConstants.SCREENING_FIELDS_MAP);
     }
@@ -65,6 +67,17 @@ public class ExportController {
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_NAME,
                 PrimeVaccinationScheduleDto.class, VisitBookingDetails.class, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_FIELDS_MAP);
     }
+
+    @RequestMapping(value = "/exportInstances/unscheduledVisits", method = RequestMethod.GET)
+    public void exportUnscheduledVisits(BookingGridSettings settings, @RequestParam String exportRecords,
+                                               @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
+
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings);
+
+        exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.UNSCHEDULED_VISITS_NAME,
+                UnscheduledVisitDto.class, UnscheduledVisit.class, BookingAppConstants.UNSCHEDULED_VISIT_FIELDS_MAP);
+    }
+
 
     private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap) throws IOException {

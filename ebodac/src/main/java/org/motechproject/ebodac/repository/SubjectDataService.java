@@ -3,6 +3,7 @@ package org.motechproject.ebodac.repository;
 import org.joda.time.LocalDate;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;
@@ -52,4 +53,8 @@ public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup(name = "Find Participants By exact Phone Number")
     List<Subject> findSubjectsByPhoneNumber(@LookupField(name = "phoneNumber") String phoneNumber);
+
+    @Lookup(name = "Find By Visit Type and Actual Date")
+    List<Subject> findByVisitTypeAndActualDate(@LookupField(name = "visits.type") VisitType visitType,
+                                               @LookupField(name = "visits.date", customOperator = Constants.Operators.NEQ) LocalDate date);
 }

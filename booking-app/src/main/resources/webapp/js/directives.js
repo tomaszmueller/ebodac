@@ -221,6 +221,134 @@
         };
     });
 
+    directives.directive('unscheduledVisitGrid', function ($compile) {
+
+        var gridDataExtension;
+
+        function extendGrid(cellValue, options, rowObject) {
+            var rowExtraData = {};
+
+            rowExtraData.id = rowObject.id;
+            rowExtraData.siteId = rowObject.siteId;
+            rowExtraData.clinicId = rowObject.clinicId;
+
+            gridDataExtension[options.rowId] = rowExtraData;
+
+            return cellValue;
+        }
+
+        function createButton(id) {
+            return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="printFrom(' +
+                               id + ')"><i class="fa fa-fw fa-print"></i></button>';
+        };
+
+        function handleUndefined(value) {
+            if (value == undefined) {
+                value = "";
+            }
+            return value;
+        }
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/unscheduledVisits",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.uncheduledVisit.participantId"),
+                        scope.msg("bookingApp.siteId"),
+                        scope.msg("bookingApp.clinic"),
+                        scope.msg("bookingApp.date"),
+                        scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.endTime"),
+                        scope.msg("bookingApp.uncheduledVisit.purpose"),
+                        ""],
+                    colModel: [
+                        { name: "participantId", formatter: extendGrid },
+                        { name: "siteName"},
+                        { name: "clinicName" },
+                        { name: "date" },
+                        { name: "startTime" },
+                        { name: "endTime" },
+                        { name: "purpose" },
+                        { name: "print", align: "center", sortable: false, width: 40}
+                    ],
+                    gridComplete: function() {
+                        var ids = elem.getDataIDs();
+                        for(var i = 0; i < ids.length; i++){
+                            elem.setRowData(ids[i], {print: createButton(ids[i])})
+                        }
+                        $compile($('.printBtn'))(scope);
+                        $('#unscheduledVisitTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#unscheduledVisitTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeRequest: function() {
+                        gridDataExtension = [];
+                    },
+                    onCellSelect: function(rowId, iCol, cellContent, e) {
+                        if (iCol !== 8) {
+                            var rowData = elem.getRowData(rowId),
+                                extraRowData = gridDataExtension[rowId];
+
+                            scope.newForm();
+                            scope.form.dto.id = extraRowData.id;
+                            scope.form.dto.participantId = rowData.participantId;
+                            scope.form.dto.date = rowData.date;
+                            scope.form.dto.startTime = rowData.startTime;
+                            scope.form.dto.endTime = rowData.endTime;
+                            scope.form.dto.siteId = extraRowData.siteId;
+                            scope.form.dto.clinicId = extraRowData.clinicId;
+                            scope.form.dto.purpose = rowData.purpose;
+                            scope.reloadSelects();
+                            $('#unscheduledVisitModal').modal('show');
+                        }
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
+                    },
+                    beforeSelectRow: function() {
+                        return false;
+                    },
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+
+            }
+        };
+    });
+
     directives.directive('primeVaccinationGrid', function ($compile) {
 
         var gridDataExtension;
