@@ -228,6 +228,13 @@
                         }
                     }).trigger('reloadGrid');
                 });
+
+                scope.$watch("gridRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        postData: {
+                        }
+                    }).trigger('reloadGrid');
+                });
             }
         };
     });
