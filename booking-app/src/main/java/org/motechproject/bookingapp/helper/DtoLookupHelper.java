@@ -26,33 +26,6 @@ public final class DtoLookupHelper {
     private DtoLookupHelper() {
     }
 
-    public static BookingGridSettings changeLookupForPrimeVaccinationSchedule(BookingGridSettings settings) throws IOException {
-        Map<String, String> fieldsMap = new HashMap<>();
-
-        if (StringUtils.isBlank(settings.getFields())) {
-            settings.setFields("{}");
-        }
-
-        if (StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find Visits By Type Date Primer Vaccination Date And Participant Name");
-            fieldsMap.put(Visit.SUBJECT_NAME_PROPERTY_NAME, NOT_BLANK_REGEX);
-        } else {
-            fieldsMap = getFieldsMap(settings.getFields());
-            if (settings.getLookup().equals("Find Visits By Participant Name")) {
-                settings.setLookup(settings.getLookup() + " Type Date And Primer Vaccination Date");
-            } else {
-                settings.setLookup(settings.getLookup() + " Type Date Primer Vaccination Date And Participant Name");
-                fieldsMap.put(Visit.SUBJECT_NAME_PROPERTY_NAME, NOT_BLANK_REGEX);
-            }
-        }
-
-        fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, VisitType.SCREENING.toString());
-        fieldsMap.put(Visit.ACTUAL_VISIT_DATE_PROPERTY_NAME, null);
-        fieldsMap.put(Visit.SUBJECT_PRIME_VACCINATION_DATE_PROPERTY_NAME, null);
-        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
-        return settings;
-    }
-
     public static BookingGridSettings changeLookupForScreeningAndUnscheduled(BookingGridSettings settings) throws IOException {
         Map<String, Object> fieldsMap = new HashMap<>();
         DateFilter dateFilter = settings.getDateFilter();
@@ -86,7 +59,7 @@ public final class DtoLookupHelper {
         return settings;
     }
 
-    public static BookingGridSettings changeLookupForPrimeVaccinationScheduleExport(BookingGridSettings settings) throws IOException {
+    public static BookingGridSettings changeLookupForPrimeVaccinationSchedule(BookingGridSettings settings) throws IOException {
         Map<String, String> fieldsMap = new HashMap<>();
 
         if (StringUtils.isBlank(settings.getFields())) {
@@ -94,12 +67,12 @@ public final class DtoLookupHelper {
         }
 
         if (StringUtils.isBlank(settings.getLookup())) {
-            settings.setLookup("Find By Visit Type And Participant Prime Vaccination Date And Name");
+            settings.setLookup("Find By Participant Name Prime Vaccination Date And Visit Type");
             fieldsMap.put(VisitBookingDetails.SUBJECT_NAME_PROPERTY_NAME, NOT_BLANK_REGEX);
         } else {
             fieldsMap = getFieldsMap(settings.getFields());
-            if (settings.getLookup().equals("Find Visits By Participant Name")) {
-                settings.setLookup(settings.getLookup() + " Visit Type And Participant Prime Vaccination Date");
+            if ("Find By Participant Name".equals(settings.getLookup())) {
+                settings.setLookup(settings.getLookup() + " Prime Vaccination Date And Visit Type");
             } else {
                 settings.setLookup(settings.getLookup() + " Visit Type And Participant Prime Vaccination Date And Name");
                 fieldsMap.put(Visit.SUBJECT_NAME_PROPERTY_NAME, NOT_BLANK_REGEX);

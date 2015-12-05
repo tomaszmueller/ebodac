@@ -15,7 +15,6 @@ import org.motechproject.bookingapp.repository.VolunteerDataService;
 import org.motechproject.bookingapp.service.ScreeningService;
 import org.motechproject.bookingapp.util.ScreeningValidator;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
-import org.motechproject.commons.api.Range;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
@@ -23,7 +22,6 @@ import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -48,16 +46,9 @@ public class ScreeningServiceImpl implements ScreeningService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    @Transactional
     public Records<Screening> getScreenings(BookingGridSettings bookingGridSettings) throws IOException {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(bookingGridSettings, getFields(bookingGridSettings.getFields()));
-        Records<Screening> screeningRecords = lookupService.getEntities(Screening.class, bookingGridSettings.getLookup(), bookingGridSettings.getFields(), queryParams);
-        return screeningRecords;
-    }
-
-    @Override
-    public long countScreeningsForDateRange(Range<LocalDate> range) {
-        return screeningDataService.countFindByDate(range);
+        return lookupService.getEntities(Screening.class, bookingGridSettings.getLookup(), bookingGridSettings.getFields(), queryParams);
     }
 
     @Override
@@ -97,7 +88,6 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    @Transactional
     public ScreeningDto getScreeningById(Long id) {
         return screeningDataService.findById(id).toDto();
     }

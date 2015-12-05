@@ -57,15 +57,17 @@ public class PrimeVaccinationScheduleDto {
         setStartTime(details.getStartTime());
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
-        setClinicId(details.getClinic().getId());
-        setSiteId(details.getClinic().getSite().getId());
         setDate(details.getBookingPlannedDate());
         setFemaleChildBearingAge(details.getFemaleChildBearingAge());
         setVisitBookingDetailsId(details.getId());
         setEndTime(details.getEndTime());
-        setLocation(details.getClinic().getSite().getSiteId() + " - " + details.getClinic().getLocation());
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
+        if (details.getClinic() != null) {
+            setClinicId(details.getClinic().getId());
+            setSiteId(details.getClinic().getSite().getId());
+            setLocation(details.getClinic().getSite().getSiteId() + " - " + details.getClinic().getLocation());
+        }
     }
 
     public Long getVisitBookingDetailsId() {
