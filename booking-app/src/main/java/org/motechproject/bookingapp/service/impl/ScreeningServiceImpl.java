@@ -151,7 +151,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         if (json == null) {
             return null;
         } else {
-            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 }

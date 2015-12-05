@@ -89,7 +89,7 @@ public class ExportController {
                 UnscheduledVisitDto.class, UnscheduledVisit.class, BookingAppConstants.UNSCHEDULED_VISIT_FIELDS_MAP);
     }
 
-    private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
+    private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response, //NO CHECKSTYLE ParameterNumber
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap) throws IOException {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
@@ -97,9 +97,9 @@ public class ExportController {
 
         if (BookingAppConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
-        } else if(BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
-        } else if(BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/vnd.ms-excel");
         } else {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
@@ -118,10 +118,10 @@ public class ExportController {
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
                 XlsBasicTemplate template = new XlsExportTemplate(response.getOutputStream());
 
                 exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
@@ -137,7 +137,7 @@ public class ExportController {
         if (gridSettings.getFields() == null) {
             return null;
         } else {
-            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 

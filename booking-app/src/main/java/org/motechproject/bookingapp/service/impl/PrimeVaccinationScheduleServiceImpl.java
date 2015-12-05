@@ -3,6 +3,7 @@ package org.motechproject.bookingapp.service.impl;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
@@ -48,7 +49,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public Records<PrimeVaccinationScheduleDto> getPrimeVaccinationScheduleRecords(BookingGridSettings settings) throws IOException{
+    public Records<PrimeVaccinationScheduleDto> getPrimeVaccinationScheduleRecords(BookingGridSettings settings) throws IOException {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
         Records<Visit> visitRecords = lookupService.getEntities(Visit.class, settings.getLookup(), settings.getFields(), queryParams);
 
@@ -153,7 +154,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         if (json == null) {
             return null;
         } else {
-            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 
@@ -203,8 +204,9 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                 .findVisitBySubjectIdAndType(dto.getParticipantId(), VisitType.SCREENING).getDate();
 
         LocalDate earliestDate = dto.getFemaleChildBearingAge() != null && dto.getFemaleChildBearingAge()
-                ? actualScreeningDate.plusDays(14) : actualScreeningDate.plusDays(1);
-        LocalDate latestDate = actualScreeningDate.plusDays(28);
+                ? actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE)
+                : actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
+        LocalDate latestDate = actualScreeningDate.plusDays(BookingAppConstants.LATEST_DATE);
 
         if (dto.getDate().isBefore(earliestDate) || dto.getDate().isAfter(latestDate)) {
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",

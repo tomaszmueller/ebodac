@@ -68,8 +68,8 @@ public class PrimeVaccinationScheduleController {
             return null;
         }
         List<String> lookupList = BookingAppConstants.AVAILABLE_LOOKUPS_FOR_PRIME_VACCINATION_SCHEDULE;
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }

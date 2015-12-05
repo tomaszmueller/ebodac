@@ -45,7 +45,7 @@ public class ScreeningController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Records<Screening> getScreenings(BookingGridSettings settings) throws IOException{
+    public Records<Screening> getScreenings(BookingGridSettings settings) throws IOException {
         return screeningService.getScreenings(DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings));
     }
 
@@ -85,8 +85,8 @@ public class ScreeningController {
             return null;
         }
         List<String> lookupList = BookingAppConstants.AVAILABLE_LOOKUPS_FOR_SCREENINGS;
-        for(LookupDto lookupDto : availableLookups) {
-            if(lookupList.contains(lookupDto.getLookupName())) {
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
             }
         }

@@ -25,10 +25,6 @@ import java.util.Set;
 @Service("visitScheduleService")
 public class VisitScheduleServiceImpl implements VisitScheduleService {
 
-    public static final int ONE_DAY = 1;
-    public static final int TWO_WEEKS = 14;
-    public static final int FOUR_WEEKS = 28;
-
     @Autowired
     private SubjectDataService subjectDataService;
 
@@ -52,18 +48,18 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
 
             if (subject.getPrimerVaccinationDate() != null) {
                 primeVacDate = subject.getPrimerVaccinationDate();
-            } else if (details != null){
+            } else if (details != null) {
                 primeVacDate = details.getBookingActualDate();
             }
 
             LocalDate screeningDate = getScreeningDate(subject);
             if (screeningDate != null) {
                 if (!isFemaleChildBearingAge(details)) {
-                    earliestDate = screeningDate.plusDays(ONE_DAY);
+                    earliestDate = screeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
                 } else {
-                    earliestDate = screeningDate.plusDays(TWO_WEEKS);
+                    earliestDate = screeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE);
                 }
-                latestDate = screeningDate.plusDays(FOUR_WEEKS);
+                latestDate = screeningDate.plusDays(BookingAppConstants.LATEST_DATE);
             }
         }
 
@@ -187,11 +183,11 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
         LocalDate latestDate;
 
         if (!isFemaleChildBearingAge(details)) {
-            earliestDate = screeningDate.plusDays(ONE_DAY);
+            earliestDate = screeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
         } else {
-            earliestDate = screeningDate.plusDays(TWO_WEEKS);
+            earliestDate = screeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE);
         }
-        latestDate = screeningDate.plusDays(FOUR_WEEKS);
+        latestDate = screeningDate.plusDays(BookingAppConstants.LATEST_DATE);
 
         if (date.isBefore(earliestDate) || date.isAfter(latestDate)) {
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
