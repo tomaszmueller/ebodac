@@ -31,6 +31,7 @@
                 <value>screeningBookingTab</value>
                 <value>primeVaccinationBookingTab</value>
                 <value>clinicVisitBookingTab</value>
+                <value>visitRescheduleBookingTab</value>
                 <value>bookingAdvancedSettings</value>
             </list>
         </property>

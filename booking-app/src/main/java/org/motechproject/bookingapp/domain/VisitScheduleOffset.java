@@ -17,6 +17,12 @@ public class VisitScheduleOffset {
     @Field(required = true)
     private Integer timeOffset;
 
+    @Field(required = true)
+    private Integer earliestDateOffset;
+
+    @Field(required = true)
+    private Integer latestDateOffset;
+
     @NonEditable(display = false)
     @Field
     private String owner;
@@ -35,6 +41,22 @@ public class VisitScheduleOffset {
 
     public void setTimeOffset(Integer timeOffset) {
         this.timeOffset = timeOffset;
+    }
+
+    public Integer getEarliestDateOffset() {
+        return earliestDateOffset;
+    }
+
+    public void setEarliestDateOffset(Integer earliestDateOffset) {
+        this.earliestDateOffset = earliestDateOffset;
+    }
+
+    public Integer getLatestDateOffset() {
+        return latestDateOffset;
+    }
+
+    public void setLatestDateOffset(Integer latestDateOffset) {
+        this.latestDateOffset = latestDateOffset;
     }
 
     public String getOwner() {

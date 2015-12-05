@@ -462,4 +462,134 @@
             }
         };
     });
+
+    directives.directive('visitRescheduleGrid', function ($compile) {
+
+        var gridDataExtension;
+
+        function extendGrid(cellValue, options, rowObject) {
+            var rowExtraData = {};
+
+            rowExtraData.siteId = rowObject.siteId;
+            rowExtraData.clinicId = rowObject.clinicId;
+            rowExtraData.visitId = rowObject.visitId;
+            rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
+            rowExtraData.earliestDate = rowObject.earliestDate;
+            rowExtraData.latestDate = rowObject.latestDate;
+
+            gridDataExtension[options.rowId] = rowExtraData;
+
+            return cellValue;
+        }
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/visitReschedule",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.visitReschedule.location"),
+                        scope.msg("bookingApp.visitReschedule.participantId"),
+                        scope.msg("bookingApp.visitReschedule.participantName"),
+                        scope.msg("bookingApp.visitReschedule.visitType"),
+                        scope.msg("bookingApp.visitReschedule.actualDate"),
+                        scope.msg("bookingApp.visitReschedule.plannedDate"),
+                        scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.endTime")],
+                    colModel: [
+                        {
+                            name: "location",
+                            index: 'clinic.site.siteId'
+                        },
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "participantName",
+                            index: 'subject.name'
+                        },
+                        {
+                            name: "visitType",
+                            index: 'visit.type'
+                        },
+                        {
+                            name: "actualDate",
+                            index: 'visit.date'
+                        },
+                        {
+                            name: "plannedDate",
+                            index: 'visit.motechProjectedDate'
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "endTime"
+                        }
+                    ],
+                    gridComplete: function(){
+                        $('#visitRescheduleTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#visitRescheduleTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeSelectRow: function() {
+                        return false;
+                    },
+                    beforeRequest: function() {
+                        gridDataExtension = [];
+                    },
+                    onCellSelect: function(rowId, iCol, cellContent, e) {
+                        var rowData = elem.getRowData(rowId),
+                            extraRowData = gridDataExtension[rowId];
+
+                        if (rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "") {
+                            scope.newForm();
+                            scope.form.dto.participantId = rowData.participantId;
+                            scope.form.dto.participantName = rowData.participantName;
+                            scope.form.dto.visitType = rowData.visitType;
+                            scope.form.dto.plannedDate = rowData.plannedDate;
+                            scope.form.dto.startTime = rowData.startTime;
+                            scope.form.dto.endTime = rowData.endTime;
+                            scope.form.dto.siteId = extraRowData.siteId;
+                            scope.form.dto.clinicId = extraRowData.clinicId;
+                            scope.form.dto.visitId = extraRowData.visitId;
+                            scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
+                            scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
+                            scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
+                            scope.reloadSelects();
+                            $('#visitRescheduleModal').modal('show');
+                        }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
 }());

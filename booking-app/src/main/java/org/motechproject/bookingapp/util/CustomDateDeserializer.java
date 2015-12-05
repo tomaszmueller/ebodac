@@ -1,7 +1,7 @@
 package org.motechproject.bookingapp.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.joda.time.LocalDate;
@@ -16,7 +16,12 @@ public class CustomDateDeserializer extends JsonDeserializer<LocalDate> {
             DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Override
-    public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        return LocalDate.parse(jp.getText(), FORMATTER);
+    public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+        String dateString = jp.getText();
+
+        if (StringUtils.isNotBlank(dateString)) {
+            return LocalDate.parse(dateString, FORMATTER);
+        }
+        return null;
     }
 }
