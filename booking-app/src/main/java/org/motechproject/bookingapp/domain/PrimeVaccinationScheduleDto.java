@@ -58,7 +58,7 @@ public class PrimeVaccinationScheduleDto {
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
         setDate(details.getBookingPlannedDate());
-        setFemaleChildBearingAge(details.getFemaleChildBearingAge());
+        setFemaleChildBearingAge(details.getSubjectBookingDetails().getFemaleChildBearingAge());
         setVisitBookingDetailsId(details.getId());
         setEndTime(details.getEndTime());
         setVisitId(details.getVisit().getId());

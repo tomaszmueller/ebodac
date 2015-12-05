@@ -8,7 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
+import org.motechproject.bookingapp.domain.SubjectBookingDetails;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
+import org.motechproject.bookingapp.repository.SubjectBookingDetailsDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.Subject;
@@ -43,11 +45,15 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
     @Inject
     private VisitBookingDetailsDataService visitBookingDetailsDataService;
 
+    @Inject
+    private SubjectBookingDetailsDataService subjectBookingDetailsDataService;
+
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(BookingAppConstants.SIMPLE_DATE_FORMAT);
 
     @Before
     public void cleanBefore() {
         visitBookingDetailsDataService.deleteAll();
+        subjectBookingDetailsDataService.deleteAll();
         visitDataService.deleteAll();
         subjectDataService.deleteAll();
     }
@@ -55,6 +61,7 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
     @After
     public void cleanAfter() {
         visitBookingDetailsDataService.deleteAll();
+        subjectBookingDetailsDataService.deleteAll();
         visitDataService.deleteAll();
         subjectDataService.deleteAll();
     }
@@ -62,7 +69,9 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
     @Test
     public void shouldCreateVisitBookingDetails() {
         List<VisitBookingDetails> visitBookingDetailsList = visitBookingDetailsDataService.retrieveAll();
+        List<SubjectBookingDetails> subjectBookingDetailsList = subjectBookingDetailsDataService.retrieveAll();
         assertEquals(0, visitBookingDetailsList.size());
+        assertEquals(0, subjectBookingDetailsList.size());
 
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
                 "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
@@ -76,14 +85,20 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
         Visit secondVisit = createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-20", formatter));
 
+        Visit thirdVisit = createVisit(firstSubject, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+                LocalDate.parse("2014-10-20", formatter));
+
         subjectDataService.create(firstSubject);
         subjectDataService.create(secondSubject);
         visitDataService.create(firstVisit);
         visitDataService.create(secondVisit);
+        visitDataService.create(thirdVisit);
 
         visitBookingDetailsList = visitBookingDetailsDataService.retrieveAll();
+        subjectBookingDetailsList = subjectBookingDetailsDataService.retrieveAll();
 
-        assertEquals(2, visitBookingDetailsList.size());
+        assertEquals(3, visitBookingDetailsList.size());
+        assertEquals(2, subjectBookingDetailsList.size());
     }
 
     private Visit createVisit(Subject subject, VisitType visitType, LocalDate date, LocalDate projectedDate) {

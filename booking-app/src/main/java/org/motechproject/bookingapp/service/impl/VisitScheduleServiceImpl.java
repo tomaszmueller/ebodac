@@ -171,7 +171,8 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
     }
 
     private boolean isFemaleChildBearingAge(VisitBookingDetails details) {
-        return details != null && details.getFemaleChildBearingAge() != null && details.getFemaleChildBearingAge();
+        return details != null && details.getSubjectBookingDetails().getFemaleChildBearingAge() != null
+                && details.getSubjectBookingDetails().getFemaleChildBearingAge();
     }
 
     private LocalDate getScreeningDate(Subject subject) {

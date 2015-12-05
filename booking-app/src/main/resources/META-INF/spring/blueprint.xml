@@ -29,6 +29,9 @@
     <osgi:reference id="visitBookingDetailsDataService"
                     interface="org.motechproject.bookingapp.repository.VisitBookingDetailsDataService" />
 
+    <osgi:reference id="subjectBookingDetailsDataService"
+                    interface="org.motechproject.bookingapp.repository.SubjectBookingDetailsDataService" />
+
     <osgi:reference id="unscheduledVisitDataService"
                     interface="org.motechproject.bookingapp.repository.UnscheduledVisitDataService" />
 
