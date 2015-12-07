@@ -153,7 +153,7 @@
                         scope.msg("bookingApp.endTime"),
                         ""],
                     colModel: [
-                        { name: "id" },
+                        { name: "volunteer.id" },
                         { name: "volunteer.name" },
                         {
                             name: "site.siteId",
