@@ -29,6 +29,8 @@ public class PrimeVaccinationScheduleDto {
 
     private LocalDate actualScreeningDate;
 
+    private LocalDate bookingScreeningActualDate;
+
     private LocalDate date;
 
     private Time startTime;
@@ -46,14 +48,19 @@ public class PrimeVaccinationScheduleDto {
 
     public PrimeVaccinationScheduleDto(VisitBookingDetails details) {
 
-        LocalDate screeningDate = null;
         for (Visit visit : details.getSubject().getVisits()) {
             if (VisitType.SCREENING.equals(visit.getType())) {
-                screeningDate = visit.getDate();
+                setActualScreeningDate(visit.getDate());
+                break;
+            }
+        }
+        for (VisitBookingDetails bookingDetails : details.getSubjectBookingDetails().getVisitBookingDetailsList()) {
+            if (VisitType.SCREENING.equals(bookingDetails.getVisit().getType())) {
+                setBookingScreeningActualDate(bookingDetails.getBookingActualDate());
+                break;
             }
         }
 
-        setActualScreeningDate(screeningDate);
         setStartTime(details.getStartTime());
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
@@ -128,6 +135,16 @@ public class PrimeVaccinationScheduleDto {
     @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setActualScreeningDate(LocalDate actualScreeningDate) {
         this.actualScreeningDate = actualScreeningDate;
+    }
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public LocalDate getBookingScreeningActualDate() {
+        return bookingScreeningActualDate;
+    }
+
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    public void setBookingScreeningActualDate(LocalDate bookingScreeningActualDate) {
+        this.bookingScreeningActualDate = bookingScreeningActualDate;
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)

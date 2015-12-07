@@ -229,14 +229,17 @@
         };
         
         $scope.parseDate = function(date, offset) {
-            var parts = date.split('-'), date;
+            if (date !== undefined && date !== null) {
+                var parts = date.split('-'), date;
 
-            if (offset) {
-                date = new Date(parts[0], parts[1] - 1, parseInt(parts[2]) + offset);
-            } else {
-                date = new Date(parts[0], parts[1] - 1, parts[2]);
+                if (offset) {
+                    date = new Date(parts[0], parts[1] - 1, parseInt(parts[2]) + offset);
+                } else {
+                    date = new Date(parts[0], parts[1] - 1, parts[2]);
+                }
+                return date;
             }
-            return date;
+            return undefined;
         };
 
         $scope.isValidEndTime = function(startTimeString, endTimeString) {
@@ -579,6 +582,9 @@
 
         $scope.getLookups("../booking-app/getLookupsForPrimeVaccinationSchedule");
 
+        $scope.form = {};
+        $scope.form.dto = {};
+
         $scope.newForm = function() {
             $scope.form = {};
             $scope.form.dto = {};
@@ -601,6 +607,7 @@
                                 });
                         } else {
                             $("#primeVaccinationSchedule").trigger('reloadGrid');
+                            $scope.form.updated = data;
                             $scope.form.dto = undefined;
                         }
                     })
@@ -626,6 +633,32 @@
             });
         };
 
+        $scope.calculateRange = function(forDate, femaleChildBearingAge) {
+            var range = {};
+
+            if (femaleChildBearingAge == "Yes") {
+                range.min = $scope.parseDate(forDate, 14);
+            } else {
+                range.min = $scope.parseDate(forDate, 1);
+            }
+
+            range.max = $scope.parseDate(forDate, 28);
+
+            return range;
+        };
+
+        $scope.$watch('form.dto.femaleChildBearingAge', function (value) {
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, value);
+            }
+        });
+
+        $scope.$watch('form.dto.bookingScreeningActualDate', function (value) {
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange(value, $scope.form.dto.femaleChildBearingAge);
+            }
+        });
+
         $scope.formIsFilled = function() {
             return $scope.form
                 && $scope.form.dto
@@ -648,7 +681,7 @@
 
             var rowData;
 
-            if(source === "updated") {
+            if (source === "updated") {
                 rowData = $scope.form.updated;
             } else {
                 rowData = $("#primeVaccinationSchedule").getRowData(source);
