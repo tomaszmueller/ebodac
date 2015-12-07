@@ -196,8 +196,15 @@ public class VisitRescheduleDto {
 
     private void calculateEarliestAndLatestDate(VisitScheduleOffset offset, LocalDate primerVaccinationDate) {
         if (primerVaccinationDate != null && offset != null) {
-            earliestDate = primerVaccinationDate.plusDays(offset.getEarliestDateOffset());
-            latestDate = primerVaccinationDate.plusDays(offset.getLatestDateOffset());
+            LocalDate maxDate = primerVaccinationDate.plusDays(offset.getLatestDateOffset());
+            if (!maxDate.isBefore(LocalDate.now())) {
+                LocalDate minDate = primerVaccinationDate.plusDays(offset.getEarliestDateOffset());
+                if (minDate.isBefore(LocalDate.now())) {
+                    minDate = LocalDate.now();
+                }
+                earliestDate = minDate;
+                latestDate = maxDate;
+            }
         }
     }
 }

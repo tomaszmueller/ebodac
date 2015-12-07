@@ -130,6 +130,14 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
     }
 
     private void validateDate(VisitRescheduleDto dto, Visit visit) {
+        if (visit.getDate() != null) {
+            throw new IllegalArgumentException("Cannot reschedule, because Visit already took place");
+        }
+
+        if (dto.getPlannedDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Date cannot be in the past");
+        }
+
         Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
 
         LocalDate primeVacDate = visit.getSubject().getPrimerVaccinationDate();
@@ -152,6 +160,11 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
     private Visit updateVisitPlannedDate(Visit visit, VisitRescheduleDto visitRescheduleDto) {
         visit.setMotechProjectedDate(visitRescheduleDto.getPlannedDate());
+
+        if (ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit)) {
+            ebodacEnrollmentService.reenrollSubject(visit);
+        }
+
         return visitDataService.update(visit);
     }
 

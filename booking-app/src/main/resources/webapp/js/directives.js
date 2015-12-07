@@ -559,7 +559,8 @@
                         var rowData = elem.getRowData(rowId),
                             extraRowData = gridDataExtension[rowId];
 
-                        if (rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "") {
+                        if ((rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "")
+                            && extraRowData.earliestDate !== undefined && extraRowData.earliestDate !== null && extraRowData.earliestDate !== "") {
                             scope.newForm();
                             scope.form.dto.participantId = rowData.participantId;
                             scope.form.dto.participantName = rowData.participantName;
