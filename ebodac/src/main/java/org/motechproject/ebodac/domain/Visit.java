@@ -56,6 +56,14 @@ public class Visit {
     @Field
     private String owner;
 
+    public Visit() {
+    }
+
+    public Visit(VisitType type, Subject subject) {
+        this.type = type;
+        this.subject = subject;
+    }
+
     public Long getId() {
         return id;
     }
