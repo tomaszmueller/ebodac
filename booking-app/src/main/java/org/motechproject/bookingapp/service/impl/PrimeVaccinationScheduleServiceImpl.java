@@ -72,7 +72,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         visit.setStartTime(dto.getStartTime());
         visit.setEndTime(dto.getEndTime());
         visit.setBookingPlannedDate(dto.getDate());
-        visit.setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
+        visit.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
         visit.setClinic(clinicDataService.findById(dto.getClinicId()));
         return visitBookingDetailsDataService.update(visit);
     }

@@ -32,9 +32,6 @@ public class VisitBookingDetails {
     private Time endTime;
 
     @Field
-    private Boolean femaleChildBearingAge;
-
-    @Field
     private Clinic clinic;
 
     @Field(required = true)
@@ -42,6 +39,9 @@ public class VisitBookingDetails {
 
     @Field(required = true)
     private Subject subject;
+
+    @Field(required = true)
+    private SubjectBookingDetails subjectBookingDetails;
 
     @NonEditable(display = false)
     @Field
@@ -60,6 +60,12 @@ public class VisitBookingDetails {
         this.visit = visit;
         this.bookingActualDate = bookingActualDate;
         this.subject = visit.getSubject();
+    }
+
+    public VisitBookingDetails(Visit visit, SubjectBookingDetails subjectBookingDetails) {
+        this.visit = visit;
+        this.subject = visit.getSubject();
+        this.subjectBookingDetails = subjectBookingDetails;
     }
 
     public Long getId() {
@@ -102,14 +108,6 @@ public class VisitBookingDetails {
         this.endTime = endTime;
     }
 
-    public Boolean getFemaleChildBearingAge() {
-        return femaleChildBearingAge;
-    }
-
-    public void setFemaleChildBearingAge(Boolean femaleChildBearingAge) {
-        this.femaleChildBearingAge = femaleChildBearingAge;
-    }
-
     public Clinic getClinic() {
         return clinic;
     }
@@ -135,6 +133,14 @@ public class VisitBookingDetails {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public SubjectBookingDetails getSubjectBookingDetails() {
+        return subjectBookingDetails;
+    }
+
+    public void setSubjectBookingDetails(SubjectBookingDetails subjectBookingDetails) {
+        this.subjectBookingDetails = subjectBookingDetails;
     }
 
     public String getOwner() {
