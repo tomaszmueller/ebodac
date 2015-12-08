@@ -44,14 +44,6 @@
             $scope.reloadSelects();
         };
 
-        $scope.editUnscheduled = function(id) {
-            $scope.newForm("edit");
-            $scope.form.dto = Screenings.get({id: id}, function() {
-                $scope.reloadSelects();
-                $('#unscheduledVisitModal').modal('show');
-            });
-        };
-
         $scope.saveUnscheduledVisit = function() {
             var confirmMsg;
 
