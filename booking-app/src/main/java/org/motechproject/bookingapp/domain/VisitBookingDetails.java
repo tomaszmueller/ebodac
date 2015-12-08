@@ -37,7 +37,7 @@ public class VisitBookingDetails {
     @Field(required = true)
     private Visit visit;
 
-    @Field(required = true)
+    @Field(required = true, displayName = "Participant")
     private Subject subject;
 
     @Field(required = true)

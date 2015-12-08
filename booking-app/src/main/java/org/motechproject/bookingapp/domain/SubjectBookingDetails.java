@@ -18,7 +18,7 @@ public class SubjectBookingDetails {
     @Field
     private Boolean femaleChildBearingAge;
 
-    @Field(required = true)
+    @Field(required = true, displayName = "Participant")
     private Subject subject;
 
     @Field
