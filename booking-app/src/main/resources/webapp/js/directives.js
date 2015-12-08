@@ -362,15 +362,43 @@
                         scope.msg("bookingApp.startTime"),
                         scope.msg("bookingApp.endTime"), ""],
                     colModel: [
-                        { name: "location" },
-                        { name: "participantId", formatter: extendGrid },
-                        { name: "participantName", },
-                        { name: "femaleChildBearingAge" },
-                        { name: "bookingScreeningActualDate" },
-                        { name: "date" },
-                        { name: "startTime" },
-                        { name: "endTime" },
-                        { name: "print", align: "center", sortable: false, width: 40}
+                        {
+                            name: "location",
+                            index: 'clinic.site.siteId'
+                        },
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "participantName",
+                            index: 'subject.name'
+                        },
+                        {
+                            name: "femaleChildBearingAge",
+                            index: 'subjectBookingDetails.femaleChildBearingAge'
+                        },
+                        {
+                            name: "bookingScreeningActualDate",
+                            sortable: false
+                        },
+                        {
+                            name: "date",
+                            index: 'bookingPlannedDate'
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "endTime"
+                        },
+                        {
+                            name: "print",
+                            align: "center",
+                            sortable: false,
+                            width: 40
+                        }
                     ],
                     gridComplete: function(){
                         var ids = elem.getDataIDs();
@@ -384,6 +412,10 @@
                     pager: "#pager",
                     rowNum: 50,
                     rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
                     sortname: null,
                     sortorder: "desc",
                     viewrecords: true,
