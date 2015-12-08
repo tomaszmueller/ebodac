@@ -8,7 +8,7 @@ import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
 
-@Entity(maxFetchDepth = 3)
+@Entity(maxFetchDepth = 4)
 public class VisitBookingDetails {
 
     public static final String VISIT_TYPE_PROPERTY_NAME = "visit.type";

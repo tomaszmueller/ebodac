@@ -3,20 +3,6 @@
 
     var directives = angular.module('bookingApp.directives', []);
 
-    function calculateRange(parser, forDate, femaleChildBearingAge) {
-        var range = {};
-
-        if (femaleChildBearingAge == "Yes") {
-            range.min = parser(forDate, 14);
-        } else {
-            range.min = parser(forDate, 1);
-        }
-
-        range.max = parser(forDate, 28);
-
-        return range;
-    };
-
     directives.directive('set', function() {
         return {
             restrict: 'A',
@@ -44,21 +30,6 @@
             link: function(scope, element, attrs) {
                 scope.$watch("$parent." + attrs.ngModel, function () {
                     $("#screenings").trigger('reloadGrid');
-                });
-            }
-        };
-    });
-
-    directives.directive('rangeRefresher', function() {
-        return {
-            restrict: 'A',
-            scope: {
-                forDate: '@'
-            },
-            require: 'ngModel',
-            link: function(scope, element, attrs) {
-                scope.$watch("$parent." + attrs.ngModel, function (value) {
-                    scope.$parent.form.range = calculateRange(scope.$parent.parseDate, scope.forDate, value);
                 });
             }
         };
@@ -395,7 +366,7 @@
                         { name: "participantId", formatter: extendGrid },
                         { name: "participantName", },
                         { name: "femaleChildBearingAge" },
-                        { name: "actualScreeningDate" },
+                        { name: "bookingScreeningActualDate" },
                         { name: "date" },
                         { name: "startTime" },
                         { name: "endTime" },
@@ -435,6 +406,7 @@
                             scope.form.dto.participantName = rowData.participantName;
                             scope.form.dto.femaleChildBearingAge = rowData.femaleChildBearingAge;
                             scope.form.dto.actualScreeningDate = rowData.actualScreeningDate;
+                            scope.form.dto.bookingScreeningActualDate = rowData.bookingScreeningActualDate;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
                             scope.form.dto.endTime = rowData.endTime;
@@ -442,7 +414,7 @@
                             scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;
                             scope.form.dto.participantGender = extraRowData.participantGender;
-                            scope.form.range = calculateRange(scope.parseDate, scope.form.dto.actualScreeningDate,
+                            scope.form.range = scope.calculateRange(scope.form.dto.bookingScreeningActualDate,
                                 scope.form.dto.femaleChildBearingAge);
                             scope.reloadSelects();
                             $('#primeVaccinationScheduleModal').modal('show');

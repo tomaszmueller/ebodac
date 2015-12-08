@@ -53,9 +53,10 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
 
     @Override
     public PrimeVaccinationScheduleDto createOrUpdateWithDto(PrimeVaccinationScheduleDto dto, Boolean ignoreLimitation) {
-        VisitBookingDetails visitBookingDetails = visitBookingDetailsDataService.findById(dto.getVisitBookingDetailsId());
+        VisitBookingDetails primeDetails = visitBookingDetailsDataService.findById(dto.getVisitBookingDetailsId());
+        VisitBookingDetails screeningDetails = getScreeningDetails(primeDetails);
 
-        if (visitBookingDetails == null) {
+        if (primeDetails == null || screeningDetails == null) {
             throw new IllegalArgumentException("Cannot save, because details for Visit not found");
         }
 
@@ -65,16 +66,21 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
 
         validateDate(dto);
 
-        return new PrimeVaccinationScheduleDto(updateVisitWithDto(visitBookingDetails, dto));
+        return new PrimeVaccinationScheduleDto(updateVisitWithDto(primeDetails, screeningDetails, dto));
     }
 
-    private VisitBookingDetails updateVisitWithDto(VisitBookingDetails visit, PrimeVaccinationScheduleDto dto) {
-        visit.setStartTime(dto.getStartTime());
-        visit.setEndTime(dto.getEndTime());
-        visit.setBookingPlannedDate(dto.getDate());
-        visit.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
-        visit.setClinic(clinicDataService.findById(dto.getClinicId()));
-        return visitBookingDetailsDataService.update(visit);
+    private VisitBookingDetails updateVisitWithDto(VisitBookingDetails primeDetails, VisitBookingDetails screeningDetails,
+                                                   PrimeVaccinationScheduleDto dto) {
+        primeDetails.setStartTime(dto.getStartTime());
+        primeDetails.setEndTime(dto.getEndTime());
+        primeDetails.setBookingPlannedDate(dto.getDate());
+        primeDetails.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
+        primeDetails.setClinic(clinicDataService.findById(dto.getClinicId()));
+
+        screeningDetails.setBookingActualDate(dto.getBookingScreeningActualDate());
+
+        visitBookingDetailsDataService.update(screeningDetails);
+        return visitBookingDetailsDataService.update(primeDetails);
     }
 
     private Map<String, Object> getFields(String json) throws IOException {
@@ -125,8 +131,14 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
     }
 
     private void validateDate(PrimeVaccinationScheduleDto dto) {
-        LocalDate actualScreeningDate = visitDataService
-                .findVisitBySubjectIdAndType(dto.getParticipantId(), VisitType.SCREENING).getDate();
+        if (dto.getBookingScreeningActualDate() == null) {
+            throw new IllegalArgumentException("Screening Date cannot be empty");
+        }
+        if (dto.getDate() == null) {
+            throw new IllegalArgumentException("Prime Vaccination Planned Date cannot be empty");
+        }
+
+        LocalDate actualScreeningDate = dto.getBookingScreeningActualDate();
 
         LocalDate earliestDate = dto.getFemaleChildBearingAge() != null && dto.getFemaleChildBearingAge()
                 ? actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE)
@@ -137,5 +149,16 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
                     earliestDate, latestDate, dto.getDate()));
         }
+    }
+
+    private VisitBookingDetails getScreeningDetails(VisitBookingDetails visitBookingDetails) {
+        if (visitBookingDetails != null) {
+            for (VisitBookingDetails details : visitBookingDetails.getSubjectBookingDetails().getVisitBookingDetailsList()) {
+                if (VisitType.SCREENING.equals(details.getVisit().getType())) {
+                    return details;
+                }
+            }
+        }
+        return null;
     }
 }
