@@ -100,6 +100,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
     private Subject secondSubject;
 
+    private Subject thirdSubject;
+
     private ArrayList<Visit> testVisits = new ArrayList<Visit>();
 
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
@@ -152,9 +154,13 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+
+        thirdSubject = new Subject("1000000163", "Rafal", "Dabacki", "Ebacki",
+                "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+
         secondSubject.setPrimerVaccinationDate(new LocalDate(2115, 10, 10));
 
-        testVisits.add(VisitUtils.createVisit(null, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
+        testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));
 
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
@@ -178,7 +184,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
             visitDataService.create(visit);
         }
 
-        assertEquals(2, subjectDataService.retrieveAll().size());
+        assertEquals(3, subjectDataService.retrieveAll().size());
         assertEquals(4, visitDataService.retrieveAll().size());
     }
 
@@ -196,8 +202,6 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Test
     public void shouldNotReenrollVisit() throws IOException, InterruptedException {
         checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.nullVisit", reenrollVisit(null, HttpServletResponse.SC_BAD_REQUEST));
-
-        checkResponse(HttpServletResponse.SC_BAD_REQUEST, "ebodac.enrollment.error.noSubject", reenrollVisit(testVisits.get(0), HttpServletResponse.SC_BAD_REQUEST));
 
         Visit visit = testVisits.get(1);
         visit.setMotechProjectedDate(null);

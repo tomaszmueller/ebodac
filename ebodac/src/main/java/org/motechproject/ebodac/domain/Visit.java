@@ -33,11 +33,11 @@ public class Visit {
     private Long id;
 
     @NonEditable
-    @Field(displayName = "Participant")
+    @Field(displayName = "Participant", required = true)
     private Subject subject;
 
     @NonEditable
-    @Field(displayName = "Visit Type")
+    @Field(displayName = "Visit Type", required = true)
     @EnumDisplayName(enumField = "value")
     private VisitType type;
 

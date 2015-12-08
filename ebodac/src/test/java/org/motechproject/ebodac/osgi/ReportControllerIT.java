@@ -85,6 +85,8 @@ public class ReportControllerIT extends BasePaxIT {
 
     private Subject secondSubject;
 
+    private Subject thirdSubject;
+
     private DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
     private ArrayList<Visit> testVisits = new ArrayList<Visit>();
@@ -124,6 +126,9 @@ public class ReportControllerIT extends BasePaxIT {
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
 
+        thirdSubject = new Subject("1000000163", "Krzysztof", "Dabacki", "Ebacki",
+                "44443333222", "address2", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+
         firstSubject.setDateOfBirth(LocalDate.parse("1967-09-17", formatter));
         firstSubject.setGender(Gender.Male);
         firstSubject.setPrimerVaccinationDate(LocalDate.parse("2014-10-17", formatter));
@@ -137,7 +142,7 @@ public class ReportControllerIT extends BasePaxIT {
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-17", formatter), "owner"));
 
-        testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+        testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-19", formatter), "owner"));
 
         testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-19", formatter),
@@ -383,7 +388,7 @@ public class ReportControllerIT extends BasePaxIT {
             visitDataService.create(visit);
         }
 
-        assertEquals(2, subjectDataService.retrieveAll().size());
+        assertEquals(3, subjectDataService.retrieveAll().size());
         assertEquals(5, visitDataService.retrieveAll().size());
     }
 
