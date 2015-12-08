@@ -14,24 +14,24 @@ import java.util.Set;
 
 public interface EnrollmentDataService extends MotechDataService<Enrollment> {
 
-    @Lookup(name = "Find Enrollments By Participant Id")
-    List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);
+    @Lookup(name = "Find By Participant Id")
+    List<Enrollment> findBySubjectId(@LookupField(name = "externalId") String externalId);
+
+    @Lookup(name = "Find By Participant Id")
+    List<Enrollment> findBySubjectId(@LookupField(name = "externalId") String externalId, QueryParams queryParams);
+
+    long countFindBySubjectId(@LookupField(name = "externalId") String externalId);
 
     @Lookup
-    List<Enrollment> findEnrollmentsByCampaignName(@LookupField(name = "campaignName") String campaignName);
+    List<Enrollment> findByCampaignName(@LookupField(name = "campaignName") String campaignName);
 
-    @Lookup(name = "Find Enrollments By Participant Id")
-    List<Enrollment> findEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId, QueryParams queryParams);
+    @Lookup(name = "Find By Status Reference Date Campaign Name And Participant Ids")
+    List<Enrollment> findByStatusReferenceDateCampaignNameAndSubjectIds(@LookupField(name = "status") EnrollmentStatus status,
+                                                                        @LookupField(name = "referenceDate") LocalDate referenceDate,
+                                                                        @LookupField(name = "campaignName", customOperator = Constants.Operators.MATCHES) String campaignName,
+                                                                        @LookupField(name = "externalId") Set<String> externalIds);
 
-    long countFindEnrollmentsBySubjectId(@LookupField(name = "externalId") String externalId);
-
-    @Lookup(name = "Find Enrollments By Status Reference Date Campaign Name And Participant Ids")
-    List<Enrollment> findEnrollmentsByStatusReferenceDateCampaignNameAndSubjectIds(@LookupField(name = "status") EnrollmentStatus status,
-                                                                                   @LookupField(name = "referenceDate") LocalDate referenceDate,
-                                                                                   @LookupField(name = "campaignName", customOperator = Constants.Operators.MATCHES) String campaignName,
-                                                                                   @LookupField(name = "externalId") Set<String> externalIds);
-
-    @Lookup(name = "Find Enrollment By Participant Id And Campaign Name")
-    Enrollment findEnrollmentBySubjectIdAndCampaignName(@LookupField(name = "externalId") String externalId,
-                                                        @LookupField(name = "campaignName") String campaignName);
+    @Lookup(name = "Find By Participant Id And Campaign Name")
+    Enrollment findBySubjectIdAndCampaignName(@LookupField(name = "externalId") String externalId,
+                                              @LookupField(name = "campaignName") String campaignName);
 }

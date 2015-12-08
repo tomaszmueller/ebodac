@@ -211,7 +211,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
 
         ebodacEnrollmentService.enrollSubject(secondSubject);
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(secondSubject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(secondSubject.getSubjectId());
         visit = testVisits.get(3);
 
         visit.setMotechProjectedDate(LocalDate.parse("2010-10-19", formatter));
@@ -261,8 +261,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments1.getStatus());
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments2.getStatus());
@@ -273,8 +273,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments1.getStatus());
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments2.getStatus());
@@ -316,8 +316,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -339,8 +339,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject2.setPhoneNumber("987654321");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -381,8 +381,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -404,8 +404,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject1.setPhoneNumber("987654321");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -453,9 +453,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -484,9 +484,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject2.setPhoneNumber("987654321");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject2, HttpServletResponse.SC_OK));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -540,9 +540,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -571,9 +571,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject1.setPhoneNumber("987654321");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject1, HttpServletResponse.SC_OK));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -603,26 +603,26 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        Subject subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
-        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         subject.setPhoneNumber("123456789");
         subjectDataService.update(subject);
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setLanguage(Language.English);
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -639,27 +639,27 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        Subject subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setLanguage(Language.English);
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
-        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         subject.setLanguage(Language.English);
         subjectDataService.update(subject);
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
         subjectDataService.update(subject);
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -683,17 +683,17 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        Subject subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
 
         ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -713,13 +713,13 @@ public class EnrollmentControllerIT extends BasePaxIT {
         checkResponse(HttpServletResponse.SC_OK, "", reenrollVisit(visit, HttpServletResponse.SC_OK));
         assertEquals(new LocalDate(2115, 10, 11), visit.getMotechProjectedDate());
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getValue());
         assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         assertEquals(new LocalDate(2115, 10, 11), enrollment.getReferenceDate());
         assertEquals("Boost Vaccination Day Friday", enrollment.getCampaignName());
 
-        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         visit = subject.getVisits().get(1);
         assertEquals(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT, visit.getType());
 
@@ -727,7 +727,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         checkResponse(HttpServletResponse.SC_OK, "", reenrollVisit(visit, HttpServletResponse.SC_OK));
         assertEquals(new LocalDate(2115, 10, 15), visit.getMotechProjectedDate());
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
         assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         assertEquals(new LocalDate(2115, 10, 15), enrollment.getReferenceDate());
@@ -740,22 +740,22 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        Subject subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
-        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
         subjectDataService.update(subject);
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -766,7 +766,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         ebodacEnrollmentService.enrollSubject(subject.getSubjectId());
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -783,22 +783,22 @@ public class EnrollmentControllerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1");
+        Subject subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
         checkResponse(HttpServletResponse.SC_OK, "", updateSubject(subject, HttpServletResponse.SC_OK));
 
-        subject = subjectDataService.findSubjectBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         subject.setPhoneNumber("123456789");
         subject.setLanguage(Language.English);
         subjectDataService.update(subject);
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
@@ -809,7 +809,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         ebodacEnrollmentService.enrollSubjectToCampaign(subject.getSubjectId(), VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
 
-        subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());

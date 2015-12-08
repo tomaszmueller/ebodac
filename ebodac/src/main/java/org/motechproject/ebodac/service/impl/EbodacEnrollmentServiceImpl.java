@@ -73,7 +73,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void enrollSubject(String subjectId) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         checkSubjectEnrollmentsStatus(subjectEnrollments, subjectId);
 
         Subject subject = subjectEnrollments.getSubject();
@@ -128,7 +128,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void unenrollSubject(String subjectId) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         if (subjectEnrollments == null || !EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus())) {
             throw new EbodacEnrollmentException("Cannot unenroll Participant, because Participant with id: %s is not enrolled in any campaign",
                     "ebodac.unenroll.error.noEnrolledSubject", subjectId);
@@ -193,7 +193,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void completeCampaign(String subjectId, String campaignName) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         if (subjectEnrollments != null) {
             Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
             if (enrollment != null) {
@@ -210,7 +210,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             return false;
         }
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(visit.getSubject().getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
         String campaignName = visit.getType().getValue();
 
         if (null == subjectEnrollments) {
@@ -259,13 +259,13 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public boolean isEnrolled(String subjectId) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         return subjectEnrollments != null && EnrollmentStatus.ENROLLED.equals(subjectEnrollments.getStatus());
     }
 
     @Override
     public void changeDuplicatedEnrollmentsForNewPhoneNumber(Subject subject) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
 
         try {
             for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
@@ -294,7 +294,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     @Override
     public void createEnrollmentRecordsForSubject(Subject subject) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
 
         if (subjectEnrollments == null) {
             subjectEnrollments = new SubjectEnrollments(subject);
@@ -380,7 +380,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                     "ebodac.enroll.error.emptyReferenceDate", subject.getSubjectId(), newCampaignName);
         }
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
 
         if (subjectEnrollments == null) {
             subjectEnrollments = new SubjectEnrollments(subject);
@@ -415,7 +415,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     private void enrollUnenrolled(String subjectId, String campaignName, LocalDate referenceDate) {
         String newCampaignName = campaignName;
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         if (subjectEnrollments == null) {
             throw new EbodacEnrollmentException("Cannot enroll Participant, because not found unenrolled Participant with id: %s in campaign with name: %s",
                     "ebodac.enroll.error.noUnenrolledSubjectInCampaign", subjectId, newCampaignName);
@@ -493,7 +493,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private boolean unscheduleJobsAndSetStatusForEnrollment(String subjectId, String campaignName, EnrollmentStatus status) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subjectId);
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
         if (subjectEnrollments == null) {
             return false;
         }
@@ -657,7 +657,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         LocalDate referenceDate = enrollment.getReferenceDate();
         String campaignName = enrollment.getCampaignName();
 
-        List<Subject> subjects = subjectDataService.findSubjectsByPhoneNumber(phoneNumber);
+        List<Subject> subjects = subjectDataService.findByPhoneNumber(phoneNumber);
 
         Set<String> subjectIds = new HashSet<>();
 
@@ -677,7 +677,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             campaignName = EbodacConstants.FOLLOW_UP_CAMPAIGN;
         }
 
-        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsByStatusReferenceDateCampaignNameAndSubjectIds(
+        List<Enrollment> enrollments = enrollmentDataService.findByStatusReferenceDateCampaignNameAndSubjectIds(
                 EnrollmentStatus.ENROLLED, referenceDate, campaignName, subjectIds);
 
         return findAndSetNewParent(enrollments, enrollment, subject.getSubjectId(), campaignName);
@@ -724,7 +724,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private void rollbackEnrollmentStatusOrEnrollNew(Subject subject, boolean boosterDiscon) {
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject.getSubjectId());
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
 
         if (subjectEnrollments == null) {
             enrollSubject(subject);

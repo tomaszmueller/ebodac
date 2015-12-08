@@ -12,8 +12,8 @@ import java.util.List;
 public interface ReportBoosterVaccinationDataService extends MotechDataService<ReportBoosterVaccination> {
 
     @Lookup
-    List<ReportBoosterVaccination> findReportsByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
+    List<ReportBoosterVaccination> findByDateRange(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup
-    ReportBoosterVaccination findReportByDate(@LookupField(name = "date") LocalDate date);
+    ReportBoosterVaccination findByDate(@LookupField(name = "date") LocalDate date);
 }

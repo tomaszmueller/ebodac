@@ -15,5 +15,5 @@ import org.motechproject.mds.service.MotechDataService;
 public interface VotoLanguageDataService extends MotechDataService<VotoLanguage> {
 
     @Lookup
-    VotoLanguage findVotoLanguageByLanguage(@LookupField(name = "language") Language language);
+    VotoLanguage findByLanguage(@LookupField(name = "language") Language language);
 }

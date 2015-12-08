@@ -14,40 +14,40 @@ import java.util.List;
 
 public interface SubjectEnrollmentsDataService extends MotechDataService<SubjectEnrollments> {
 
-    @Lookup(name = "Find unique Enrollment By Participant Id")
-    SubjectEnrollments findEnrollmentBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
+    @Lookup(name = "Find unique By Participant Id")
+    SubjectEnrollments findBySubjectId(@LookupField(name = "subject.subjectId") String subjectId);
 
-    @Lookup(name = "Find Enrollments By Participant Id")
-    List<SubjectEnrollments> findEnrollmentsByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subject.subjectId",
+    @Lookup(name = "Find By Participant Id")
+    List<SubjectEnrollments> findByMatchesCaseInsensitiveSubjectId(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
-    @Lookup(name = "Find Enrollments By Participant Name")
-    List<SubjectEnrollments> findEnrollmentsBySubjectName(@LookupField(name = "subject.name",
+    @Lookup(name = "Find By Participant Name")
+    List<SubjectEnrollments> findBySubjectName(@LookupField(name = "subject.name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
-    @Lookup(name = "Find Enrollments By Participant Gender")
-    List<SubjectEnrollments> findEnrollmentsBySubjectGender(@LookupField(name = "subject.gender") Gender gender);
+    @Lookup(name = "Find By Participant Gender")
+    List<SubjectEnrollments> findBySubjectGender(@LookupField(name = "subject.gender") Gender gender);
 
     @Lookup
-    List<SubjectEnrollments> findEnrollmentsByDateOfUnenrollment(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment);
+    List<SubjectEnrollments> findByDateOfUnenrollment(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment);
 
     @Lookup
-    List<SubjectEnrollments> findEnrollmentsByStatus(@LookupField(name = "status") EnrollmentStatus status);
+    List<SubjectEnrollments> findByStatus(@LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name = "Find Enrollments By Participant Id And Status")
-    List<SubjectEnrollments> findEnrollmentsBySubjectIdAndStatus(@LookupField(name = "subject.subjectId",
+    @Lookup(name = "Find By Participant Id And Status")
+    List<SubjectEnrollments> findBySubjectIdAndStatus(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
-                                                                 @LookupField(name = "status") EnrollmentStatus status);
+                                                      @LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name = "Find Enrollments By Participant Gender And Status")
-    List<SubjectEnrollments> findEnrollmentsBySubjectGenderAndStatus(@LookupField(name = "subject.gender") Gender gender,
-                                                                     @LookupField(name = "status") EnrollmentStatus status);
+    @Lookup(name = "Find By Participant Gender And Status")
+    List<SubjectEnrollments> findBySubjectGenderAndStatus(@LookupField(name = "subject.gender") Gender gender,
+                                                          @LookupField(name = "status") EnrollmentStatus status);
 
     @Lookup
-    List<SubjectEnrollments> findEnrollmentsByDateOfUnenrollmentAndStatus(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment,
-                                                                          @LookupField(name = "status") EnrollmentStatus status);
+    List<SubjectEnrollments> findByDateOfUnenrollmentAndStatus(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment,
+                                                               @LookupField(name = "status") EnrollmentStatus status);
 
-    @Lookup(name = "Find Enrollments By Participant Date Of Birth Range And Status")
-    List<SubjectEnrollments> findEnrollmentsBySubjectDateOfBirthRangeAndStatus(@LookupField(name = "subject.dateOfBirth") Range<LocalDate> dateOfBirth,
-                                                                               @LookupField(name = "status") EnrollmentStatus status);
+    @Lookup(name = "Find By Participant Date Of Birth Range And Status")
+    List<SubjectEnrollments> findBySubjectDateOfBirthRangeAndStatus(@LookupField(name = "subject.dateOfBirth") Range<LocalDate> dateOfBirth,
+                                                                    @LookupField(name = "status") EnrollmentStatus status);
 }

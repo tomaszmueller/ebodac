@@ -34,7 +34,7 @@
       "providerId" : 1,
       "objectId" : 0,
       "type" : "org.motechproject.ebodac.domain.Subject",
-      "name" : "Find unique Participant By ParticipantId",
+      "name" : "Find unique By ParticipantId",
       "lookup" : [ {
         "field" : "subjectId",
         "value" : "{{trigger.ExternalID}}"
@@ -66,7 +66,7 @@
       "providerId" : 1,
       "objectId" : 1,
       "type" : "org.motechproject.ebodac.domain.VotoMessage",
-      "name" : "Find Voto Message By Message Key",
+      "name" : "Find By Message Key",
       "lookup" : [ {
         "field" : "messageKey",
         "value" : "{{trigger.MessageKey}}"
@@ -79,7 +79,7 @@
       "providerId" : 1,
       "objectId" : 2,
       "type" : "org.motechproject.ebodac.domain.VotoLanguage",
-      "name" : "Find Voto Language By Language",
+      "name" : "Find By Language",
       "lookup" : [ {
         "field" : "language",
         "value" : "{{ad.1.org.motechproject.ebodac.domain.Subject#0.language}}"

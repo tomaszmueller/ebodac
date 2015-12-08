@@ -67,7 +67,7 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
 
         UnscheduledVisit unscheduledVisit = new UnscheduledVisit();
 
-        unscheduledVisit.setSubject(subjectDataService.findSubjectBySubjectId(dto.getParticipantId()));
+        unscheduledVisit.setSubject(subjectDataService.findBySubjectId(dto.getParticipantId()));
         unscheduledVisit.setClinic(clinicDataService.findById(dto.getClinicId()));
         unscheduledVisit.setDate(dto.getDate());
         unscheduledVisit.setStartTime(dto.getStartTime());
@@ -81,7 +81,7 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
 
         UnscheduledVisit unscheduledVisit = unscheduledVisitDataService.findById(Long.valueOf(dto.getId()));
 
-        unscheduledVisit.setSubject(subjectDataService.findSubjectBySubjectId(dto.getParticipantId()));
+        unscheduledVisit.setSubject(subjectDataService.findBySubjectId(dto.getParticipantId()));
         unscheduledVisit.setClinic(clinicDataService.findById(dto.getClinicId()));
         unscheduledVisit.setDate(dto.getDate());
         unscheduledVisit.setStartTime(dto.getStartTime());
