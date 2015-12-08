@@ -102,7 +102,7 @@
                 var rowData = jQuery("#unscheduledVisit").jqGrid ('getRowData', source);
             }
 
-            var winPrint = window.open("../booking-app/resources/partials/unscheduledVisitCard.html");
+            var winPrint = window.open("../booking-app/resources/partials/card/unscheduledVisitCard.html");
             winPrint.onload = function() {
                 $('#versionDate', winPrint.document).html($scope.getCurrentDate());
                 $('#location', winPrint.document).html(rowData.siteName + ' - ' + rowData.clinicName);
@@ -286,6 +286,10 @@
         $scope.lookupFields = [];
 
         $scope.getLookups = function(url) {
+            $scope.lookupBy = {};
+            $scope.selectedLookup = undefined;
+            $scope.lookupFields = [];
+
             $http.get(url)
             .success(function(data) {
                 $scope.lookups = data;
@@ -557,7 +561,7 @@
 
             if(id >= 0) {
                 var rowData = jQuery("#screenings").jqGrid ('getRowData', id);
-                var bookingId = rowData['id'];
+                var bookingId = rowData['volunteer.id'];
                 var volunteerName = rowData['volunteer.name'];
                 var date = rowData['date'];
             } else {
@@ -566,7 +570,7 @@
                 var date = $scope.screeningForPrint.date;
             }
 
-            var winPrint = window.open("../booking-app/resources/partials/volunteerCardScreening.html");
+            var winPrint = window.open("../booking-app/resources/partials/card/screeningCard.html");
             winPrint.onload = function() {
                 $('#bookingId', winPrint.document).html(bookingId);
                 $('#volunteerName', winPrint.document).html(volunteerName);
@@ -687,7 +691,7 @@
                 rowData = $("#primeVaccinationSchedule").getRowData(source);
             }
 
-            var winPrint = window.open("../booking-app/resources/partials/primeVaccinationCard.html");
+            var winPrint = window.open("../booking-app/resources/partials/card/primeVaccinationCard.html");
             winPrint.onload = function() {
                 $('#versionDate', winPrint.document).html($scope.getCurrentDate());
                 $('#location', winPrint.document).html(rowData.location);
@@ -756,7 +760,7 @@
 
         $scope.print = function() {
             if ($scope.checkSubjectAndPrimeVacDate()) {
-                var winPrint = window.open("../booking-app/resources/partials/visitScheduleCard.html");
+                var winPrint = window.open("../booking-app/resources/partials/card/visitScheduleCard.html");
 
                 winPrint.onload = function() {
                     $('#versionDate', winPrint.document).html($filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));

@@ -29,7 +29,7 @@
             require: 'ngModel',
             link: function(scope, element, attrs) {
                 scope.$watch("$parent." + attrs.ngModel, function () {
-                    $("#screenings").trigger('reloadGrid');
+                    $(".booking-app-grid").trigger('reloadGrid');
                 });
             }
         };
@@ -239,14 +239,37 @@
                         scope.msg("bookingApp.uncheduledVisit.purpose"),
                         ""],
                     colModel: [
-                        { name: "participantId", formatter: extendGrid },
-                        { name: "siteName"},
-                        { name: "clinicName" },
-                        { name: "date" },
-                        { name: "startTime" },
-                        { name: "endTime" },
-                        { name: "purpose" },
-                        { name: "print", align: "center", sortable: false, width: 40}
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "siteName",
+                            index: 'clinic.site.siteId'
+                        },
+                        {
+                            name: "clinicName",
+                            index: 'clinic.location'
+                        },
+                        {
+                            name: "date"
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "endTime"
+                        },
+                        {
+                            name: "purpose"
+                        },
+                        {
+                            name: "print",
+                            align: "center",
+                            sortable: false,
+                            width: 40
+                        }
                     ],
                     gridComplete: function() {
                         var ids = elem.getDataIDs();
@@ -273,7 +296,7 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        if (iCol !== 8) {
+                        if (iCol !== 7) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
 
