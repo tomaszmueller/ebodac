@@ -15,7 +15,7 @@ public class UnscheduledVisit {
     @Field
     private Long id;
 
-    @Field(required = true)
+    @Field(required = true, displayName = "Participant")
     private Subject subject;
 
     @Field(required = true)
