@@ -26,42 +26,46 @@ public class Clinic {
     private Integer numberOfRooms;
 
     @UIDisplayable(position = 3)
-    @Field(required = true, defaultValue = "5")
-    private Integer maxScreeningVisits;
+    @Field(required = true, defaultValue = "10")
+    private Integer maxCapacityByDay;
 
     @UIDisplayable(position = 4)
     @Field(required = true, defaultValue = "5")
-    private Integer maxPrimeVisits;
+    private Integer maxScreeningVisits;
 
     @UIDisplayable(position = 5)
+    @Field(required = true, defaultValue = "5")
+    private Integer maxPrimeVisits;
+
+    @UIDisplayable(position = 6)
     @Field(required = true, defaultValue = "10")
     private Integer maxPrimeFollowUpVisits;
 
-    @UIDisplayable(position = 6)
+    @UIDisplayable(position = 7)
     @Field(required = true, defaultValue = "5")
     private Integer maxBoosterVisits;
 
-    @UIDisplayable(position = 7)
+    @UIDisplayable(position = 8)
     @Field(required = true, defaultValue = "10")
     private Integer maxBoosterFirstFollowUpVisits;
 
-    @UIDisplayable(position = 8)
+    @UIDisplayable(position = 9)
     @Field(required = true, defaultValue = "10")
     private Integer maxBoosterSecondFollowUpVisits;
 
-    @UIDisplayable(position = 9)
+    @UIDisplayable(position = 10)
     @Field(required = true, defaultValue = "10")
     private Integer maxBoosterThirdFollowUpVisits;
 
-    @UIDisplayable(position = 10)
+    @UIDisplayable(position = 11)
     @Field(required = true, defaultValue = "10")
     private Integer maxFirstLongTermFollowUpVisits;
 
-    @UIDisplayable(position = 11)
+    @UIDisplayable(position = 12)
     @Field(required = true, defaultValue = "10")
     private Integer maxSecondLongTermFollowUpVisits;
 
-    @UIDisplayable(position = 12)
+    @UIDisplayable(position = 13)
     @Field(required = true, defaultValue = "10")
     private Integer maxThirdLongTermFollowUpVisits;
 
@@ -179,6 +183,14 @@ public class Clinic {
 
     public void setMaxThirdLongTermFollowUpVisits(Integer maxThirdLongTermFollowUpVisits) {
         this.maxThirdLongTermFollowUpVisits = maxThirdLongTermFollowUpVisits;
+    }
+
+    public Integer getMaxCapacityByDay() {
+        return maxCapacityByDay;
+    }
+
+    public void setMaxCapacityByDay(Integer maxCapacityByDay) {
+        this.maxCapacityByDay = maxCapacityByDay;
     }
 
     public String getOwner() {
