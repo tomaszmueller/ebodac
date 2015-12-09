@@ -10,9 +10,6 @@ public class Volunteer {
     @Field
     private Long id;
 
-    @Field(required = true)
-    private String name;
-
     @NonEditable(display = false)
     @Field
     private String owner;
@@ -26,18 +23,6 @@ public class Volunteer {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Volunteer(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getOwner() {

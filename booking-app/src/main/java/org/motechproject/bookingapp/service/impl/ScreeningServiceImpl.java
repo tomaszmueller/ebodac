@@ -65,7 +65,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         ScreeningValidator.validateForAdd(screeningDto);
 
         Screening screening = new Screening();
-        screening.setVolunteer(volunteerDataService.create(new Volunteer(screeningDto.getVolunteerName())));
+        screening.setVolunteer(volunteerDataService.create(new Volunteer()));
         checkNumberOfPatientsAndSetScreeningData(screeningDto, screening, ignoreLimitation);
 
         return screeningDataService.create(screening);
@@ -81,7 +81,6 @@ public class ScreeningServiceImpl implements ScreeningService {
 
         Validate.notNull(screening, String.format("Screening with id \"%s\" doesn't exist!", screeningId));
 
-        screening.getVolunteer().setName(screeningDto.getVolunteerName());
         checkNumberOfPatientsAndSetScreeningData(screeningDto, screening, ignoreLimitation);
 
         return screeningDataService.update(screening);

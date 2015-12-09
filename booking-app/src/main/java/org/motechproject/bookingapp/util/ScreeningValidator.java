@@ -22,7 +22,6 @@ public final class ScreeningValidator {
         Validate.notEmpty(screeningDto.getDate(), "Screening date cannot be null or empty!");
         Validate.notEmpty(screeningDto.getStartTime(), "Screening start time cannot be null or empty!");
         Validate.notEmpty(screeningDto.getEndTime(), "Screening end time cannot be null or empty!");
-        Validate.notEmpty(screeningDto.getVolunteerName(), "Volunteer name cannot be null or empty!");
         validateEndTime(screeningDto.getStartTime(), screeningDto.getEndTime());
     }
 

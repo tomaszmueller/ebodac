@@ -46,7 +46,6 @@ public class Screening {
         dto.setClinicId(getClinic().getId().toString());
         dto.setSiteId(getSite().getId().toString());
         dto.setVolunteerId(volunteer.getId().toString());
-        dto.setVolunteerName(volunteer.getName());
         dto.setDate(date.toString());
         dto.setStartTime(startTime.toString());
         dto.setEndTime(endTime.toString());
