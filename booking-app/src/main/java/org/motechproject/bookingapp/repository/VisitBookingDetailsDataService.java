@@ -105,6 +105,24 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
                                                                                                                          @LookupField(name = "bookingPlannedDate",
                                                                                                                                  customOperator = Constants.Operators.NEQ) LocalDate bookingPlannedDate);
 
+    @Lookup
+    List<VisitBookingDetails> findByParticipantNamePrimeVaccinationDateAndVisitTypeAndBookingPlannedDateRange(@LookupField(name = "subject.name",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
+                                                                                                              @LookupField(name = "subject.primerVaccinationDate",
+                                                                                                                      customOperator = Constants.Operators.EQ) LocalDate primerVaccinationDate,
+                                                                                                              @LookupField(name = "visit.type") VisitType visitType,
+                                                                                                              @LookupField(name = "bookingPlannedDate") Range<LocalDate> bookingPlannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByParticipantIdVisitTypeAndParticipantPrimeVaccinationDateAndNameAndBookingPlannedDateRange(@LookupField(name = "subject.subjectId",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
+                                                                                                                              @LookupField(name = "visit.type") VisitType visitType,
+                                                                                                                              @LookupField(name = "subject.primerVaccinationDate",
+                                                                                                                                      customOperator = Constants.Operators.EQ) LocalDate primerVaccinationDate,
+                                                                                                                              @LookupField(name = "subject.name",
+                                                                                                                                      customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
+                                                                                                                              @LookupField(name = "bookingPlannedDate") Range<LocalDate> bookingPlannedDate);
+
     /**
      *  Reschedule Screen Lookups
      */
