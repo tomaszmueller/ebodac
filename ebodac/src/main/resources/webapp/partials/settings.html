@@ -17,14 +17,14 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="district">{{msg('ebodac.web.settings.district')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
+                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
                     <input class="form-control" id="district" type="text" ng-model="config.district" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="chiefdom">{{msg('ebodac.web.settings.chiefdom')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
+                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
                     <input class="form-control" id="chiefdom" type="text" ng-model="config.chiefdom" required>
                 </div>
             </div>
@@ -184,7 +184,7 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label">{{msg('ebodac.web.settings.enroll.disconVacCampaigns.label')}}</label>
-                <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.disconVacCampaigns.tooltip')}}">
+                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.disconVacCampaigns.tooltip')}}">
                     <select id="disconVacCampaigns" class="form-control" ui-select2 multiple select2-ng-change="campaignsChanged">
                         <option ng-repeat="campaign in availableCampaigns" value="{{campaign}}">{{campaign}}</option>
                     </select>
@@ -203,21 +203,21 @@
             <div class="form-group" ng-show="config.sendIvrCalls">
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ivrSettingsName">{{msg('ebodac.web.settings.calls.ivrSettingsName')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-3">
                         <input class="form-control" id="ivrSettingsName" type="text" ng-model="config.ivrSettingsName" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="apiKey">{{msg('ebodac.web.settings.calls.apiKey')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <input class="form-control" id="apiKey" type="text" ng-model="config.apiKey" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="statusCallbackUrl">{{msg('ebodac.web.settings.calls.statusCallbackUrl')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <input class="form-control" id="statusCallbackUrl" type="text" ng-model="config.statusCallbackUrl" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
@@ -238,14 +238,14 @@
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="retryAttempts">{{msg('ebodac.web.settings.calls.retryAttempts')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-2">
                         <input class="form-control" id="retryAttempts" type="number" ng-model="config.retryAttempts" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="retryDelay">{{msg('ebodac.web.settings.calls.retryDelay')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-2">
                         <input class="form-control" id="retryDelay" type="number" ng-model="config.retryDelay" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
