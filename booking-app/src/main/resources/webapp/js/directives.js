@@ -3,6 +3,13 @@
 
     var directives = angular.module('bookingApp.directives', []);
 
+    function handleUndefined(value) {
+        if (value == undefined) {
+            value = "";
+        }
+        return value;
+    };
+
     directives.directive('set', function() {
         return {
             restrict: 'A',
@@ -97,13 +104,6 @@
             return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="printRow(' +
                                id + ')"><i class="fa fa-fw fa-print"></i></button>';
         };
-
-        function handleUndefined(value) {
-            if (value == undefined) {
-                value = "";
-            }
-            return value;
-        }
 
         return {
             restrict: 'A',
@@ -213,13 +213,6 @@
                                id + ')"><i class="fa fa-fw fa-print"></i></button>';
         };
 
-        function handleUndefined(value) {
-            if (value == undefined) {
-                value = "";
-            }
-            return value;
-        }
-
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -326,7 +319,7 @@
                     },
                     beforeSelectRow: function() {
                         return false;
-                    },
+                    }
                 });
 
                 scope.$watch("lookupRefresh", function () {
@@ -473,6 +466,17 @@
                                 scope.form.dto.femaleChildBearingAge);
                             scope.reloadSelects();
                             $('#primeVaccinationScheduleModal').modal('show');
+                        }
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
                         }
                     }
                 });

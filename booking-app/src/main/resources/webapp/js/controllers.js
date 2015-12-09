@@ -7,30 +7,11 @@
 
         $scope.getLookups("../booking-app/unscheduledVisits/getLookupsForUnscheduled");
 
-        $scope.filters = [{
-            name: $scope.msg('bookingApp.screening.today'),
-            dateFilter: "TODAY"
-        },{
-            name: $scope.msg('bookingApp.screening.tomorrow'),
-            dateFilter: "TOMORROW"
-        },{
-            name: $scope.msg('bookingApp.screening.thisWeek'),
-            dateFilter: "THIS_WEEK"
-        },{
-            name: $scope.msg('bookingApp.screening.dateRange'),
-            dateFilter: "DATE_RANGE"
-        }];
-
         $scope.participants = ScreenedParticipants.query();
 
-        $scope.selectedFilter = $scope.filters[0];
-
-        $scope.selectFilter = function(value) {
-            $scope.selectedFilter = $scope.filters[value];
-            if (value !== 3) {
-                $("#unscheduledVisit").trigger('reloadGrid');
-            }
-        };
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
 
         $scope.newForm = function(type) {
             $scope.form = {};
@@ -137,6 +118,29 @@
     });
 
     controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites, MDSUtils) {
+
+        $scope.filters = [{
+            name: $scope.msg('bookingApp.screening.today'),
+            dateFilter: "TODAY"
+        },{
+            name: $scope.msg('bookingApp.screening.tomorrow'),
+            dateFilter: "TOMORROW"
+        },{
+            name: $scope.msg('bookingApp.screening.thisWeek'),
+            dateFilter: "THIS_WEEK"
+        },{
+            name: $scope.msg('bookingApp.screening.dateRange'),
+            dateFilter: "DATE_RANGE"
+        }];
+
+        $scope.selectedFilter = $scope.filters[0];
+
+        $scope.selectFilter = function(value) {
+            $scope.selectedFilter = $scope.filters[value];
+            if (value !== 3) {
+                $scope.refreshGrid();
+            }
+        };
 
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['pdf','xls'];
@@ -427,28 +431,9 @@
 
         $scope.getLookups("../booking-app/screenings/getLookupsForScreening");
 
-        $scope.filters = [{
-            name: $scope.msg('bookingApp.screening.today'),
-            dateFilter: "TODAY"
-        },{
-            name: $scope.msg('bookingApp.screening.tomorrow'),
-            dateFilter: "TOMORROW"
-        },{
-            name: $scope.msg('bookingApp.screening.thisWeek'),
-            dateFilter: "THIS_WEEK"
-        },{
-            name: $scope.msg('bookingApp.screening.dateRange'),
-            dateFilter: "DATE_RANGE"
-        }];
-
-        $scope.selectedFilter = $scope.filters[0];
-
-        $scope.selectFilter = function(value) {
-            $scope.selectedFilter = $scope.filters[value];
-            if (value !== 3) {
-                $("#screenings").trigger('reloadGrid');
-            }
-        };
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
 
         $scope.newForm = function(type) {
             $scope.form = {};
@@ -578,6 +563,10 @@
 
         $scope.getLookups("../booking-app/getLookupsForPrimeVaccinationSchedule");
 
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
+
         $scope.form = {};
         $scope.form.dto = undefined;
 
@@ -696,6 +685,18 @@
             var sortColumn, sortDirection, url = "../booking-app/exportInstances/primeVaccinationSchedule";
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            if ($scope.checkboxModel.exportWithFilter === true) {
+                url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                if ($scope.selectedFilter.startDate) {
+                    url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                }
+
+                if ($scope.selectedFilter.endDate) {
+                    url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                }
+            }
 
             if ($scope.checkboxModel.exportWithOrder === true) {
                 sortColumn = $('#primeVaccinationSchedule').getGridParam('sortname');

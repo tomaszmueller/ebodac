@@ -43,15 +43,7 @@ public final class DtoLookupHelper {
                 settings.setLookup(settings.getLookup() + " And Date");
             }
 
-            Map<String, String> rangeMap = new HashMap<>();
-            if (DateFilter.DATE_RANGE.equals(dateFilter)) {
-                rangeMap.put("min", settings.getStartDate());
-                rangeMap.put("max", settings.getEndDate());
-            } else {
-                Range<LocalDate> dateRange = dateFilter.getRange();
-                rangeMap.put("min", dateRange.getMin().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
-                rangeMap.put("max", dateRange.getMax().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
-            }
+            Map<String, String> rangeMap = getDateRangeFromFilter(settings);
 
             fieldsMap.put(Screening.DATE_PROPERTY_NAME, rangeMap);
             settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
@@ -60,7 +52,7 @@ public final class DtoLookupHelper {
     }
 
     public static BookingGridSettings changeLookupForPrimeVaccinationSchedule(BookingGridSettings settings) throws IOException {
-        Map<String, String> fieldsMap = new HashMap<>();
+        Map<String, Object> fieldsMap = new HashMap<>();
 
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
@@ -70,7 +62,7 @@ public final class DtoLookupHelper {
             settings.setLookup("Find By Participant Name Prime Vaccination Date And Visit Type And Booking Planned Date");
             fieldsMap.put(VisitBookingDetails.SUBJECT_NAME_PROPERTY_NAME, NOT_BLANK_REGEX);
         } else {
-            fieldsMap = getFieldsMap(settings.getFields());
+            fieldsMap = getFields(settings.getFields());
             if ("Find By Participant Name".equals(settings.getLookup())) {
                 settings.setLookup(settings.getLookup() + " Prime Vaccination Date And Visit Type And Booking Planned Date");
             } else {
@@ -79,9 +71,17 @@ public final class DtoLookupHelper {
             }
         }
 
+        Map<String, String> rangeMap = getDateRangeFromFilter(settings);
+
+        if (rangeMap != null && (StringUtils.isNotBlank(rangeMap.get("min")) || StringUtils.isNotBlank(rangeMap.get("max")))) {
+            settings.setLookup(settings.getLookup() + " Range");
+            fieldsMap.put(VisitBookingDetails.BOOKING_PLANNED_DATE_PROPERTY_NAME, rangeMap);
+        } else {
+            fieldsMap.put(VisitBookingDetails.BOOKING_PLANNED_DATE_PROPERTY_NAME, null);
+        }
+
         fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, VisitType.PRIME_VACCINATION_DAY.toString());
         fieldsMap.put(VisitBookingDetails.SUBJECT_PRIME_VACCINATION_DATE_PROPERTY_NAME, null);
-        fieldsMap.put(VisitBookingDetails.BOOKING_PLANNED_DATE_PROPERTY_NAME, null);
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
     }
@@ -138,6 +138,27 @@ public final class DtoLookupHelper {
 
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
+    }
+
+    private static Map<String, String> getDateRangeFromFilter(BookingGridSettings settings) {
+        DateFilter dateFilter = settings.getDateFilter();
+
+        if (dateFilter == null) {
+            return null;
+        }
+
+        Map<String, String> rangeMap = new HashMap<>();
+
+        if (DateFilter.DATE_RANGE.equals(dateFilter)) {
+            rangeMap.put("min", settings.getStartDate());
+            rangeMap.put("max", settings.getEndDate());
+        } else {
+            Range<LocalDate> dateRange = dateFilter.getRange();
+            rangeMap.put("min", dateRange.getMin().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
+            rangeMap.put("max", dateRange.getMax().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
+        }
+
+        return rangeMap;
     }
 
     private static Map<String, Object> getFields(String lookupFields) throws IOException {
