@@ -102,7 +102,7 @@ public final class BookingAppConstants {
             "Find By Participant Id", "Find By Participant Name"));
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_SCREENINGS = new ArrayList<>(Arrays.asList(
-            "Find By Clinic Location", "Find By Volunteer Name"));
+            "Find By Clinic Location", "Find By Volunteer Name", "Find By Booking Id"));
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_VISIT_RESCHEDULE = new ArrayList<>(Arrays.asList("Find By Participant Id",
             "Find By Participant Name", "Find By Visit Type", "Find By Clinic Location", "Find By Visit Actual Date",
