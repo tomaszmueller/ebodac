@@ -670,6 +670,14 @@
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
 
+            if ($scope.checkboxModel.exportWithOrder === true) {
+                sortColumn = $('#primeVaccinationSchedule').getGridParam('sortname');
+                sortDirection = $('#primeVaccinationSchedule').getGridParam('sortorder');
+
+                url = url + "&sortColumn=" + sortColumn;
+                url = url + "&sortDirection=" + sortDirection;
+            }
+
             $scope.exportInstanceWithUrl(url);
         };
 
@@ -840,6 +848,14 @@
             var sortColumn, sortDirection, url = "../booking-app/exportInstances/visitReschedule";
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            if ($scope.checkboxModel.exportWithOrder === true) {
+                sortColumn = $('#visitReschedule').getGridParam('sortname');
+                sortDirection = $('#visitReschedule').getGridParam('sortorder');
+
+                url = url + "&sortColumn=" + sortColumn;
+                url = url + "&sortDirection=" + sortDirection;
+            }
 
             $scope.exportInstanceWithUrl(url);
         };
