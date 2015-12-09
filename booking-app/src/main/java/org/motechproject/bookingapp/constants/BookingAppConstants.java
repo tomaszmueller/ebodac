@@ -88,10 +88,10 @@ public final class BookingAppConstants {
 
     public static final Map<String, String> UNSCHEDULED_VISIT_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Site ID",                 "siteName");
-            put("Clinic",                  "clinicName");
             put("Participant Id",          "participantId");
-            put("Visit Date",              "date");
+            put("Site Id",                 "siteName");
+            put("Clinic",                  "clinicName");
+            put("Date",                    "date");
             put("Start Time",              "startTime");
             put("End Time",                "endTime");
             put("Purpose of the visit",    "purpose");
