@@ -207,7 +207,7 @@
 
         $scope.parseTime = function(string) {
 
-            if (string === undefined || string === "") {
+            if (string === undefined || string === null || string === "") {
                 return string;
             }
 
@@ -219,7 +219,7 @@
 
             return time;
         };
-        
+
         $scope.parseDate = function(date, offset) {
             if (date !== undefined && date !== null) {
                 var parts = date.split('-'), date;
@@ -239,7 +239,7 @@
             var startTime = $scope.parseTime(startTimeString),
                 endTime = $scope.parseTime(endTimeString);
 
-            if (startTime === undefined || endTime === undefined) {
+            if (startTime === undefined || startTime === null || endTime === undefined || endTime === null) {
                 return undefined;
             }
 
@@ -579,12 +579,39 @@
         $scope.getLookups("../booking-app/getLookupsForPrimeVaccinationSchedule");
 
         $scope.form = {};
-        $scope.form.dto = {};
+        $scope.form.dto = undefined;
 
-        $scope.newForm = function() {
+        $scope.primeVacDtos = [];
+
+        $scope.getPrimeVacDtos = function() {
+            $http.get('../booking-app/getPrimeVacDtos')
+            .success(function(data) {
+                $scope.primeVacDtos = data;
+            });
+        }
+
+        $scope.newForm = function(type) {
             $scope.form = {};
             $scope.form.dto = {};
+            $scope.form.type = type;
         };
+
+        $scope.addPrimeVaccination = function() {
+            $scope.primeVacDtos = [];
+            $scope.getPrimeVacDtos();
+            $scope.newForm("add");
+            $timeout(function() {
+                $('#subjectIdSelect').trigger('change');
+            });
+            $('#primeVaccinationScheduleModal').modal('show');
+        };
+
+        $scope.subjectChanged = function() {
+            $scope.reloadSelects();
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, $scope.form.dto.femaleChildBearingAge);
+            }
+        }
 
         $scope.savePrimeVaccinationSchedule = function(ignoreLimitation) {
 

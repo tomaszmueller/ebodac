@@ -1,5 +1,6 @@
 package org.motechproject.bookingapp.domain;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.joda.time.LocalDate;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.domain.Subject;
@@ -15,6 +16,7 @@ public class VisitBookingDetails {
     public static final String VISIT_PLANNED_DATE_PROPERTY_NAME = "visit.motechProjectedDate";
     public static final String SUBJECT_PRIME_VACCINATION_DATE_PROPERTY_NAME = "subject.primerVaccinationDate";
     public static final String SUBJECT_NAME_PROPERTY_NAME = "subject.name";
+    public static final String BOOKING_PLANNED_DATE_PROPERTY_NAME = "bookingPlannedDate";
 
     @Field
     private Long id;
@@ -41,6 +43,7 @@ public class VisitBookingDetails {
     private Subject subject;
 
     @Field(required = true)
+    @JsonBackReference
     private SubjectBookingDetails subjectBookingDetails;
 
     @NonEditable(display = false)

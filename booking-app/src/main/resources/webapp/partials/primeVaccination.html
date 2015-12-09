@@ -1,5 +1,8 @@
 <div class="booking-app">
     <div class="row inside form-inline">
+        <button type="button" class="btn btn-success ng-binding" ng-click="addPrimeVaccination()">
+            <i class="fa fa-fw fa-plus"></i> {{msg('bookingApp.primeVaccination.addPrimeVaccination')}}
+        </button>
         <button id="lookupDialogButton" ng-click="showLookupDialog()" type="button" class="btn btn-default">
             <i class="fa fa-lg fa-caret-down"></i>
             {{msg('bookingApp.btn.lookup')}}
