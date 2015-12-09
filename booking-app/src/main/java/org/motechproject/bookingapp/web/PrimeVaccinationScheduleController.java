@@ -58,6 +58,12 @@ public class PrimeVaccinationScheduleController {
         }
     }
 
+    @RequestMapping("/getPrimeVacDtos")
+    @ResponseBody
+    public List<PrimeVaccinationScheduleDto> getPrimeVacDtos() throws IOException {
+        return primeVaccinationScheduleService.getPrimeVaccinationScheduleRecords();
+    }
+
     @RequestMapping(value = "/getLookupsForPrimeVaccinationSchedule", method = RequestMethod.GET)
     @ResponseBody
     public List<LookupDto> getLookupsForPrimeVaccinationSchedule() {

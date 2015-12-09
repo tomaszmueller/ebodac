@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,19 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         validateDate(dto);
 
         return new PrimeVaccinationScheduleDto(updateVisitWithDto(primeDetails, screeningDetails, dto));
+    }
+
+    @Override
+    public List<PrimeVaccinationScheduleDto> getPrimeVaccinationScheduleRecords() {
+        List<PrimeVaccinationScheduleDto> primeVacDtos = new ArrayList<>();
+        List<VisitBookingDetails> detailsList = visitBookingDetailsDataService
+                .findByParticipantNamePrimeVaccinationDateAndVisitTypeAndBookingPlannedDateEq(".", null, VisitType.PRIME_VACCINATION_DAY, null);
+
+        for (VisitBookingDetails details : detailsList) {
+            primeVacDtos.add(new PrimeVaccinationScheduleDto(details));
+        }
+
+        return primeVacDtos;
     }
 
     private VisitBookingDetails updateVisitWithDto(VisitBookingDetails primeDetails, VisitBookingDetails screeningDetails,
