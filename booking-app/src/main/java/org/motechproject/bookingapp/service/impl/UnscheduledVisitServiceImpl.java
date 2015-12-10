@@ -4,6 +4,7 @@ package org.motechproject.bookingapp.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
 import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
 import org.motechproject.bookingapp.repository.ClinicDataService;
@@ -11,6 +12,7 @@ import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.bookingapp.service.UnscheduledVisitService;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
+import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
@@ -71,7 +73,7 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
         unscheduledVisit.setClinic(clinicDataService.findById(dto.getClinicId()));
         unscheduledVisit.setDate(dto.getDate());
         unscheduledVisit.setStartTime(dto.getStartTime());
-        unscheduledVisit.setEndTime(dto.getEndTime());
+        unscheduledVisit.setEndTime(calculateEndTime(dto.getStartTime()));
         unscheduledVisit.setPurpose(dto.getPurpose());
 
         return new UnscheduledVisitDto(unscheduledVisitDataService.create(unscheduledVisit));
@@ -85,7 +87,7 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
         unscheduledVisit.setClinic(clinicDataService.findById(dto.getClinicId()));
         unscheduledVisit.setDate(dto.getDate());
         unscheduledVisit.setStartTime(dto.getStartTime());
-        unscheduledVisit.setEndTime(dto.getEndTime());
+        unscheduledVisit.setEndTime(calculateEndTime(dto.getStartTime()));
         unscheduledVisit.setPurpose(dto.getPurpose());
 
         return new UnscheduledVisitDto(unscheduledVisitDataService.create(unscheduledVisit));
@@ -97,5 +99,10 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
         } else {
             return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
+    }
+
+    private Time calculateEndTime(Time startTime) {
+        int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
+        return new Time(endTimeHour, startTime.getMinute());
     }
 }

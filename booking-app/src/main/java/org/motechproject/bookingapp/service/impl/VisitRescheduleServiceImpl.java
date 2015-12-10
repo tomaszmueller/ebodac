@@ -3,6 +3,7 @@ package org.motechproject.bookingapp.service.impl;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.domain.VisitRescheduleDto;
@@ -106,7 +107,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
                     maxVisits++;
                 } else {
                     Time startTime = dto.getStartTime();
-                    Time endTime = dto.getEndTime();
+                    Time endTime = calculateEndTime(startTime);
 
                     if (startTime.isBefore(visit.getStartTime())) {
                         if (visit.getStartTime().isBefore(endTime)) {
@@ -153,7 +154,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
     private VisitBookingDetails updateVisitDetailsWithDto(VisitBookingDetails details, VisitRescheduleDto dto, Clinic clinic) {
         details.setStartTime(dto.getStartTime());
-        details.setEndTime(dto.getEndTime());
+        details.setEndTime(calculateEndTime(dto.getStartTime()));
         details.setClinic(clinic);
         return visitBookingDetailsDataService.update(details);
     }
@@ -174,5 +175,10 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         } else {
             return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {});  //NO CHECKSTYLE WhitespaceAround
         }
+    }
+
+    private Time calculateEndTime(Time startTime) {
+        int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
+        return new Time(endTimeHour, startTime.getMinute());
     }
 }

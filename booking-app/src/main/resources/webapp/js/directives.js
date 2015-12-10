@@ -119,14 +119,12 @@
                         scope.msg("bookingApp.screening.location"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime"),
                         ""],
                     colModel: [
                         { name: "volunteer.id" },
                         { name: "clinic.location" },
                         { name: "date" },
                         { name: "startTime" },
-                        { name: "endTime" },
                         { name: "print", align: "center", sortable: false, width: 40}
                     ],
                     gridComplete: function() {
@@ -165,7 +163,7 @@
                         return false;
                     },
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 5) {
+                        if (iCol !== 4) {
                             scope.editScreening(id);
                         }
                     }
@@ -221,7 +219,6 @@
                         scope.msg("bookingApp.clinic"),
                         scope.msg("bookingApp.date"),
                         scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime"),
                         scope.msg("bookingApp.uncheduledVisit.purpose"),
                         ""],
                     colModel: [
@@ -243,9 +240,6 @@
                         },
                         {
                             name: "startTime"
-                        },
-                        {
-                            name: "endTime"
                         },
                         {
                             name: "purpose"
@@ -282,7 +276,7 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        if (iCol !== 7) {
+                        if (iCol !== 6) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
 
@@ -291,7 +285,6 @@
                             scope.form.dto.participantId = rowData.participantId;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.endTime = rowData.endTime;
                             scope.form.dto.siteId = extraRowData.siteId;
                             scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.purpose = rowData.purpose;
@@ -369,7 +362,7 @@
                         scope.msg("bookingApp.primeVaccination.screeningActualDate"),
                         scope.msg("bookingApp.primeVaccination.primeVacDate"),
                         scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime"), ""],
+                        ""],
                     colModel: [
                         {
                             name: "location",
@@ -398,9 +391,6 @@
                         },
                         {
                             name: "startTime"
-                        },
-                        {
-                            name: "endTime"
                         },
                         {
                             name: "print",
@@ -437,7 +427,7 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        if (iCol !== 8) {
+                        if (iCol !== 7) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
 
@@ -450,7 +440,6 @@
                             scope.form.dto.bookingScreeningActualDate = rowData.bookingScreeningActualDate;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.endTime = rowData.endTime;
                             scope.form.dto.siteId = extraRowData.siteId;
                             scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;
@@ -522,8 +511,7 @@
                         scope.msg("bookingApp.visitReschedule.visitType"),
                         scope.msg("bookingApp.visitReschedule.actualDate"),
                         scope.msg("bookingApp.visitReschedule.plannedDate"),
-                        scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime")],
+                        scope.msg("bookingApp.startTime")],
                     colModel: [
                         {
                             name: "location",
@@ -552,9 +540,6 @@
                         },
                         {
                             name: "startTime"
-                        },
-                        {
-                            name: "endTime"
                         }
                     ],
                     gridComplete: function(){
@@ -591,7 +576,6 @@
                             scope.form.dto.visitType = rowData.visitType;
                             scope.form.dto.plannedDate = rowData.plannedDate;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.endTime = rowData.endTime;
                             scope.form.dto.siteId = extraRowData.siteId;
                             scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;

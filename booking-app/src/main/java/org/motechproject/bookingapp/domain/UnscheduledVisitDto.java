@@ -18,7 +18,6 @@ public class UnscheduledVisitDto {
     private String clinicName;
     private LocalDate date;
     private Time startTime;
-    private Time endTime;
     private String purpose;
 
     public UnscheduledVisitDto () {} //NO CHECKSTYLE WhitespaceAround
@@ -32,7 +31,6 @@ public class UnscheduledVisitDto {
         setClinicName(unscheduledVisit.getClinic().getLocation());
         setDate(unscheduledVisit.getDate());
         setStartTime(unscheduledVisit.getStartTime());
-        setEndTime(unscheduledVisit.getEndTime());
         setPurpose(unscheduledVisit.getPurpose());
     }
 
@@ -101,15 +99,6 @@ public class UnscheduledVisitDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    @JsonSerialize(using = CustomTimeSerializer.class)
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
     }
 
     public String getPurpose() {

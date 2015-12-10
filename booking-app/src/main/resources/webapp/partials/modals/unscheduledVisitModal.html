@@ -26,11 +26,6 @@
                         <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.startTime === '', 'alert-success': form.dto.startTime}"><i class="fa fa-fw fa-check"></i></span>
                     </div>
                     <div class="booking-app input-group unscheduled-visit-modal">
-                        <span class="left input-group-addon">{{msg('bookingApp.endTime')}}</span>
-                        <input type="text" class="form-control" mds-time-picker placeholder="{{msg('bookingApp.endTimePlaceholder')}}" ng-model="form.dto.endTime">
-                        <span class="input-group-addon validator" ng-class="{'alert-danger': isValidEndTime(form.dto.startTime, form.dto.endTime) === false, 'alert-success': isValidEndTime(form.dto.startTime, form.dto.endTime)}"><i class="fa fa-fw fa-check"></i></span>
-                    </div>
-                    <div class="booking-app input-group unscheduled-visit-modal">
                         <span class="left input-group-addon">{{msg('bookingApp.site')}}</span>
                         <select class="form-control" ui-select2 id="siteSelect" ng-model="form.dto.siteId" set="clinics">
                             <option ng-hide="form.dto.siteId" value="">{{'- ' + msg('bookingApp.choose') + ' -'}}</option>

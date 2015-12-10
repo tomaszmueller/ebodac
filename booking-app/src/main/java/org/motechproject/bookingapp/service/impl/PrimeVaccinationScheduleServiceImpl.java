@@ -86,7 +86,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
     private VisitBookingDetails updateVisitWithDto(VisitBookingDetails primeDetails, VisitBookingDetails screeningDetails,
                                                    PrimeVaccinationScheduleDto dto) {
         primeDetails.setStartTime(dto.getStartTime());
-        primeDetails.setEndTime(dto.getEndTime());
+        primeDetails.setEndTime(calculateEndTime(dto.getStartTime()));
         primeDetails.setBookingPlannedDate(dto.getDate());
         primeDetails.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
         primeDetails.setClinic(clinicDataService.findById(dto.getClinicId()));
@@ -121,7 +121,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                     maxVisits++;
                 } else {
                     Time startTime = dto.getStartTime();
-                    Time endTime = dto.getEndTime();
+                    Time endTime = calculateEndTime(startTime);
 
                     if (startTime.isBefore(visit.getStartTime())) {
                         if (visit.getStartTime().isBefore(endTime)) {
@@ -174,5 +174,10 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
             }
         }
         return null;
+    }
+
+    private Time calculateEndTime(Time startTime) {
+        int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
+        return new Time(endTimeHour, startTime.getMinute());
     }
 }
