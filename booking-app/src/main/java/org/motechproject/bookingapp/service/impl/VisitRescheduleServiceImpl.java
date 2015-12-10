@@ -9,6 +9,7 @@ import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.domain.VisitRescheduleDto;
 import org.motechproject.bookingapp.domain.VisitScheduleOffset;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
+import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.bookingapp.service.VisitRescheduleService;
@@ -52,6 +53,9 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
     @Autowired
     private VisitScheduleOffsetService visitScheduleOffsetService;
+
+    @Autowired
+    private VisitLimitationHelper visitLimitationHelper;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -128,6 +132,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
                 throw new LimitationExceededException("Too many Patients at the same time");
             }
         }
+        visitLimitationHelper.checkCapacityForVisitBookingDetails(dto.getPlannedDate(), clinic, dto.getVisitId());
     }
 
     private void validateDate(VisitRescheduleDto dto, Visit visit) {

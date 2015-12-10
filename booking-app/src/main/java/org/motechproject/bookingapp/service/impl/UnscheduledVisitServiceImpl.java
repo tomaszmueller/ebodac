@@ -7,6 +7,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
 import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
+import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
@@ -41,6 +42,9 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
     private SubjectDataService subjectDataService;
 
     @Autowired
+    private VisitLimitationHelper visitLimitationHelper;
+
+    @Autowired
     private ClinicDataService clinicDataService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -56,8 +60,15 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
     }
 
     @Override
-    public UnscheduledVisitDto addOrUpdate(UnscheduledVisitDto dto) {
+    public UnscheduledVisitDto addOrUpdate(UnscheduledVisitDto dto, Boolean ignoreLimitation) {
 
+        if (!ignoreLimitation) {
+            if (StringUtils.isNotBlank(dto.getId())) {
+                visitLimitationHelper.checkCapacityForUnscheduleVisit(dto.getDate(), clinicDataService.findById(dto.getClinicId()), Long.parseLong(dto.getId()));
+            } else {
+                visitLimitationHelper.checkCapacityForUnscheduleVisit(dto.getDate(), clinicDataService.findById(dto.getClinicId()), null);
+            }
+        }
         if (StringUtils.isEmpty(dto.getId())) {
             return add(dto);
         } else {

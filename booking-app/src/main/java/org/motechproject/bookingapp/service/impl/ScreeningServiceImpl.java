@@ -10,6 +10,7 @@ import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.ScreeningDto;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
+import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.VolunteerDataService;
@@ -40,6 +41,9 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     @Autowired
     private ClinicDataService clinicDataService;
+
+    @Autowired
+    private VisitLimitationHelper visitLimitationHelper;
 
     @Autowired
     private LookupService lookupService;
@@ -130,6 +134,7 @@ public class ScreeningServiceImpl implements ScreeningService {
                 }
             }
         }
+        visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
 
         screening.setDate(date);
         screening.setStartTime(startTime);
