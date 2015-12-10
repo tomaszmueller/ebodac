@@ -14,6 +14,9 @@ public interface ClinicDataService extends MotechDataService<Clinic> {
     List<Clinic> findByLocation(@LookupField(name = "location", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String location);
 
     @Lookup
-    List<Clinic> findBySiteId(@LookupField(name = "site.siteId", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteId);
+    List<Clinic> findBySiteId(@LookupField(name = "siteId", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteId);
+
+    @Lookup
+    Clinic findByExactSiteId(@LookupField(name = "siteId") String siteId);
 
 }

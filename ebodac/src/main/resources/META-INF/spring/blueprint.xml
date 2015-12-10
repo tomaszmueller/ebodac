@@ -84,6 +84,8 @@
         <osgi:reference-listener ref="jobImporter"/>
     </osgi:reference>
 
+    <osgi:reference id="eventRelay" interface="org.motechproject.event.listener.EventRelay"/>
+
     <osgi:reference id="entityService" interface="org.motechproject.mds.service.EntityService"/>
 
     <osgi:reference id="outboundCallService" interface="org.motechproject.ivr.service.OutboundCallService"/>

@@ -1,11 +1,15 @@
 package org.motechproject.bookingapp.web;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
+import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.SubjectBookingDetails;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
+import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.SubjectBookingDetailsDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.server.config.SettingsFacade;
@@ -37,6 +41,9 @@ public class BookingAppController {
     @Autowired
     private SubjectBookingDetailsDataService subjectBookingDetailsDataService;
 
+    @Autowired
+    private ClinicDataService clinicDataService;
+
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/mds-databrowser-config", method = RequestMethod.GET)
     @ResponseBody
@@ -54,12 +61,20 @@ public class BookingAppController {
             VisitBookingDetails visitBookingDetails = visitBookingDetailsDataService.findByVisitId(visit.getId());
 
             if (visitBookingDetails == null) {
-                SubjectBookingDetails subjectBookingDetails = subjectBookingDetailsDataService.findBySubjectId(visit.getSubject().getSubjectId());
+                Subject subject = visit.getSubject();
+                SubjectBookingDetails subjectBookingDetails = subjectBookingDetailsDataService.findBySubjectId(subject.getSubjectId());
+
                 if (subjectBookingDetails == null) {
-                    subjectBookingDetails = new SubjectBookingDetails(visit.getSubject());
+                    subjectBookingDetails = new SubjectBookingDetails(subject);
                 }
 
                 visitBookingDetails = new VisitBookingDetails(visit, subjectBookingDetails);
+
+                if (StringUtils.isNotBlank(subject.getSiteId())) {
+                    Clinic clinic = clinicDataService.findByExactSiteId(subject.getSiteId());
+                    visitBookingDetails.setClinic(clinic);
+                }
+
                 visitBookingDetailsDataService.create(visitBookingDetails);
             }
         }

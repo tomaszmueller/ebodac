@@ -10,26 +10,6 @@
         return value;
     };
 
-    directives.directive('set', function() {
-        return {
-            restrict: 'A',
-            scope: {
-                set: '@'
-            },
-            require: 'ngModel',
-            link: function(scope, element, attrs, ngModel) {
-
-                var field = attrs.ngModel.substr(attrs.ngModel.lastIndexOf('.') + 1).split('I')[0] + "s";
-
-                scope.$watch("$parent." + attrs.ngModel, function (id) {
-                    if (id) {
-                        scope.$parent[scope.set] = scope.$parent.findById(scope.$parent[field], id)[scope.set];
-                    }
-                });
-            }
-        };
-    });
-
     directives.directive('gridReloadTrigger', function() {
         return {
             restrict: 'A',
@@ -116,7 +96,7 @@
                     mtype: "GET",
                     colNames: [
                         scope.msg("bookingApp.screening.bookingId"),
-                        scope.msg("bookingApp.screening.location"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.startTime"),
                         ""],
@@ -192,7 +172,6 @@
 
             rowExtraData.id = rowObject.id;
             rowExtraData.siteId = rowObject.siteId;
-            rowExtraData.clinicId = rowObject.clinicId;
 
             gridDataExtension[options.rowId] = rowExtraData;
 
@@ -215,8 +194,7 @@
                     mtype: "GET",
                     colNames: [
                         scope.msg("bookingApp.uncheduledVisit.participantId"),
-                        scope.msg("bookingApp.siteId"),
-                        scope.msg("bookingApp.clinic"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.date"),
                         scope.msg("bookingApp.startTime"),
                         scope.msg("bookingApp.uncheduledVisit.purpose"),
@@ -226,10 +204,6 @@
                             name: "participantId",
                             formatter: extendGrid,
                             index: 'subject.subjectId'
-                        },
-                        {
-                            name: "siteName",
-                            index: 'clinic.site.siteId'
                         },
                         {
                             name: "clinicName",
@@ -276,7 +250,7 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        if (iCol !== 6) {
+                        if (iCol !== 5) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
 
@@ -285,8 +259,6 @@
                             scope.form.dto.participantId = rowData.participantId;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.siteId = extraRowData.siteId;
-                            scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.purpose = rowData.purpose;
                             scope.reloadSelects();
                             $('#unscheduledVisitModal').modal('show');
@@ -336,7 +308,6 @@
 
             rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
             rowExtraData.siteId = rowObject.siteId;
-            rowExtraData.clinicId = rowObject.clinicId;
             rowExtraData.visitId = rowObject.visitId;
             rowExtraData.participantGender = rowObject.participantGender;
 
@@ -355,7 +326,7 @@
                     datatype: "json",
                     mtype: "GET",
                     colNames: [
-                        scope.msg("bookingApp.primeVaccination.location"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.primeVaccination.participantId"),
                         scope.msg("bookingApp.primeVaccination.participantName"),
                         scope.msg("bookingApp.primeVaccination.femaleChildBearingAge"),
@@ -366,7 +337,7 @@
                     colModel: [
                         {
                             name: "location",
-                            index: 'clinic.site.siteId'
+                            index: 'clinic.location'
                         },
                         {
                             name: "participantId",
@@ -440,8 +411,6 @@
                             scope.form.dto.bookingScreeningActualDate = rowData.bookingScreeningActualDate;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.siteId = extraRowData.siteId;
-                            scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;
                             scope.form.dto.participantGender = extraRowData.participantGender;
                             scope.form.range = scope.calculateRange(scope.form.dto.bookingScreeningActualDate,
@@ -484,7 +453,6 @@
             var rowExtraData = {};
 
             rowExtraData.siteId = rowObject.siteId;
-            rowExtraData.clinicId = rowObject.clinicId;
             rowExtraData.visitId = rowObject.visitId;
             rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
             rowExtraData.earliestDate = rowObject.earliestDate;
@@ -505,7 +473,7 @@
                     datatype: "json",
                     mtype: "GET",
                     colNames: [
-                        scope.msg("bookingApp.visitReschedule.location"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.visitReschedule.participantId"),
                         scope.msg("bookingApp.visitReschedule.participantName"),
                         scope.msg("bookingApp.visitReschedule.visitType"),
@@ -515,7 +483,7 @@
                     colModel: [
                         {
                             name: "location",
-                            index: 'clinic.site.siteId'
+                            index: 'clinic.location'
                         },
                         {
                             name: "participantId",
@@ -576,13 +544,10 @@
                             scope.form.dto.visitType = rowData.visitType;
                             scope.form.dto.plannedDate = rowData.plannedDate;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.siteId = extraRowData.siteId;
-                            scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;
                             scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
                             scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
                             scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
-                            scope.reloadSelects();
                             $('#visitRescheduleModal').modal('show');
                         }
                     }

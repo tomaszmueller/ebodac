@@ -1,7 +1,7 @@
 package org.motechproject.bookingapp.web;
 
-import org.motechproject.bookingapp.domain.Site;
-import org.motechproject.bookingapp.service.SiteService;
+import org.motechproject.bookingapp.domain.Clinic;
+import org.motechproject.bookingapp.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@Controller("/sites")
-public class SiteController {
+@Controller("/clinics")
+public class ClinicController {
 
     @Autowired
-    private SiteService siteService;
+    private ClinicService clinicService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    private List<Site> getSites() {
-        return siteService.getSites();
+    private List<Clinic> getSites() {
+        return clinicService.getClinics();
     }
-
 }

@@ -35,10 +35,6 @@ public class PrimeVaccinationScheduleDto {
 
     private Time startTime;
 
-    private Long siteId;
-
-    private Long clinicId;
-
     private Long visitId;
 
     public PrimeVaccinationScheduleDto() {
@@ -68,9 +64,7 @@ public class PrimeVaccinationScheduleDto {
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
         if (details.getClinic() != null) {
-            setClinicId(details.getClinic().getId());
-            setSiteId(details.getClinic().getSite().getId());
-            setLocation(details.getClinic().getSite().getSiteId() + " - " + details.getClinic().getLocation());
+            setLocation(details.getClinic().getLocation());
         }
     }
 
@@ -161,22 +155,6 @@ public class PrimeVaccinationScheduleDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    public Long getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
-    }
-
-    public Long getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Long clinicId) {
-        this.clinicId = clinicId;
     }
 
     public Long getVisitId() {

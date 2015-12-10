@@ -31,10 +31,6 @@ public class VisitRescheduleDto {
 
     private Time startTime;
 
-    private Long siteId;
-
-    private Long clinicId;
-
     private Long visitId;
 
     private Long visitBookingDetailsId;
@@ -56,9 +52,7 @@ public class VisitRescheduleDto {
         setVisitId(details.getVisit().getId());
         setVisitBookingDetailsId(details.getId());
         if (details.getClinic() != null) {
-            setClinicId(details.getClinic().getId());
-            setSiteId(details.getClinic().getSite().getId());
-            setLocation(details.getClinic().getSite().getSiteId() + " - " + details.getClinic().getLocation());
+            setLocation(details.getClinic().getLocation());
         }
     }
 
@@ -128,22 +122,6 @@ public class VisitRescheduleDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    public Long getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
-    }
-
-    public Long getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Long clinicId) {
-        this.clinicId = clinicId;
     }
 
     public Long getVisitId() {

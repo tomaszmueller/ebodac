@@ -1,10 +1,11 @@
 package org.motechproject.bookingapp.domain;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.annotations.NonEditable;
 import org.motechproject.mds.annotations.UIDisplayable;
+
+import javax.jdo.annotations.Unique;
 
 @Entity(maxFetchDepth = 2)
 public class Clinic {
@@ -12,10 +13,10 @@ public class Clinic {
     @Field
     private Long id;
 
+    @Unique
     @UIDisplayable(position = 0)
     @Field(required = true)
-    @JsonBackReference
-    private Site site;
+    private String siteId;
 
     @UIDisplayable(position = 1)
     @Field(required = true)
@@ -81,12 +82,12 @@ public class Clinic {
         this.id = id;
     }
 
-    public Site getSite() {
-        return site;
+    public String getSiteId() {
+        return siteId;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
     }
 
     public String getLocation() {
@@ -203,7 +204,7 @@ public class Clinic {
 
     @Override
     public String toString() {
-        return site.getSiteId() + " - " + location;
+        return location;
     }
 }
 

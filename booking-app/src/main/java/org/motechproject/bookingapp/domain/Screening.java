@@ -7,7 +7,6 @@ import org.motechproject.bookingapp.util.CustomTimeSerializer;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
-import org.motechproject.mds.annotations.Ignore;
 import org.motechproject.mds.annotations.NonEditable;
 
 @Entity(maxFetchDepth = 3)
@@ -44,19 +43,10 @@ public class Screening {
         ScreeningDto dto = new ScreeningDto();
         dto.setId(getId().toString());
         dto.setClinicId(getClinic().getId().toString());
-        dto.setSiteId(getSite().getId().toString());
         dto.setVolunteerId(volunteer.getId().toString());
         dto.setDate(date.toString());
         dto.setStartTime(startTime.toString());
         return dto;
-    }
-
-    @Ignore
-    public Site getSite() {
-        if (clinic != null) {
-            return clinic.getSite();
-        }
-        return null;
     }
 
     public Long getId() {
