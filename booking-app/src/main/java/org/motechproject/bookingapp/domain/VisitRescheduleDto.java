@@ -31,8 +31,6 @@ public class VisitRescheduleDto {
 
     private Time startTime;
 
-    private Time endTime;
-
     private Long siteId;
 
     private Long clinicId;
@@ -55,7 +53,6 @@ public class VisitRescheduleDto {
         setActualDate(details.getVisit().getDate());
         setPlannedDate(details.getVisit().getMotechProjectedDate());
         setStartTime(details.getStartTime());
-        setEndTime(details.getEndTime());
         setVisitId(details.getVisit().getId());
         setVisitBookingDetailsId(details.getId());
         if (details.getClinic() != null) {
@@ -131,15 +128,6 @@ public class VisitRescheduleDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    @JsonSerialize(using = CustomTimeSerializer.class)
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
     }
 
     public Long getSiteId() {

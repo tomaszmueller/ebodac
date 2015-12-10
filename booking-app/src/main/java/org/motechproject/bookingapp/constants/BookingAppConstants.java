@@ -20,6 +20,9 @@ public final class BookingAppConstants {
     public static final String CSV_EXPORT_FORMAT = "csv";
     public static final String XLS_EXPORT_FORMAT = "xls";
 
+    public static final int MAX_TIME_HOUR = 24;
+    public static final int TIME_OF_THE_VISIT = 1;
+
     public static final int EARLIEST_DATE = 1;
     public static final int EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE = 14;
     public static final int LATEST_DATE = 28;
@@ -54,7 +57,6 @@ public final class BookingAppConstants {
             put("Location",         "clinic.location");
             put("Screening Date",   "date");
             put("Start Time",       "startTime");
-            put("End Time",         "endTime");
         }
     };
 
@@ -67,7 +69,6 @@ public final class BookingAppConstants {
             put("Actual Screening Date",    "actualScreeningDate");
             put("Prime Vac. Date",          "date");
             put("Start Time",               "startTime");
-            put("End Time",                 "endTime");
         }
     };
 
@@ -80,7 +81,6 @@ public final class BookingAppConstants {
             put("Actual Date",      "actualDate");
             put("Planned Date",     "plannedDate");
             put("Start Time",       "startTime");
-            put("End Time",         "endTime");
         }
     };
 
@@ -91,7 +91,6 @@ public final class BookingAppConstants {
             put("Clinic",                  "clinicName");
             put("Date",                    "date");
             put("Start Time",              "startTime");
-            put("End Time",                "endTime");
             put("Purpose of the visit",    "purpose");
         }
     };

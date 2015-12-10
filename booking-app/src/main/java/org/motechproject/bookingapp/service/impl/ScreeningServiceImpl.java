@@ -4,6 +4,7 @@ import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.ScreeningDto;
@@ -95,7 +96,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         Clinic clinic = clinicDataService.findById(Long.parseLong(screeningDto.getClinicId()));
         LocalDate date = LocalDate.parse(screeningDto.getDate());
         Time startTime = Time.valueOf(screeningDto.getStartTime());
-        Time endTime = Time.valueOf(screeningDto.getEndTime());
+        Time endTime = calculateEndTime(startTime);
 
         if (!ignoreLimitation) {
             List<Screening> screeningList = screeningDataService.findByDateAndClinicId(date, clinic.getId());
@@ -142,5 +143,10 @@ public class ScreeningServiceImpl implements ScreeningService {
         } else {
             return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
+    }
+
+    private Time calculateEndTime(Time startTime) {
+        int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
+        return new Time(endTimeHour, startTime.getMinute());
     }
 }

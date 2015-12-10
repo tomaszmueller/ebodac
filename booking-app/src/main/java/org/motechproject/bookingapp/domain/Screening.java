@@ -48,7 +48,6 @@ public class Screening {
         dto.setVolunteerId(volunteer.getId().toString());
         dto.setDate(date.toString());
         dto.setStartTime(startTime.toString());
-        dto.setEndTime(endTime.toString());
         return dto;
     }
 

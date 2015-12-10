@@ -55,7 +55,6 @@
                 && $scope.form.dto.participantId
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
                 && $scope.form.dto.clinicId
         };
 
@@ -501,8 +500,7 @@
                 && $scope.form.dto
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
-                && $scope.form.dto.clinicId
+                && $scope.form.dto.clinicId;
         };
 
         $scope.exportInstance = function() {
@@ -673,7 +671,6 @@
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
                 && $scope.form.dto.clinicId
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
                 && ($scope.form.dto.participantGender == 'Female' ? $scope.form.dto.femaleChildBearingAge !== undefined : true);
         };
 
@@ -866,8 +863,7 @@
                 && $scope.form.dto
                 && $scope.form.dto.plannedDate
                 && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true;
+                && $scope.form.dto.clinicId;
         };
 
         $scope.exportInstance = function() {

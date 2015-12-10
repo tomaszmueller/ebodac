@@ -8,7 +8,6 @@ public class ScreeningDto {
     private String clinicId;
     private String date;
     private String startTime;
-    private String endTime;
 
     public String getId() {
         return id;
@@ -56,13 +55,5 @@ public class ScreeningDto {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 }

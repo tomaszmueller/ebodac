@@ -35,8 +35,6 @@ public class PrimeVaccinationScheduleDto {
 
     private Time startTime;
 
-    private Time endTime;
-
     private Long siteId;
 
     private Long clinicId;
@@ -67,7 +65,6 @@ public class PrimeVaccinationScheduleDto {
         setDate(details.getBookingPlannedDate());
         setFemaleChildBearingAge(details.getSubjectBookingDetails().getFemaleChildBearingAge());
         setVisitBookingDetailsId(details.getId());
-        setEndTime(details.getEndTime());
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
         if (details.getClinic() != null) {
@@ -164,15 +161,6 @@ public class PrimeVaccinationScheduleDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    @JsonSerialize(using = CustomTimeSerializer.class)
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
     }
 
     public Long getSiteId() {
