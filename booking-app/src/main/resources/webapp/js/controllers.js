@@ -827,6 +827,8 @@
     controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http) {
         $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
 
+        $scope.$parent.selectedFilter = undefined;
+
         $scope.newForm = function() {
             $scope.form = {};
             $scope.form.dto = {};
