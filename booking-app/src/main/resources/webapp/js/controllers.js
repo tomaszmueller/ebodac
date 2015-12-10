@@ -499,7 +499,6 @@
         $scope.formIsFilled = function() {
             return $scope.form
                 && $scope.form.dto
-                && $scope.form.dto.volunteerName
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
                 && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
@@ -539,18 +538,15 @@
             if(id >= 0) {
                 var rowData = jQuery("#screenings").jqGrid ('getRowData', id);
                 var bookingId = rowData['volunteer.id'];
-                var volunteerName = rowData['volunteer.name'];
                 var date = rowData['date'];
             } else {
                 var bookingId = $scope.screeningForPrint.volunteer.id;
-                var volunteerName =  $scope.screeningForPrint.volunteer.name;
                 var date = $scope.screeningForPrint.date;
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/screeningCard.html");
             winPrint.onload = function() {
                 $('#bookingId', winPrint.document).html(bookingId);
-                $('#volunteerName', winPrint.document).html(volunteerName);
                 $('#screeningDate', winPrint.document).html(date);
 
                 winPrint.focus();

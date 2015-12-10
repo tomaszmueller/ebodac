@@ -26,13 +26,6 @@ public interface ScreeningDataService extends MotechDataService<Screening> {
     List<Screening> findByClinicLocation(@LookupField(name = "clinic.location", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String location);
 
     @Lookup
-    List<Screening> findByVolunteerName(@LookupField(name = "volunteer.name", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String volunteerName);
-
-    @Lookup
-    List<Screening> findByVolunteerNameAndDate(@LookupField(name = "date") Range<LocalDate> date,
-                                               @LookupField(name = "volunteer.name", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String volunteerName);
-
-    @Lookup
     List<Screening> findByBookingId(@LookupField(name = "volunteer.id") Long bookingId);
 
     @Lookup

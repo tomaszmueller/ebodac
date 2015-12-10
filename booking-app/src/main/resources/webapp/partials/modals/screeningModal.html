@@ -9,11 +9,6 @@
             <div ng-if="form.dto">
                 <div class="modal-body">
                         <div class="booking-app input-group">
-                            <span class="left input-group-addon">{{msg('bookingApp.screening.name')}}</span>
-                            <input type="text" class="form-control" placeholder="{{msg('bookingApp.screening.namePlaceholder')}}" aria-describedby="basic-addon1" ng-model="form.dto.volunteerName">
-                            <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.volunteerName === '', 'alert-success': form.dto.volunteerName !== undefined}"><i class="fa fa-fw fa-check"></i></span>
-                        </div>
-                        <div class="booking-app input-group">
                             <span class="left input-group-addon">{{msg('bookingApp.date')}}</span>
                             <input type="text" class="form-control datepicker" readonly='true' mds-date-picker placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.date">
                             <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.date === '', 'alert-success': form.dto.date}"><i class="fa fa-fw fa-check"></i></span>
