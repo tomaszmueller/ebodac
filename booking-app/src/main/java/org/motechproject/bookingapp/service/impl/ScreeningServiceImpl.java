@@ -133,8 +133,8 @@ public class ScreeningServiceImpl implements ScreeningService {
                     throw new LimitationExceededException("Too many Patients at the same time");
                 }
             }
+            visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
         }
-        visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
 
         screening.setDate(date);
         screening.setStartTime(startTime);
