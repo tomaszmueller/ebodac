@@ -23,6 +23,15 @@ public interface UnscheduledVisitDataService extends MotechDataService<Unschedul
                                                         customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String location);
 
     @Lookup
+    List<UnscheduledVisit> findByClinicIdAndDateAndVisitId(@LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date,
+                                                           @LookupField(name = "clinic.id") Long clinicId,
+                                                           @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
+
+    long countFindByClinicIdAndDateAndVisitId(@LookupField(name = "date", customOperator = Constants.Operators.EQ) LocalDate date,
+                                              @LookupField(name = "clinic.id") Long clinicId,
+                                              @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
+
+    @Lookup
     List<UnscheduledVisit> findByDate(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup

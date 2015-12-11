@@ -8,6 +8,7 @@ import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
+import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.bookingapp.service.PrimeVaccinationScheduleService;
@@ -36,6 +37,9 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
 
     @Autowired
     private ClinicDataService clinicDataService;
+
+    @Autowired
+    private VisitLimitationHelper visitLimitationHelper;
 
     @Autowired
     private VisitDataService visitDataService;
@@ -110,8 +114,8 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         List<VisitBookingDetails> visits = visitBookingDetailsDataService.findByBookingPlannedDateClinicIdAndVisitType(dto.getDate(),
                 dto.getClinicId(), VisitType.PRIME_VACCINATION_DAY);
 
+        Clinic clinic = clinicDataService.findById(dto.getClinicId());
         if (visits != null) {
-            Clinic clinic = clinicDataService.findById(dto.getClinicId());
             int numberOfRooms = clinic.getNumberOfRooms();
             int maxVisits = clinic.getMaxPrimeVisits();
             int patients = 0;
@@ -142,6 +146,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                 throw new LimitationExceededException("Too many Patients at the same time");
             }
         }
+        visitLimitationHelper.checkCapacityForVisitBookingDetails(dto.getDate(), clinic, dto.getVisitId());
     }
 
     private void validateDate(PrimeVaccinationScheduleDto dto) {
