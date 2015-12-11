@@ -881,6 +881,25 @@
             $scope.exportInstanceWithUrl(url);
         };
 
+
+        $scope.print = function(source) {
+
+            var rowData;
+            rowData = $("#visitReschedule").getRowData(source);
+
+            var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
+            winPrint.onload = function() {
+                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
+                $('#location', winPrint.document).html(rowData.location);
+                $('#subjectId', winPrint.document).html(rowData.participantId);
+                $('#subjectName', winPrint.document).html(rowData.participantName);
+                $('#date', winPrint.document).html(rowData.plannedDate);
+
+                winPrint.focus();
+                winPrint.print();
+            }
+        };
+
     });
 
 }());

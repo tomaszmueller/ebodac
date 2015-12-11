@@ -480,6 +480,11 @@
 
         var gridDataExtension;
 
+        function createButton(id) {
+            return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="print(' +
+                               id + ')"><i class="fa fa-fw fa-print"></i></button>';
+        };
+
         function extendGrid(cellValue, options, rowObject) {
             var rowExtraData = {};
 
@@ -511,7 +516,8 @@
                         scope.msg("bookingApp.visitReschedule.visitType"),
                         scope.msg("bookingApp.visitReschedule.actualDate"),
                         scope.msg("bookingApp.visitReschedule.plannedDate"),
-                        scope.msg("bookingApp.startTime")],
+                        scope.msg("bookingApp.startTime"),
+                        ""],
                     colModel: [
                         {
                             name: "location",
@@ -540,9 +546,17 @@
                         },
                         {
                             name: "startTime"
+                        },
+                        {
+                            name: "print", align: "center", sortable: false, width: 40
                         }
-                    ],
+                        ],
                     gridComplete: function(){
+                        var ids = elem.getDataIDs();
+                        for(var i = 0; i < ids.length; i++){
+                            elem.setRowData(ids[i], {print: createButton(ids[i])})
+                        }
+                        $compile($('.printBtn'))(scope);
                         $('#visitRescheduleTable .ui-jqgrid-hdiv').addClass("table-lightblue");
                         $('#visitRescheduleTable .ui-jqgrid-btable').addClass("table-lightblue");
                     },
