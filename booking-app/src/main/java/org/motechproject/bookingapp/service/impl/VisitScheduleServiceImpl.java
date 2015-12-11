@@ -94,7 +94,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
             }
         } else {
             for (Visit visit : subject.getVisits()) {
-                if (visit.getMotechProjectedDate() != null) {
+                if (visit.getMotechProjectedDate() != null && !visit.getType().equals(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT)) {
                     plannedDates.put(visit.getType().toString(), visit.getMotechProjectedDate().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
                 }
             }
@@ -138,7 +138,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
                 details.setBookingActualDate(primeVaccinationDate);
                 detailsList.add(details);
                 primeVacDetails = details;
-            } else if (!VisitType.UNSCHEDULED_VISIT.equals(details.getVisit().getType())) {
+            } else if (!VisitType.UNSCHEDULED_VISIT.equals(details.getVisit().getType()) && !VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT.equals(details.getVisit().getType())) {
                 details.setBookingPlannedDate(primeVaccinationDate.plusDays(offsetMap.get(details.getVisit().getType()).getTimeOffset()));
                 detailsList.add(details);
             }
