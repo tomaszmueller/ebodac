@@ -115,6 +115,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         List<VisitBookingDetails> visits = visitBookingDetailsDataService.findByBookingPlannedDateClinicIdAndVisitType(dto.getDate(),
                 clinic.getId(), VisitType.PRIME_VACCINATION_DAY);
 
+        visitLimitationHelper.checkCapacityForVisitBookingDetails(dto.getDate(), clinic, dto.getVisitId());
         if (visits != null) {
             int numberOfRooms = clinic.getNumberOfRooms();
             int maxVisits = clinic.getMaxPrimeVisits();
@@ -146,7 +147,6 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                 throw new LimitationExceededException("Too many Patients at the same time");
             }
         }
-        visitLimitationHelper.checkCapacityForVisitBookingDetails(dto.getDate(), clinic, dto.getVisitId());
     }
 
     private void validateDate(PrimeVaccinationScheduleDto dto) {

@@ -103,6 +103,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         Time endTime = calculateEndTime(startTime);
 
         if (!ignoreLimitation) {
+            visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
             List<Screening> screeningList = screeningDataService.findByDateAndClinicId(date, clinic.getId());
 
             if (screeningList != null) {
@@ -133,7 +134,6 @@ public class ScreeningServiceImpl implements ScreeningService {
                     throw new LimitationExceededException("Too many Patients at the same time");
                 }
             }
-            visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
         }
 
         screening.setDate(date);
