@@ -29,15 +29,11 @@ public class PrimeVaccinationScheduleDto {
 
     private LocalDate actualScreeningDate;
 
+    private LocalDate bookingScreeningActualDate;
+
     private LocalDate date;
 
     private Time startTime;
-
-    private Time endTime;
-
-    private Long siteId;
-
-    private Long clinicId;
 
     private Long visitId;
 
@@ -46,26 +42,30 @@ public class PrimeVaccinationScheduleDto {
 
     public PrimeVaccinationScheduleDto(VisitBookingDetails details) {
 
-        LocalDate screeningDate = null;
         for (Visit visit : details.getSubject().getVisits()) {
             if (VisitType.SCREENING.equals(visit.getType())) {
-                screeningDate = visit.getDate();
+                setActualScreeningDate(visit.getDate());
+                break;
+            }
+        }
+        for (VisitBookingDetails bookingDetails : details.getSubjectBookingDetails().getVisitBookingDetailsList()) {
+            if (VisitType.SCREENING.equals(bookingDetails.getVisit().getType())) {
+                setBookingScreeningActualDate(bookingDetails.getBookingActualDate());
+                break;
             }
         }
 
-        setActualScreeningDate(screeningDate);
         setStartTime(details.getStartTime());
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
-        setClinicId(details.getClinic().getId());
-        setSiteId(details.getClinic().getSite().getId());
         setDate(details.getBookingPlannedDate());
-        setFemaleChildBearingAge(details.getFemaleChildBearingAge());
+        setFemaleChildBearingAge(details.getSubjectBookingDetails().getFemaleChildBearingAge());
         setVisitBookingDetailsId(details.getId());
-        setEndTime(details.getEndTime());
-        setLocation(details.getClinic().getSite().getSiteId() + " - " + details.getClinic().getLocation());
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
+        if (details.getClinic() != null) {
+            setLocation(details.getClinic().getLocation());
+        }
     }
 
     public Long getVisitBookingDetailsId() {
@@ -129,6 +129,16 @@ public class PrimeVaccinationScheduleDto {
     }
 
     @JsonSerialize(using = CustomDateSerializer.class)
+    public LocalDate getBookingScreeningActualDate() {
+        return bookingScreeningActualDate;
+    }
+
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    public void setBookingScreeningActualDate(LocalDate bookingScreeningActualDate) {
+        this.bookingScreeningActualDate = bookingScreeningActualDate;
+    }
+
+    @JsonSerialize(using = CustomDateSerializer.class)
     public LocalDate getDate() {
         return date;
     }
@@ -145,31 +155,6 @@ public class PrimeVaccinationScheduleDto {
 
     public void setStartTime(Time startTime) {
         this.startTime = startTime;
-    }
-
-    @JsonSerialize(using = CustomTimeSerializer.class)
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
-    }
-
-    public Long getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Long clinicId) {
-        this.clinicId = clinicId;
     }
 
     public Long getVisitId() {

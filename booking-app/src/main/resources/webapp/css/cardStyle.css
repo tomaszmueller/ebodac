@@ -1,25 +1,38 @@
-table {
-    border-collapse: collapse;
-}
 
-table, th, td {
+.content {
+    width: 100%;
     border: 1px solid black;
     text-align: center;
+    border-collapse: collapse;
+
 }
 
-table {
+.content td{
+    padding: 5px;
+    border: 1px solid black;
+}
+.content th {
+    padding: 5px;
+    height: 30px;
+    box-shadow: 0 0 0 1000px gray inset;
+    border: 1px solid black;
+}
+
+#header {
     width: 100%;
 }
 
-th {
-    height: 30px;
-    box-shadow: 0 0 0 1000px gray inset;
+#header td{
+    width: 50%;
 }
 
 img {
-    margin: 15px;
+    margin: 5px;
+    height: 300px;
+    width: 90%;
+
 }
 
-th, td {
-    padding: 5px;
+h3 {
+    font-size: 1.5em;
 }

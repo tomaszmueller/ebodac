@@ -3,39 +3,12 @@
 
     var directives = angular.module('bookingApp.directives', []);
 
-    function calculateRange(parser, forDate, femaleChildBearingAge) {
-        var range = {};
-
-        if (femaleChildBearingAge == "Yes") {
-            range.min = parser(forDate, 14);
-        } else {
-            range.min = parser(forDate, 1);
+    function handleUndefined(value) {
+        if (value == undefined) {
+            value = "";
         }
-
-        range.max = parser(forDate, 28);
-
-        return range;
+        return value;
     };
-
-    directives.directive('set', function() {
-        return {
-            restrict: 'A',
-            scope: {
-                set: '@'
-            },
-            require: 'ngModel',
-            link: function(scope, element, attrs, ngModel) {
-
-                var field = attrs.ngModel.substr(attrs.ngModel.lastIndexOf('.') + 1).split('I')[0] + "s";
-
-                scope.$watch("$parent." + attrs.ngModel, function (id) {
-                    if (id) {
-                        scope.$parent[scope.set] = scope.$parent.findById(scope.$parent[field], id)[scope.set];
-                    }
-                });
-            }
-        };
-    });
 
     directives.directive('gridReloadTrigger', function() {
         return {
@@ -43,22 +16,7 @@
             require: 'ngModel',
             link: function(scope, element, attrs) {
                 scope.$watch("$parent." + attrs.ngModel, function () {
-                    $("#screenings").trigger('reloadGrid');
-                });
-            }
-        };
-    });
-
-    directives.directive('rangeRefresher', function() {
-        return {
-            restrict: 'A',
-            scope: {
-                forDate: '@'
-            },
-            require: 'ngModel',
-            link: function(scope, element, attrs) {
-                scope.$watch("$parent." + attrs.ngModel, function (value) {
-                    scope.$parent.form.range = calculateRange(scope.$parent.parseDate, scope.forDate, value);
+                    $(".booking-app-grid").trigger('reloadGrid');
                 });
             }
         };
@@ -127,13 +85,6 @@
                                id + ')"><i class="fa fa-fw fa-print"></i></button>';
         };
 
-        function handleUndefined(value) {
-            if (value == undefined) {
-                value = "";
-            }
-            return value;
-        }
-
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -145,24 +96,15 @@
                     mtype: "GET",
                     colNames: [
                         scope.msg("bookingApp.screening.bookingId"),
-                        scope.msg("bookingApp.screening.volunteerName"),
-                        scope.msg("bookingApp.siteId"),
-                        scope.msg("bookingApp.clinic"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime"),
                         ""],
                     colModel: [
-                        { name: "id" },
-                        { name: "volunteer.name" },
-                        {
-                            name: "site.siteId",
-                            index: 'clinic.site.siteId'
-                        },
+                        { name: "volunteer.id" },
                         { name: "clinic.location" },
                         { name: "date" },
                         { name: "startTime" },
-                        { name: "endTime" },
                         { name: "print", align: "center", sortable: false, width: 40}
                     ],
                     gridComplete: function() {
@@ -201,9 +143,140 @@
                         return false;
                     },
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 7) {
+                        if (iCol !== 4) {
                             scope.editScreening(id);
                         }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+
+            }
+        };
+    });
+
+    directives.directive('unscheduledVisitGrid', function ($compile) {
+
+        var gridDataExtension;
+
+        function extendGrid(cellValue, options, rowObject) {
+            var rowExtraData = {};
+
+            rowExtraData.id = rowObject.id;
+            rowExtraData.siteId = rowObject.siteId;
+
+            gridDataExtension[options.rowId] = rowExtraData;
+
+            return cellValue;
+        }
+
+        function createButton(id) {
+            return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="printFrom(' +
+                               id + ')"><i class="fa fa-fw fa-print"></i></button>';
+        };
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/unscheduledVisits",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.uncheduledVisit.participantId"),
+                        scope.msg("bookingApp.location"),
+                        scope.msg("bookingApp.date"),
+                        scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.uncheduledVisit.purpose"),
+                        ""],
+                    colModel: [
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "clinicName",
+                            index: 'clinic.location'
+                        },
+                        {
+                            name: "date"
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "purpose"
+                        },
+                        {
+                            name: "print",
+                            align: "center",
+                            sortable: false,
+                            width: 40
+                        }
+                    ],
+                    gridComplete: function() {
+                        var ids = elem.getDataIDs();
+                        for(var i = 0; i < ids.length; i++){
+                            elem.setRowData(ids[i], {print: createButton(ids[i])})
+                        }
+                        $compile($('.printBtn'))(scope);
+                        $('#unscheduledVisitTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#unscheduledVisitTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeRequest: function() {
+                        gridDataExtension = [];
+                    },
+                    onCellSelect: function(rowId, iCol, cellContent, e) {
+                        if (iCol !== 5) {
+                            var rowData = elem.getRowData(rowId),
+                                extraRowData = gridDataExtension[rowId];
+
+                            scope.newForm();
+                            scope.form.dto.id = extraRowData.id;
+                            scope.form.dto.participantId = rowData.participantId;
+                            scope.form.dto.date = rowData.date;
+                            scope.form.dto.startTime = rowData.startTime;
+                            scope.form.dto.purpose = rowData.purpose;
+                            scope.reloadSelects();
+                            $('#unscheduledVisitModal').modal('show');
+                        }
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
+                    },
+                    beforeSelectRow: function() {
+                        return false;
                     }
                 });
 
@@ -235,7 +308,6 @@
 
             rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
             rowExtraData.siteId = rowObject.siteId;
-            rowExtraData.clinicId = rowObject.clinicId;
             rowExtraData.visitId = rowObject.visitId;
             rowExtraData.participantGender = rowObject.participantGender;
 
@@ -254,24 +326,49 @@
                     datatype: "json",
                     mtype: "GET",
                     colNames: [
-                        scope.msg("bookingApp.primeVaccination.location"),
+                        scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.primeVaccination.participantId"),
                         scope.msg("bookingApp.primeVaccination.participantName"),
                         scope.msg("bookingApp.primeVaccination.femaleChildBearingAge"),
                         scope.msg("bookingApp.primeVaccination.screeningActualDate"),
                         scope.msg("bookingApp.primeVaccination.primeVacDate"),
                         scope.msg("bookingApp.startTime"),
-                        scope.msg("bookingApp.endTime"), ""],
+                        ""],
                     colModel: [
-                        { name: "location" },
-                        { name: "participantId", formatter: extendGrid },
-                        { name: "participantName", },
-                        { name: "femaleChildBearingAge" },
-                        { name: "actualScreeningDate" },
-                        { name: "date" },
-                        { name: "startTime" },
-                        { name: "endTime" },
-                        { name: "print", align: "center", sortable: false, width: 40}
+                        {
+                            name: "location",
+                            index: 'clinic.location'
+                        },
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "participantName",
+                            index: 'subject.name'
+                        },
+                        {
+                            name: "femaleChildBearingAge",
+                            index: 'subjectBookingDetails.femaleChildBearingAge'
+                        },
+                        {
+                            name: "bookingScreeningActualDate",
+                            sortable: false
+                        },
+                        {
+                            name: "date",
+                            index: 'bookingPlannedDate'
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "print",
+                            align: "center",
+                            sortable: false,
+                            width: 40
+                        }
                     ],
                     gridComplete: function(){
                         var ids = elem.getDataIDs();
@@ -285,6 +382,10 @@
                     pager: "#pager",
                     rowNum: 50,
                     rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
                     sortname: null,
                     sortorder: "desc",
                     viewrecords: true,
@@ -297,27 +398,36 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        if (iCol !== 8) {
+                        if (iCol !== 7) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
 
-                            scope.newForm();
+                            scope.newForm("edit");
                             scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
                             scope.form.dto.participantId = rowData.participantId;
                             scope.form.dto.participantName = rowData.participantName;
                             scope.form.dto.femaleChildBearingAge = rowData.femaleChildBearingAge;
                             scope.form.dto.actualScreeningDate = rowData.actualScreeningDate;
+                            scope.form.dto.bookingScreeningActualDate = rowData.bookingScreeningActualDate;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.endTime = rowData.endTime;
-                            scope.form.dto.siteId = extraRowData.siteId;
-                            scope.form.dto.clinicId = extraRowData.clinicId;
                             scope.form.dto.visitId = extraRowData.visitId;
                             scope.form.dto.participantGender = extraRowData.participantGender;
-                            scope.form.range = calculateRange(scope.parseDate, scope.form.dto.actualScreeningDate,
+                            scope.form.range = scope.calculateRange(scope.form.dto.bookingScreeningActualDate,
                                 scope.form.dto.femaleChildBearingAge);
                             scope.reloadSelects();
                             $('#primeVaccinationScheduleModal').modal('show');
+                        }
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
                         }
                     }
                 });
@@ -334,4 +444,220 @@
             }
         };
     });
+
+    directives.directive('visitRescheduleGrid', function ($compile) {
+
+        var gridDataExtension;
+
+        function createButton(id) {
+            return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="print(' +
+                               id + ')"><i class="fa fa-fw fa-print"></i></button>';
+        };
+
+        function extendGrid(cellValue, options, rowObject) {
+            var rowExtraData = {};
+
+            rowExtraData.siteId = rowObject.siteId;
+            rowExtraData.visitId = rowObject.visitId;
+            rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
+            rowExtraData.earliestDate = rowObject.earliestDate;
+            rowExtraData.latestDate = rowObject.latestDate;
+
+            gridDataExtension[options.rowId] = rowExtraData;
+
+            return cellValue;
+        }
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/visitReschedule",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.location"),
+                        scope.msg("bookingApp.visitReschedule.participantId"),
+                        scope.msg("bookingApp.visitReschedule.participantName"),
+                        scope.msg("bookingApp.visitReschedule.visitType"),
+                        scope.msg("bookingApp.visitReschedule.actualDate"),
+                        scope.msg("bookingApp.visitReschedule.plannedDate"),
+                        scope.msg("bookingApp.startTime"),
+                        ""],
+                    colModel: [
+                        {
+                            name: "location",
+                            index: 'clinic.location'
+                        },
+                        {
+                            name: "participantId",
+                            formatter: extendGrid,
+                            index: 'subject.subjectId'
+                        },
+                        {
+                            name: "participantName",
+                            index: 'subject.name'
+                        },
+                        {
+                            name: "visitType",
+                            index: 'visit.type'
+                        },
+                        {
+                            name: "actualDate",
+                            index: 'visit.date'
+                        },
+                        {
+                            name: "plannedDate",
+                            index: 'visit.motechProjectedDate'
+                        },
+                        {
+                            name: "startTime"
+                        },
+                        {
+                            name: "print", align: "center", sortable: false, width: 40
+                        }
+                        ],
+                    gridComplete: function(){
+                        var ids = elem.getDataIDs();
+                        for(var i = 0; i < ids.length; i++){
+                            elem.setRowData(ids[i], {print: createButton(ids[i])})
+                        }
+                        $compile($('.printBtn'))(scope);
+                        $('#visitRescheduleTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#visitRescheduleTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeSelectRow: function() {
+                        return false;
+                    },
+                    beforeRequest: function() {
+                        gridDataExtension = [];
+                    },
+                    onCellSelect: function(rowId, iCol, cellContent, e) {
+                        var rowData = elem.getRowData(rowId),
+                            extraRowData = gridDataExtension[rowId];
+
+                        if ((rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "")
+                            && extraRowData.earliestDate !== undefined && extraRowData.earliestDate !== null && extraRowData.earliestDate !== "") {
+                            scope.newForm();
+                            scope.form.dto.participantId = rowData.participantId;
+                            scope.form.dto.participantName = rowData.participantName;
+                            scope.form.dto.visitType = rowData.visitType;
+                            scope.form.dto.plannedDate = rowData.plannedDate;
+                            scope.form.dto.startTime = rowData.startTime;
+                            scope.form.dto.visitId = extraRowData.visitId;
+                            scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
+                            scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
+                            scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
+                            $('#visitRescheduleModal').modal('show');
+                        }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
+    directives.directive('capacityInfoGrid', function ($compile) {
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/capacity/getCapacityInfo",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.capacityInfo.clinic"),
+                        scope.msg("bookingApp.capacityInfo.maxCapacity"),
+                        scope.msg("bookingApp.capacityInfo.availableCapacity"),
+                        scope.msg("bookingApp.capacityInfo.screeningSlotRemaining"),
+                        scope.msg("bookingApp.capacityInfo.vaccineSlotRemaining")],
+                    colModel: [
+                        {
+                            name: "clinic",
+                            index: 'location'
+                        },
+                        {
+                            name: "maxCapacity",
+                            index: 'maxCapacityByDay'
+                        },
+                        {
+                            name: "availableCapacity",
+                            sortable: false
+                        },
+                        {
+                            name: "screeningSlotRemaining",
+                            sortable: false
+                        },
+                        {
+                            name: "vaccineSlotRemaining",
+                            sortable: false
+                        }
+                    ],
+                    gridComplete: function(){
+                        $('#capacityInfoTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#capacityInfoTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeSelectRow: function() {
+                        return false;
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
 }());

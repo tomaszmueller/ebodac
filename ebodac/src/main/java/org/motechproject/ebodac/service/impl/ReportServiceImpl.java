@@ -211,7 +211,7 @@ public class ReportServiceImpl implements ReportService {
 
         int peopleBoostered = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
 
-        ReportBoosterVaccination existingReport = boosterVaccinationDataService.findReportByDate(date);
+        ReportBoosterVaccination existingReport = boosterVaccinationDataService.findByDate(date);
 
         if (existingReport != null) {
             existingReport.updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17,
@@ -266,7 +266,7 @@ public class ReportServiceImpl implements ReportService {
 
         int peopleVaccinated = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
 
-        ReportPrimerVaccination existingReport = primerVaccinationDataService.findReportByDate(date);
+        ReportPrimerVaccination existingReport = primerVaccinationDataService.findByDate(date);
 
         if (existingReport != null) {
             existingReport.updateReportData(adultMales, adultFemales, childrenFrom1To5, childrenFrom6To11, childrenFrom12To17,
@@ -423,7 +423,7 @@ public class ReportServiceImpl implements ReportService {
         }
 
         for (Subject subject : subjects) {
-            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findReportByProviderCallIdAndSubjectId(providerCallId, subject.getSubjectId());
+            IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.findByProviderCallIdAndSubjectId(providerCallId, subject.getSubjectId());
             if (ivrAndSmsStatisticReport == null) {
                 ivrAndSmsStatisticReport = new IvrAndSmsStatisticReport(providerCallId, subject, messageId, sendDate,
                         expectedDuration, timeListenedTo, messagePercentListened, receivedDate, attempts, sms, smsFailed, smsReceivedDate);

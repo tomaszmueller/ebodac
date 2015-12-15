@@ -130,8 +130,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId("1");
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId("3");
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId("1");
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId("3");
 
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments1.getStatus());
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments2.getStatus());
@@ -150,8 +150,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertNull(subject3.getLanguage());
         assertNotNull(subject3.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId("1");
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId("3");
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId("1");
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId("3");
 
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments1.getStatus());
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments2.getStatus());
@@ -181,8 +181,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -213,8 +213,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject1.getPhoneNumber());
         assertEquals("987654321", subject2.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -254,8 +254,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -286,8 +286,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("987654321", subject1.getPhoneNumber());
         assertEquals("123456789", subject2.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -329,9 +329,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -371,9 +371,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("987654321", subject2.getPhoneNumber());
         assertEquals("987654321", subject3.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -421,9 +421,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -463,9 +463,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject2.getPhoneNumber());
         assertEquals("987654321", subject3.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments2 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject2.getSubjectId());
-        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -510,8 +510,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        SubjectEnrollments subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
         assertNull(subjectEnrollments1);
         assertNull(subjectEnrollments3);
 
@@ -529,8 +529,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertNotNull(subject3.getLanguage());
         assertNotNull(subject3.getPhoneNumber());
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject1.getSubjectId());
-        subjectEnrollments3 = subjectEnrollmentsDataService.findEnrollmentBySubjectId(subject3.getSubjectId());
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
+        subjectEnrollments3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId());
         assertNotNull(subjectEnrollments1);
         assertNotNull(subjectEnrollments3);
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments1.getStatus());

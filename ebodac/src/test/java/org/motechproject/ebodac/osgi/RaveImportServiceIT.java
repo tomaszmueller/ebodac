@@ -89,7 +89,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(29, visits.size());
 
-        assertEquals(2, visitDataService.findVisitsByType(VisitType.UNSCHEDULED_VISIT).size());
+        assertEquals(2, visitDataService.findByType(VisitType.UNSCHEDULED_VISIT).size());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1000000161");
+        Subject subject = subjectDataService.findBySubjectId("1000000161");
 
         assertEquals(beforeUpdate.getSubjectId(), subject.getSubjectId());
         assertEquals(beforeUpdate.getName(), subject.getName());
@@ -147,7 +147,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        Subject subject = subjectDataService.findSubjectBySubjectId("1000000161");
+        Subject subject = subjectDataService.findBySubjectId("1000000161");
 
         assertEquals("B05-SL10001", subject.getSiteId());
         assertEquals("1000000161",  subject.getSubjectId());
@@ -159,7 +159,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(LocalDate.parse("2015-07-05", formatter), subject.getDateOfDisconVac()); // firstly 2015-07-06 then changed to 2015-07-05
         assertEquals(LocalDate.parse("2015-06-21", formatter), subject.getDateOfDisconStd());
 
-        subject = subjectDataService.findSubjectBySubjectId("1000000646");
+        subject = subjectDataService.findBySubjectId("1000000646");
 
         assertEquals("B05-SL10001", subject.getSiteId());
         assertEquals("1000000646", subject.getSubjectId());

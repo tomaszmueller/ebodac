@@ -4,18 +4,19 @@ import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.ScreeningDto;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
+import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.VolunteerDataService;
 import org.motechproject.bookingapp.service.ScreeningService;
 import org.motechproject.bookingapp.util.ScreeningValidator;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
-import org.motechproject.commons.api.Range;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
@@ -23,7 +24,6 @@ import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -43,21 +43,17 @@ public class ScreeningServiceImpl implements ScreeningService {
     private ClinicDataService clinicDataService;
 
     @Autowired
+    private VisitLimitationHelper visitLimitationHelper;
+
+    @Autowired
     private LookupService lookupService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    @Transactional
     public Records<Screening> getScreenings(BookingGridSettings bookingGridSettings) throws IOException {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(bookingGridSettings, getFields(bookingGridSettings.getFields()));
-        Records<Screening> screeningRecords = lookupService.getEntities(Screening.class, bookingGridSettings.getLookup(), bookingGridSettings.getFields(), queryParams);
-        return screeningRecords;
-    }
-
-    @Override
-    public long countScreeningsForDateRange(Range<LocalDate> range) {
-        return screeningDataService.countFindByDate(range);
+        return lookupService.getEntities(Screening.class, bookingGridSettings.getLookup(), bookingGridSettings.getFields(), queryParams);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         ScreeningValidator.validateForAdd(screeningDto);
 
         Screening screening = new Screening();
-        screening.setVolunteer(volunteerDataService.create(new Volunteer(screeningDto.getVolunteerName())));
+        screening.setVolunteer(volunteerDataService.create(new Volunteer()));
         checkNumberOfPatientsAndSetScreeningData(screeningDto, screening, ignoreLimitation);
 
         return screeningDataService.create(screening);
@@ -90,14 +86,12 @@ public class ScreeningServiceImpl implements ScreeningService {
 
         Validate.notNull(screening, String.format("Screening with id \"%s\" doesn't exist!", screeningId));
 
-        screening.getVolunteer().setName(screeningDto.getVolunteerName());
         checkNumberOfPatientsAndSetScreeningData(screeningDto, screening, ignoreLimitation);
 
         return screeningDataService.update(screening);
     }
 
     @Override
-    @Transactional
     public ScreeningDto getScreeningById(Long id) {
         return screeningDataService.findById(id).toDto();
     }
@@ -106,14 +100,15 @@ public class ScreeningServiceImpl implements ScreeningService {
         Clinic clinic = clinicDataService.findById(Long.parseLong(screeningDto.getClinicId()));
         LocalDate date = LocalDate.parse(screeningDto.getDate());
         Time startTime = Time.valueOf(screeningDto.getStartTime());
-        Time endTime = Time.valueOf(screeningDto.getEndTime());
+        Time endTime = calculateEndTime(startTime);
 
         if (!ignoreLimitation) {
+            visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
             List<Screening> screeningList = screeningDataService.findByDateAndClinicId(date, clinic.getId());
 
             if (screeningList != null) {
                 int numberOfRooms = clinic.getNumberOfRooms();
-                int maxVisits = clinic.getMaxScreeningVisits() * numberOfRooms;
+                int maxVisits = clinic.getMaxScreeningVisits();
                 int patients = 0;
 
                 for (Screening s : screeningList) {
@@ -151,7 +146,12 @@ public class ScreeningServiceImpl implements ScreeningService {
         if (json == null) {
             return null;
         } else {
-            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(json, new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
+    }
+
+    private Time calculateEndTime(Time startTime) {
+        int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
+        return new Time(endTimeHour, startTime.getMinute());
     }
 }

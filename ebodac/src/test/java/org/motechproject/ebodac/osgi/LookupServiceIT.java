@@ -165,14 +165,14 @@ public class LookupServiceIT extends BasePaxIT {
 
         };
         String []lookups = {
-                "Find Visits By Type",
-                "Find Visits By Participant Id",
-                "Find Visits By Participant Address",
-                "Find Visits By Participant Name",
-                "Find Visits By Planned Visit Date Range And Type",
-                "Find Visits By Planned Visit Date Range",
-                "Find Visits By Planned Visit Date And Type",
-                "Find Visits By Planned Visit Date"
+                "Find By Type",
+                "Find By Participant Id",
+                "Find By Participant Address",
+                "Find By Participant Name",
+                "Find By Planned Visit Date Range And Type",
+                "Find By Planned Visit Date Range",
+                "Find By Planned Visit Date And Type",
+                "Find By Planned Visit Date"
         };
         int []expectedResults = {2, 2, 4, 2, 2, 3, 2, 2};
 
@@ -200,12 +200,12 @@ public class LookupServiceIT extends BasePaxIT {
                 "{\"address\":\"address\"}"
         };
         String []lookups = {
-                "Find Participants By Primer Vaccination Date",
-                "Find Participants By Booster Vaccination Date Range",
-                "Find Participants By Name",
-                "Find Participants By Booster Vaccination Date",
-                "Find Participants By Modified",
-                "Find Participants By Address",
+                "Find By Primer Vaccination Date",
+                "Find By Booster Vaccination Date Range",
+                "Find By Name",
+                "Find By Booster Vaccination Date",
+                "Find By Modified",
+                "Find By Address",
         };
         int []expectedResults = {1, 2, 1, 1, 2, 2};
 
@@ -229,8 +229,8 @@ public class LookupServiceIT extends BasePaxIT {
                     "{\"date\":\"2014-10-16\"}",
             };
             String[] lookups = {
-                    "Find Reports By Date Range",
-                    "Find Report By Date"
+                    "Find By Date Range",
+                    "Find By Date"
             };
             int[] expectedResults = {4, 1};
 
@@ -245,7 +245,6 @@ public class LookupServiceIT extends BasePaxIT {
         }
     }
 
-
     @Test
     public void shouldGetReportBoosterEntitiesFromLookup() throws IOException {
         try {
@@ -256,8 +255,8 @@ public class LookupServiceIT extends BasePaxIT {
                     "{\"date\":\"2014-10-19\"}",
             };
             String[] lookups = {
-                    "Find Reports By Date Range",
-                    "Find Report By Date"
+                    "Find By Date Range",
+                    "Find By Date"
             };
             int[] expectedResults = {3, 1};
 
@@ -285,13 +284,13 @@ public class LookupServiceIT extends BasePaxIT {
                 "{\"subject.community\":\"community\"}"
         };
         String []lookups = {
-                "Find Visits By Participant Name",
-                "Find Visits By Participant Address",
-                "Find Visits By Planned Visit Date Range And Type",
-                "Find Visits By Planned Visit Date Range",
-                "Find Visits By Planned Visit Date And Type",
-                "Find Visits By Planned Visit Date",
-                "Find Visits By Participant Community"
+                "Find By Participant Name",
+                "Find By Participant Address",
+                "Find By Planned Visit Date Range And Type",
+                "Find By Planned Visit Date Range",
+                "Find By Planned Visit Date And Type",
+                "Find By Planned Visit Date",
+                "Find By Participant Community"
         };
         int []expectedResults = {2, 4, 2, 3, 2, 2, 4};
 

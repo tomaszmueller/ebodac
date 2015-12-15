@@ -14,11 +14,11 @@ import org.motechproject.mds.service.MotechDataService;
 public interface VotoMessageDataService extends MotechDataService<VotoMessage> {
 
     @Lookup
-    VotoMessage findVotoMessageByMessageKey(@LookupField(name = "messageKey") String messageKey);
+    VotoMessage findByMessageKey(@LookupField(name = "messageKey") String messageKey);
 
     @Lookup
-    VotoMessage findVotoMessageByIvrId(@LookupField(name = "votoIvrId") String votoIvrId);
+    VotoMessage findByIvrId(@LookupField(name = "votoIvrId") String votoIvrId);
 
     @Lookup
-    VotoMessage findVotoMessageBySmsId(@LookupField(name = "votoSmsId") String votoSmsId);
+    VotoMessage findBySmsId(@LookupField(name = "votoSmsId") String votoSmsId);
 }

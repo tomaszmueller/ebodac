@@ -4,12 +4,9 @@ public class ScreeningDto {
 
     private String id;
     private String volunteerId;
-    private String volunteerName;
-    private String siteId;
     private String clinicId;
     private String date;
     private String startTime;
-    private String endTime;
 
     public String getId() {
         return id;
@@ -25,22 +22,6 @@ public class ScreeningDto {
 
     public void setVolunteerId(String volunteerId) {
         this.volunteerId = volunteerId;
-    }
-
-    public String getVolunteerName() {
-        return volunteerName;
-    }
-
-    public void setVolunteerName(String volunteerName) {
-        this.volunteerName = volunteerName;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
     }
 
     public String getClinicId() {
@@ -65,13 +46,5 @@ public class ScreeningDto {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 }

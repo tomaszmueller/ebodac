@@ -1,17 +1,26 @@
 package org.motechproject.ebodac.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.ReportUpdateService;
 import org.motechproject.ebodac.service.SubjectService;
+import org.motechproject.event.MotechEvent;
+import org.motechproject.event.listener.EventRelay;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the {@link org.motechproject.ebodac.service.SubjectService} interface. Uses
@@ -24,10 +33,16 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectDataService subjectDataService;
 
     @Autowired
+    private VisitDataService visitDataService;
+
+    @Autowired
     private ReportUpdateService reportUpdateService;
 
     @Autowired
     private EbodacEnrollmentService ebodacEnrollmentService;
+
+    @Autowired
+    private EventRelay eventRelay;
 
     @Override
     public Subject createOrUpdateForZetes(Subject newSubject) {
@@ -40,6 +55,11 @@ public class SubjectServiceImpl implements SubjectService {
             if (subjectInDb.equalsForZetes(newSubject)) {
                 return subjectInDb;
             }
+
+            if (StringUtils.isNotBlank(newSubject.getSiteId()) && !newSubject.getSiteId().equals(subjectInDb.getSiteId())) {
+                sendSiteIdChangedEvent(newSubject.getSubjectId(), newSubject.getSiteId());
+            }
+
             subjectInDb.setName(newSubject.getName());
             subjectInDb.setHouseholdName(newSubject.getHouseholdName());
             subjectInDb.setPhoneNumber(newSubject.getPhoneNumber());
@@ -54,10 +74,19 @@ public class SubjectServiceImpl implements SubjectService {
 
             ebodacEnrollmentService.enrollSubject(subjectInDb);
 
-            return update(subjectInDb);
+            subjectInDb = update(subjectInDb);
         } else {
-            return create(newSubject);
+            subjectInDb = create(newSubject);
         }
+
+        for (VisitType visitType: VisitType.values()) {
+            if (!VisitType.UNSCHEDULED_VISIT.equals(visitType)) {
+                Visit visit = new Visit(visitType, subjectInDb);
+                visitDataService.create(visit);
+            }
+        }
+
+        return subjectInDb;
     }
 
     @Override
@@ -90,12 +119,12 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findSubjectByName(String name) {
-        return subjectDataService.findSubjectsByName(name);
+        return subjectDataService.findByName(name);
     }
 
     @Override
     public Subject findSubjectBySubjectId(String subjectId) {
-        return subjectDataService.findSubjectBySubjectId(subjectId);
+        return subjectDataService.findBySubjectId(subjectId);
     }
 
     @Override
@@ -105,7 +134,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findModifiedSubjects() {
-        return subjectDataService.findSubjectsByModified(true);
+        return subjectDataService.findByModified(true);
     }
 
     @Override
@@ -125,12 +154,12 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findSubjectsPrimerVaccinatedAtDay(LocalDate date) {
-        return subjectDataService.findSubjectsByPrimerVaccinationDate(date);
+        return subjectDataService.findByPrimerVaccinationDate(date);
     }
 
     @Override
     public List<Subject> findSubjectsBoosterVaccinatedAtDay(LocalDate date) {
-        return subjectDataService.findSubjectsByBoosterVaccinationDate(date);
+        return subjectDataService.findByBoosterVaccinationDate(date);
     }
 
     @Override
@@ -155,5 +184,13 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void deleteAll() {
         subjectDataService.deleteAll();
+    }
+
+    private void sendSiteIdChangedEvent(String subjectId, String siteId) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(EbodacConstants.SUBJECT_ID, subjectId);
+        parameters.put(EbodacConstants.SITE_ID, siteId);
+        MotechEvent motechEvent = new MotechEvent(EbodacConstants.SITE_ID_CHANGED_EVENT, parameters);
+        eventRelay.sendEventMessage(motechEvent);
     }
 }

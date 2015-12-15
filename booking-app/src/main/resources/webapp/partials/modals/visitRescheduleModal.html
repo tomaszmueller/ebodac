@@ -1,0 +1,46 @@
+<div class="modal fade" id="visitRescheduleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{msg('bookingApp.visitReschedule.update')}}</h4>
+            </div>
+            <div ng-if="form.dto">
+                <div class="modal-body visit-reschedule-modal-body">
+                    <div class="booking-app input-group">
+                        <span class="left left input-group-addon">{{msg('bookingApp.visitReschedule.participantName')}}</span>
+                        <div class="form-control">{{form.dto.participantName}}</div>
+                    </div>
+                    <div class="booking-app input-group">
+                        <span class="left input-group-addon">{{msg('bookingApp.visitReschedule.plannedDate')}}</span>
+                        <input type="text" class="form-control datepicker" readonly='true' booking-app-date-picker min="form.dto.minDate" max="form.dto.maxDate" placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.plannedDate">
+                        <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.plannedDate === '', 'alert-success': form.dto.plannedDate}"><i class="fa fa-fw fa-check"></i></span>
+                    </div>
+                    <div class="booking-app input-group">
+                        <span class="left input-group-addon">{{msg('bookingApp.startTime')}}</span>
+                        <input type="text" class="form-control" mds-time-picker placeholder="{{msg('bookingApp.startTimePlaceholder')}}" ng-model="form.dto.startTime">
+                        <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.startTime === '', 'alert-success': form.dto.startTime}"><i class="fa fa-fw fa-check"></i></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-primary ng-binding" ng-disabled="!formIsFilled()" ng-click="saveVisitReschedule(false)">
+                            <i class="fa fa-fw fa-save"></i> {{msg('bookingApp.save')}}
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{msg('bookingApp.cancel')}}</button>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="!form.dto">
+                <div class="modal-body">
+                    {{msg('bookingApp.visitReschedule.updateSuccessful')}}
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{msg('bookingApp.close')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

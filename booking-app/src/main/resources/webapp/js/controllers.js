@@ -3,7 +3,167 @@
 
     var controllers = angular.module('bookingApp.controllers', []);
 
-    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites) {
+    controllers.controller('BookingAppUnscheduledVisitCtrl', function ($scope, $timeout, $http , ScreenedParticipants) {
+
+        $scope.getLookups("../booking-app/unscheduledVisits/getLookupsForUnscheduled");
+
+        $scope.participants = ScreenedParticipants.query();
+
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
+
+        $scope.newForm = function(type) {
+            $scope.form = {};
+            $scope.form.type = type;
+            $scope.form.dto = {};
+        };
+
+        $scope.addUnscheduled = function() {
+            $scope.newForm("add");
+            $('#unscheduledVisitModal').modal('show');
+            $scope.reloadSelects();
+        };
+
+        $scope.saveUnscheduledVisit = function(ignoreLimitation) {
+            function sendRequest() {
+                $http.post('../booking-app/unscheduledVisits/new/' + ignoreLimitation, $scope.form.dto)
+                    .success(function(data){
+                        if (data && (typeof(data) === 'string')) {
+                            jConfirm($scope.msg('bookingApp.uncheduledVisit.confirmMsg', data), $scope.msg('bookingApp.uncheduledVisit.confirmTitle'),
+                                function (response) {
+                                    if (response) {
+                                        $scope.saveUnscheduledVisit(true);
+                                    }
+                                });
+                        } else {
+                            $("#unscheduleVisit").trigger('reloadGrid');
+                            $scope.form.updated = data;
+                            $scope.form.dto = undefined;
+                        }
+                    })
+                    .error(function(response) {
+                        motechAlert('bookingApp.uncheduledVisit.scheduleError', 'bookingApp.error', response);
+                    });
+            }
+
+            if (ignoreLimitation) {
+                sendRequest();
+            } else {
+                motechConfirm("bookingApp.uncheduledVisit.confirm.shouldScheduleScreening", "bookingApp.confirm",
+                    function(confirmed) {
+                        sendRequest();
+                })
+            }
+        };
+
+        $scope.formIsFilled = function() {
+            return $scope.form
+                && $scope.form.dto
+                && $scope.form.dto.participantId
+                && $scope.form.dto.date
+                && $scope.form.dto.startTime;
+        };
+
+        $scope.reloadSelects = function() {
+            $timeout(function() {
+                $('#participantSelect').trigger('change');
+            });
+        };
+
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.clinicName);
+            $('#visitType', document).html('Unscheduled');
+            $('#participantId', document).html(rowData.participantId);
+            $('#scheduledDate', document).html(rowData.date);
+        };
+
+        $scope.printFrom = function(source) {
+
+            if (source === "updated") {
+                rowData = $scope.form.updated;
+            } else {
+                var rowData = jQuery("#unscheduledVisit").jqGrid ('getRowData', source);
+            }
+
+            var winPrint = window.open("../booking-app/resources/partials/card/unscheduledVisitCard.html");
+             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             	// iexplorer
+                 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                 };
+
+                 winPrint.onload = new function() { windowOnload(); } ;
+             } else {
+
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
+             }
+        };
+
+        $scope.exportInstance = function() {
+                    var sortColumn, sortDirection, url = "../booking-app/exportInstances/unscheduledVisits";
+                    url = url + "?outputFormat=" + $scope.exportFormat;
+                    url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+                    if ($scope.checkboxModel.exportWithFilter === true) {
+                        url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                        if ($scope.selectedFilter.startDate) {
+                            url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                        }
+
+                        if ($scope.selectedFilter.endDate) {
+                            url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                        }
+                    }
+
+                    if ($scope.checkboxModel.exportWithOrder === true) {
+                        sortColumn = $('#unscheduledVisit').getGridParam('sortname');
+                        sortDirection = $('#unscheduledVisit').getGridParam('sortorder');
+
+                        url = url + "&sortColumn=" + sortColumn;
+                        url = url + "&sortDirection=" + sortDirection;
+                    }
+
+                    $scope.exportInstanceWithUrl(url);
+                };
+    });
+
+    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, MDSUtils) {
+
+        $scope.filters = [{
+            name: $scope.msg('bookingApp.screening.today'),
+            dateFilter: "TODAY"
+        },{
+            name: $scope.msg('bookingApp.screening.tomorrow'),
+            dateFilter: "TOMORROW"
+        },{
+            name: $scope.msg('bookingApp.screening.nextThreeDays'),
+            dateFilter: "NEXT_THREE_DAYS"
+        },{
+            name: $scope.msg('bookingApp.screening.thisWeek'),
+            dateFilter: "THIS_WEEK"
+        },{
+            name: $scope.msg('bookingApp.screening.dateRange'),
+            dateFilter: "DATE_RANGE"
+        }];
+
+        $scope.selectedFilter = $scope.filters[0];
+
+        $scope.selectFilter = function(value) {
+            $scope.selectedFilter = $scope.filters[value];
+            if (value !== 4) {
+                $scope.refreshGrid();
+            }
+        };
 
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['pdf','xls'];
@@ -50,31 +210,11 @@
             });
         };
 
-        $scope.sites = Sites.query();
         $scope.screeningForPrint = {};
-
-        $scope.reloadSelects = function() {
-            $timeout(function() {
-                $('#siteSelect').trigger('change');
-                $('#clinicSelect').trigger('change');
-            });
-        };
-
-        $scope.findById = function(list, id) {
-            var i, parsedId = parseInt(id);
-
-            for (i = 0; i < list.length; i += 1) {
-                if (list[i].id === parsedId) {
-                    return list[i];
-                }
-            }
-
-            return undefined;
-        };
 
         $scope.parseTime = function(string) {
 
-            if (string === undefined || string === "") {
+            if (string === undefined || string === null || string === "") {
                 return string;
             }
 
@@ -86,16 +226,19 @@
 
             return time;
         };
-        
-        $scope.parseDate = function(date, offset) {
-            var parts = date.split('-'), date;
 
-            if (offset) {
-                date = new Date(parts[0], parts[1] - 1, parseInt(parts[2]) + offset);
-            } else {
-                date = new Date(parts[0], parts[1] - 1, parts[2]);
+        $scope.parseDate = function(date, offset) {
+            if (date !== undefined && date !== null) {
+                var parts = date.split('-'), date;
+
+                if (offset) {
+                    date = new Date(parts[0], parts[1] - 1, parseInt(parts[2]) + offset);
+                } else {
+                    date = new Date(parts[0], parts[1] - 1, parts[2]);
+                }
+                return date;
             }
-            return date;
+            return undefined;
         };
 
         $scope.isValidEndTime = function(startTimeString, endTimeString) {
@@ -103,7 +246,7 @@
             var startTime = $scope.parseTime(startTimeString),
                 endTime = $scope.parseTime(endTimeString);
 
-            if (startTime === undefined || endTime === undefined) {
+            if (startTime === undefined || startTime === null || endTime === undefined || endTime === null) {
                 return undefined;
             }
 
@@ -142,9 +285,13 @@
         $scope.lookupFields = [];
 
         $scope.getLookups = function(url) {
+            $scope.lookupBy = {};
+            $scope.selectedLookup = undefined;
+            $scope.lookupFields = [];
+
             $http.get(url)
             .success(function(data) {
-                        $scope.lookups = data;
+                $scope.lookups = data;
             });
         }
 
@@ -283,37 +430,26 @@
         };
     });
 
-    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Sites) {
+    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Clinics) {
 
         $scope.getLookups("../booking-app/screenings/getLookupsForScreening");
 
-        $scope.filters = [{
-            name: $scope.msg('bookingApp.screening.today'),
-            dateFilter: "TODAY"
-        },{
-            name: $scope.msg('bookingApp.screening.tomorrow'),
-            dateFilter: "TOMORROW"
-        },{
-            name: $scope.msg('bookingApp.screening.thisWeek'),
-            dateFilter: "THIS_WEEK"
-        },{
-            name: $scope.msg('bookingApp.screening.dateRange'),
-            dateFilter: "DATE_RANGE"
-        }];
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
 
-        $scope.selectedFilter = $scope.filters[0];
-
-        $scope.selectFilter = function(value) {
-            $scope.selectedFilter = $scope.filters[value];
-            if (value !== 3) {
-                $("#screenings").trigger('reloadGrid');
-            }
-        };
+        $scope.clinics = Clinics.query();
 
         $scope.newForm = function(type) {
             $scope.form = {};
             $scope.form.type = type;
             $scope.form.dto = {};
+        };
+
+        $scope.reloadSelects = function() {
+            $timeout(function() {
+                $('#clinicSelect').trigger('change');
+            });
         };
 
         $scope.addScreening = function() {
@@ -374,11 +510,9 @@
         $scope.formIsFilled = function() {
             return $scope.form
                 && $scope.form.dto
-                && $scope.form.dto.volunteerName
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
-                && $scope.form.dto.clinicId
+                && $scope.form.dto.clinicId;
         };
 
         $scope.exportInstance = function() {
@@ -409,27 +543,42 @@
             $scope.exportInstanceWithUrl(url);
         };
 
+        $scope.setPrintData = function(document, bookingId, date, location) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#bookingId', document).html(bookingId);
+            $('#screeningDate', document).html(date);
+            $('#location', document).html(location);
+        };
+
         $scope.printRow = function(id) {
 
             if(id >= 0) {
                 var rowData = jQuery("#screenings").jqGrid ('getRowData', id);
-                var bookingId = rowData['id'];
-                var volunteerName = rowData['volunteer.name'];
+                var bookingId = rowData['volunteer.id'];
                 var date = rowData['date'];
+                var location = rowData['clinic.location']
             } else {
                 var bookingId = $scope.screeningForPrint.volunteer.id;
-                var volunteerName =  $scope.screeningForPrint.volunteer.name;
                 var date = $scope.screeningForPrint.date;
+                var location = $scope.screeningForPrint.clinic.location;
             }
 
-            var winPrint = window.open("../booking-app/resources/partials/volunteerCardScreening.html");
-            winPrint.onload = function() {
-                $('#bookingId', winPrint.document).html(bookingId);
-                $('#volunteerName', winPrint.document).html(volunteerName);
-                $('#screeningDate', winPrint.document).html(date);
-
-                winPrint.focus();
-                winPrint.print();
+            var winPrint = window.open("../booking-app/resources/partials/card/screeningCard.html");
+            if (navigator.userAgent.indexOf(".NET4") > -1) {
+                // iexplorer
+                var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, bookingId, date, location);
+                    winPrint.focus();
+                    winPrint.print();
+                };
+                winPrint.onload = new function() { windowOnload(); } ;
+            } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, bookingId, date, location);
+                    winPrint.focus();
+                    winPrint.print();
+                }
             }
         }
     });
@@ -438,10 +587,44 @@
 
         $scope.getLookups("../booking-app/getLookupsForPrimeVaccinationSchedule");
 
-        $scope.newForm = function() {
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
+
+        $scope.form = {};
+        $scope.form.dto = undefined;
+
+        $scope.primeVacDtos = [];
+
+        $scope.getPrimeVacDtos = function() {
+            $http.get('../booking-app/getPrimeVacDtos')
+            .success(function(data) {
+                $scope.primeVacDtos = data;
+            });
+        }
+
+        $scope.newForm = function(type) {
             $scope.form = {};
             $scope.form.dto = {};
+            $scope.form.type = type;
         };
+
+        $scope.addPrimeVaccination = function() {
+            $scope.primeVacDtos = [];
+            $scope.getPrimeVacDtos();
+            $scope.newForm("add");
+            $timeout(function() {
+                $('#subjectIdSelect').trigger('change');
+            });
+            $('#primeVaccinationScheduleModal').modal('show');
+        };
+
+        $scope.subjectChanged = function() {
+            $scope.reloadSelects();
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, $scope.form.dto.femaleChildBearingAge);
+            }
+        }
 
         $scope.savePrimeVaccinationSchedule = function(ignoreLimitation) {
 
@@ -460,6 +643,7 @@
                                 });
                         } else {
                             $("#primeVaccinationSchedule").trigger('reloadGrid');
+                            $scope.form.updated = data;
                             $scope.form.dto = undefined;
                         }
                     })
@@ -480,18 +664,41 @@
 
         $scope.reloadSelects = function() {
             $timeout(function() {
-                $scope.$parent.reloadSelects();
                 $('#femaleChildBearingAgeSelect').trigger('change');
             });
         };
+
+        $scope.calculateRange = function(forDate, femaleChildBearingAge) {
+            var range = {};
+
+            if (femaleChildBearingAge == "Yes") {
+                range.min = $scope.parseDate(forDate, 14);
+            } else {
+                range.min = $scope.parseDate(forDate, 1);
+            }
+
+            range.max = $scope.parseDate(forDate, 28);
+
+            return range;
+        };
+
+        $scope.$watch('form.dto.femaleChildBearingAge', function (value) {
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, value);
+            }
+        });
+
+        $scope.$watch('form.dto.bookingScreeningActualDate', function (value) {
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange(value, $scope.form.dto.femaleChildBearingAge);
+            }
+        });
 
         $scope.formIsFilled = function() {
             return $scope.form
                 && $scope.form.dto
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId
-                && $scope.isValidEndTime($scope.form.dto.startTime, $scope.form.dto.endTime) === true
                 && ($scope.form.dto.participantGender == 'Female' ? $scope.form.dto.femaleChildBearingAge !== undefined : true);
         };
 
@@ -500,30 +707,66 @@
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
 
+            if ($scope.checkboxModel.exportWithFilter === true) {
+                url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                if ($scope.selectedFilter.startDate) {
+                    url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                }
+
+                if ($scope.selectedFilter.endDate) {
+                    url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                }
+            }
+
+            if ($scope.checkboxModel.exportWithOrder === true) {
+                sortColumn = $('#primeVaccinationSchedule').getGridParam('sortname');
+                sortDirection = $('#primeVaccinationSchedule').getGridParam('sortorder');
+
+                url = url + "&sortColumn=" + sortColumn;
+                url = url + "&sortDirection=" + sortDirection;
+            }
+
             $scope.exportInstanceWithUrl(url);
+        };
+
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.location);
+            $('#participantId', document).html(rowData.participantId);
+            $('#name', document).html(rowData.participantName);
+            $('#primeVaccinationDate', document).html(rowData.date);
+            $('#appointmentTime', document).html(rowData.startTime);
+            $('#location', document).html(rowData.location);
         };
 
         $scope.printCardFrom = function(source) {
 
             var rowData;
 
-            if(source === "updated") {
+            if (source === "updated") {
                 rowData = $scope.form.updated;
             } else {
                 rowData = $("#primeVaccinationSchedule").getRowData(source);
             }
 
-            var winPrint = window.open("../booking-app/resources/partials/primeVaccinationCard.html");
-            winPrint.onload = function() {
-                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
-                $('#location', winPrint.document).html(rowData.location);
-                $('#participantId', winPrint.document).html(rowData.participantId);
-                $('#name', winPrint.document).html(rowData.participantName);
-                $('#primeVaccinationDate', winPrint.document).html(rowData.date);
-                $('#appointmentTime', winPrint.document).html(rowData.startTime);
+            var winPrint = window.open("../booking-app/resources/partials/card/primeVaccinationCard.html");
+            if (navigator.userAgent.indexOf(".NET4") > -1) {
+                // iexplorer
+                 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                  };
 
-                winPrint.focus();
-                winPrint.print();
+                  winPrint.onload = new function() { windowOnload(); } ;
+            } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
             }
         };
     });
@@ -580,29 +823,35 @@
             });
         }
 
+        $scope.setPrintData = function(document) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#subjectId', document).html($scope.selectedSubject.subjectId);
+            $('#subjectName', document).html($scope.selectedSubject.name);
+            $('#primeVacFollowup', winPrint.document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
+            $('#location', document).html($scope.selectedSubject.location);
+        };
+
         $scope.print = function() {
             if ($scope.checkSubjectAndPrimeVacDate()) {
-                var winPrint = window.open("../booking-app/resources/partials/visitScheduleCard.html");
+                var winPrint = window.open("../booking-app/resources/partials/card/visitScheduleCard.html");
+                if (navigator.userAgent.indexOf(".NET4") > -1) {
+                    // iexplorer
+                     var windowOnload = winPrint.onload || function() {
+                        $scope.setPrintData(winPrint.document);
+                        winPrint.focus();
+                        winPrint.print();
+                     };
 
+                     winPrint.onload = new function() { windowOnload(); } ;
+                }
                 winPrint.onload = function() {
-                    $('#versionDate', winPrint.document).html($filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
-                    $('#subjectId', winPrint.document).html($scope.selectedSubject.subjectId);
-                    $('#subjectName', winPrint.document).html($scope.selectedSubject.name);
-                    $('#primeActualDate', winPrint.document).html($scope.primeVac.date);
-                    $('#primeVacFollowup', winPrint.document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
-                    $('#boostVacDay', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_DAY);
-                    $('#boostFirstFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT);
-                    $('#boostSecondFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT);
-                    $('#boostThirdFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT);
-                    $('#firstLongTerm', winPrint.document).html($scope.visitPlannedDates.FIRST_LONG_TERM_FOLLOW_UP_VISIT);
-                    $('#secondLongTerm', winPrint.document).html($scope.visitPlannedDates.SECOND_LONG_TERM_FOLLOW_UP_VISIT);
-                    $('#thirdLongTerm', winPrint.document).html($scope.visitPlannedDates.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
-
+                    $scope.setPrintData(winPrint.document);
                     winPrint.focus();
                     winPrint.print();
                 }
             }
-        }
+        };
 
         $scope.cancel = function() {
             $scope.subjectChanged();
@@ -616,6 +865,112 @@
             return $scope.checkSubject() && $scope.primeVac.date !== undefined && $scope.primeVac.date !== null && $scope.primeVac.date !== "";
         }
 
+    });
+
+    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http) {
+        $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
+
+        $scope.selectedFilter = undefined;
+
+        $scope.newForm = function() {
+            $scope.form = {};
+            $scope.form.dto = {};
+        };
+
+        $scope.saveVisitReschedule = function(ignoreLimitation) {
+            function sendRequest() {
+                $http.post('../booking-app/saveVisitReschedule/' + ignoreLimitation, $scope.form.dto)
+                    .success(function(data) {
+                        if (data && (typeof(data) === 'string')) {
+                            jConfirm($scope.msg('bookingApp.visitReschedule.confirmMsg', data), $scope.msg('bookingApp.visitReschedule.confirmTitle'),
+                                function (response) {
+                                    if (response) {
+                                        $scope.saveVisitReschedule(true);
+                                    }
+                                });
+                        } else {
+                            $("#visitReschedule").trigger('reloadGrid');
+                            $scope.form.dto = undefined;
+                        }
+                    })
+                    .error(function(response) {
+                        motechAlert('bookingApp.visitReschedule.updateError', 'bookingApp.error', response);
+                    });
+            }
+
+            if (ignoreLimitation) {
+                sendRequest();
+            } else {
+                motechConfirm("bookingApp.visitReschedule.confirm.shouldSavePlannedDate", "bookingApp.confirm",
+                    function(confirmed) {
+                        sendRequest();
+                })
+            }
+        };
+
+        $scope.formIsFilled = function() {
+            return $scope.form
+                && $scope.form.dto
+                && $scope.form.dto.plannedDate
+                && $scope.form.dto.startTime;
+        };
+
+        $scope.exportInstance = function() {
+            var sortColumn, sortDirection, url = "../booking-app/exportInstances/visitReschedule";
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            if ($scope.checkboxModel.exportWithOrder === true) {
+                sortColumn = $('#visitReschedule').getGridParam('sortname');
+                sortDirection = $('#visitReschedule').getGridParam('sortorder');
+
+                url = url + "&sortColumn=" + sortColumn;
+                url = url + "&sortDirection=" + sortDirection;
+            }
+
+            $scope.exportInstanceWithUrl(url);
+        };
+
+
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.location);
+            $('#subjectId', document).html(rowData.participantId);
+            $('#subjectName', document).html(rowData.participantName);
+            $('#date', document).html(rowData.plannedDate);
+        };
+
+        $scope.print = function(source) {
+
+            var rowData;
+            rowData = $("#visitReschedule").getRowData(source);
+
+            var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
+             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             	// iexplorer
+             	 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                  };
+
+                  winPrint.onload = new function() { windowOnload(); } ;
+             } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
+             }
+        };
+
+    });
+
+    controllers.controller('BookingAppCapacityInfoCtrl', function ($scope) {
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
     });
 
 }());

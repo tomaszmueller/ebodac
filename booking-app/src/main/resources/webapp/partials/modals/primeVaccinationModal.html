@@ -3,53 +3,45 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">{{msg('bookingApp.primeVaccination.update')}}</h4>
+                <h4 ng-if="form.type == 'add'" class="modal-title">{{msg('bookingApp.primeVaccination.add')}}</h4>
+                <h4 ng-if="form.type == 'edit'" class="modal-title">{{msg('bookingApp.primeVaccination.update')}}</h4>
             </div>
-            <div ng-if="form.dto">
+            <div ng-if="form.dto !== undefined">
                 <div class="modal-body prime-vaccination-schedule-modal-body">
+                    <div class="booking-app input-group" ng-if="form.type == 'add'">
+                        <span class="left input-group-addon">{{msg('bookingApp.primeVaccination.participantId')}}</span>
+                        <select class="form-control" ui-select2 id="subjectIdSelect" ng-model="form.dto" ng-change="subjectChanged()" ng-options="primeVacDto as primeVacDto.participantId for primeVacDto in primeVacDtos">
+                            <option value=""></option>
+                        </select>
+                        <span class="input-group-addon validator" ng-class="{'alert-danger': !form.dto.participantId, 'alert-success': form.dto.participantId}"><i class="fa fa-fw fa-check"></i></span>
+                    </div>
                     <div class="booking-app input-group">
                         <span class="left left input-group-addon">{{msg('bookingApp.primeVaccination.participantName')}}</span>
                         <div class="form-control">{{form.dto.participantName}}</div>
                     </div>
+                    <div class="booking-app input-group">
+                        <span class="left input-group-addon">{{msg('bookingApp.screeningDate')}}</span>
+                        <input type="text" class="form-control datepicker" readonly='true' mds-date-picker placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.bookingScreeningActualDate">
+                        <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.bookingScreeningActualDate === '', 'alert-success': form.dto.bookingScreeningActualDate}"><i class="fa fa-fw fa-check"></i></span>
+                    </div>
                     <div class="booking-app input-group" ng-if="form.dto.participantGender == 'Female'">
                         <span class="left input-group-addon">{{msg('bookingApp.primeVaccination.femaleChildBearingAge')}}</span>
-                        <select class="form-control" ui-select2 id="femaleChildBearingAgeSelect" ng-model="form.dto.femaleChildBearingAge" range-refresher for-date="{{form.dto.actualScreeningDate}}">
+                        <select class="form-control" ui-select2 id="femaleChildBearingAgeSelect" ng-model="form.dto.femaleChildBearingAge">
                             <option ng-hide="form.dto.femaleChildBearingAge != undefined" value="">{{'- ' + msg('bookingApp.choose') + ' -'}}</option>
                             <option value="Yes">{{msg('bookingApp.primeVaccination.yes')}}</option>
                             <option value="No">{{msg('bookingApp.primeVaccination.no')}}</option>
                         </select>
                         <span class="input-group-addon validator" ng-class="{'alert-success': form.dto.femaleChildBearingAge != undefined && form.dto.femaleChildBearingAge != '' }"><i class="fa fa-fw fa-check"></i></span>
                     </div>
-                    <div class="booking-app input-group">
+                    <div class="booking-app input-group" ng-show="form.dto.bookingScreeningActualDate">
                         <span class="left input-group-addon">{{msg('bookingApp.date')}}</span>
-                        <input type="text" class="form-control" id="datepicker" readonly='true' booking-app-date-picker min="form.range.min" max="form.range.max" placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.date">
+                        <input type="text" class="form-control datepicker" readonly='true' booking-app-date-picker min="form.range.min" max="form.range.max" placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.date">
                         <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.date === '', 'alert-success': form.dto.date}"><i class="fa fa-fw fa-check"></i></span>
                     </div>
                     <div class="booking-app input-group prime-vaccination-schedule-modal">
                         <span class="left input-group-addon">{{msg('bookingApp.startTime')}}</span>
                         <input type="text" class="form-control" mds-time-picker placeholder="{{msg('bookingApp.startTimePlaceholder')}}" ng-model="form.dto.startTime">
                         <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.startTime === '', 'alert-success': form.dto.startTime}"><i class="fa fa-fw fa-check"></i></span>
-                    </div>
-                    <div class="booking-app input-group prime-vaccination-schedule-modal">
-                        <span class="left input-group-addon">{{msg('bookingApp.endTime')}}</span>
-                        <input type="text" class="form-control" mds-time-picker placeholder="{{msg('bookingApp.endTimePlaceholder')}}" ng-model="form.dto.endTime">
-                        <span class="input-group-addon validator" ng-class="{'alert-danger': isValidEndTime(form.dto.startTime, form.dto.endTime) === false, 'alert-success': isValidEndTime(form.dto.startTime, form.dto.endTime)}"><i class="fa fa-fw fa-check"></i></span>
-                    </div>
-                    <div class="booking-app input-group prime-vaccination-schedule-modal">
-                        <span class="left input-group-addon">{{msg('bookingApp.site')}}</span>
-                        <select class="form-control" ui-select2 id="siteSelect" ng-model="form.dto.siteId" set="clinics">
-                            <option ng-hide="form.dto.siteId" value="">{{'- ' + msg('bookingApp.choose') + ' -'}}</option>
-                            <option ng-repeat="site in sites" value="{{site.id}}" ng-selected="{{site.id == form.dto.siteId}}">{{site.siteId}}</option>
-                        </select>
-                        <span class="input-group-addon validator" ng-class="{'alert-success': form.dto.siteId}"><i class="fa fa-fw fa-check"></i></span>
-                    </div>
-                    <div class="booking-app input-group" ng-show="form.dto.siteId">
-                        <span class="left input-group-addon">{{msg('bookingApp.clinic')}}</span>
-                        <select class="form-control" ui-select2 id="clinicSelect" ng-model="form.dto.clinicId">
-                            <option ng-hide="form.dto.clinicId" value="">{{'- ' + msg('bookingApp.choose') + ' -'}}</option>
-                            <option ng-repeat="clinic in clinics" value="{{clinic.id}}" ng-selected="{{clinic.id == form.dto.clinicId}}">{{clinic.location}}</option>
-                        </select>
-                        <span class="input-group-addon validator" ng-class="{'alert-success': form.dto.clinicId}"><i class="fa fa-fw fa-check"></i></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -61,8 +53,11 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="!form.dto">
-                <div class="modal-body">
+            <div ng-if="form.dto === undefined">
+                <div ng-if="form.type == 'add'" class="modal-body">
+                    {{msg('bookingApp.primeVaccination.addSuccessful')}}
+                </div>
+                <div ng-if="form.type == 'edit'" class="modal-body">
                     {{msg('bookingApp.primeVaccination.updateSuccessful')}}
                 </div>
                 <div class="modal-footer">

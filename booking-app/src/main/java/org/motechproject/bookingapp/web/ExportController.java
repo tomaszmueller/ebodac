@@ -10,7 +10,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.Screening;
+import org.motechproject.bookingapp.domain.UnscheduledVisit;
+import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
+import org.motechproject.bookingapp.domain.VisitRescheduleDto;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.template.PdfExportTemplate;
 import org.motechproject.bookingapp.template.XlsExportTemplate;
@@ -51,7 +54,7 @@ public class ExportController {
     public void exportScreening(BookingGridSettings settings, @RequestParam String exportRecords,
                                 @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
 
-        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreening(settings);
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings);
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.SCREENING_NAME,
                 null, Screening.class, BookingAppConstants.SCREENING_FIELDS_MAP);
     }
@@ -60,13 +63,33 @@ public class ExportController {
     public void exportPrimeVaccinationSchedule(BookingGridSettings settings, @RequestParam String exportRecords,
                                                @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
 
-        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForPrimeVaccinationScheduleExport(settings);
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForPrimeVaccinationSchedule(settings);
 
         exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_NAME,
                 PrimeVaccinationScheduleDto.class, VisitBookingDetails.class, BookingAppConstants.PRIME_VACCINATION_SCHEDULE_FIELDS_MAP);
     }
 
-    private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response,
+    @RequestMapping(value = "/exportInstances/visitReschedule", method = RequestMethod.GET)
+    public void exportVisitReschedule(BookingGridSettings settings, @RequestParam String exportRecords,
+                                      @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
+
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForVisitReschedule(settings);
+
+        exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.VISIT_RESCHEDULE_NAME,
+                VisitRescheduleDto.class, VisitBookingDetails.class, BookingAppConstants.VISIT_RESCHEDULE_FIELDS_MAP);
+    }
+
+    @RequestMapping(value = "/exportInstances/unscheduledVisits", method = RequestMethod.GET)
+    public void exportUnscheduledVisits(BookingGridSettings settings, @RequestParam String exportRecords,
+                                               @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
+
+        BookingGridSettings newSettings = DtoLookupHelper.changeLookupForScreeningAndUnscheduled(settings);
+
+        exportEntity(newSettings, exportRecords, outputFormat, response, BookingAppConstants.UNSCHEDULED_VISITS_NAME,
+                UnscheduledVisitDto.class, UnscheduledVisit.class, BookingAppConstants.UNSCHEDULED_VISIT_FIELDS_MAP);
+    }
+
+    private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response, //NO CHECKSTYLE ParameterNumber
                               String fileNameBeginning, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap) throws IOException {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
@@ -74,9 +97,9 @@ public class ExportController {
 
         if (BookingAppConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
-        } else if(BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
-        } else if(BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/vnd.ms-excel");
         } else {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);
@@ -95,10 +118,10 @@ public class ExportController {
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if(BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
                 XlsBasicTemplate template = new XlsExportTemplate(response.getOutputStream());
 
                 exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
@@ -114,7 +137,7 @@ public class ExportController {
         if (gridSettings.getFields() == null) {
             return null;
         } else {
-            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {});
+            return objectMapper.readValue(gridSettings.getFields(), new TypeReference<LinkedHashMap>() {}); //NO CHECKSTYLE WhitespaceAround
         }
     }
 

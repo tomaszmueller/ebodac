@@ -105,7 +105,7 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(2, visits.size());
 
-        visits = visitDataService.findVisitsByActualDate(LocalDate.parse("2014-10-19", formatter));
+        visits = visitDataService.findByActualDate(LocalDate.parse("2014-10-19", formatter));
         assertEquals(1, visits.size());
 
         VisitUtils.checkVisitFields(secondVisit, visits.get(0));
@@ -117,7 +117,7 @@ public class VisitServiceIT extends BasePaxIT {
         visits = visitDataService.retrieveAll();
         assertEquals(2, visits.size());
 
-        visits = visitDataService.findVisitsByActualDate(LocalDate.parse("2014-10-21", formatter));
+        visits = visitDataService.findByActualDate(LocalDate.parse("2014-10-21", formatter));
         assertEquals(1, visits.size());
 
         VisitUtils.checkVisitFields(secondVisit, visits.get(0));
@@ -133,7 +133,7 @@ public class VisitServiceIT extends BasePaxIT {
 
         visitService.create(visit);
 
-        List<Visit> visits = visitDataService.findVisitsByPlannedDateLessAndActualDateEqAndSubjectPhoneNumberEq(null,
+        List<Visit> visits = visitDataService.findByPlannedDateLessAndActualDateEqAndSubjectPhoneNumberEq(null,
                 new LocalDate("2015-10-19"), null);
 
         assertEquals(1, visits.size());

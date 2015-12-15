@@ -1,5 +1,9 @@
 [
   {
+    "roleName": "Booking App - Capacity Info screen user",
+    "permissionNames": ["capacityInfoTab"]
+  },
+  {
     "roleName": "Booking App - Screening screen user",
     "permissionNames": ["screeningBookingTab"]
   },
@@ -12,7 +16,15 @@
     "permissionNames": ["clinicVisitBookingTab"]
   },
   {
+    "roleName": "Booking App - Visit Reschedule user",
+    "permissionNames": ["visitRescheduleBookingTab"]
+  },
+  {
     "roleName": "Booking App - Advanced Settings user",
     "permissionNames": ["bookingAdvancedSettings"]
+  },
+  {
+    "roleName": "Booking App - Unscheduled Visits user",
+    "permissionNames": ["unscheduledVisitsTab"]
   }
 ]

@@ -175,10 +175,10 @@ public class EbodacEnrollmentController {
         long recordCount;
         int rowCount;
 
-        recordCount = enrollmentDataService.countFindEnrollmentsBySubjectId(subjectId);
+        recordCount = enrollmentDataService.countFindBySubjectId(subjectId);
         rowCount = (int) Math.ceil(recordCount / (double) settings.getRows());
 
-        List<Enrollment> enrollments = enrollmentDataService.findEnrollmentsBySubjectId(subjectId, queryParams);
+        List<Enrollment> enrollments = enrollmentDataService.findBySubjectId(subjectId, queryParams);
 
         return new Records<>(settings.getPage(), rowCount, (int) recordCount, enrollments);
     }

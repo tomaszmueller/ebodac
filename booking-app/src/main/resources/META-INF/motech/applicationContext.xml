@@ -25,12 +25,14 @@
                 <entry key="messages" value="../booking-app/resources/messages/" />
             </map>
         </constructor-arg>
-        <property name="defaultURL" value="/bookingApp/screening"/>
+        <property name="defaultURL" value="/bookingApp/welcomeTab"/>
         <property name="roleForAccess">
             <list>
+                <value>capacityInfoTab</value>
                 <value>screeningBookingTab</value>
                 <value>primeVaccinationBookingTab</value>
                 <value>clinicVisitBookingTab</value>
+                <value>visitRescheduleBookingTab</value>
                 <value>bookingAdvancedSettings</value>
             </list>
         </property>

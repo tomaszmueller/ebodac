@@ -173,8 +173,8 @@ public class ReportServiceIT extends BasePaxIT {
             assertEquals(5, primerVaccinationDataService.retrieveAll().size());
             assertEquals(5, boosterVaccinationDataService.retrieveAll().size());
             for (int i = 2; i < 6; i++) {
-                assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
-                assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
+                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
+                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
             }
         } finally {
             stopFakingTime();
@@ -211,14 +211,14 @@ public class ReportServiceIT extends BasePaxIT {
             assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
 
             for (int i = 2; i < 6; i++) {
-                assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
-                assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 7, i)));
+                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
+                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
             }
-            assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, 21)));
-            assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, 29)));
-            assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, 19)));
-            assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, 21)));
-            assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, 27)));
+            assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, 21)));
+            assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, 29)));
+            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 19)));
+            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 21)));
+            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 27)));
         } finally {
             stopFakingTime();
         }
@@ -245,8 +245,8 @@ public class ReportServiceIT extends BasePaxIT {
             assertEquals(7, boosterVaccinationDataService.retrieveAll().size());
 
             for (int i = 21; i < 28; i++) {
-                assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
-                assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
+                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
+                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
             }
         } finally {
             stopFakingTime();
@@ -274,8 +274,8 @@ public class ReportServiceIT extends BasePaxIT {
             assertEquals(3, boosterVaccinationDataService.retrieveAll().size());
 
             for (int i = 25; i < 28; i++) {
-                assertNotNull(primerVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
-                assertNotNull(boosterVaccinationDataService.findReportByDate(new LocalDate(2015, 6, i)));
+                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
+                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
             }
         } finally {
             stopFakingTime();
@@ -1136,7 +1136,7 @@ public class ReportServiceIT extends BasePaxIT {
     }
 
     private void checkUpdateBoosterVaccinationReportsForDates(LocalDate date) {
-        ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findReportByDate(date);
+        ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findByDate(date);
 
         assertEquals(7, (int) existingBoosterReport.getChildrenFrom1To5());
         assertEquals(7, (int) existingBoosterReport.getChildrenFrom6To11());
@@ -1150,7 +1150,7 @@ public class ReportServiceIT extends BasePaxIT {
     }
 
     private void checkUpdatePrimerVaccinationReportsForDates(LocalDate date) {
-        ReportPrimerVaccination existingPrimerReport = primerVaccinationDataService.findReportByDate(date);
+        ReportPrimerVaccination existingPrimerReport = primerVaccinationDataService.findByDate(date);
 
         assertEquals(7, (int) existingPrimerReport.getChildrenFrom1To5());
         assertEquals(7, (int) existingPrimerReport.getChildrenFrom6To11());
