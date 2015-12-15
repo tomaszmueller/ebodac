@@ -11,8 +11,8 @@
         });
     });
 
-    services.factory('Sites', function($resource) {
-        return $resource('../booking-app/sites', {}, {});
+    services.factory('Clinics', function($resource) {
+        return $resource('../booking-app/clinics', {}, {});
     });
 
     services.factory('ScreenedParticipants', function($resource) {

@@ -83,9 +83,9 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             throw new IllegalArgumentException("Cannot reschedule, because details for Visit not found");
         }
 
-        Clinic clinic = clinicDataService.findById(visitRescheduleDto.getClinicId());
+        Clinic clinic = visitBookingDetails.getClinic();
 
-        if (!ignoreLimitation) {
+        if (clinic != null && !ignoreLimitation) {
             checkNumberOfPatients(visitRescheduleDto, clinic);
         }
 
@@ -93,13 +93,13 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         validateDate(visitRescheduleDto, visit);
         updateVisitPlannedDate(visit, visitRescheduleDto);
 
-        return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto, clinic));
+        return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto));
     }
 
     private void checkNumberOfPatients(VisitRescheduleDto dto, Clinic clinic) {
 
         List<VisitBookingDetails> visits = visitBookingDetailsDataService
-                .findByClinicIdVisitPlannedDateAndType(dto.getClinicId(), dto.getPlannedDate(), dto.getVisitType());
+                .findByClinicIdVisitPlannedDateAndType(clinic.getId(), dto.getPlannedDate(), dto.getVisitType());
 
         if (visits != null && !visits.isEmpty()) {
             int numberOfRooms = clinic.getNumberOfRooms();
@@ -157,10 +157,9 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         }
     }
 
-    private VisitBookingDetails updateVisitDetailsWithDto(VisitBookingDetails details, VisitRescheduleDto dto, Clinic clinic) {
+    private VisitBookingDetails updateVisitDetailsWithDto(VisitBookingDetails details, VisitRescheduleDto dto) {
         details.setStartTime(dto.getStartTime());
         details.setEndTime(calculateEndTime(dto.getStartTime()));
-        details.setClinic(clinic);
         return visitBookingDetailsDataService.update(details);
     }
 

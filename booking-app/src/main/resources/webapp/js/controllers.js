@@ -50,7 +50,7 @@
             if (ignoreLimitation) {
                 sendRequest();
             } else {
-                motechConfirm("bookingApp.uncheduleVisit.confirm.ScheduleScreening", "bookingApp.confirm",
+                motechConfirm("bookingApp.uncheduledVisit.confirm.shouldScheduleScreening", "bookingApp.confirm",
                     function(confirmed) {
                         sendRequest();
                 })
@@ -62,14 +62,11 @@
                 && $scope.form.dto
                 && $scope.form.dto.participantId
                 && $scope.form.dto.date
-                && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId
+                && $scope.form.dto.startTime;
         };
 
         $scope.reloadSelects = function() {
             $timeout(function() {
-                $('#siteSelect').trigger('change');
-                $('#clinicSelect').trigger('change');
                 $('#participantSelect').trigger('change');
             });
         };
@@ -85,7 +82,7 @@
             var winPrint = window.open("../booking-app/resources/partials/card/unscheduledVisitCard.html");
             winPrint.onload = function() {
                 $('#versionDate', winPrint.document).html($scope.getCurrentDate());
-                $('#location', winPrint.document).html(rowData.siteName + ' - ' + rowData.clinicName);
+                $('#location', winPrint.document).html(rowData.clinicName);
                 $('#visitType', winPrint.document).html('Unscheduled');
                 $('#participantId', winPrint.document).html(rowData.participantId);
                 $('#scheduledDate', winPrint.document).html(rowData.date);
@@ -124,7 +121,7 @@
                 };
     });
 
-    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, Screenings, Sites, MDSUtils) {
+    controllers.controller('BookingAppBaseCtrl', function ($scope, $timeout, $http, MDSUtils) {
 
         $scope.filters = [{
             name: $scope.msg('bookingApp.screening.today'),
@@ -194,27 +191,7 @@
             });
         };
 
-        $scope.sites = Sites.query();
         $scope.screeningForPrint = {};
-
-        $scope.reloadSelects = function() {
-            $timeout(function() {
-                $('#siteSelect').trigger('change');
-                $('#clinicSelect').trigger('change');
-            });
-        };
-
-        $scope.findById = function(list, id) {
-            var i, parsedId = parseInt(id);
-
-            for (i = 0; i < list.length; i += 1) {
-                if (list[i].id === parsedId) {
-                    return list[i];
-                }
-            }
-
-            return undefined;
-        };
 
         $scope.parseTime = function(string) {
 
@@ -434,7 +411,7 @@
         };
     });
 
-    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Sites) {
+    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Clinics) {
 
         $scope.getLookups("../booking-app/screenings/getLookupsForScreening");
 
@@ -442,10 +419,18 @@
         $scope.$parent.selectedFilter.endDate = undefined;
         $scope.$parent.selectedFilter = $scope.filters[0];
 
+        $scope.clinics = Clinics.query();
+
         $scope.newForm = function(type) {
             $scope.form = {};
             $scope.form.type = type;
             $scope.form.dto = {};
+        };
+
+        $scope.reloadSelects = function() {
+            $timeout(function() {
+                $('#clinicSelect').trigger('change');
+            });
         };
 
         $scope.addScreening = function() {
@@ -642,7 +627,6 @@
 
         $scope.reloadSelects = function() {
             $timeout(function() {
-                $scope.$parent.reloadSelects();
                 $('#femaleChildBearingAgeSelect').trigger('change');
             });
         };
@@ -678,7 +662,6 @@
                 && $scope.form.dto
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId
                 && ($scope.form.dto.participantGender == 'Female' ? $scope.form.dto.femaleChildBearingAge !== undefined : true);
         };
 
@@ -869,8 +852,7 @@
             return $scope.form
                 && $scope.form.dto
                 && $scope.form.dto.plannedDate
-                && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId;
+                && $scope.form.dto.startTime;
         };
 
         $scope.exportInstance = function() {

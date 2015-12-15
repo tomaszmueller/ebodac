@@ -1,9 +1,12 @@
 package org.motechproject.bookingapp.listener.impl;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.SubjectBookingDetails;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.listener.BookingAppLifecycleListener;
+import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.SubjectBookingDetailsDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.ebodac.domain.Subject;
@@ -20,6 +23,9 @@ public class BookingAppLifecycleListenerImpl implements BookingAppLifecycleListe
     @Autowired
     private SubjectBookingDetailsDataService subjectBookingDetailsDataService;
 
+    @Autowired
+    private ClinicDataService clinicDataService;
+
     @Override
     public void createVisitBookingDetails(Visit visit) {
 
@@ -31,6 +37,12 @@ public class BookingAppLifecycleListenerImpl implements BookingAppLifecycleListe
         }
 
         VisitBookingDetails visitBookingDetails = new VisitBookingDetails(visit, subjectBookingDetails);
+
+        if (StringUtils.isNotBlank(subject.getSiteId())) {
+            Clinic clinic = clinicDataService.findByExactSiteId(subject.getSiteId());
+            visitBookingDetails.setClinic(clinic);
+        }
+
         visitBookingDetailsDataService.create(visitBookingDetails);
     }
 }

@@ -92,6 +92,10 @@ public final class EbodacConstants {
 
     public static final String VOTO_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static final String SITE_ID_CHANGED_EVENT = "siteIdChangedEvent";
+    public static final String SUBJECT_ID = "subjectId";
+    public static final String SITE_ID = "siteId";
+
     public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
     public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";
     public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";

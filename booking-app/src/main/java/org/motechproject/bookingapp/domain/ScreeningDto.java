@@ -4,7 +4,6 @@ public class ScreeningDto {
 
     private String id;
     private String volunteerId;
-    private String siteId;
     private String clinicId;
     private String date;
     private String startTime;
@@ -23,14 +22,6 @@ public class ScreeningDto {
 
     public void setVolunteerId(String volunteerId) {
         this.volunteerId = volunteerId;
-    }
-
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
     }
 
     public String getClinicId() {

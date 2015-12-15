@@ -65,8 +65,10 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
             throw new IllegalArgumentException("Cannot save, because details for Visit not found");
         }
 
-        if (!ignoreLimitation) {
-            checkNumberOfPatients(dto);
+        Clinic clinic = primeDetails.getClinic();
+
+        if (clinic != null && !ignoreLimitation) {
+            checkNumberOfPatients(dto, clinic);
         }
 
         validateDate(dto);
@@ -93,7 +95,6 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         primeDetails.setEndTime(calculateEndTime(dto.getStartTime()));
         primeDetails.setBookingPlannedDate(dto.getDate());
         primeDetails.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
-        primeDetails.setClinic(clinicDataService.findById(dto.getClinicId()));
 
         screeningDetails.setBookingActualDate(dto.getBookingScreeningActualDate());
 
@@ -109,12 +110,11 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         }
     }
 
-    private void checkNumberOfPatients(PrimeVaccinationScheduleDto dto) {
+    private void checkNumberOfPatients(PrimeVaccinationScheduleDto dto, Clinic clinic) {
 
         List<VisitBookingDetails> visits = visitBookingDetailsDataService.findByBookingPlannedDateClinicIdAndVisitType(dto.getDate(),
-                dto.getClinicId(), VisitType.PRIME_VACCINATION_DAY);
+                clinic.getId(), VisitType.PRIME_VACCINATION_DAY);
 
-        Clinic clinic = clinicDataService.findById(dto.getClinicId());
         if (visits != null) {
             int numberOfRooms = clinic.getNumberOfRooms();
             int maxVisits = clinic.getMaxPrimeVisits();

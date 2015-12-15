@@ -12,9 +12,6 @@ public class UnscheduledVisitDto {
 
     private String id;
     private String participantId;
-    private Long siteId;
-    private Long clinicId;
-    private String siteName;
     private String clinicName;
     private LocalDate date;
     private Time startTime;
@@ -25,9 +22,6 @@ public class UnscheduledVisitDto {
     public UnscheduledVisitDto(UnscheduledVisit unscheduledVisit) {
         setId(unscheduledVisit.getId().toString());
         setParticipantId(unscheduledVisit.getSubject().getSubjectId());
-        setSiteId(unscheduledVisit.getClinic().getSite().getId());
-        setClinicId(unscheduledVisit.getClinic().getId());
-        setSiteName(unscheduledVisit.getClinic().getSite().getSiteId());
         setClinicName(unscheduledVisit.getClinic().getLocation());
         setDate(unscheduledVisit.getDate());
         setStartTime(unscheduledVisit.getStartTime());
@@ -48,30 +42,6 @@ public class UnscheduledVisitDto {
 
     public void setParticipantId(String participantId) {
         this.participantId = participantId;
-    }
-
-    public Long getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
-    }
-
-    public Long getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Long clinicId) {
-        this.clinicId = clinicId;
-    }
-
-    public String getSiteName() {
-        return siteName;
-    }
-
-    public void setSiteName(String siteName) {
-        this.siteName = siteName;
     }
 
     public String getClinicName() {
