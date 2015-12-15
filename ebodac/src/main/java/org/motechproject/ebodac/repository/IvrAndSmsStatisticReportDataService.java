@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IvrAndSmsStatisticReportDataService extends MotechDataService<IvrAndSmsStatisticReport> {
 
-    @Lookup(name = "Find By ParticipantId")
+    @Lookup(name = "Find By Participant Id")
     List<IvrAndSmsStatisticReport> findBySubjectId(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId);
 
@@ -33,7 +33,7 @@ public interface IvrAndSmsStatisticReportDataService extends MotechDataService<I
     @Lookup
     List<IvrAndSmsStatisticReport> findByProviderCallId(@LookupField(name = "providerCallId") String providerCallId);
 
-    @Lookup(name = "Find By ProviderCallId And ParticipantId")
+    @Lookup(name = "Find By ProviderCallId And Participant Id")
     IvrAndSmsStatisticReport findByProviderCallIdAndSubjectId(@LookupField(name = "providerCallId") String providerCallId,
                                                               @LookupField(name = "subject.subjectId") String subjectId);
 }

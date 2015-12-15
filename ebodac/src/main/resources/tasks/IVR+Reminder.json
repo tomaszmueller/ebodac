@@ -34,7 +34,7 @@
       "providerId" : 1,
       "objectId" : 0,
       "type" : "org.motechproject.ebodac.domain.Subject",
-      "name" : "Find unique By ParticipantId",
+      "name" : "Find unique By Participant Id",
       "lookup" : [ {
         "field" : "subjectId",
         "value" : "{{trigger.ExternalID}}"
