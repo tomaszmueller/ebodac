@@ -30,6 +30,15 @@ public enum DateFilter {
         }
     },
 
+    NEXT_THREE_DAYS {
+        @Override
+        public Range<LocalDate> getRange() {
+            LocalDate startDate = LocalDate.now();
+            LocalDate endDate = startDate.plusDays(2);
+            return new Range<>(startDate, endDate);
+        }
+    },
+
     DATE_RANGE {
         @Override
         public Range<LocalDate> getRange() {

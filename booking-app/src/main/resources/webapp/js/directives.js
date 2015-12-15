@@ -580,4 +580,84 @@
         };
     });
 
+    directives.directive('capacityInfoGrid', function ($compile) {
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: "../booking-app/capacity/getCapacityInfo",
+                    datatype: "json",
+                    mtype: "GET",
+                    colNames: [
+                        scope.msg("bookingApp.capacityInfo.clinic"),
+                        scope.msg("bookingApp.capacityInfo.maxCapacity"),
+                        scope.msg("bookingApp.capacityInfo.availableCapacity"),
+                        scope.msg("bookingApp.capacityInfo.screeningSlotRemaining"),
+                        scope.msg("bookingApp.capacityInfo.vaccineSlotRemaining")],
+                    colModel: [
+                        {
+                            name: "clinic",
+                            index: 'location'
+                        },
+                        {
+                            name: "maxCapacity",
+                            index: 'maxCapacityByDay'
+                        },
+                        {
+                            name: "availableCapacity",
+                            sortable: false
+                        },
+                        {
+                            name: "screeningSlotRemaining",
+                            sortable: false
+                        },
+                        {
+                            name: "vaccineSlotRemaining",
+                            sortable: false
+                        }
+                    ],
+                    gridComplete: function(){
+                        $('#capacityInfoTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#capacityInfoTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    pager: "#pager",
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    sortname: null,
+                    sortorder: "desc",
+                    viewrecords: true,
+                    gridview: true,
+                    loadOnce: false,
+                    beforeSelectRow: function() {
+                        return false;
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        page: 1
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
 }());
