@@ -1,5 +1,9 @@
 [
   {
+    "roleName": "Booking App - Capacity Info screen user",
+    "permissionNames": ["capacityInfoTab"]
+  },
+  {
     "roleName": "Booking App - Screening screen user",
     "permissionNames": ["screeningBookingTab"]
   },

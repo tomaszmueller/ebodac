@@ -34,7 +34,7 @@ public class VisitLimitationHelper {
     }
 
     private void checkCapacity(LocalDate date, Clinic clinic, Long screeningId, Long unscheduledVisitId, Long visitBookingDetailsId) {
-        if(clinic != null && date != null) {
+        if (clinic != null && date != null) {
             int screeningCount = (int) screeningDataService.countFindByClinicIdDateAndScreeningId(date, clinic.getId(), screeningId);
             int unscheduledVisitCount = (int) unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(date, clinic.getId(), unscheduledVisitId);
             int visitBookingDetailsCount = (int) visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(date, clinic.getId(), visitBookingDetailsId);

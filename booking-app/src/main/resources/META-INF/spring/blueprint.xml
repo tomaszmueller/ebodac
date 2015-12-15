@@ -50,6 +50,8 @@
 
     <osgi:service ref="visitRescheduleService" interface="org.motechproject.bookingapp.service.VisitRescheduleService" />
 
+    <osgi:service ref="capacityInfoService" interface="org.motechproject.bookingapp.service.CapacityInfoService" />
+
     <osgi:service ref="bookingAppLifecycleListener" interface="org.motechproject.bookingapp.listener.BookingAppLifecycleListener" />
 
 </beans>

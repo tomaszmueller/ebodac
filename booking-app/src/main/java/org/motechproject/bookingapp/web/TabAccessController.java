@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.motechproject.bookingapp.constants.BookingAppConstants.ADVANCED_SETTINGS_TAB_PERMISSION;
+import static org.motechproject.bookingapp.constants.BookingAppConstants.CAPACITY_INFO_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.CLINIC_VISIT_SCHEDULE_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.PRIME_VAC_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.SCREENING_TAB_PERMISSION;
@@ -26,6 +27,10 @@ public class TabAccessController {
     public List<String> getAvailableTabs() {
         List<String> availableTabs = new ArrayList<>();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority(CAPACITY_INFO_TAB_PERMISSION))) {
+            availableTabs.add("capacityInfo");
+        }
 
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority(SCREENING_TAB_PERMISSION))) {
             availableTabs.add("screening");

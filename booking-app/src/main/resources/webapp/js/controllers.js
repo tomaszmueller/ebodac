@@ -146,6 +146,9 @@
             name: $scope.msg('bookingApp.screening.tomorrow'),
             dateFilter: "TOMORROW"
         },{
+            name: $scope.msg('bookingApp.screening.nextThreeDays'),
+            dateFilter: "NEXT_THREE_DAYS"
+        },{
             name: $scope.msg('bookingApp.screening.thisWeek'),
             dateFilter: "THIS_WEEK"
         },{
@@ -157,7 +160,7 @@
 
         $scope.selectFilter = function(value) {
             $scope.selectedFilter = $scope.filters[value];
-            if (value !== 3) {
+            if (value !== 4) {
                 $scope.refreshGrid();
             }
         };
@@ -962,6 +965,12 @@
              }
         };
 
+    });
+
+    controllers.controller('BookingAppCapacityInfoCtrl', function ($scope) {
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
     });
 
 }());

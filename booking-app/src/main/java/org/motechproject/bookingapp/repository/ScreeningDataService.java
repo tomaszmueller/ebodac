@@ -16,12 +16,17 @@ public interface ScreeningDataService extends MotechDataService<Screening> {
     List<Screening> findByDate(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup
-    List<Screening> findByDateAndClinicId(@LookupField(name = "date") LocalDate date, @LookupField(name = "clinic.id") Long clinicId);
+    List<Screening> findByDateAndClinicId(@LookupField(name = "date") LocalDate date,
+                                          @LookupField(name = "clinic.id") Long clinicId);
 
     @Lookup
-    List<Screening> findByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date, @LookupField(name = "clinic.id") Long clinicId, @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
+    List<Screening> findByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date,
+                                                     @LookupField(name = "clinic.id") Long clinicId,
+                                                     @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
 
-    long countFindByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date, @LookupField(name = "clinic.id") Long clinicId, @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
+    long countFindByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date,
+                                               @LookupField(name = "clinic.id") Long clinicId,
+                                               @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
 
     @Lookup
     List<Screening> findByClinicLocationAndDate(@LookupField(name = "date") Range<LocalDate> date,
@@ -36,4 +41,11 @@ public interface ScreeningDataService extends MotechDataService<Screening> {
     @Lookup
     List<Screening> findByBookingIdAndDate(@LookupField(name = "date") Range<LocalDate> date,
                                            @LookupField(name = "volunteer.id") Long bookingId);
+
+    @Lookup
+    List<Screening> findByClinicIdAndDateRange(@LookupField(name = "clinic.id") Long clinicId,
+                                               @LookupField(name = "date") Range<LocalDate> date);
+
+    long countFindByClinicIdAndDateRange(@LookupField(name = "clinic.id") Long clinicId,
+                                         @LookupField(name = "date") Range<LocalDate> date);
 }
