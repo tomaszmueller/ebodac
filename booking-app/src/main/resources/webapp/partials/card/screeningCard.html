@@ -5,10 +5,18 @@
 </head>
 <body>
 <div>
-    <center>
-        <img src="../../logo-ebovac-salone.png" alt="logo" height="300" width="600">
-    </center>
-    <table id="volunteer">
+    <table id="header">
+        <tr>
+            <td><img src="../../logo-ebovac-salone.png" alt="logo"></td>
+            <td><h3>Appointment</h3></td>
+        </tr>
+    </table>
+
+    <table id="volunteer" class="content">
+        <tr>
+            <th>Version Date</th>
+            <td id="versionDate"></td>
+        </tr>
         <tr>
             <th>Booking Id</th>
             <td id="bookingId"></td>
@@ -16,6 +24,10 @@
         <tr>
             <th>Screening Date</th>
             <td id="screeningDate"></td>
+        </tr>
+        <tr>
+            <th>Clinic Location</th>
+            <td id="location"></td>
         </tr>
     </table>
 </div>

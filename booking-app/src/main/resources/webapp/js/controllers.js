@@ -71,6 +71,15 @@
             });
         };
 
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.clinicName);
+            $('#visitType', document).html('Unscheduled');
+            $('#participantId', document).html(rowData.participantId);
+            $('#scheduledDate', document).html(rowData.date);
+        };
+
         $scope.printFrom = function(source) {
 
             if (source === "updated") {
@@ -80,17 +89,24 @@
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/unscheduledVisitCard.html");
-            winPrint.onload = function() {
-                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
-                $('#location', winPrint.document).html(rowData.clinicName);
-                $('#visitType', winPrint.document).html('Unscheduled');
-                $('#participantId', winPrint.document).html(rowData.participantId);
-                $('#scheduledDate', winPrint.document).html(rowData.date);
+             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             	// iexplorer
+                 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                 };
 
-                winPrint.focus();
-                winPrint.print();
-            }
-        }
+                 winPrint.onload = new function() { windowOnload(); } ;
+             } else {
+
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
+             }
+        };
 
         $scope.exportInstance = function() {
                     var sortColumn, sortDirection, url = "../booking-app/exportInstances/unscheduledVisits";
@@ -524,24 +540,42 @@
             $scope.exportInstanceWithUrl(url);
         };
 
+        $scope.setPrintData = function(document, bookingId, date, location) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#bookingId', document).html(bookingId);
+            $('#screeningDate', document).html(date);
+            $('#location', document).html(location);
+        };
+
         $scope.printRow = function(id) {
 
             if(id >= 0) {
                 var rowData = jQuery("#screenings").jqGrid ('getRowData', id);
                 var bookingId = rowData['volunteer.id'];
                 var date = rowData['date'];
+                var location = rowData['clinic.location']
             } else {
                 var bookingId = $scope.screeningForPrint.volunteer.id;
                 var date = $scope.screeningForPrint.date;
+                var location = $scope.screeningForPrint.clinic.location;
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/screeningCard.html");
-            winPrint.onload = function() {
-                $('#bookingId', winPrint.document).html(bookingId);
-                $('#screeningDate', winPrint.document).html(date);
-
-                winPrint.focus();
-                winPrint.print();
+            if (navigator.userAgent.indexOf(".NET4") > -1) {
+                // iexplorer
+                var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, bookingId, date, location);
+                    winPrint.focus();
+                    winPrint.print();
+                };
+                winPrint.onload = new function() { windowOnload(); } ;
+            } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, bookingId, date, location);
+                    winPrint.focus();
+                    winPrint.print();
+                }
             }
         }
     });
@@ -693,6 +727,17 @@
             $scope.exportInstanceWithUrl(url);
         };
 
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.location);
+            $('#participantId', document).html(rowData.participantId);
+            $('#name', document).html(rowData.participantName);
+            $('#primeVaccinationDate', document).html(rowData.date);
+            $('#appointmentTime', document).html(rowData.startTime);
+            $('#location', document).html(rowData.location);
+        };
+
         $scope.printCardFrom = function(source) {
 
             var rowData;
@@ -704,16 +749,21 @@
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/primeVaccinationCard.html");
-            winPrint.onload = function() {
-                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
-                $('#location', winPrint.document).html(rowData.location);
-                $('#participantId', winPrint.document).html(rowData.participantId);
-                $('#name', winPrint.document).html(rowData.participantName);
-                $('#primeVaccinationDate', winPrint.document).html(rowData.date);
-                $('#appointmentTime', winPrint.document).html(rowData.startTime);
+            if (navigator.userAgent.indexOf(".NET4") > -1) {
+                // iexplorer
+                 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                  };
 
-                winPrint.focus();
-                winPrint.print();
+                  winPrint.onload = new function() { windowOnload(); } ;
+            } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
             }
         };
     });
@@ -770,28 +820,35 @@
             });
         }
 
+        $scope.setPrintData = function(document) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#subjectId', document).html($scope.selectedSubject.subjectId);
+            $('#subjectName', document).html($scope.selectedSubject.name);
+            $('#primeVacFollowup', winPrint.document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
+            $('#location', document).html($scope.selectedSubject.location);
+        };
+
         $scope.print = function() {
             if ($scope.checkSubjectAndPrimeVacDate()) {
                 var winPrint = window.open("../booking-app/resources/partials/card/visitScheduleCard.html");
+                if (navigator.userAgent.indexOf(".NET4") > -1) {
+                    // iexplorer
+                     var windowOnload = winPrint.onload || function() {
+                        $scope.setPrintData(winPrint.document);
+                        winPrint.focus();
+                        winPrint.print();
+                     };
 
+                     winPrint.onload = new function() { windowOnload(); } ;
+                }
                 winPrint.onload = function() {
-                    $('#versionDate', winPrint.document).html($filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
-                    $('#subjectId', winPrint.document).html($scope.selectedSubject.subjectId);
-                    $('#subjectName', winPrint.document).html($scope.selectedSubject.name);
-                    $('#primeActualDate', winPrint.document).html($scope.primeVac.date);
-                    $('#primeVacFollowup', winPrint.document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
-                    $('#boostVacDay', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_DAY);
-                    $('#boostFirstFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT);
-                    $('#boostSecondFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT);
-                    $('#boostThirdFollowup', winPrint.document).html($scope.visitPlannedDates.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT);
-                    $('#firstLongTerm', winPrint.document).html($scope.visitPlannedDates.FIRST_LONG_TERM_FOLLOW_UP_VISIT);
-                    $('#secondLongTerm', winPrint.document).html($scope.visitPlannedDates.SECOND_LONG_TERM_FOLLOW_UP_VISIT);
-
+                    $scope.setPrintData(winPrint.document);
                     winPrint.focus();
                     winPrint.print();
                 }
             }
-        }
+        };
 
         $scope.cancel = function() {
             $scope.subjectChanged();
@@ -872,22 +929,37 @@
         };
 
 
+        $scope.setPrintData = function(document, rowData) {
+
+            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#location', document).html(rowData.location);
+            $('#subjectId', document).html(rowData.participantId);
+            $('#subjectName', document).html(rowData.participantName);
+            $('#date', document).html(rowData.plannedDate);
+        };
+
         $scope.print = function(source) {
 
             var rowData;
             rowData = $("#visitReschedule").getRowData(source);
 
             var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
-            winPrint.onload = function() {
-                $('#versionDate', winPrint.document).html($scope.getCurrentDate());
-                $('#location', winPrint.document).html(rowData.location);
-                $('#subjectId', winPrint.document).html(rowData.participantId);
-                $('#subjectName', winPrint.document).html(rowData.participantName);
-                $('#date', winPrint.document).html(rowData.plannedDate);
+             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             	// iexplorer
+             	 var windowOnload = winPrint.onload || function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                  };
 
-                winPrint.focus();
-                winPrint.print();
-            }
+                  winPrint.onload = new function() { windowOnload(); } ;
+             } else {
+                winPrint.onload = function() {
+                    $scope.setPrintData(winPrint.document, rowData);
+                    winPrint.focus();
+                    winPrint.print();
+                }
+             }
         };
 
     });
