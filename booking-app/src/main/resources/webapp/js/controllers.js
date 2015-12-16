@@ -828,7 +828,7 @@
             $('#versionDate', document).html($scope.getCurrentDate());
             $('#subjectId', document).html($scope.selectedSubject.subjectId);
             $('#subjectName', document).html($scope.selectedSubject.name);
-            $('#primeVacFollowup', winPrint.document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
+            $('#primeVacFollowup', document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
             $('#location', document).html($scope.selectedSubject.location);
         };
 
@@ -844,11 +844,12 @@
                      };
 
                      winPrint.onload = new function() { windowOnload(); } ;
-                }
-                winPrint.onload = function() {
-                    $scope.setPrintData(winPrint.document);
-                    winPrint.focus();
-                    winPrint.print();
+                } else {
+                    winPrint.onload = function() {
+                        $scope.setPrintData(winPrint.document);
+                        winPrint.focus();
+                        winPrint.print();
+                    }
                 }
             }
         };
