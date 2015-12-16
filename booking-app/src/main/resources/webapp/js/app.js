@@ -3,7 +3,7 @@
 
     /* App Module */
     var bookingApp = angular.module('bookingApp', ['bookingApp.controllers', 'bookingApp.services',
-        'bookingApp.directives', 'motech-dashboard', 'mds', 'mds.utils', 'ui.directives']), clinicId;
+        'bookingApp.directives', 'motech-dashboard', 'data-services', 'ui.directives']), clinicId;
 
     $.ajax({
         url: '../mds/entities/getEntity/Booking App/Clinic',
