@@ -547,22 +547,24 @@
                         gridDataExtension = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
-                        var rowData = elem.getRowData(rowId),
-                            extraRowData = gridDataExtension[rowId];
+                        if (iCol !== 7) {
+                            var rowData = elem.getRowData(rowId),
+                                extraRowData = gridDataExtension[rowId];
 
-                        if ((rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "")
-                            && extraRowData.earliestDate !== undefined && extraRowData.earliestDate !== null && extraRowData.earliestDate !== "") {
-                            scope.newForm();
-                            scope.form.dto.participantId = rowData.participantId;
-                            scope.form.dto.participantName = rowData.participantName;
-                            scope.form.dto.visitType = rowData.visitType;
-                            scope.form.dto.plannedDate = rowData.plannedDate;
-                            scope.form.dto.startTime = rowData.startTime;
-                            scope.form.dto.visitId = extraRowData.visitId;
-                            scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
-                            scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
-                            scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
-                            $('#visitRescheduleModal').modal('show');
+                            if ((rowData.actualDate === undefined || rowData.actualDate === null || rowData.actualDate === "")
+                                && extraRowData.earliestDate !== undefined && extraRowData.earliestDate !== null && extraRowData.earliestDate !== "") {
+                                scope.newForm();
+                                scope.form.dto.participantId = rowData.participantId;
+                                scope.form.dto.participantName = rowData.participantName;
+                                scope.form.dto.visitType = rowData.visitType;
+                                scope.form.dto.plannedDate = rowData.plannedDate;
+                                scope.form.dto.startTime = rowData.startTime;
+                                scope.form.dto.visitId = extraRowData.visitId;
+                                scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
+                                scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
+                                scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
+                                scope.showRescheduleModal();
+                            }
                         }
                     }
                 });
