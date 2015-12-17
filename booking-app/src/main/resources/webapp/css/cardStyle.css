@@ -4,7 +4,6 @@
     border: 1px solid black;
     text-align: center;
     border-collapse: collapse;
-
 }
 
 .content td{
@@ -18,19 +17,21 @@
     border: 1px solid black;
 }
 
+#primeVaccinationCard th, td {
+    height: 22px;
+}
+
 #header {
     width: 100%;
 }
 
 #header td{
     width: 50%;
+    text-align: center;
 }
 
 img {
-    margin: 5px;
-    height: 300px;
-    width: 90%;
-
+    height: 190px;
 }
 
 h3 {
