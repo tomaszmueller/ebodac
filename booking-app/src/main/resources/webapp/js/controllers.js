@@ -146,6 +146,9 @@
             name: $scope.msg('bookingApp.screening.tomorrow'),
             dateFilter: "TOMORROW"
         },{
+            name: $scope.msg('bookingApp.screening.twoDaysAfter'),
+            dateFilter: "TWO_DAYS_AFTER"
+        },{
             name: $scope.msg('bookingApp.screening.nextThreeDays'),
             dateFilter: "NEXT_THREE_DAYS"
         },{
@@ -160,7 +163,7 @@
 
         $scope.selectFilter = function(value) {
             $scope.selectedFilter = $scope.filters[value];
-            if (value !== 4) {
+            if (value !== 5) {
                 $scope.refreshGrid();
             }
         };

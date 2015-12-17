@@ -39,6 +39,14 @@ public enum DateFilter {
         }
     },
 
+    TWO_DAYS_AFTER {
+        @Override
+        public Range<LocalDate> getRange() {
+            LocalDate startDate = LocalDate.now().plusDays(2);
+            return new Range<>(startDate, startDate);
+        }
+    },
+
     DATE_RANGE {
         @Override
         public Range<LocalDate> getRange() {

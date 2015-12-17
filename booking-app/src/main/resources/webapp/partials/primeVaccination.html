@@ -19,7 +19,7 @@
                 <li ng-repeat="filter in filters"><a ng-click="selectFilter($index)">{{filter.name}}</a></li>
             </ul>
         </div>
-        <div class="form-group" ng-if="selectedFilter === filters[4]">
+        <div class="form-group" ng-if="selectedFilter === filters[5]">
             <div class="input-group">
                 <span class="left input-group-addon">{{msg('bookingApp.screening.from')}}</span>
                 <input type="text" class="form-control" mds-date-picker grid-reload-trigger placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="selectedFilter.startDate">
