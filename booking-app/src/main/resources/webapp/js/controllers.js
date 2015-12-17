@@ -868,7 +868,7 @@
 
     });
 
-    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http) {
+    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http, $timeout) {
         $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
 
         $scope.selectedFilter = undefined;
@@ -876,6 +876,12 @@
         $scope.newForm = function() {
             $scope.form = {};
             $scope.form.dto = {};
+        };
+
+        $scope.showRescheduleModal = function() {
+            $timeout(function() {
+            $('#visitRescheduleModal').modal('show');
+            }, 10);
         };
 
         $scope.saveVisitReschedule = function(ignoreLimitation) {
