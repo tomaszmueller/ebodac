@@ -89,7 +89,7 @@
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/unscheduledVisitCard.html");
-             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
              	// iexplorer
                  var windowOnload = winPrint.onload || function() {
                     $scope.setPrintData(winPrint.document, rowData);
@@ -568,7 +568,7 @@
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/screeningCard.html");
-            if (navigator.userAgent.indexOf(".NET4") > -1) {
+            if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                 // iexplorer
                 var windowOnload = winPrint.onload || function() {
                     $scope.setPrintData(winPrint.document, bookingId, date, location);
@@ -755,7 +755,7 @@
             }
 
             var winPrint = window.open("../booking-app/resources/partials/card/primeVaccinationCard.html");
-            if (navigator.userAgent.indexOf(".NET4") > -1) {
+            if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                 // iexplorer
                  var windowOnload = winPrint.onload || function() {
                     $scope.setPrintData(winPrint.document, rowData);
@@ -838,7 +838,7 @@
         $scope.print = function() {
             if ($scope.checkSubjectAndPrimeVacDate()) {
                 var winPrint = window.open("../booking-app/resources/partials/card/visitScheduleCard.html");
-                if (navigator.userAgent.indexOf(".NET4") > -1) {
+                if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                     // iexplorer
                      var windowOnload = winPrint.onload || function() {
                         $scope.setPrintData(winPrint.document);
@@ -957,7 +957,7 @@
             rowData = $("#visitReschedule").getRowData(source);
 
             var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
-             if (navigator.userAgent.indexOf(".NET4") > -1) {
+             if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
              	// iexplorer
              	 var windowOnload = winPrint.onload || function() {
                     $scope.setPrintData(winPrint.document, rowData);
