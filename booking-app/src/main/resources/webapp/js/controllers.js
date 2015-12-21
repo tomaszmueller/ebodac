@@ -679,6 +679,10 @@
             } else {
                 range.min = $scope.parseDate(forDate, 1);
             }
+            var today = new Date();
+            if (today > range.min) {
+                range.min = today;
+            }
 
             range.max = $scope.parseDate(forDate, 28);
 

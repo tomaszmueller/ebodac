@@ -164,6 +164,9 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                 : actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
         LocalDate latestDate = actualScreeningDate.plusDays(BookingAppConstants.LATEST_DATE);
 
+        if (dto.getDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("The date can not be in past");
+        }
         if (dto.getDate().isBefore(earliestDate) || dto.getDate().isAfter(latestDate)) {
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
                     earliestDate, latestDate, dto.getDate()));
