@@ -92,9 +92,11 @@
              if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
              	// iexplorer
                  var windowOnload = winPrint.onload || function() {
-                    $scope.setPrintData(winPrint.document, rowData);
-                    winPrint.focus();
-                    winPrint.print();
+                    setTimeout(function(){
+                        $scope.setPrintData(winPrint.document, rowData);
+                        winPrint.focus();
+                        winPrint.print();
+                    }, 500);
                  };
 
                  winPrint.onload = new function() { windowOnload(); } ;
@@ -571,9 +573,11 @@
             if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                 // iexplorer
                 var windowOnload = winPrint.onload || function() {
-                    $scope.setPrintData(winPrint.document, bookingId, date, location);
-                    winPrint.focus();
-                    winPrint.print();
+                	setTimeout(function(){
+                        $scope.setPrintData(winPrint.document, bookingId, date, location);
+                        winPrint.focus();
+                        winPrint.print();
+                    }, 500);
                 };
                 winPrint.onload = new function() { windowOnload(); } ;
             } else {
@@ -758,9 +762,11 @@
             if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                 // iexplorer
                  var windowOnload = winPrint.onload || function() {
-                    $scope.setPrintData(winPrint.document, rowData);
-                    winPrint.focus();
-                    winPrint.print();
+                    setTimeout(function(){
+                        $scope.setPrintData(winPrint.document, rowData);
+                        winPrint.focus();
+                        winPrint.print();
+                    }, 500);
                   };
 
                   winPrint.onload = new function() { windowOnload(); } ;
@@ -841,9 +847,11 @@
                 if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
                     // iexplorer
                      var windowOnload = winPrint.onload || function() {
-                        $scope.setPrintData(winPrint.document);
-                        winPrint.focus();
-                        winPrint.print();
+                        setTimeout(function(){
+                            $scope.setPrintData(winPrint.document);
+                            winPrint.focus();
+                            winPrint.print();
+                        }, 500);
                      };
 
                      winPrint.onload = new function() { windowOnload(); } ;
@@ -960,9 +968,11 @@
              if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
              	// iexplorer
              	 var windowOnload = winPrint.onload || function() {
-                    $scope.setPrintData(winPrint.document, rowData);
-                    winPrint.focus();
-                    winPrint.print();
+                    setTimeout(function(){
+                        $scope.setPrintData(winPrint.document, rowData);
+                        winPrint.focus();
+                        winPrint.print();
+                    }, 500);
                   };
 
                   winPrint.onload = new function() { windowOnload(); } ;
