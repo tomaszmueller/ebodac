@@ -566,6 +566,17 @@
                                 scope.showRescheduleModal();
                             }
                         }
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
                     }
                 });
 
