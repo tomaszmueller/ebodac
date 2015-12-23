@@ -153,23 +153,39 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
      */
 
     @Lookup
-    List<VisitBookingDetails> findByPlannedDateAndVisitTypeSet(@LookupField(name = "visit.motechProjectedDate",
-            customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                               @LookupField(name = "visit.type") Set<VisitType> typeSet);
+    List<VisitBookingDetails> findByVisitTypeSetAndPlannedDate(@LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                               @LookupField(name = "visit.motechProjectedDate",
+                                                               customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByParticipantIdAndPlannedDateAndVisitTypeSet(@LookupField(name = "subject.subjectId",
+    List<VisitBookingDetails> findByVisitTypeSetAndPlannedDateRange(@LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                    @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> date);
+
+    @Lookup
+    List<VisitBookingDetails> findByParticipantIdAndVisitTypeSetAndPlannedDate(@LookupField(name = "subject.subjectId",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
+                                                                               @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                @LookupField(name = "visit.motechProjectedDate",
-                                                                                       customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                                               @LookupField(name = "visit.type") Set<VisitType> typeSet);
+                                                                               customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByParticipantNameAndPlannedDateAndVisitTypeSet(@LookupField(name = "subject.name",
+    List<VisitBookingDetails> findByParticipantIdAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "subject.subjectId",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String subjectId,
+                                                                               @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                               @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByParticipantNameAndVisitTypeSetAndPlannedDate(@LookupField(name = "subject.name",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
+                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                  @LookupField(name = "visit.motechProjectedDate",
-                                                                                         customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet);
+                                                                                         customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByParticipantNameAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "subject.name",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
+                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                 @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
 
     @Lookup
     List<VisitBookingDetails> findByVisitTypeAndPlannedDate(@LookupField(name = "visit.type") VisitType type,
@@ -177,29 +193,43 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
                                                                     customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByClinicLocationAndPlannedDateAndVisitTypeSet(@LookupField(name = "clinic.location",
+    List<VisitBookingDetails> findByVisitTypeAndPlannedDateRange(@LookupField(name = "visit.type") VisitType type,
+                                                            @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByClinicLocationAndVisitTypeSetAndPlannedDate(@LookupField(name = "clinic.location",
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String location,
+                                                                                @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                 @LookupField(name = "visit.motechProjectedDate",
-                                                                                        customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                                                @LookupField(name = "visit.type") Set<VisitType> typeSet);
+                                                                                        customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByVisitActualDateAndPlannedDateAndVisitTypeSet(@LookupField(name = "visit.date") LocalDate date,
+    List<VisitBookingDetails> findByClinicLocationAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "clinic.location",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String location,
+                                                                                @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByVisitActualDateAndVisitTypeSetAndPlannedDate(@LookupField(name = "visit.date") LocalDate date,
+                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                  @LookupField(name = "visit.motechProjectedDate",
-                                                                                         customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet);
+                                                                                         customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByVisitActualDateRangeAndPlannedDateAndVisitTypeSet(@LookupField(name = "visit.date") Range<LocalDate> date,
+    List<VisitBookingDetails> findByVisitActualDateAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "visit.date") LocalDate date,
+                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                 @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
+
+
+    @Lookup
+    List<VisitBookingDetails> findByVisitActualDateRangeAndVisitTypeSetAndPlannedDate(@LookupField(name = "visit.date") Range<LocalDate> date,
+                                                                                      @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                       @LookupField(name = "visit.motechProjectedDate",
-                                                                                              customOperator = Constants.Operators.NEQ) LocalDate plannedDate,
-                                                                                      @LookupField(name = "visit.type") Set<VisitType> typeSet);
+                                                                                              customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
 
     @Lookup
-    List<VisitBookingDetails> findByVisitPlannedDateAndVisitTypeSet(@LookupField(name = "visit.motechProjectedDate") LocalDate date,
-                                                                    @LookupField(name = "visit.type") Set<VisitType> typeSet);
+    List<VisitBookingDetails> findByVisitActualDateRangeAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "visit.date") Range<LocalDate> date,
+                                                                                      @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                      @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
 
-    @Lookup
-    List<VisitBookingDetails> findByVisitPlannedDateRangeAndVisitTypeSet(@LookupField(name = "visit.motechProjectedDate") Range<LocalDate> date,
-                                                                         @LookupField(name = "visit.type") Set<VisitType> typeSet);
 }

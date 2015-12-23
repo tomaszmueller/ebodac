@@ -886,7 +886,9 @@
     controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http, $timeout) {
         $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
 
-        $scope.selectedFilter = undefined;
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
 
         $scope.newForm = function() {
             $scope.form = {};
@@ -941,6 +943,18 @@
             var sortColumn, sortDirection, url = "../booking-app/exportInstances/visitReschedule";
             url = url + "?outputFormat=" + $scope.exportFormat;
             url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            if ($scope.checkboxModel.exportWithFilter === true) {
+                url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                if ($scope.selectedFilter.startDate) {
+                    url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                }
+
+                if ($scope.selectedFilter.endDate) {
+                    url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                }
+            }
 
             if ($scope.checkboxModel.exportWithOrder === true) {
                 sortColumn = $('#visitReschedule').getGridParam('sortname');
