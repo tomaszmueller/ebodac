@@ -27,6 +27,12 @@ public class Screening {
     @JsonSerialize(using = CustomDateSerializer.class)
     private LocalDate date;
 
+    @Field
+    private String name;
+
+    @Field
+    private String phone;
+
     @Field(required = true)
     @JsonSerialize(using = CustomTimeSerializer.class)
     private Time startTime;
@@ -71,6 +77,22 @@ public class Screening {
 
     public void setVolunteer(Volunteer volunteer) {
         this.volunteer = volunteer;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public LocalDate getDate() {
