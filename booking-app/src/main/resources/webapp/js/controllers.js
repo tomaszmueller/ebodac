@@ -889,6 +889,7 @@
         $scope.$parent.selectedFilter.startDate = undefined;
         $scope.$parent.selectedFilter.endDate = undefined;
         $scope.$parent.selectedFilter = $scope.filters[0];
+        $scope.visitForPrint = {};
 
         $scope.newForm = function() {
             $scope.form = {};
@@ -914,6 +915,7 @@
                                 });
                         } else {
                             $("#visitReschedule").trigger('reloadGrid');
+                            $scope.visitForPrint = data;
                             $scope.form.dto = undefined;
                         }
                     })
@@ -968,26 +970,36 @@
         };
 
 
-        $scope.setPrintData = function(document, rowData) {
+        $scope.setPrintData = function(document, location, participantId, participantName, plannedDate) {
 
             $('#versionDate', document).html($scope.getCurrentDate());
-            $('#location', document).html(rowData.location);
-            $('#subjectId', document).html(rowData.participantId);
-            $('#subjectName', document).html(rowData.participantName);
-            $('#date', document).html(rowData.plannedDate);
+            $('#location', document).html(location);
+            $('#subjectId', document).html(participantId);
+            $('#subjectName', document).html(participantName);
+            $('#date', document).html(plannedDate);
         };
 
         $scope.print = function(source) {
 
-            var rowData;
-            rowData = $("#visitReschedule").getRowData(source);
+            if(source >= 0) {
+                var rowData = $("#visitReschedule").getRowData(source);
+                var subjectId = rowData.participantId;
+                var date = rowData.plannedDate;
+                var subjectName = rowData.participantName;
+                var location = rowData.location;
+            } else {
+                var subjectId = $scope.visitForPrint.participantId;
+                var date = $scope.visitForPrint.plannedDate;
+                var subjectName = $scope.visitForPrint.participantName;
+                var location = $scope.visitForPrint.location;
+            }
 
             var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
              if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
              	// iexplorer
              	 var windowOnload = winPrint.onload || function() {
                     setTimeout(function(){
-                        $scope.setPrintData(winPrint.document, rowData);
+                        $scope.setPrintData(winPrint.document, location, subjectId, subjectName, date);
                         winPrint.focus();
                         winPrint.print();
                     }, 500);
@@ -996,7 +1008,7 @@
                   winPrint.onload = new function() { windowOnload(); } ;
              } else {
                 winPrint.onload = function() {
-                    $scope.setPrintData(winPrint.document, rowData);
+                    $scope.setPrintData(winPrint.document, location, subjectId, subjectName, date);
                     winPrint.focus();
                     winPrint.print();
                 }
