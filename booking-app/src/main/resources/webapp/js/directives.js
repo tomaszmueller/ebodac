@@ -99,12 +99,16 @@
                         scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.screening.name"),
+                        scope.msg("bookingApp.screening.phone"),
                         ""],
                     colModel: [
                         { name: "volunteer.id" },
                         { name: "clinic.location" },
                         { name: "date" },
                         { name: "startTime" },
+                        { name: "name" },
+                        { name: "phone" },
                         { name: "print", align: "center", sortable: false, width: 40}
                     ],
                     gridComplete: function() {
@@ -143,7 +147,7 @@
                         return false;
                     },
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 4) {
+                        if (iCol !== 6) {
                             scope.editScreening(id);
                         }
                     }

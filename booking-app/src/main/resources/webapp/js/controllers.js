@@ -465,7 +465,10 @@
 
         $scope.editScreening = function(id) {
             $scope.newForm("edit");
+            var rowData = jQuery("#screenings").jqGrid ('getRowData', id);
             $scope.form.dto = Screenings.get({id: id}, function() {
+                $scope.form.dto.name = rowData['name'];
+                $scope.form.dto.phone = rowData['phone'];
                 $scope.reloadSelects();
                 $('#screeningModal').modal('show');
             });
@@ -517,7 +520,9 @@
                 && $scope.form.dto
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && $scope.form.dto.clinicId;
+                && $scope.form.dto.clinicId
+                && $scope.form.dto.name
+                && $scope.form.dto.phone;
         };
 
         $scope.exportInstance = function() {

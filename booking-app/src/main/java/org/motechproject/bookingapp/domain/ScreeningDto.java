@@ -7,6 +7,8 @@ public class ScreeningDto {
     private String clinicId;
     private String date;
     private String startTime;
+    private String name;
+    private String phone;
 
     public String getId() {
         return id;
@@ -46,5 +48,21 @@ public class ScreeningDto {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
