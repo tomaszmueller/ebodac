@@ -115,7 +115,7 @@
         </profile>
 
         <profile>
-            <id>ui-local</id>
+            <id>ci-local</id>
             <build>
                 <plugins>
                     <plugin>
@@ -310,7 +310,7 @@
         </profile>
 
         <profile>
-            <id>ui-remote</id>
+            <id>chrome-remote</id>
             <build>
                 <plugins>
                     <plugin>
@@ -359,7 +359,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
@@ -381,7 +380,93 @@
                                 <id>integration-test</id>
                                 <goals>
                                     <goal>integration-test</goal>
-                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <encoding>UTF-8</encoding>
+                                    <runOrder>alphabetical</runOrder>
+                                    <includes>
+                                        <include>**/*UiTest.java</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>ci-remote</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>1.4.1</version>
+                        <executions>
+                            <execution>
+                                <id>enforce-property</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireProperty>
+                                            <property>webapp.url</property>
+                                            <message>You must set a webapp.url property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>login.username</property>
+                                            <message>You must set a login.username property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>login.password</property>
+                                            <message>You must set a login.password property!</message>
+                                        </requireProperty>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>selenium-maven-plugin</artifactId>
+                        <version>2.3</version>
+                        <executions>
+                            <execution>
+                                <id>xvfb</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>xvfb</goal>
+                                </goals>
+                                <configuration>
+                                    <display>:99</display>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.17</version>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <forkCount>1</forkCount>
+                            <reuseForks>false</reuseForks>
+                            <systemPropertyVariables>
+                                <propertyName>webapp.url</propertyName>
+                                <propertyName>login.username</propertyName>
+                                <propertyName>login.password</propertyName>
+                                <buildDirectory>${project.build.directory}</buildDirectory>
+                            </systemPropertyVariables>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <goals>
+                                    <goal>integration-test</goal>
                                 </goals>
                                 <configuration>
                                     <encoding>UTF-8</encoding>
