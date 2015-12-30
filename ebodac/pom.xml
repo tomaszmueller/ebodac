@@ -471,6 +471,9 @@
                                 <configuration>
                                     <encoding>UTF-8</encoding>
                                     <runOrder>alphabetical</runOrder>
+                                    <environmentVariables>
+                                        <DISPLAY>:99</DISPLAY>
+                                    </environmentVariables>
                                     <includes>
                                         <include>**/*UiTest.java</include>
                                     </includes>
