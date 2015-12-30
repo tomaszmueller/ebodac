@@ -380,6 +380,7 @@
                                 <id>integration-test</id>
                                 <goals>
                                     <goal>integration-test</goal>
+                                    <goal>verify</goal>
                                 </goals>
                                 <configuration>
                                     <encoding>UTF-8</encoding>
@@ -467,6 +468,7 @@
                                 <id>integration-test</id>
                                 <goals>
                                     <goal>integration-test</goal>
+                                    <goal>verify</goal>
                                 </goals>
                                 <configuration>
                                     <encoding>UTF-8</encoding>
