@@ -10,12 +10,19 @@ public class ReportPage extends AbstractBasePage {
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
     static final By MEMISSEDCLINICVISITSREPORT = By.linkText("M&E Missed Clinic Visits Report");
+
+    static final By DAILYCLINICVISITSCHEDULEREPORT = By.linkText("Daily Clinic Visit Schedule Report");
+
     public ReportPage(WebDriver driver) {
         super(driver);
     }
 
     public void showMEMissedClinicVisitsReport() throws InterruptedException {
         clickWhenVisible(MEMISSEDCLINICVISITSREPORT);
+    }
+
+    public void showDailyClinicVisitReportSchedule() throws InterruptedException {
+        clickWhenVisible(DAILYCLINICVISITSCHEDULEREPORT);
     }
     @Override
     public String expectedUrlPath() {
