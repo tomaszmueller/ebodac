@@ -22,7 +22,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
         ZETES_REGISTRATION_URL = SERVER_URL + "/ebodac/registration/submit";
     }
 
-    public void addParticipant(TestParticipant participant) {
+    public void addParticipant(TestParticipant participant,String user, String password) {
         sendJson(ZETES_REGISTRATION_URL,
                 "{\"subjectId\":\"" + participant.id + "\"," +
                         "\"name\":\"" + participant.name + "\"," +
@@ -31,7 +31,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
                         "\"siteId\":\"" + participant.siteId + "\",\"headOfHousehold\":\"" + participant.headOfHousehold + "\"," +
                         "\"householdName\":\"" + participant.householdName + "\"," +
                         "\"community\":\"" + participant.community + "\",\"address\":\"" + participant.address + "\"" +
-                        "}","motech","motech");
+                        "}",user, password);
     }
 
 

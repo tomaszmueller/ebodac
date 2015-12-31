@@ -1,9 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
 import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
@@ -37,7 +34,7 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
         homePage = new HomePage(driver);
         if(url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant());
+            httpClientHelper.addParticipant(new TestParticipant(),L1analystUser,L1analystpassword);
         }
         if(homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(L1analystUser, L1analystpassword);
