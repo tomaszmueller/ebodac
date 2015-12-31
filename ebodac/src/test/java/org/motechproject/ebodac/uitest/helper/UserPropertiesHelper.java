@@ -28,6 +28,14 @@ public class UserPropertiesHelper {
 
     public static final String DEFAULT_L1ANALYST_USERNAME = "analyst";
 
+    public static final String CLERK_PASSWORD_PROPERTY = "clerk.password";
+
+    public static final String DEFAULT_CLERK_PASSWORD = "cl1rk34";
+
+    public static final String DEFAULT_CLERK_USERNAME = "clerk";
+
+    public static final String CLERK_USERNAME_PROPERTY = "clerk.username";
+
     public static org.motech.page.TestProperties instance() {
         if (SINGLETON == null) {
             SINGLETON = new org.motech.page.TestProperties();
@@ -53,10 +61,7 @@ public class UserPropertiesHelper {
         catch (IOException ioException) {
             throw new RuntimeException("test.properties not found. Error: ", ioException);
         }
-        System.out.println(L1ADMIN_USERNAME_PROPERTY + ": " + getAdminUserName());
-        System.out.println(L1ADMIN_PASSWORD_PROPERTY + ": " + getAdminPassword());
-        System.out.println(L1ANALYST_USERNAME_PROPERTY + ": " + getAnalystUserName());
-        System.out.println(L1ANALYST_PASSWORD_PROPERTY + ": " + getAnalystPassword());
+        
     }
 
 
@@ -76,6 +81,13 @@ public class UserPropertiesHelper {
         return getProperty(L1ANALYST_PASSWORD_PROPERTY, DEFAULT_L1ANALYST_PASSWORD);
     }
 
+    public String getClerkUserName() {
+        return getProperty(CLERK_USERNAME_PROPERTY, DEFAULT_CLERK_USERNAME);
+    }
+
+    public String getClerkPassword() {
+        return getProperty(CLERK_PASSWORD_PROPERTY, DEFAULT_CLERK_PASSWORD);
+    }
 
     public String getProperty(String property, String defaultValue) {
         String value = System.getProperty(property);

@@ -20,6 +20,7 @@ public class HomePage extends AbstractBasePage {
     static final By SCHEDULER = By.linkText("Scheduler");
     static final By TASKS = By.linkText("Tasks");
     static final By MODULES = By.linkText("Modules");
+    static final By BOOKING_APP = By.linkText("Booking App");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -32,6 +33,10 @@ public class HomePage extends AbstractBasePage {
 
     public void openEBODACModule() throws InterruptedException {
         clickWhenVisible(EBODAC);
+    }
+
+    public void openBookingAppModule() throws  InterruptedException {
+        clickWhenVisible(BOOKING_APP);
     }
     public boolean isEBODACModulePresent() throws InterruptedException {
         try {
