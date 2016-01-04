@@ -21,6 +21,7 @@ public class HomePage extends AbstractBasePage {
     static final By TASKS = By.linkText("Tasks");
     static final By MODULES = By.linkText("Modules");
     static final By BOOKING_APP = By.linkText("Booking App");
+    static final By ADMIN = By.linkText("Admin");
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -141,6 +142,10 @@ public class HomePage extends AbstractBasePage {
 
     public void clickModules() throws InterruptedException{
         clickWhenVisible(MODULES);
+    }
+
+    public void openAdmin() throws InterruptedException{
+        clickWhenVisible(ADMIN);
     }
 
     public boolean isElementPresent(By by) {
