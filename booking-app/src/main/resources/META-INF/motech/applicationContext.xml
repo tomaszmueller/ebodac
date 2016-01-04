@@ -34,6 +34,7 @@
                 <value>clinicVisitBookingTab</value>
                 <value>visitRescheduleBookingTab</value>
                 <value>bookingAdvancedSettings</value>
+                <value>reportsTab</value>
             </list>
         </property>
     </bean>

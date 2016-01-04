@@ -10,6 +10,7 @@
             <li ng-show="active('#/bookingApp/reschedule')" ng-class="active('#/bookingApp/reschedule')">{{msg('bookingApp.reschedule')}}</li>
             <li ng-show="active('#/bookingApp/unscheduledVisit')" ng-class="active('#/bookingApp/unscheduledVisit')">{{msg('bookingApp.visitLimitation')}}</li>
             <li ng-show="active('#/bookingApp/visitLimitation')" ng-class="active('#/bookingApp/visitLimitation')">{{msg('bookingApp.visitLimitation')}}</li>
+            <li ng-show="active('#/bookingApp/reports')" ng-class="active('#/bookingApp/reports')">{{msg('bookingApp.reports')}}</li>
         </ul>
     </div>
     <div class="header-footer">
@@ -21,7 +22,7 @@
             </li>
         </ul>
     </div>
-    <div class="ui-layout-content">
+    <div class="ui-layout-content" style="margin-top: 40px;">
         <div class="tab-content" id="tab-content">
             <div id="main-content" class="active">
                 <div ng-view></div>

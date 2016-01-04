@@ -15,6 +15,7 @@ import static org.motechproject.bookingapp.constants.BookingAppConstants.ADVANCE
 import static org.motechproject.bookingapp.constants.BookingAppConstants.CAPACITY_INFO_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.CLINIC_VISIT_SCHEDULE_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.PRIME_VAC_TAB_PERMISSION;
+import static org.motechproject.bookingapp.constants.BookingAppConstants.REPORTS_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.SCREENING_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.VISIT_RESCHEDULE_TAB_PERMISSION;
 import static org.motechproject.bookingapp.constants.BookingAppConstants.UNSCHEDULED_VISITS_TAB_PERMISSION;
@@ -54,6 +55,10 @@ public class TabAccessController {
 
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority(ADVANCED_SETTINGS_TAB_PERMISSION))) {
             availableTabs.add("visitLimitation");
+        }
+
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority(REPORTS_TAB_PERMISSION))) {
+            availableTabs.add("reports");
         }
 
         return availableTabs;

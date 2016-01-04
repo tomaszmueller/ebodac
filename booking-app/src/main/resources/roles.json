@@ -26,5 +26,9 @@
   {
     "roleName": "Booking App - Unscheduled Visits user",
     "permissionNames": ["unscheduledVisitsTab"]
+  },
+  {
+    "roleName": "Booking App - Reports user",
+    "permissionNames": ["reportsTab"]
   }
 ]
