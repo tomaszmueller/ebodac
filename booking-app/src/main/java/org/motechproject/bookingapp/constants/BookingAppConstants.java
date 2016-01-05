@@ -64,13 +64,13 @@ public final class BookingAppConstants {
 
     public static final Map<String, String> PRIME_VACCINATION_SCHEDULE_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Location",                 "location");
+            put("Clinic Location",          "location");
             put("Participant Id",           "participantId");
             put("Participant Name",         "participantName");
             put("Female Child Bearing Age", "femaleChildBearingAge");
             put("Actual Screening Date",    "actualScreeningDate");
             put("Prime Vac. Date",          "date");
-            put("Start Time",               "startTime");
+            put("Prime Vac. Time",          "startTime");
         }
     };
 

@@ -336,7 +336,7 @@
                         scope.msg("bookingApp.primeVaccination.femaleChildBearingAge"),
                         scope.msg("bookingApp.primeVaccination.screeningActualDate"),
                         scope.msg("bookingApp.primeVaccination.primeVacDate"),
-                        scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.primeVaccination.time"),
                         ""],
                     colModel: [
                         {
