@@ -96,19 +96,19 @@
                     mtype: "GET",
                     colNames: [
                         scope.msg("bookingApp.screening.bookingId"),
-                        scope.msg("bookingApp.location"),
-                        scope.msg("bookingApp.screening.date"),
-                        scope.msg("bookingApp.startTime"),
                         scope.msg("bookingApp.screening.name"),
                         scope.msg("bookingApp.screening.phone"),
+                        scope.msg("bookingApp.location"),
+                        scope.msg("bookingApp.screening.date"),
+                        scope.msg("bookingApp.screening.time"),
                         ""],
                     colModel: [
                         { name: "volunteer.id" },
+                        { name: "name" },
+                        { name: "phone" },
                         { name: "clinic.location" },
                         { name: "date" },
                         { name: "startTime" },
-                        { name: "name" },
-                        { name: "phone" },
                         { name: "print", align: "center", sortable: false, width: 40}
                     ],
                     gridComplete: function() {
