@@ -279,14 +279,16 @@ public class EbodacEnrollmentController {
             return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
-        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignName)) {
+        String campaignNameWithoutStage = campaignName.split(EbodacConstants.STAGE)[0];
+
+        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignNameWithoutStage)) {
             return new ResponseEntity<>("ebodac.enrollment.error.primeVaccinationDateChanged", HttpStatus.BAD_REQUEST);
         }
 
         try {
             LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
             ebodacEnrollmentService.enrollSubjectToCampaignWithNewDate(subjectId, campaignName, referenceDate);
-            updateVisit(subjectId, campaignName, referenceDate);
+            updateVisit(subjectId, campaignNameWithoutStage, referenceDate);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EbodacEnrollmentException e) {
@@ -311,14 +313,16 @@ public class EbodacEnrollmentController {
             return new ResponseEntity<>("ebodac.enrollment.error.emptyCampaignName", HttpStatus.BAD_REQUEST);
         }
 
-        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignName)) {
+        String campaignNameWithoutStage = campaignName.split(EbodacConstants.STAGE)[0];
+
+        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignNameWithoutStage)) {
             return new ResponseEntity<>("ebodac.enrollment.error.primeVaccinationDateChanged", HttpStatus.BAD_REQUEST);
         }
 
         try {
             LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
             ebodacEnrollmentService.reenrollSubjectWithNewDate(subjectId, campaignName, referenceDate);
-            updateVisit(subjectId, campaignName, referenceDate);
+            updateVisit(subjectId, campaignNameWithoutStage, referenceDate);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (EbodacEnrollmentException e) {
