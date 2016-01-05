@@ -76,13 +76,14 @@ public final class BookingAppConstants {
 
     public static final Map<String, String> VISIT_RESCHEDULE_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
-            put("Location",         "location");
-            put("Participant Id",   "participantId");
-            put("Participant Name", "participantName");
-            put("Visit Type",       "visitType");
-            put("Actual Date",      "actualDate");
-            put("Planned Date",     "plannedDate");
-            put("Start Time",       "startTime");
+            put("Clinic Location",      "location");
+            put("Participant Id",       "participantId");
+            put("Participant Name",     "participantName");
+            put("Stage Id",             "stageId");
+            put("Visit Type",           "visitType");
+            put("Actual Date",          "actualDate");
+            put("Planned Date",         "plannedDate");
+            put("Planned Visit Time",   "startTime");
         }
     };
 
@@ -103,7 +104,7 @@ public final class BookingAppConstants {
             "Find By Clinic Location", "Find By Volunteer Name", "Find By Booking Id"));
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_VISIT_RESCHEDULE = new ArrayList<>(Arrays.asList("Find By Participant Id",
-            "Find By Participant Name", "Find By Visit Type", "Find By Clinic Location", "Find By Visit Actual Date",
+            "Find By Participant Name", "Find By Stage Id", "Find By Visit Type", "Find By Clinic Location", "Find By Visit Actual Date",
             "Find By Visit Actual Date Range"));
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_UNSCHEDULED = new ArrayList<>(Arrays.asList(

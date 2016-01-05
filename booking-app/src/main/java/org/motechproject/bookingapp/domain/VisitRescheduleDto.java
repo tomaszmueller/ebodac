@@ -23,6 +23,8 @@ public class VisitRescheduleDto {
 
     private String participantName;
 
+    private Long stageId;
+
     private VisitType visitType;
 
     private LocalDate actualDate;
@@ -45,6 +47,7 @@ public class VisitRescheduleDto {
     public VisitRescheduleDto(VisitBookingDetails details) {
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
+        setStageId(details.getSubject().getStageId());
         setVisitType(details.getVisit().getType());
         setActualDate(details.getVisit().getDate());
         setPlannedDate(details.getVisit().getMotechProjectedDate());
@@ -83,6 +86,14 @@ public class VisitRescheduleDto {
 
     public void setParticipantName(String participantName) {
         this.participantName = participantName;
+    }
+
+    public Long getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(Long stageId) {
+        this.stageId = stageId;
     }
 
     @JsonSerialize(using = CustomVisitTypeSerializer.class)
