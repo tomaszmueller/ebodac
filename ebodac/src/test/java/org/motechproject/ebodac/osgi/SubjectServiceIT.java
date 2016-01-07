@@ -73,10 +73,10 @@ public class SubjectServiceIT extends BasePaxIT {
 
     private void resetSubjects() {
         firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
     }
 
     @Test

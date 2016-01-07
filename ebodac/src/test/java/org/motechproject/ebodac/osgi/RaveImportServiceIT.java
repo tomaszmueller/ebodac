@@ -113,7 +113,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(0, visitDataService.retrieveAll().size());
 
         Subject beforeUpdate = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001",  "siteIdCode", "chiefdom", "section", "district");
 
         subjectDataService.create(beforeUpdate);
 
