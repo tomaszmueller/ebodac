@@ -60,6 +60,8 @@ public class Config {
 
     private List<String> disconVacCampaignsList;
 
+    private List<String> boosterRelatedMessages;
+
     private List<String> availableLookupsForDailyClinicVisitScheduleReport;
 
     private List<String> availableLookupsForFollowupsAfterPrimeInjectionReport;
@@ -310,6 +312,17 @@ public class Config {
 
     public void setDisconVacCampaignsList(List<String> disconVacCampaignsList) {
         this.disconVacCampaignsList = disconVacCampaignsList;
+    }
+
+    public List<String> getBoosterRelatedMessages() {
+        if (boosterRelatedMessages == null) {
+            boosterRelatedMessages = new ArrayList<>();
+        }
+        return boosterRelatedMessages;
+    }
+
+    public void setBoosterRelatedMessages(List<String> boosterRelatedMessages) {
+        this.boosterRelatedMessages = boosterRelatedMessages;
     }
 
     public List<String> getAvailableLookupsForDailyClinicVisitScheduleReport() {

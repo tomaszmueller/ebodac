@@ -7,12 +7,11 @@ import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.util.CustomDateDeserializer;
 import org.motechproject.bookingapp.util.CustomDateSerializer;
 import org.motechproject.bookingapp.util.CustomTimeSerializer;
+import org.motechproject.commons.api.Range;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
 import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
-
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VisitRescheduleDto {
@@ -59,9 +58,9 @@ public class VisitRescheduleDto {
         }
     }
 
-    public VisitRescheduleDto(VisitBookingDetails details, Map<VisitType, VisitScheduleOffset> offsetMap) {
+    public VisitRescheduleDto(VisitBookingDetails details, Range<LocalDate> dateRange) {
         this(details);
-        calculateEarliestAndLatestDate(offsetMap.get(details.getVisit().getType()), details.getSubject().getPrimerVaccinationDate());
+        calculateEarliestAndLatestDate(dateRange);
     }
 
     public String getLocation() {
@@ -171,11 +170,11 @@ public class VisitRescheduleDto {
         this.latestDate = latestDate;
     }
 
-    private void calculateEarliestAndLatestDate(VisitScheduleOffset offset, LocalDate primerVaccinationDate) {
-        if (primerVaccinationDate != null && offset != null) {
-            LocalDate maxDate = primerVaccinationDate.plusDays(offset.getLatestDateOffset());
+    private void calculateEarliestAndLatestDate(Range<LocalDate> dateRange) {
+        if (dateRange != null) {
+            LocalDate maxDate = dateRange.getMax();
             if (!maxDate.isBefore(LocalDate.now())) {
-                LocalDate minDate = primerVaccinationDate.plusDays(offset.getEarliestDateOffset());
+                LocalDate minDate = dateRange.getMin();
                 if (minDate.isBefore(LocalDate.now())) {
                     minDate = LocalDate.now();
                 }
