@@ -73,7 +73,12 @@ public class Subject {
     @Field(required = true)
     private String siteId;
 
+    @NonEditable
     @UIDisplayable(position = 9)
+    @Field
+    private String siteIdCode;
+
+    @UIDisplayable(position = 10)
     @Field
     private String community;
 
@@ -143,7 +148,7 @@ public class Subject {
     }
 
     public Subject(String subjectId, String name, String householdName, String headOfHousehold, //NO CHECKSTYLE ParameterNumber
-                   String phoneNumber, String address, Language language, String community, String siteId,
+                   String phoneNumber, String address, Language language, String community, String siteId, String siteIdCode,
                    String chiefdom, String section, String district) {
         this.subjectId = subjectId;
         this.name = name;
@@ -156,8 +161,10 @@ public class Subject {
         this.chiefdom = chiefdom;
         this.section = section;
         this.district = district;
-        setSiteId(siteId);
+        this.siteId = siteId;
+        this.siteIdCode = siteIdCode;
     }
+
 
     public Subject(Subject subject) {
         subjectId = subject.getSubjectId();
@@ -171,7 +178,8 @@ public class Subject {
         chiefdom = subject.getChiefdom();
         section = subject.getSection();
         district = subject.getDistrict();
-        setSiteId(subject.getSiteId());
+        siteId = subject.getSiteId();
+        siteIdCode = subject.getSiteIdCode();
         gender = subject.getGender();
         stageId = subject.getStageId();
         dateOfBirth = subject.getDateOfBirth();
@@ -222,11 +230,7 @@ public class Subject {
     }
 
     public void setSiteId(String siteId) {
-        if (StringUtils.isBlank(siteId)) {
-            this.siteId = EbodacConstants.SITE_ID_FOR_STAGE_I;
-        } else {
-            this.siteId = siteId;
-        }
+        this.siteId = siteId;
     }
 
     public Language getLanguage() {
@@ -401,6 +405,14 @@ public class Subject {
         //this setter is needed, because json deserialization doesn't work properly without it
     }
 
+    public String getSiteIdCode() {
+        return siteIdCode;
+    }
+
+    public void setSiteIdCode(String siteIdCode) {
+        this.siteIdCode = siteIdCode;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -462,6 +474,9 @@ public class Subject {
         if (section != null ? !section.equals(subject.section) : subject.section != null) {
             return false;
         }
+        if (siteIdCode != null ? !siteIdCode.equals(subject.siteIdCode) : subject.siteIdCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -502,6 +517,7 @@ public class Subject {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (language != null ? language.hashCode() : 0);
         result = 31 * result + (siteId != null ? siteId.hashCode() : 0);
+        result = 31 * result + (siteIdCode != null ? siteIdCode.hashCode() : 0);
         result = 31 * result + (community != null ? community.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (stageId != null ? stageId.hashCode() : 0);

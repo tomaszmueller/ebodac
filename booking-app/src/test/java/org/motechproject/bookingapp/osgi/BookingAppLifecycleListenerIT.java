@@ -74,10 +74,10 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
         assertEquals(0, subjectBookingDetailsList.size());
 
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
 
         Subject secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
 
         Visit firstVisit = createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter));

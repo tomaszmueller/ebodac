@@ -110,10 +110,10 @@ public class LookupServiceIT extends BasePaxIT {
 
     private void resetTestFields() {
         firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
 
         secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "chiefdom", "section", "district");
+                "44443333222", "address1", Language.Susu, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
 
         firstSubject.setDateOfBirth(LocalDate.parse("1967-09-17", formatter));
         firstSubject.setGender(Gender.Male);

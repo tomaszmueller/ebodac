@@ -289,7 +289,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -361,7 +361,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -433,7 +433,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -521,7 +521,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(new HashSet<>(Arrays.asList("101", "102")));
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -616,7 +616,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -659,7 +659,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -759,11 +759,11 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject1 = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject1 = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject1);
-        Subject subject2 = new Subject("2", "", "", "", "111111111","", Language.English, "com", "", "", "", "");
+        Subject subject2 = new Subject("2", "", "", "", "111111111","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject2);
-        Subject subject3 = new Subject("3", "", "", "", "222222222","", Language.English, "com", "", "", "", "");
+        Subject subject3 = new Subject("3", "", "", "", "222222222","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject3);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -802,7 +802,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -928,7 +928,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -992,7 +992,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -1076,7 +1076,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
@@ -1118,7 +1118,7 @@ public class ReportServiceIT extends BasePaxIT {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         configService.updateConfig(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
         subjectDataService.create(subject);
 
         Map<String, String> providerExtraData = new HashMap<>();
