@@ -81,6 +81,9 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name);
 
     @Lookup
+    List<VisitBookingDetails> findByStageId(@LookupField(name = "subject.stageId") Long stageId);
+
+    @Lookup
     List<VisitBookingDetails> findByVisitType(@LookupField(name = "visit.type") VisitType type);
 
     @Lookup
@@ -186,6 +189,17 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
             customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String name,
                                                                                  @LookupField(name = "visit.type") Set<VisitType> typeSet,
                                                                                  @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByStageIdAndVisitTypeSetAndPlannedDate(@LookupField(name = "subject.stageId") Long stageId,
+                                                                                 @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                 @LookupField(name = "visit.motechProjectedDate",
+                                                                                         customOperator = Constants.Operators.NEQ) LocalDate plannedDate);
+
+    @Lookup
+    List<VisitBookingDetails> findByStageIdAndVisitTypeSetAndPlannedDateRange(@LookupField(name = "subject.stageId") Long stageId,
+                                                                                      @LookupField(name = "visit.type") Set<VisitType> typeSet,
+                                                                                      @LookupField(name = "visit.motechProjectedDate") Range<LocalDate> plannedDate);
 
     @Lookup
     List<VisitBookingDetails> findByVisitTypeAndPlannedDate(@LookupField(name = "visit.type") VisitType type,

@@ -485,10 +485,11 @@
                         scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.visitReschedule.participantId"),
                         scope.msg("bookingApp.visitReschedule.participantName"),
+                        scope.msg("bookingApp.visitReschedule.stageId"),
                         scope.msg("bookingApp.visitReschedule.visitType"),
                         scope.msg("bookingApp.visitReschedule.actualDate"),
                         scope.msg("bookingApp.visitReschedule.plannedDate"),
-                        scope.msg("bookingApp.startTime"),
+                        scope.msg("bookingApp.visitReschedule.time"),
                         ""],
                     colModel: [
                         {
@@ -503,6 +504,10 @@
                         {
                             name: "participantName",
                             index: 'subject.name'
+                        },
+                        {
+                            name: "stageId",
+                            index: 'subject.stageId'
                         },
                         {
                             name: "visitType",
@@ -560,6 +565,7 @@
                                 scope.newForm();
                                 scope.form.dto.participantId = rowData.participantId;
                                 scope.form.dto.participantName = rowData.participantName;
+                                scope.form.dto.stageId = rowData.stageId;
                                 scope.form.dto.visitType = rowData.visitType;
                                 scope.form.dto.plannedDate = rowData.plannedDate;
                                 scope.form.dto.startTime = rowData.startTime;
