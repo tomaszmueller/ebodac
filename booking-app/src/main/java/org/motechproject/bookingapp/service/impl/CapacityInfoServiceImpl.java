@@ -51,6 +51,7 @@ public class CapacityInfoServiceImpl implements CapacityInfoService {
 
         if (dateRange != null) {
             int numberOfDays = Days.daysBetween(dateRange.getMin(), dateRange.getMax()).getDays() + 1;
+            numberOfDays = numberOfDays < 0 ? 0 : numberOfDays;
 
             for (Clinic clinic : clinics) {
                 int visitCount = (int) visitBookingDetailsDataService.countFindByClinicIdAndBookingPlannedDateRange(clinic.getId(), dateRange);
@@ -65,8 +66,8 @@ public class CapacityInfoServiceImpl implements CapacityInfoService {
                 int screeningSlotRemaining = clinic.getMaxScreeningVisits() * numberOfDays - screeningCount;
                 int vaccineSlotRemaining = clinic.getMaxPrimeVisits() * numberOfDays - primeVacCount;
 
-                capacityInfoDtos.add(new CapacityInfoDto(clinic.getLocation(), maxCapacity < 0 ? 0 : maxCapacity, availableCapacity < 0 ? 0 : availableCapacity,
-                        screeningSlotRemaining < 0 ? 0 : screeningSlotRemaining, vaccineSlotRemaining < 0 ? 0 : vaccineSlotRemaining));
+                capacityInfoDtos.add(new CapacityInfoDto(clinic.getLocation(), maxCapacity, availableCapacity,
+                        screeningSlotRemaining, vaccineSlotRemaining));
             }
         } else {
             for (Clinic clinic : clinics) {
