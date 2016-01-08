@@ -56,8 +56,6 @@ public final class BookingAppConstants {
     public static final Map<String, String> SCREENING_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
             put("Booking Id",       "volunteer.id");
-            put("Name",             "name");
-            put("Phone",            "phone");
             put("Clinic Location",  "clinic.location");
             put("Screening Date",   "date");
             put("Screening Time",   "startTime");
