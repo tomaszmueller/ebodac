@@ -19,7 +19,9 @@ import org.motechproject.mds.dto.LookupFieldType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public final class DtoLookupHelper {
     }
 
     public static GridSettings changeLookupForFollowupsAfterPrimeInjectionReport(GridSettings settings) throws IOException {
-        Map<String, String> fieldsMap = new HashMap<>();
+        Map<String, Object> fieldsMap = new HashMap<>();
 
         if (StringUtils.isBlank(settings.getFields())) {
             settings.setFields("{}");
@@ -48,12 +50,13 @@ public final class DtoLookupHelper {
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
             settings.setLookup("Find By Type Phone Number And Address");
         } else {
-            fieldsMap = getFieldsMap(settings.getFields());
+            fieldsMap = getFields(settings.getFields());
             fieldsMap.put(Visit.SUBJECT_ADDRESS_PROPERTY_NAME, null);
             settings.setLookup(settings.getLookup() + " Type Phone Number And Address");
         }
 
-        fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT.toString());
+        fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, new HashSet<>(Arrays.asList(VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT.toString(),
+                VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT)));
         fieldsMap.put(Visit.SUBJECT_PHONE_NUMBER_PROPERTY_NAME, null);
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
