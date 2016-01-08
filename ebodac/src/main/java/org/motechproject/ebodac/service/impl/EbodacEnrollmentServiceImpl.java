@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -125,8 +126,8 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             } else {
                 completeCampaignForSubjectWithStatus(visit, EnrollmentStatus.COMPLETED);
             }
-        } else if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-            enrollSubject(visit);
+        } else if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && visit.getMotechProjectedDate() != null) {
+            enrollOrReenrollSubject(visit);
         }
     }
 
@@ -182,6 +183,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         } else {
             enrollBoosterRelatedCampaignsIfNeeded(oldSubject, newSubject);
         }
+        deleteEnrollmentsIfPrimeOrBoosterVaccinationDateRemoved(oldSubject, newSubject);
         rollbackIfWithdrawalDateRemoved(oldSubject, newSubject);
         if (newSubject.getDateOfDisconStd() != null && oldSubject.getDateOfDisconStd() == null) {
             if (newSubject.getVisits() != null) {
@@ -233,31 +235,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !visit.getMotechProjectedDate().equals(enrollment.getReferenceDate())) {
-            if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
-                EnrollmentStatus enrollmentStatus = enrollment.getStatus();
-                EnrollmentStatus previousStatus = enrollment.getPreviousStatus();
-
-                subjectEnrollments.removeEnrolment(enrollment);
-                subjectEnrollmentsDataService.update(subjectEnrollments);
-                enrollmentDataService.delete(enrollment);
-
-                String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
-                campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
-                campaignName = addStageIdToCampaignNameIfNeeded(campaignName, visit.getSubject().getStageId());
-                enrollment = new Enrollment(visit.getSubject().getSubjectId(), campaignName);
-                enrollment.setStatus(enrollmentStatus);
-                enrollment.setPreviousStatus(previousStatus);
-                enrollment.setReferenceDate(visit.getMotechProjectedDate());
-
-                subjectEnrollments.addEnrolment(enrollment);
-                subjectEnrollmentsDataService.update(subjectEnrollments);
-            } else {
-                enrollment.setReferenceDate(visit.getMotechProjectedDate());
-                enrollment.setParentEnrollment(null);
-                enrollment.setDuplicatedEnrollments(null);
-
-                enrollmentDataService.update(enrollment);
-            }
+            updateReferenceDateIfUnenrolled(enrollment, subjectEnrollments, visit);
         }
 
         return false;
@@ -359,12 +337,147 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
     }
 
+    @Override
+    public void unenrollAndRemoveEnrollment(Visit visit) {
+        if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !VisitType.UNSCHEDULED_VISIT.equals(visit.getType())
+                && !VisitType.SCREENING.equals(visit.getType())) {
+            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getValue());
+        }
+    }
+
+    @Override
+    public void rollbackOrRemoveEnrollment(Visit visit) {
+        if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
+            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getValue());
+            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), EbodacConstants.BOOSTER_RELATED_MESSAGES);
+        } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
+            rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, visit.getSubject(), visit.getType().getValue(),
+                    visit.getMotechProjectedDate(), EnrollmentStatus.COMPLETED);
+        }
+    }
+
+    private void unenrollAndRemoveEnrollment(String subjectId, String campaignName) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
+
+        if (subjectEnrollments != null) {
+            Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
+
+            if (enrollment != null) {
+                unnerollAndDeleteEnrollment(enrollment, subjectEnrollments, null);
+            }
+
+            if (subjectEnrollments.getEnrollments().isEmpty()) {
+                subjectEnrollmentsDataService.delete(subjectEnrollments);
+            }
+        }
+    }
+
+    private void deleteEnrollmentsIfPrimeOrBoosterVaccinationDateRemoved(Subject oldSubject, Subject newSubject) {
+        if (newSubject.getPrimerVaccinationDate() == null && oldSubject.getPrimerVaccinationDate() != null) {
+            deleteEnrollmentsIfPrimeOrBoosterVaccinationDateRemoved(oldSubject.getSubjectId(), true);
+        } else if (newSubject.getBoosterVaccinationDate() == null && oldSubject.getBoosterVaccinationDate() != null) {
+            deleteEnrollmentsIfPrimeOrBoosterVaccinationDateRemoved(oldSubject.getSubjectId(), false);
+        }
+    }
+
+    private void deleteEnrollmentsIfPrimeOrBoosterVaccinationDateRemoved(String subjectId, boolean prime) {
+        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subjectId);
+
+        if (subjectEnrollments != null) {
+            Iterator<Enrollment> it = subjectEnrollments.getEnrollments().iterator();
+            while (it.hasNext()) {
+                Enrollment enrollment = it.next();
+                if (prime || checkIfCampaignInBoosterRelatedMessagesList(enrollment.getCampaignName())) {
+                    unnerollAndDeleteEnrollment(enrollment, subjectEnrollments, it);
+                }
+            }
+
+            if (subjectEnrollments.getEnrollments().isEmpty()) {
+                subjectEnrollmentsDataService.delete(subjectEnrollments);
+            }
+        }
+    }
+
+    private void unnerollAndDeleteEnrollment(Enrollment enrollment, SubjectEnrollments subjectEnrollments, Iterator<Enrollment> it) {
+        try {
+            if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+                changeParentForDuplicatedEnrollments(enrollment, false);
+                unscheduleJobsForEnrollment(enrollment);
+            }
+
+            if (it != null) {
+                it.remove();
+            } else {
+                subjectEnrollments.removeEnrolment(enrollment);
+            }
+            updateSubjectEnrollments(subjectEnrollments);
+            enrollmentDataService.delete(enrollment);
+        } catch (EbodacEnrollmentException e) {
+            LOGGER.debug(e.getMessage(), e);
+        }
+    }
+
+    private void updateReferenceDateIfUnenrolled(Enrollment enrollment, SubjectEnrollments subjectEnrollments, Visit visit) {
+        if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
+            EnrollmentStatus enrollmentStatus = enrollment.getStatus();
+            EnrollmentStatus previousStatus = enrollment.getPreviousStatus();
+
+            subjectEnrollments.removeEnrolment(enrollment);
+            subjectEnrollmentsDataService.update(subjectEnrollments);
+            enrollmentDataService.delete(enrollment);
+
+            String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
+            String campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            campaignName = addStageIdToCampaignNameIfNeeded(campaignName, visit.getSubject().getStageId());
+            Enrollment newEnrollment = new Enrollment(visit.getSubject().getSubjectId(), campaignName);
+            newEnrollment.setStatus(enrollmentStatus);
+            newEnrollment.setPreviousStatus(previousStatus);
+            newEnrollment.setReferenceDate(visit.getMotechProjectedDate());
+
+            subjectEnrollments.addEnrolment(newEnrollment);
+            subjectEnrollmentsDataService.update(subjectEnrollments);
+        } else {
+            enrollment.setReferenceDate(visit.getMotechProjectedDate());
+            enrollment.setParentEnrollment(null);
+            enrollment.setDuplicatedEnrollments(null);
+
+            enrollmentDataService.update(enrollment);
+        }
+    }
+
     private void enrollSubject(Visit visit) {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
             enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
             enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+        }
+    }
+
+    private void enrollOrReenrollSubject(Visit visit) {
+        if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
+
+            if (subjectEnrollments == null) {
+                enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+            } else {
+                Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
+
+                if (enrollment == null) {
+                    enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+                } else if (!enrollment.getReferenceDate().equals(visit.getMotechProjectedDate())) {
+                    try {
+                        if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
+                            reenrollSubjectWithNewDate(visit.getSubject().getSubjectId(), enrollment.getCampaignName(), visit.getMotechProjectedDate());
+                        } else {
+                            updateReferenceDateIfUnenrolled(enrollment, subjectEnrollments, visit);
+                        }
+                    } catch (EbodacEnrollmentException e) {
+                        LOGGER.debug(e.getMessage(), e);
+                    }
+                }
+            }
         }
     }
 
