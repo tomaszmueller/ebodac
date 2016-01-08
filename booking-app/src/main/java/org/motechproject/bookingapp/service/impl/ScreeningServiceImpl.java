@@ -99,8 +99,6 @@ public class ScreeningServiceImpl implements ScreeningService {
     private void checkNumberOfPatientsAndSetScreeningData(ScreeningDto screeningDto, Screening screening, Boolean ignoreLimitation) {
         Clinic clinic = clinicDataService.findById(Long.parseLong(screeningDto.getClinicId()));
         LocalDate date = LocalDate.parse(screeningDto.getDate());
-        String name = screeningDto.getName();
-        String phone= screeningDto.getPhone();
         Time startTime = Time.valueOf(screeningDto.getStartTime());
         Time endTime = calculateEndTime(startTime);
 
@@ -142,8 +140,6 @@ public class ScreeningServiceImpl implements ScreeningService {
         screening.setStartTime(startTime);
         screening.setEndTime(endTime);
         screening.setClinic(clinic);
-        screening.setName(name);
-        screening.setPhone(phone);
     }
 
     private Map<String, Object> getFields(String json) throws IOException {

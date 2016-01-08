@@ -96,16 +96,12 @@
                     mtype: "GET",
                     colNames: [
                         scope.msg("bookingApp.screening.bookingId"),
-                        scope.msg("bookingApp.screening.name"),
-                        scope.msg("bookingApp.screening.phone"),
                         scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.screening.time"),
                         ""],
                     colModel: [
                         { name: "volunteer.id" },
-                        { name: "name" },
-                        { name: "phone" },
                         { name: "clinic.location" },
                         { name: "date" },
                         { name: "startTime" },
@@ -147,7 +143,7 @@
                         return false;
                     },
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 6) {
+                        if (iCol !== 4) {
                             scope.editScreening(id);
                         }
                     }
