@@ -95,14 +95,14 @@
                     datatype: "json",
                     mtype: "GET",
                     colNames: [
-                        scope.msg("bookingApp.screening.bookingId"),
                         scope.msg("bookingApp.location"),
+                        scope.msg("bookingApp.screening.bookingId"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.screening.time"),
                         ""],
                     colModel: [
-                        { name: "volunteer.id" },
                         { name: "clinic.location" },
+                        { name: "volunteer.id" },
                         { name: "date" },
                         { name: "startTime" },
                         { name: "print", align: "center", sortable: false, width: 40}
