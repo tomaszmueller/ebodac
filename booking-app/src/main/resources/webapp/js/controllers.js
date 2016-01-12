@@ -672,7 +672,7 @@
         $scope.reloadSelects = function() {
             $timeout(function() {
                 $('#femaleChildBearingAgeSelect').trigger('change');
-            });
+            }, 100);
         };
 
         $scope.calculateRange = function(forDate, femaleChildBearingAge) {

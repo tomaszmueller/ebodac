@@ -310,6 +310,7 @@
             rowExtraData.siteId = rowObject.siteId;
             rowExtraData.visitId = rowObject.visitId;
             rowExtraData.participantGender = rowObject.participantGender;
+            rowExtraData.actualScreeningDate = rowObject.actualScreeningDate;
 
             gridDataExtension[options.rowId] = rowExtraData;
 
@@ -401,13 +402,12 @@
                         if (iCol !== 7) {
                             var rowData = elem.getRowData(rowId),
                                 extraRowData = gridDataExtension[rowId];
-
                             scope.newForm("edit");
                             scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
                             scope.form.dto.participantId = rowData.participantId;
                             scope.form.dto.participantName = rowData.participantName;
                             scope.form.dto.femaleChildBearingAge = rowData.femaleChildBearingAge;
-                            scope.form.dto.actualScreeningDate = rowData.actualScreeningDate;
+                            scope.form.dto.actualScreeningDate = extraRowData.actualScreeningDate;
                             scope.form.dto.bookingScreeningActualDate = rowData.bookingScreeningActualDate;
                             scope.form.dto.date = rowData.date;
                             scope.form.dto.startTime = rowData.startTime;
