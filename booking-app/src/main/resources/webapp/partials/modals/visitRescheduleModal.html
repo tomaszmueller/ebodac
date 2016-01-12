@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">{{msg('bookingApp.visitReschedule.update')}}</h4>
+                <h4 class="modal-title">{{rescheduleModalHeader}}</h4>
             </div>
             <div ng-if="form.dto">
                 <div class="modal-body visit-reschedule-modal-body">
@@ -33,10 +33,10 @@
             </div>
             <div ng-if="!form.dto">
                 <div class="modal-body">
-                    {{msg('bookingApp.visitReschedule.updateSuccessful')}}
+                    {{rescheduleModalBody}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary ng-binding" ng-click="print(-1)">
+                    <button type="button" class="btn btn-primary ng-binding" ng-click="print()">
                         <i class="fa fa-fw fa-print"></i> {{msg('bookingApp.screening.printCard')}}
                     </button>
                     <div class="btn-group" role="group">
