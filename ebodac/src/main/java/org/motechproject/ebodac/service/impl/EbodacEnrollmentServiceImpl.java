@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -666,7 +667,13 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         String phoneNumber = subject.getPhoneNumber();
         LocalDate referenceDate = enrollment.getReferenceDate();
-        String campaignName = enrollment.getCampaignName().split(EbodacConstants.STAGE)[0];
+        String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
+        String campaignName = nameParts[0];
+        String stage = null;
+
+        if (nameParts.length > 1) {
+            stage = EbodacConstants.STAGE + nameParts[1];
+        }
 
         List<Subject> subjects = subjectDataService.findByPhoneNumber(phoneNumber);
 
@@ -682,16 +689,37 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             return false;
         }
 
-        if (Pattern.compile(EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
-            campaignName = EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN;
-        } else if (Pattern.compile(EbodacConstants.FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
-            campaignName = EbodacConstants.FOLLOW_UP_CAMPAIGN;
-        }
+        campaignName = changeCampaignNameForDuplicatedEnrollmentsPattern(campaignName, stage);
 
         List<Enrollment> enrollments = enrollmentDataService.findByStatusReferenceDateCampaignNameAndSubjectIds(
                 EnrollmentStatus.ENROLLED, referenceDate, campaignName, subjectIds);
 
+        if (stage == null) {
+            Iterator<Enrollment> it = enrollments.iterator();
+            while (it.hasNext()) {
+                if (it.next().getCampaignName().contains(EbodacConstants.STAGE)) {
+                    it.remove();
+                }
+            }
+        }
+
         return findAndSetNewParent(enrollments, enrollment, subject.getSubjectId(), campaignName);
+    }
+
+    private String changeCampaignNameForDuplicatedEnrollmentsPattern(String campaignName, String stage) {
+        String newCampaignName = campaignName;
+
+        if (Pattern.compile(EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            newCampaignName = EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN;
+        } else if (Pattern.compile(EbodacConstants.FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            newCampaignName = EbodacConstants.FOLLOW_UP_CAMPAIGN;
+        }
+
+        if (stage != null) {
+            newCampaignName = newCampaignName + stage;
+        }
+
+        return newCampaignName;
     }
 
     private boolean findAndSetNewParent(List<Enrollment> enrollments, Enrollment enrollment, String subjectId, String campaignName) {
