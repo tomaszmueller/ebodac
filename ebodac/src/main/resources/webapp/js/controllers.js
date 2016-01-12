@@ -239,6 +239,18 @@
             }
         };
 
+        $scope.boostRelCampaignsChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.text;
+                $scope.config.boosterRelatedMessages.push(value);
+            } else if (change.removed) {
+                value = change.removed.text;
+                $scope.config.boosterRelatedMessages.removeObject(value);
+            }
+        };
+
         $http.get('../ebodac/ebodac-config')
             .success(function(response){
                 var i;
@@ -250,6 +262,7 @@
                         $scope.availableCampaigns = response;
                         $timeout(function() {
                             $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
+                            $('#boostRelCampaigns').select2('val', $scope.config.boosterRelatedMessages);
                         }, 50);
 
                     })
@@ -264,6 +277,7 @@
         $scope.reset = function () {
             $scope.config = angular.copy($scope.originalConfig);
             $('#disconVacCampaigns').select2('val', $scope.config.disconVacCampaignsList);
+            $('#boostRelCampaigns').select2('val', $scope.config.boosterRelatedMessages);
         };
 
         function hideMsgLater(index) {

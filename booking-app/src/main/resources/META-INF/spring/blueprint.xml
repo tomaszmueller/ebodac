@@ -44,6 +44,8 @@
 
     <osgi:reference id="ebodacEnrollmentService" interface="org.motechproject.ebodac.service.EbodacEnrollmentService" />
 
+    <osgi:reference id="configService" interface="org.motechproject.ebodac.service.ConfigService" />
+
     <osgi:service ref="visitScheduleService" interface="org.motechproject.bookingapp.service.VisitScheduleService" />
 
     <osgi:service ref="visitScheduleOffsetService" interface="org.motechproject.bookingapp.service.VisitScheduleOffsetService" />

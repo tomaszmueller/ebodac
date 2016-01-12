@@ -15,10 +15,13 @@ import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.bookingapp.service.VisitRescheduleService;
 import org.motechproject.bookingapp.service.VisitScheduleOffsetService;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
+import org.motechproject.commons.api.Range;
 import org.motechproject.commons.date.model.Time;
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
@@ -57,6 +60,9 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
     @Autowired
     private VisitLimitationHelper visitLimitationHelper;
 
+    @Autowired
+    private ConfigService configService;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -65,11 +71,12 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         Records<VisitBookingDetails> detailsRecords = lookupService.getEntities(VisitBookingDetails.class, settings.getLookup(), settings.getFields(), queryParams);
 
         Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
+        List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
 
         List<VisitRescheduleDto> dtos = new ArrayList<>();
 
         for (VisitBookingDetails details: detailsRecords.getRows()) {
-            dtos.add(new VisitRescheduleDto(details, offsetMap));
+            dtos.add(new VisitRescheduleDto(details, calculateEarliestAndLatestDate(details.getVisit(), offsetMap, boosterRelatedMessages)));
         }
 
         return new Records<>(detailsRecords.getPage(), detailsRecords.getTotal(), detailsRecords.getRecords(), dtos);
@@ -146,11 +153,16 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         }
 
         Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
+        List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
 
-        LocalDate primeVacDate = visit.getSubject().getPrimerVaccinationDate();
+        Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages);
 
-        LocalDate earliestDate = primeVacDate.plusDays(offsetMap.get(dto.getVisitType()).getEarliestDateOffset());
-        LocalDate latestDate = primeVacDate.plusDays(offsetMap.get(dto.getVisitType()).getLatestDateOffset());
+        if (dateRange == null) {
+            throw new IllegalArgumentException("Cannot calculate Earliest and Latest Date");
+        }
+
+        LocalDate earliestDate = dateRange.getMin();
+        LocalDate latestDate = dateRange.getMax();
 
         if (dto.getPlannedDate().isBefore(earliestDate) || dto.getPlannedDate().isAfter(latestDate)) {
             throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
@@ -185,5 +197,38 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
     private Time calculateEndTime(Time startTime) {
         int endTimeHour = (startTime.getHour() + BookingAppConstants.TIME_OF_THE_VISIT) % BookingAppConstants.MAX_TIME_HOUR;
         return new Time(endTimeHour, startTime.getMinute());
+    }
+
+    private Range<LocalDate> calculateEarliestAndLatestDate(Visit visit, Map<VisitType, VisitScheduleOffset> offsetMap, List<String> boosterRelatedMessages) {
+        VisitScheduleOffset offset = offsetMap.get(visit.getType());
+
+        if (offset == null) {
+            return null;
+        }
+
+        String campaignName;
+        Long stageId = visit.getSubject().getStageId();
+
+        if (stageId != null && stageId > 1) {
+            campaignName = visit.getType().getValue() + EbodacConstants.STAGE + stageId;
+        } else {
+            campaignName = visit.getType().getValue();
+        }
+
+        LocalDate vaccinationDate;
+
+        if (boosterRelatedMessages.contains(campaignName)) {
+            vaccinationDate = visit.getSubject().getBoosterVaccinationDate();
+        } else {
+            vaccinationDate = visit.getSubject().getPrimerVaccinationDate();
+        }
+
+        if (vaccinationDate != null) {
+            LocalDate minDate = vaccinationDate.plusDays(offset.getEarliestDateOffset());
+            LocalDate maxDate = vaccinationDate.plusDays(offset.getLatestDateOffset());
+            return new Range<>(minDate, maxDate);
+        }
+
+        return null;
     }
 }
