@@ -70,7 +70,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
         Records<VisitBookingDetails> detailsRecords = lookupService.getEntities(VisitBookingDetails.class, settings.getLookup(), settings.getFields(), queryParams);
 
-        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
+        Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
         List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
 
         List<VisitRescheduleDto> dtos = new ArrayList<>();
@@ -152,7 +152,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             throw new IllegalArgumentException("Date cannot be in the past");
         }
 
-        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
+        Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
         List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
 
         Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages);
@@ -199,8 +199,14 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         return new Time(endTimeHour, startTime.getMinute());
     }
 
-    private Range<LocalDate> calculateEarliestAndLatestDate(Visit visit, Map<VisitType, VisitScheduleOffset> offsetMap, List<String> boosterRelatedMessages) {
-        VisitScheduleOffset offset = offsetMap.get(visit.getType());
+    private Range<LocalDate> calculateEarliestAndLatestDate(Visit visit, Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap, List<String> boosterRelatedMessages) {
+        Map<VisitType, VisitScheduleOffset> visitTypeOffset = offsetMap.get(visit.getSubject().getStageId());
+
+        if (visitTypeOffset == null) {
+            return null;
+        }
+
+        VisitScheduleOffset offset = visitTypeOffset.get(visit.getType());
 
         if (offset == null) {
             return null;

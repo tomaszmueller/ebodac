@@ -18,8 +18,8 @@ public class VisitScheduleOffsetServiceImpl implements VisitScheduleOffsetServic
     private VisitScheduleOffsetDataService visitScheduleOffsetDataService;
 
     @Override
-    public VisitScheduleOffset findByVisitType(VisitType visitType) {
-        return visitScheduleOffsetDataService.findByVisitType(visitType);
+    public VisitScheduleOffset findByVisitTypeAndStageId(VisitType visitType, Long stageId) {
+        return visitScheduleOffsetDataService.findByVisitTypeAndStageId(visitType, stageId);
     }
 
     @Override
@@ -28,13 +28,35 @@ public class VisitScheduleOffsetServiceImpl implements VisitScheduleOffsetServic
     }
 
     @Override
-    public Map<VisitType, VisitScheduleOffset> getAllAsMap() {
+    public Map<VisitType, VisitScheduleOffset> getAsMapByStageId(Long stageId) {
         Map<VisitType, VisitScheduleOffset> visitScheduleOffsetMap = new HashMap<>();
-        List<VisitScheduleOffset> visitScheduleOffsetList = visitScheduleOffsetDataService.retrieveAll();
+        List<VisitScheduleOffset> visitScheduleOffsetList = visitScheduleOffsetDataService.findByStageId(stageId);
 
         if (visitScheduleOffsetList != null) {
             for (VisitScheduleOffset offset : visitScheduleOffsetList) {
                 visitScheduleOffsetMap.put(offset.getVisitType(), offset);
+            }
+        }
+
+        return visitScheduleOffsetMap;
+    }
+
+    @Override
+    public Map<Long, Map<VisitType, VisitScheduleOffset>> getAllAsMap() {
+        Map<Long, Map<VisitType, VisitScheduleOffset>> visitScheduleOffsetMap = new HashMap<>();
+        Map<VisitType, VisitScheduleOffset> visitTypeMap;
+        List<VisitScheduleOffset> visitScheduleOffsetList = visitScheduleOffsetDataService.retrieveAll();
+
+        if (visitScheduleOffsetList != null) {
+            for (VisitScheduleOffset offset : visitScheduleOffsetList) {
+                visitTypeMap = visitScheduleOffsetMap.get(offset.getStageId());
+
+                if (visitTypeMap == null) {
+                    visitTypeMap = new HashMap<>();
+                    visitScheduleOffsetMap.put(offset.getStageId(), visitTypeMap);
+                }
+
+                visitTypeMap.put(offset.getVisitType(), offset);
             }
         }
 

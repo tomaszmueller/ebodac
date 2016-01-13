@@ -8,9 +8,11 @@ import java.util.Map;
 
 public interface VisitScheduleOffsetService {
 
-    VisitScheduleOffset findByVisitType(VisitType visitType);
+    VisitScheduleOffset findByVisitTypeAndStageId(VisitType visitType, Long stageId);
 
     List<VisitScheduleOffset> getAll();
 
-    Map<VisitType, VisitScheduleOffset> getAllAsMap();
+    Map<VisitType, VisitScheduleOffset> getAsMapByStageId(Long stageId);
+
+    Map<Long, Map<VisitType, VisitScheduleOffset>> getAllAsMap();
 }
