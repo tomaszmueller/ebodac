@@ -22,51 +22,59 @@ public class Clinic {
     @Field(required = true)
     private String location;
 
-    @UIDisplayable(position = 2)
+    @UIDisplayable(position = 6)
     @Field(displayName = "Amount of Rooms", required = true, defaultValue = "1")
     private Integer numberOfRooms;
 
-    @UIDisplayable(position = 3)
+    @UIDisplayable(position = 2)
     @Field(required = true, defaultValue = "10")
     private Integer maxCapacityByDay;
 
-    @UIDisplayable(position = 4)
+    @UIDisplayable(position = 3)
     @Field(required = true, defaultValue = "5")
     private Integer maxScreeningVisits;
 
-    @UIDisplayable(position = 5)
+    @UIDisplayable(position = 4)
     @Field(required = true, defaultValue = "5")
     private Integer maxPrimeVisits;
 
-    @UIDisplayable(position = 6)
+    @UIDisplayable(position = 7)
     @Field(required = true, defaultValue = "10")
     private Integer maxPrimeFollowUpVisits;
 
-    @UIDisplayable(position = 7)
-    @Field(required = true, defaultValue = "5")
-    private Integer maxBoosterVisits;
-
     @UIDisplayable(position = 8)
     @Field(required = true, defaultValue = "10")
-    private Integer maxBoosterFirstFollowUpVisits;
+    private Integer maxPrimeFirstFollowUpVisits;
 
     @UIDisplayable(position = 9)
     @Field(required = true, defaultValue = "10")
-    private Integer maxBoosterSecondFollowUpVisits;
+    private Integer maxPrimeSecondFollowUpVisits;
+
+    @UIDisplayable(position = 5)
+    @Field(required = true, defaultValue = "5")
+    private Integer maxBoosterVisits;
 
     @UIDisplayable(position = 10)
     @Field(required = true, defaultValue = "10")
-    private Integer maxBoosterThirdFollowUpVisits;
+    private Integer maxBoosterFirstFollowUpVisits;
 
     @UIDisplayable(position = 11)
     @Field(required = true, defaultValue = "10")
-    private Integer maxFirstLongTermFollowUpVisits;
+    private Integer maxBoosterSecondFollowUpVisits;
 
     @UIDisplayable(position = 12)
     @Field(required = true, defaultValue = "10")
-    private Integer maxSecondLongTermFollowUpVisits;
+    private Integer maxBoosterThirdFollowUpVisits;
 
     @UIDisplayable(position = 13)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxFirstLongTermFollowUpVisits;
+
+    @UIDisplayable(position = 14)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxSecondLongTermFollowUpVisits;
+
+    @UIDisplayable(position = 15)
     @Field(required = true, defaultValue = "10")
     private Integer maxThirdLongTermFollowUpVisits;
 
@@ -128,6 +136,22 @@ public class Clinic {
 
     public void setMaxPrimeFollowUpVisits(Integer maxPrimeFollowUpVisits) {
         this.maxPrimeFollowUpVisits = maxPrimeFollowUpVisits;
+    }
+
+    public Integer getMaxPrimeFirstFollowUpVisits() {
+        return maxPrimeFirstFollowUpVisits;
+    }
+
+    public void setMaxPrimeFirstFollowUpVisits(Integer maxPrimeFirstFollowUpVisits) {
+        this.maxPrimeFirstFollowUpVisits = maxPrimeFirstFollowUpVisits;
+    }
+
+    public Integer getMaxPrimeSecondFollowUpVisits() {
+        return maxPrimeSecondFollowUpVisits;
+    }
+
+    public void setMaxPrimeSecondFollowUpVisits(Integer maxPrimeSecondFollowUpVisits) {
+        this.maxPrimeSecondFollowUpVisits = maxPrimeSecondFollowUpVisits;
     }
 
     public Integer getMaxBoosterVisits() {

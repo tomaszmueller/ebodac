@@ -397,14 +397,14 @@
             if (MDSUtils.find(settings, [{field: 'name', value: 'mds.form.label.allowUserSupplied'}], true).value === true){
                 return labelValues;
             } else {
-                if (labelValues[0].indexOf(":") === -1) {       // there is no colon, so we are dealing with a string set, not a map
-                    return labelValues;
-                } else {
+                if (labelValues !== undefined && labelValues[0].indexOf(":") !== -1) {
                     labelValues =  $scope.getAndSplitComboboxValues(labelValues);
                     for(key in labelValues) {
                         keys.push(key);
                     }
                     return keys;
+                } else {        // there is no colon, so we are dealing with a string set, not a map
+                    return labelValues;
                 }
             }
         };
