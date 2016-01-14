@@ -21,7 +21,7 @@
                     </div>
                     <div class="booking-app input-group">
                         <span class="left input-group-addon">{{msg('bookingApp.screeningDate')}}</span>
-                        <input type="text" class="form-control datepicker" readonly='true' mds-date-picker placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.bookingScreeningActualDate">
+                        <input type="text" class="form-control datepicker" readonly='true' mds-date-picker placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="form.dto.bookingScreeningActualDate" ng-disabled="form.dto.actualScreeningDate !== undefined && form.dto.actualScreeningDate !== ''">
                         <span class="input-group-addon validator" ng-class="{'alert-danger': form.dto.bookingScreeningActualDate === '', 'alert-success': form.dto.bookingScreeningActualDate}"><i class="fa fa-fw fa-check"></i></span>
                     </div>
                     <div class="booking-app input-group" ng-if="form.dto.participantGender == 'Female'">
