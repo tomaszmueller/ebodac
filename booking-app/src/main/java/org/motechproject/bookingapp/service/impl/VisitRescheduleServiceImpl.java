@@ -112,7 +112,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
         if (visits != null && !visits.isEmpty()) {
             int numberOfRooms = clinic.getNumberOfRooms();
-            int maxVisits = clinic.getMaxPrimeVisits();
+            int maxVisits = visitLimitationHelper.getMaxVisitCountForVisitType(dto.getVisitType(), clinic);
             int patients = 0;
 
             for (VisitBookingDetails visit : visits) {
