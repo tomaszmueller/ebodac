@@ -8,11 +8,14 @@ import org.motechproject.mds.annotations.NonEditable;
 import javax.jdo.annotations.Unique;
 
 @Entity
+@Unique(name = "visitTypeAndStageId", members = {"visitType", "stageId" })
 public class VisitScheduleOffset {
 
-    @Unique
     @Field(required = true)
     private VisitType visitType;
+
+    @Field(required = true)
+    private Long stageId;
 
     @Field(required = true)
     private Integer timeOffset;
@@ -33,6 +36,14 @@ public class VisitScheduleOffset {
 
     public void setVisitType(VisitType visitType) {
         this.visitType = visitType;
+    }
+
+    public Long getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(Long stageId) {
+        this.stageId = stageId;
     }
 
     public Integer getTimeOffset() {

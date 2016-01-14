@@ -85,7 +85,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
         Subject subject = visitBookingDetailsList.get(0).getSubject();
 
         if (subject.getPrimerVaccinationDate() == null) {
-            for (VisitBookingDetails details : calculatePlannedDates(visitBookingDetailsList, primeVaccinationDate)) {
+            for (VisitBookingDetails details : calculatePlannedDates(visitBookingDetailsList, primeVaccinationDate, subject.getStageId())) {
                 if (VisitType.PRIME_VACCINATION_DAY.equals(details.getVisit().getType())) {
                     plannedDates.put(details.getVisit().getType().toString(), details.getBookingActualDate().toString(BookingAppConstants.SIMPLE_DATE_FORMAT));
                 } else {
@@ -111,22 +111,24 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
             throw new VisitScheduleException(String.format("Cannot save Planned Dates, because Participant with Id: %s has no Visits", subjectId));
         }
 
-        if (visitBookingDetailsList.get(0).getSubject().getPrimerVaccinationDate() != null) {
+        Subject subject = visitBookingDetailsList.get(0).getSubject();
+
+        if (subject.getPrimerVaccinationDate() != null) {
             throw new VisitScheduleException(String.format("Cannot save Planned Dates, because Participant with Id: %s has been vaccinated", subjectId));
         }
 
-        for (VisitBookingDetails details: calculatePlannedDates(visitBookingDetailsList, primeVaccinationDate)) {
+        for (VisitBookingDetails details: calculatePlannedDates(visitBookingDetailsList, primeVaccinationDate, subject.getStageId())) {
             visitBookingDetailsDataService.update(details);
         }
     }
 
-    private List<VisitBookingDetails> calculatePlannedDates(List<VisitBookingDetails> visitBookingDetailsList, LocalDate primeVaccinationDate) {
+    private List<VisitBookingDetails> calculatePlannedDates(List<VisitBookingDetails> visitBookingDetailsList, LocalDate primeVaccinationDate, Long stageId) {
 
         if (primeVaccinationDate == null) {
             throw new VisitScheduleException("Cannot calculate Planned Dates, because Prime Vaccination Date is empty");
         }
 
-        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAllAsMap();
+        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAsMapByStageId(stageId);
         List<VisitBookingDetails> detailsList = new ArrayList<>();
         LocalDate screeningDate = null;
         VisitBookingDetails primeVacDetails = null;
