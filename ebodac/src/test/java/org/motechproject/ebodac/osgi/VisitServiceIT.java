@@ -72,10 +72,10 @@ public class VisitServiceIT extends BasePaxIT {
     @Test
     public void shouldCreateOrUpdate() {
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdName", "chiefdom", "section", "district");
 
         Subject secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
-                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
+                "44443333222", "address", Language.Susu, "community", "B05-SL10001", "siteIdName", "chiefdom", "section", "district");
 
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
@@ -126,7 +126,7 @@ public class VisitServiceIT extends BasePaxIT {
     @Test
     public void shouldFetchWithNullPhone() {
         Subject subject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                null , "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
+                null , "address", Language.English, "community", "B05-SL10001", "siteIdName", "chiefdom", "section", "district");
 
         Visit visit = VisitUtils.createVisit(subject, VisitType.SCREENING, null,
                 LocalDate.parse("2014-10-17", formatter), "owner");
@@ -146,7 +146,7 @@ public class VisitServiceIT extends BasePaxIT {
         assertEquals(0, visitDataService.retrieveAll().size());
 
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
-                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdCode", "chiefdom", "section", "district");
+                "729402018364", "address", Language.English, "community", "B05-SL10001", "siteIdName", "chiefdom", "section", "district");
 
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
