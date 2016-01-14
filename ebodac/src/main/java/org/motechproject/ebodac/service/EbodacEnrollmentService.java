@@ -39,4 +39,8 @@ public interface EbodacEnrollmentService {
     void createEnrollmentRecordsForSubject(Subject subject);
 
     void updateEnrollmentsWhenSubjectDataChanged(Subject newSubject, Subject oldSubject, boolean subjectImported);
+
+    void unenrollAndRemoveEnrollment(Visit visit);
+
+    void rollbackOrRemoveEnrollment(Visit visit);
 }

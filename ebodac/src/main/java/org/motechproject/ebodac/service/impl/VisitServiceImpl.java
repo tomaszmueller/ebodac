@@ -41,18 +41,20 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public Visit createOrUpdate(Visit visit) {
         if (visit.getSubject() != null) {
-            if (visit.getMotechProjectedDate() == null && visit.getSubject().getPrimerVaccinationDate() != null) {
+            if (visit.getSubject().getPrimerVaccinationDate() != null) {
                 visit.setMotechProjectedDate(visit.getDateProjected());
             }
             List<Visit> visits = visit.getSubject().getVisits();
             if (visits.contains(visit)) {
                 Visit existingVisit = visits.get(visits.indexOf(visit));
                 if (existingVisit.visitDatesChanged(visit)) {
+                    checkAndSetMotechProjectedDate(visit, existingVisit);
+                    if (visit.getDate() == null && existingVisit.getDate() != null) {
+                        ebodacEnrollmentService.rollbackOrRemoveEnrollment(visit);
+                    }
+
                     existingVisit.setDate(visit.getDate());
                     existingVisit.setDateProjected(visit.getDateProjected());
-                    if (existingVisit.getMotechProjectedDate() == null) {
-                        existingVisit.setMotechProjectedDate(visit.getMotechProjectedDate());
-                    }
 
                     ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(existingVisit);
 
@@ -85,5 +87,15 @@ public class VisitServiceImpl implements VisitService {
             }
         }
         return null;
+    }
+
+    private void checkAndSetMotechProjectedDate(Visit visit, Visit existingVisit) {
+        if (visit.getMotechProjectedDate() != null && (existingVisit.getMotechProjectedDate() == null
+                || !visit.getDateProjected().equals(existingVisit.getDateProjected()))) {
+            existingVisit.setMotechProjectedDate(visit.getMotechProjectedDate());
+        } else if (visit.getDateProjected() == null && existingVisit.getMotechProjectedDate() != null) {
+            existingVisit.setMotechProjectedDate(null);
+            ebodacEnrollmentService.unenrollAndRemoveEnrollment(existingVisit);
+        }
     }
 }
