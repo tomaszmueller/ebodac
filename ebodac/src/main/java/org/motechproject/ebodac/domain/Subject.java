@@ -76,7 +76,7 @@ public class Subject {
     @NonEditable
     @UIDisplayable(position = 9)
     @Field
-    private String siteIdName;
+    private String siteName;
 
     @UIDisplayable(position = 10)
     @Field
@@ -148,7 +148,7 @@ public class Subject {
     }
 
     public Subject(String subjectId, String name, String householdName, String headOfHousehold, //NO CHECKSTYLE ParameterNumber
-                   String phoneNumber, String address, Language language, String community, String siteId, String siteIdName,
+                   String phoneNumber, String address, Language language, String community, String siteId, String siteName,
                    String chiefdom, String section, String district) {
         this.subjectId = subjectId;
         this.name = name;
@@ -162,7 +162,7 @@ public class Subject {
         this.section = section;
         this.district = district;
         this.siteId = siteId;
-        this.siteIdName = siteIdName;
+        this.siteName = siteName;
     }
 
 
@@ -179,7 +179,7 @@ public class Subject {
         section = subject.getSection();
         district = subject.getDistrict();
         siteId = subject.getSiteId();
-        siteIdName = subject.getSiteIdName();
+        siteName = subject.getSiteName();
         gender = subject.getGender();
         stageId = subject.getStageId();
         dateOfBirth = subject.getDateOfBirth();
@@ -405,12 +405,12 @@ public class Subject {
         //this setter is needed, because json deserialization doesn't work properly without it
     }
 
-    public String getSiteIdName() {
-        return siteIdName;
+    public String getSiteName() {
+        return siteName;
     }
 
-    public void setSiteIdName(String siteIdName) {
-        this.siteIdName = siteIdName;
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 
     @Override
@@ -474,7 +474,7 @@ public class Subject {
         if (section != null ? !section.equals(subject.section) : subject.section != null) {
             return false;
         }
-        if (siteIdName != null ? !siteIdName.equals(subject.siteIdName) : subject.siteIdName != null) {
+        if (siteName != null ? !siteName.equals(subject.siteName) : subject.siteName != null) {
             return false;
         }
 
@@ -517,7 +517,7 @@ public class Subject {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (language != null ? language.hashCode() : 0);
         result = 31 * result + (siteId != null ? siteId.hashCode() : 0);
-        result = 31 * result + (siteIdName != null ? siteIdName.hashCode() : 0);
+        result = 31 * result + (siteName != null ? siteName.hashCode() : 0);
         result = 31 * result + (community != null ? community.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (stageId != null ? stageId.hashCode() : 0);

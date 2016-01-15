@@ -34,7 +34,7 @@ public class SubmitSubjectRequest {
 
     private String siteId;
 
-    private String siteIdName;
+    private String siteName;
 
     private String chiefdom;
 
@@ -48,7 +48,7 @@ public class SubmitSubjectRequest {
     }
 
     public SubmitSubjectRequest(String phoneNumber, String name, String householdName, String subjectId, String address, //NO CHECKSTYLE ParameterNumber
-                                String language, String community, String siteId, String siteIdName, String headOfHousehold, String chiefdom, String section, String district) {
+                                String language, String community, String siteId, String siteName, String headOfHousehold, String chiefdom, String section, String district) {
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.householdName = householdName;
@@ -61,7 +61,7 @@ public class SubmitSubjectRequest {
         this.section = section;
         this.district = district;
         this.siteId = siteId;
-        this.siteIdName = siteIdName;
+        this.siteName = siteName;
 
     }
 
@@ -150,12 +150,12 @@ public class SubmitSubjectRequest {
 
     public void setSection(String section) { this.section = section; }
 
-    public String getSiteIdName() {
-        return siteIdName;
+    public String getSiteName() {
+        return siteName;
     }
 
-    public void setSiteIdName(String siteIdName) {
-        this.siteIdName = siteIdName;
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 
     public List<ValidationError> getValidationErrors() {
