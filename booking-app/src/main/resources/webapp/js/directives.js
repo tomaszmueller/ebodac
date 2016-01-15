@@ -338,7 +338,7 @@
                     colModel: [
                         {
                             name: "location",
-                            index: 'clinic.location'
+                            index: 'subject.siteName'
                         },
                         {
                             name: "participantId",
@@ -490,7 +490,7 @@
                     colModel: [
                         {
                             name: "location",
-                            index: 'clinic.location'
+                            index: 'subject.siteName'
                         },
                         {
                             name: "participantId",
