@@ -54,7 +54,7 @@ public class ZetesController {
                     Language.getByCode(submitSubjectRequest.getLanguage()),
                     submitSubjectRequest.getCommunity(),
                     submitSubjectRequest.getSiteId(),
-                    submitSubjectRequest.getSiteIdName(),
+                    submitSubjectRequest.getSiteName(),
                     submitSubjectRequest.getChiefdom(),
                     submitSubjectRequest.getSection(),
                     submitSubjectRequest.getDistrict());
