@@ -921,6 +921,25 @@
     ]
   },
   {
+    "name": "Screening - stage 2",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Screening message",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "screening-message-stage-2",
+        "timeOffset": "15 Minutes",
+        "startTime": "7:00"
+      }
+    ]
+  },
+  {
     "name": "Prime Vaccination Day - stage 2",
     "type": "OFFSET",
     "messages": [
@@ -933,7 +952,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "welcome-message",
+        "messageKey": "welcome-message-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -946,7 +965,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-1-medical-assistance-message",
+        "messageKey": "weekly-message-1-medical-assistance-message-stage-2",
         "timeOffset": "4 Days",
         "startTime": "8:00"
       },
@@ -959,7 +978,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-2-more-info-1",
+        "messageKey": "weekly-message-2-more-info-1-stage-2",
         "timeOffset": "13 Days",
         "startTime": "8:00"
       },
@@ -972,7 +991,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-2-more-info-2",
+        "messageKey": "weekly-message-2-more-info-2-stage-2",
         "timeOffset": "20 Days",
         "startTime": "8:00"
       },
@@ -985,7 +1004,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-6-ebola-reminder",
+        "messageKey": "weekly-message-6-ebola-reminder-stage-2",
         "timeOffset": "48 Days",
         "startTime": "8:00"
       }
@@ -1004,7 +1023,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "weekly-message-4-mid-point-message",
+        "messageKey": "weekly-message-4-mid-point-message-stage-2",
         "timeOffset": "34 Days",
         "startTime": "8:00"
       }
@@ -1023,7 +1042,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day",
+        "messageKey": "clinic-visit-reminder-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1036,21 +1055,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1068,7 +1074,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day",
+        "messageKey": "clinic-visit-reminder-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1081,21 +1087,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1113,7 +1106,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1126,7 +1119,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-sunday",
+        "messageKey": "booster-reminder-less-than-a-week-sunday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1139,7 +1132,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1152,7 +1145,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1171,7 +1164,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1184,7 +1177,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-monday",
+        "messageKey": "booster-reminder-less-than-a-week-monday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1197,7 +1190,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1210,7 +1203,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1229,7 +1222,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1242,7 +1235,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-tuesday",
+        "messageKey": "booster-reminder-less-than-a-week-tuesday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1255,7 +1248,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1268,7 +1261,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1287,7 +1280,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1300,7 +1293,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-wednesday",
+        "messageKey": "booster-reminder-less-than-a-week-wednesday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1313,7 +1306,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1326,7 +1319,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1345,7 +1338,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1358,7 +1351,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-thursday",
+        "messageKey": "booster-reminder-less-than-a-week-thursday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1371,7 +1364,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1384,7 +1377,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1403,7 +1396,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1416,7 +1409,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-friday",
+        "messageKey": "booster-reminder-less-than-a-week-friday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1429,7 +1422,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1442,7 +1435,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1461,7 +1454,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-1-week",
+        "messageKey": "booster-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1474,7 +1467,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "booster-reminder-less-than-a-week-saturday",
+        "messageKey": "booster-reminder-less-than-a-week-saturday-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1487,7 +1480,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-1-day",
+        "messageKey": "missed-dose-1-day-stage-2",
         "timeOffset": "1 Day",
         "startTime": "8:00"
       },
@@ -1500,7 +1493,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "missed-dose-2nd",
+        "messageKey": "missed-dose-2nd-stage-2",
         "timeOffset": "3 Days",
         "startTime": "8:00"
       }
@@ -1519,7 +1512,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day",
+        "messageKey": "clinic-visit-reminder-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1532,21 +1525,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1564,7 +1544,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-week",
+        "messageKey": "clinic-visit-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1577,7 +1557,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day",
+        "messageKey": "clinic-visit-reminder-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1590,21 +1570,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1622,7 +1589,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-week",
+        "messageKey": "clinic-visit-reminder-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1635,7 +1602,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-1-day",
+        "messageKey": "clinic-visit-reminder-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1648,21 +1615,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1680,7 +1634,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "messageKey": "clinic-visit-reminder-no-exam-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1693,7 +1647,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "messageKey": "clinic-visit-reminder-no-exam-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1706,21 +1660,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
@@ -1738,7 +1679,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "messageKey": "clinic-visit-reminder-no-exam-1-week-stage-2",
         "timeOffset": "-7 Days",
         "startTime": "8:00"
       },
@@ -1751,7 +1692,7 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "messageKey": "clinic-visit-reminder-no-exam-1-day-stage-2",
         "timeOffset": "-1 Day",
         "startTime": "8:00"
       },
@@ -1764,21 +1705,8 @@
         "languages": [
           "en"
         ],
-        "messageKey": "clinic-visit-missed-appointment-1",
-        "timeOffset": "1 Day",
-        "startTime": "8:00"
-      },
-      {
-        "name": "Clinic Visit Missed appointment 2",
-        "formats": [
-          "IVR",
-          "SMS"
-        ],
-        "languages": [
-          "en"
-        ],
-        "messageKey": "clinic-visit-missed-appointment-2",
-        "timeOffset": "3 Days",
+        "messageKey": "clinic-visit-missed-appointment-1-stage-2",
+        "timeOffset": "4 Days",
         "startTime": "8:00"
       }
     ]
