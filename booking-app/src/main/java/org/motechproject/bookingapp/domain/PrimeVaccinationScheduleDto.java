@@ -68,7 +68,7 @@ public class PrimeVaccinationScheduleDto {
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
         if (details.getClinic() != null) {
-            setLocation(details.getClinic().getLocation());
+            setLocation(details.getSubject().getSiteName());
         }
     }
 

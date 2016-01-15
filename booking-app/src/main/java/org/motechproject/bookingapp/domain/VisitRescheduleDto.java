@@ -54,7 +54,7 @@ public class VisitRescheduleDto {
         setVisitId(details.getVisit().getId());
         setVisitBookingDetailsId(details.getId());
         if (details.getClinic() != null) {
-            setLocation(details.getClinic().getLocation());
+            setLocation(details.getSubject().getSiteName());
         }
     }
 
