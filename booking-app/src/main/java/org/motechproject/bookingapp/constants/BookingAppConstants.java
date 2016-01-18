@@ -45,6 +45,7 @@ public final class BookingAppConstants {
     public static final String ADVANCED_SETTINGS_TAB_PERMISSION = "bookingAdvancedSettings";
     public static final String UNSCHEDULED_VISITS_TAB_PERMISSION = "unscheduledVisitsTab";
     public static final String CAPACITY_INFO_TAB_PERMISSION = "capacityInfoTab";
+    public static final String REPORTS_TAB_PERMISSION = "reportsTab";
 
     public static final String HAS_SCREENING_TAB_ROLE = "hasRole('" + SCREENING_TAB_PERMISSION + "')";
     public static final String HAS_PRIME_VAC_TAB_ROLE = "hasRole('" + PRIME_VAC_TAB_PERMISSION + "')";
@@ -53,6 +54,7 @@ public final class BookingAppConstants {
     public static final String HAS_ADVANCED_SETTINGS_TAB_ROLE = "hasRole('" + ADVANCED_SETTINGS_TAB_PERMISSION + "')";
     public static final String HAS_UNSCHEDULED_VISITS_TAB_ROLE = "hasRole('" + UNSCHEDULED_VISITS_TAB_PERMISSION + "')";
     public static final String HAS_CAPACITY_INFO_TAB_ROLE = "hasRole('" + CAPACITY_INFO_TAB_PERMISSION + "')";
+    public static final String HAS_REPORTS_TAB_ROLE = "hasRole('" + REPORTS_TAB_PERMISSION + "')";
 
     public static final Map<String, String> SCREENING_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
