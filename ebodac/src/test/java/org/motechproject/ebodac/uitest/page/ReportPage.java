@@ -13,6 +13,8 @@ public class ReportPage extends AbstractBasePage {
 
     static final By DAILYCLINICVISITSCHEDULEREPORT = By.linkText("Daily Clinic Visit Schedule Report");
 
+    static final By FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT = By.linkText("Follow-ups After Prime Injection Report");
+
     public ReportPage(WebDriver driver) {
         super(driver);
     }
@@ -24,6 +26,11 @@ public class ReportPage extends AbstractBasePage {
     public void showDailyClinicVisitReportSchedule() throws InterruptedException {
         clickWhenVisible(DAILYCLINICVISITSCHEDULEREPORT);
     }
+
+    public void showFollowUpsAfterPrimeInjectionReport () throws InterruptedException{
+        clickWhenVisible(FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT);
+    }
+
     @Override
     public String expectedUrlPath() {
         return URL_ROOT + URL_PATH;
