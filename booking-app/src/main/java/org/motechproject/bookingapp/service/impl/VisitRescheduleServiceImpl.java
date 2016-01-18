@@ -135,10 +135,10 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             }
 
             if (visits.size() >= maxVisits) {
-                throw new LimitationExceededException("Maximum amount of Prime Vaccination Visits exceeded for this day");
+                throw new LimitationExceededException("The limit of the type of the visit is reached for this day");
             }
             if (patients >= numberOfRooms) {
-                throw new LimitationExceededException("Too many Patients at the same time");
+                throw new LimitationExceededException("Too many visits at the same time");
             }
         }
     }
