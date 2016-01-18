@@ -48,4 +48,11 @@ public interface UnscheduledVisitDataService extends MotechDataService<Unschedul
 
     long countFindByClinicIdAndDateRange(@LookupField(name = "clinic.id") Long clinicId,
                                          @LookupField(name = "date") Range<LocalDate> date);
+
+    @Lookup
+    List<UnscheduledVisit> findByClinicIdAndDate(@LookupField(name = "clinic.id") Long clinicId,
+                                                 @LookupField(name = "date") LocalDate date);
+
+    long countFindByClinicIdAndDate(@LookupField(name = "clinic.id") Long clinicId,
+                                    @LookupField(name = "date") LocalDate date);
 }

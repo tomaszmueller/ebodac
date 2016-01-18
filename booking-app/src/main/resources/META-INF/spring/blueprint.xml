@@ -56,4 +56,6 @@
 
     <osgi:service ref="bookingAppLifecycleListener" interface="org.motechproject.bookingapp.listener.BookingAppLifecycleListener" />
 
+    <osgi:service ref="reportService" interface="org.motechproject.bookingapp.service.ReportService" />
+
 </beans>

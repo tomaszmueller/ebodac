@@ -35,6 +35,19 @@
 
             if (tab === "visitLimitation") {
                 $routeProvider.when('/bookingApp/{0}'.format(tab), {redirectTo: '/mds/dataBrowser/' + clinicId + '/booking-app'});
+            } else if (tab === "reports") {
+                $routeProvider
+                    .when('/bookingApp/{0}'.format(tab),
+                        {
+                            templateUrl: '../booking-app/resources/partials/{0}.html'.format(tab)
+                        }
+                    )
+                    .when('/bookingApp/capacityReport',
+                        {
+                            templateUrl: '../booking-app/resources/partials/capacityReport.html',
+                            controller: 'BookingApp{0}Ctrl'.format(tab.capitalize())
+                        }
+                    );
             } else {
                 $routeProvider.when('/bookingApp/{0}'.format(tab),
                     {

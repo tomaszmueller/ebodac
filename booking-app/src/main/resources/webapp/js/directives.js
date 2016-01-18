@@ -16,7 +16,14 @@
             require: 'ngModel',
             link: function(scope, element, attrs) {
                 scope.$watch("$parent." + attrs.ngModel, function () {
-                    $(".booking-app-grid").trigger('reloadGrid');
+                    $(".booking-app-grid").jqGrid('setGridParam', {
+                        datatype: 'json',
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
+                    }).trigger('reloadGrid');
                 });
             }
         };
@@ -607,7 +614,7 @@
         };
     });
 
-    directives.directive('capacityInfoGrid', function ($compile) {
+    directives.directive('capacityInfoGrid', function () {
 
         return {
             restrict: 'A',
@@ -681,6 +688,93 @@
                 scope.$watch("lookupRefresh", function () {
                     $('#' + attrs.id).jqGrid('setGridParam', {
                         page: 1
+                    }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
+    directives.directive('capacityReportGrid', function () {
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var elem = angular.element(element);
+
+                elem.jqGrid({
+                    url: '../booking-app/getCapacityReports',
+                    datatype: 'json',
+                    mtype: 'GET',
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    colNames: [
+                        scope.msg("bookingApp.capacityReport.date"),
+                        scope.msg("bookingApp.capacityReport.clinic"),
+                        scope.msg("bookingApp.capacityInfo.maxCapacity"),
+                        scope.msg("bookingApp.capacityInfo.availableCapacity"),
+                        scope.msg("bookingApp.capacityInfo.screeningSlotRemaining"),
+                        scope.msg("bookingApp.capacityInfo.vaccineSlotRemaining")],
+                    colModel: [
+                        {
+                            name: 'date',
+                            index: 'date'
+                        },
+                        {
+                            name: 'location',
+                            index: 'location'
+                        },
+                        {
+                            name: 'maxCapacity',
+                            sorttype: 'int'
+                        },
+                        {
+                            name: 'availableCapacity',
+                            sorttype: 'int'
+                        },
+                        {
+                            name: 'screeningSlotRemaining',
+                            sorttype: 'int'
+                        },
+                        {
+                            name: 'vaccineSlotRemaining',
+                            sorttype: 'int'
+                        }
+                    ],
+                    pager: '#pager',
+                    sortname: null,
+                    sortorder: 'asc',
+                    viewrecords: true,
+                    loadonce: true,
+                    gridview: true,
+                    gridComplete: function () {
+                        $('#capacityReportTable .ui-jqgrid-hdiv').addClass("table-lightblue");
+                        $('#capacityReportTable .ui-jqgrid-btable').addClass("table-lightblue");
+                    },
+                    postData: {
+                        startDate: function() {
+                            return handleUndefined(scope.selectedFilter.startDate);
+                        },
+                        endDate: function() {
+                            return handleUndefined(scope.selectedFilter.endDate);
+                        },
+                        dateFilter: function() {
+                            return handleUndefined(scope.selectedFilter.dateFilter);
+                        }
+                    }
+                });
+
+                scope.$watch("lookupRefresh", function () {
+                    $('#' + attrs.id).jqGrid('setGridParam', {
+                        datatype: 'json',
+                        page: 1,
+                        postData: {
+                            fields: JSON.stringify(scope.lookupBy),
+                            lookup: (scope.selectedLookup) ? scope.selectedLookup.lookupName : ""
+                        }
                     }).trigger('reloadGrid');
                 });
             }

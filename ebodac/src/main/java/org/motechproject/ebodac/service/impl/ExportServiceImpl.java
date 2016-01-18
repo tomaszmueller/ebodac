@@ -40,7 +40,7 @@ public class ExportServiceImpl implements ExportService {
 
     @Override
     public void exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
-                                  String lookup, String lookupFields, QueryParams queryParams)throws IOException {
+                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         CsvTableWriter tableWriter = new CsvTableWriter(writer);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
@@ -50,6 +50,23 @@ public class ExportServiceImpl implements ExportService {
                                     String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         ExcelTableWriter tableWriter = new ExcelTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    @Override
+    public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
+        Set<String> keys = headerMap.keySet();
+        String[] fields = keys.toArray(new String[keys.size()]);
+        try {
+            tableWriter.writeHeader(fields);
+            for (T entity : entities) {
+                Map<String, String> row = buildRow(entity, headerMap);
+                tableWriter.writeRow(row, fields);
+            }
+        } catch (IOException e) {
+            throw new IOException("IO Error when writing data", e);
+        } finally {
+            tableWriter.close();
+        }
     }
 
     private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
