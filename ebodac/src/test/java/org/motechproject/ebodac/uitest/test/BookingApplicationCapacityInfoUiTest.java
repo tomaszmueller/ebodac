@@ -17,9 +17,8 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
     private BookingAppPage bookingAppPage;
     private BookingAppCapacityInfoPage bookingAppCapacityInfoPage;
     private BookingAppAdvancedSettingsPage bookingAppAdvancedSettingsPage;
-    private String clerkUser;
-    private String clerkPassword;
-    private UserPropertiesHelper userPropertiesHelper;
+    private String user;
+    private String password;
 
     @Before
     public void setUp() {
@@ -28,11 +27,10 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
         bookingAppPage = new BookingAppPage(driver);
         bookingAppCapacityInfoPage = new BookingAppCapacityInfoPage(driver);
         bookingAppAdvancedSettingsPage = new BookingAppAdvancedSettingsPage(driver);
-        userPropertiesHelper = new UserPropertiesHelper();
-        clerkUser = userPropertiesHelper.getClerkUserName();
-        clerkPassword = userPropertiesHelper.getClerkPassword();
+        user = properties.getUserName();
+        password = properties.getPassword();
         if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(clerkUser, clerkPassword);
+            loginPage.login(user, password);
         }
     }
 
