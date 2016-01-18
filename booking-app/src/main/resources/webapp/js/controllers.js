@@ -896,8 +896,10 @@
             $scope.form.dto = {};
         };
 
-        $scope.showRescheduleModal = function() {
+        $scope.showRescheduleModal = function(modalHeaderMessage, modalBodyMessage) {
             $timeout(function() {
+            $scope.rescheduleModalHeader = modalHeaderMessage;
+            $scope.rescheduleModalBody = modalBodyMessage;
             $('#visitRescheduleModal').modal('show');
             }, 10);
         };
@@ -979,42 +981,35 @@
             $('#date', document).html(plannedDate);
         };
 
-        $scope.print = function(source) {
+        $scope.print = function() {
 
-            if(source >= 0) {
-                var rowData = $("#visitReschedule").getRowData(source);
-                var subjectId = rowData.participantId;
-                var date = rowData.plannedDate;
-                var subjectName = rowData.participantName;
-                var location = rowData.location;
-            } else {
+            setTimeout(function() {
                 var subjectId = $scope.visitForPrint.participantId;
                 var date = $scope.visitForPrint.plannedDate;
                 var subjectName = $scope.visitForPrint.participantName;
                 var location = $scope.visitForPrint.location;
-            }
 
-            var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
-             if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
-             	// iexplorer
-             	 var windowOnload = winPrint.onload || function() {
-                    setTimeout(function(){
+                var winPrint = window.open("../booking-app/resources/partials/card/visitRescheduleCard.html");
+                 if ((!(window.ActiveXObject) && "ActiveXObject" in window) || (navigator.userAgent.indexOf("MSIE") > -1)) {
+                   // iexplorer
+                    var windowOnload = winPrint.onload || function() {
+                        setTimeout(function(){
+                            $scope.setPrintData(winPrint.document, location, subjectId, subjectName, date);
+                            winPrint.focus();
+                            winPrint.print();
+                        }, 500);
+                      };
+
+                      winPrint.onload = new function() { windowOnload(); } ;
+                 } else {
+                    winPrint.onload = function() {
                         $scope.setPrintData(winPrint.document, location, subjectId, subjectName, date);
                         winPrint.focus();
                         winPrint.print();
-                    }, 500);
-                  };
-
-                  winPrint.onload = new function() { windowOnload(); } ;
-             } else {
-                winPrint.onload = function() {
-                    $scope.setPrintData(winPrint.document, location, subjectId, subjectName, date);
-                    winPrint.focus();
-                    winPrint.print();
-                }
-             }
+                    }
+                 }
+             }, 500);
         };
-
     });
 
     controllers.controller('BookingAppCapacityInfoCtrl', function ($scope) {
