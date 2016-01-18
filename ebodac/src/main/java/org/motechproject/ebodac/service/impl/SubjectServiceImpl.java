@@ -4,8 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Subject;
-import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
@@ -77,13 +75,6 @@ public class SubjectServiceImpl implements SubjectService {
             subjectInDb = update(subjectInDb);
         } else {
             subjectInDb = create(newSubject);
-        }
-
-        for (VisitType visitType: VisitType.values()) {
-            if (!VisitType.UNSCHEDULED_VISIT.equals(visitType)) {
-                Visit visit = new Visit(visitType, subjectInDb);
-                visitDataService.create(visit);
-            }
         }
 
         return subjectInDb;

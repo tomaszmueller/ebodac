@@ -8,6 +8,8 @@ import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Component
 public class BookingAppEventListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookingAppEventListener.class);
 
     @Autowired
     private VisitBookingDetailsDataService visitBookingDetailsDataService;
@@ -37,6 +41,8 @@ public class BookingAppEventListener {
                     details.setClinic(clinic);
                     visitBookingDetailsDataService.update(details);
                 }
+            } else {
+                LOGGER.warn("Cannot find Clinic with siteId: {} for Subject with id: {}", siteId, subjectId);
             }
         }
     }
