@@ -63,7 +63,11 @@ public class PrimeVaccinationScheduleDto {
         setParticipantId(details.getSubject().getSubjectId());
         setParticipantName(details.getSubject().getName());
         setDate(details.getBookingPlannedDate());
-        setFemaleChildBearingAge(details.getSubjectBookingDetails().getFemaleChildBearingAge());
+        if (details.getSubject().getGender() == null || details.getSubject().getGender().equals(Gender.Female)) {
+            setFemaleChildBearingAge(details.getSubjectBookingDetails().getFemaleChildBearingAge());
+        } else {
+            setFemaleChildBearingAge(false);
+        }
         setVisitBookingDetailsId(details.getId());
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
