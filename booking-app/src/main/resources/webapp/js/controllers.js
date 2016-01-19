@@ -888,7 +888,7 @@
 
         $scope.$parent.selectedFilter.startDate = undefined;
         $scope.$parent.selectedFilter.endDate = undefined;
-        $scope.$parent.selectedFilter = $scope.filters[0];
+        $scope.$parent.selectedFilter = $scope.filters[5];
         $scope.visitForPrint = {};
 
         $scope.newForm = function() {
