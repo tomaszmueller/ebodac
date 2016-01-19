@@ -13,7 +13,7 @@
             <li ng-show="active('#/bookingApp/reports')" ng-class="active('#/bookingApp/reports')">{{msg('bookingApp.reports')}}</li>
         </ul>
     </div>
-    <div class="header-footer">
+    <div class="header-footer" style="overflow:auto;">
         <ul id="content-tabs" class="nav nav-tabs">
             <li ng-class="active('#/bookingApp/' + tab)" ng-repeat="tab in BOOKING_AVAILABLE_TABS">
                 <a href="#/bookingApp/{{tab}}">
@@ -22,7 +22,7 @@
             </li>
         </ul>
     </div>
-    <div class="ui-layout-content" style="margin-top: 40px;">
+    <div class="ui-layout-content">
         <div class="tab-content" id="tab-content">
             <div id="main-content" class="active">
                 <div ng-view></div>
