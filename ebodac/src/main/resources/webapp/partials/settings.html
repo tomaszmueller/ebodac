@@ -17,14 +17,14 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="district">{{msg('ebodac.web.settings.district')}}</label>
-                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.district.tooltip')}}">
                     <input class="form-control" id="district" type="text" ng-model="config.district" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="chiefdom">{{msg('ebodac.web.settings.chiefdom')}}</label>
-                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.chiefdom.tooltip')}}">
                     <input class="form-control" id="chiefdom" type="text" ng-model="config.chiefdom" required>
                 </div>
             </div>
@@ -41,28 +41,28 @@
             <div class="form-group" ng-show="config.enableZetesJob">
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="zetesUrl">{{msg('ebodac.web.settings.zetes.updateUrl')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.zetes.updateUrl.tooltip')}}">
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.zetes.updateUrl.tooltip')}}">
                         <input class="form-control" id="zetesUrl" type="text" ng-model="config.zetesUrl" ng-required="config.enableZetesJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="zetesUsername">{{msg('ebodac.web.settings.zetes.username')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="zetesUsername" type="text" ng-model="config.zetesUsername" ng-required="config.enableZetesJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="zetesPassword">{{msg('ebodac.web.settings.zetes.password')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="zetesPassword" type="password" ng-model="config.zetesPassword" ng-required="config.enableZetesJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="startTime">{{msg('ebodac.web.settings.zetes.startTime')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="startTime" type="text" ng-model="config.startTime" time-picker ng-required="config.enableZetesJob">
                     </div>
                 </div>
@@ -80,35 +80,35 @@
             <div class="form-group" ng-show="config.enableRaveJob">
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ftpsHost">{{msg('ebodac.web.settings.rave.ftpsHost')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsHost.tooltip')}}">
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsHost.tooltip')}}">
                         <input class="form-control" id="ftpsHost" type="text" ng-model="config.ftpsHost" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ftpsPort">{{msg('ebodac.web.settings.rave.ftpsPort')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsPort.tooltip')}}">
+                    <div class="col-md-2" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.ftpsPort.tooltip')}}">
                         <input class="form-control" id="ftpsPort" type="number" ng-model="config.ftpsPort" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ftpsDirectory">{{msg('ebodac.web.settings.rave.directory')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.directory.tooltip')}}">
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.directory.tooltip')}}">
                         <input class="form-control" id="ftpsDirectory" type="text" ng-model="config.ftpsDirectory" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ftpsUsername">{{msg('ebodac.web.settings.rave.username')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="ftpsUsername" type="text" ng-model="config.ftpsUsername" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ftpsPassword">{{msg('ebodac.web.settings.rave.password')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="ftpsPassword" type="password" ng-model="config.ftpsPassword" ng-required="config.enableRaveJob">
                     </div>
                 </div>
@@ -118,28 +118,28 @@
                 <h5 class="margin-before2">{{msg('ebodac.web.settings.rave.email')}}</h5>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="emailHost">{{msg('ebodac.web.settings.rave.email.host')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.email.host.tooltip')}}">
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.rave.email.host.tooltip')}}">
                         <input class="form-control" id="emailHost" type="text" ng-model="config.emailHost" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="email">{{msg('ebodac.web.settings.rave.email')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="email" type="text" ng-model="config.email" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="emailPassword">{{msg('ebodac.web.settings.rave.email.password')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="emailPassword" type="password" ng-model="config.emailPassword" ng-required="config.enableRaveJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="emailCheckInterval">{{msg('ebodac.web.settings.rave.email.interval')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-2">
                         <input class="form-control" id="emailCheckInterval" type="number" ng-model="config.emailCheckInterval" ng-required="config.enableRaveJob">
                     </div>
                 </div>
@@ -158,14 +158,14 @@
             <div class="form-group" ng-show="config.enableReportJob">
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="reportCalculationStartTime">{{msg('ebodac.web.settings.report.startTime')}}</label>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <input class="form-control" id="reportCalculationStartTime" type="text" ng-model="config.reportCalculationStartTime" time-picker ng-required="config.enableReportJob">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="firstCalculationStartDate">{{msg('ebodac.web.settings.report.firstCalculationStartDate')}}</label>
-                    <div class="col-md-10" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.report.firstCalculationStartDate.tooltip')}}">
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.report.firstCalculationStartDate.tooltip')}}">
                         <input class="form-control" id="firstCalculationStartDate" type="text" ng-model="config.firstCalculationStartDate" date-picker ng-required="config.enableReportJob">
                     </div>
                 </div>
@@ -184,7 +184,7 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label">{{msg('ebodac.web.settings.enroll.disconVacCampaigns.label')}}</label>
-                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.disconVacCampaigns.tooltip')}}">
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.disconVacCampaigns.tooltip')}}">
                     <select id="disconVacCampaigns" class="form-control" ui-select2 multiple select2-ng-change="campaignsChanged">
                         <option ng-repeat="campaign in availableCampaigns" value="{{campaign}}">{{campaign}}</option>
                     </select>
@@ -193,7 +193,7 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label">{{msg('ebodac.web.settings.enroll.boosterRelatedMessages.label')}}</label>
-                <div class="col-md-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.boosterRelatedMessages.tooltip')}}">
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.enroll.boosterRelatedMessages.tooltip')}}">
                     <select id="boostRelCampaigns" class="form-control" ui-select2 multiple select2-ng-change="boostRelCampaignsChanged">
                         <option ng-repeat="campaign in availableCampaigns" value="{{campaign}}">{{campaign}}</option>
                     </select>
@@ -212,21 +212,21 @@
             <div class="form-group" ng-show="config.sendIvrCalls">
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="ivrSettingsName">{{msg('ebodac.web.settings.calls.ivrSettingsName')}}</label>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <input class="form-control" id="ivrSettingsName" type="text" ng-model="config.ivrSettingsName" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="apiKey">{{msg('ebodac.web.settings.calls.apiKey')}}</label>
-                    <div class="col-md-9">
+                    <div class="col-md-4">
                         <input class="form-control" id="apiKey" type="text" ng-model="config.apiKey" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="statusCallbackUrl">{{msg('ebodac.web.settings.calls.statusCallbackUrl')}}</label>
-                    <div class="col-md-9">
+                    <div class="col-md-4">
                         <input class="form-control" id="statusCallbackUrl" type="text" ng-model="config.statusCallbackUrl" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
