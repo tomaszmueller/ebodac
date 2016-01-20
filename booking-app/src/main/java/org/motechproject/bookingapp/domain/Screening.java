@@ -27,11 +27,11 @@ public class Screening {
     @JsonSerialize(using = CustomDateSerializer.class)
     private LocalDate date;
 
-    @Field(required = true)
+    @Field
     @JsonSerialize(using = CustomTimeSerializer.class)
     private Time startTime;
 
-    @Field(required = true)
+    @Field
     @JsonSerialize(using = CustomTimeSerializer.class)
     private Time endTime;
 
@@ -45,7 +45,11 @@ public class Screening {
         dto.setClinicId(getClinic().getId().toString());
         dto.setVolunteerId(volunteer.getId().toString());
         dto.setDate(date.toString());
-        dto.setStartTime(startTime.toString());
+        if (startTime != null) {
+            dto.setStartTime(startTime.toString());
+        } else {
+            dto.setStartTime(null);
+        }
         return dto;
     }
 

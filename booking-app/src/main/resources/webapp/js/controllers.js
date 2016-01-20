@@ -516,7 +516,6 @@
             return $scope.form
                 && $scope.form.dto
                 && $scope.form.dto.date
-                && $scope.form.dto.startTime
                 && $scope.form.dto.clinicId;
         };
 
