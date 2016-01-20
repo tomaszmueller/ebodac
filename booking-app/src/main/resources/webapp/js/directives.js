@@ -527,7 +527,7 @@
                             name: "startTime"
                         },
                         {
-                            name: "print", align: "center", sortable: false, width: 40
+                            name: "print", align: "center", sortable: false, width: 60
                         }
                         ],
                     gridComplete: function(){
