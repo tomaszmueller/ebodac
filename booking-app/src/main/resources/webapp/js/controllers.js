@@ -1018,4 +1018,29 @@
         $scope.$parent.selectedFilter = $scope.filters[0];
     });
 
+    controllers.controller('BookingAppReportsCtrl', function ($scope, $http, $timeout) {
+        $scope.getLookups("../booking-app/getLookupsForCapacityReport");
+
+        $scope.$parent.selectedFilter.startDate = undefined;
+        $scope.$parent.selectedFilter.endDate = undefined;
+        $scope.$parent.selectedFilter = $scope.filters[0];
+
+        $scope.exportInstance = function() {
+            var sortColumn, sortDirection, url = "../booking-app/exportInstances/capacityReports";
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
+            url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+            if ($scope.selectedFilter.startDate) {
+                url = url + "&startDate=" + $scope.selectedFilter.startDate;
+            }
+
+            if ($scope.selectedFilter.endDate) {
+                url = url + "&endDate=" + $scope.selectedFilter.endDate;
+            }
+
+            $scope.exportInstanceWithUrl(url);
+        };
+    });
+
 }());

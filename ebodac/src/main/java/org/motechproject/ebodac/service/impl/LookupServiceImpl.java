@@ -5,6 +5,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.LookupService;
+import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.dto.AdvancedSettingsDto;
 import org.motechproject.mds.dto.EntityDto;
@@ -33,6 +34,30 @@ public class LookupServiceImpl implements LookupService {
     private MDSLookupService mdsLookupService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public <T> List<T> getEntities(Class<T> entityType, GridSettings settings, QueryParams queryParams) {
+        String lookup = settings.getLookup();
+        String lookupFields = settings.getFields();
+
+        if (StringUtils.isNotBlank(lookup)) {
+            try {
+                if (queryParams != null) {
+                    return mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), queryParams);
+                } else {
+                    return mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields));
+                }
+            } catch (IOException e) {
+                throw new EbodacLookupException("Invalid lookup fields: " + lookupFields, e);
+            }
+        }
+
+        if (queryParams != null) {
+            return mdsLookupService.retrieveAll(entityType.getName(), queryParams);
+        } else {
+            return mdsLookupService.retrieveAll(entityType.getName());
+        }
+    }
 
     @Override
     public <T> Records<T> getEntities(Class<T> entityType, String lookup,

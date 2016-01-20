@@ -4,6 +4,7 @@ import org.motechproject.ebodac.domain.VisitType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ public final class BookingAppConstants {
     public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";
     public static final String UNSCHEDULED_VISITS_NAME = "Unscheduled_Visits";
     public static final String VISIT_RESCHEDULE_NAME = "VisitReschedule";
+    public static final String CAPACITY_REPORT_NAME = "CapacityReport";
 
     public static final Set<VisitType> AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN = new HashSet<>(Arrays.asList(VisitType.BOOST_VACCINATION_DAY,
             VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.PRIME_VACCINATION_SECOND_FOLLOW_UP_VISIT,
@@ -100,6 +102,17 @@ public final class BookingAppConstants {
         }
     };
 
+    public static final Map<String, String> CAPACITY_REPORT_FIELDS_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Date",                     "date");
+            put("Clinic Location",          "location");
+            put("Max. Capacity",            "maxCapacity");
+            put("Available Capacity",       "availableCapacity");
+            put("Screening Slot Remaining", "screeningSlotRemaining");
+            put("Vaccine Slot Remaining",   "vaccineSlotRemaining");
+        }
+    };
+
     public static final List<String> AVAILABLE_LOOKUPS_FOR_PRIME_VACCINATION_SCHEDULE = new ArrayList<>(Arrays.asList(
             "Find By Participant Id", "Find By Participant Name"));
 
@@ -112,6 +125,9 @@ public final class BookingAppConstants {
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_UNSCHEDULED = new ArrayList<>(Arrays.asList(
             "Find By Participant Id", "Find By Clinic Location"));
+
+    public static final List<String> AVAILABLE_LOOKUPS_FOR_CAPACITY_REPORT = new ArrayList<>(Collections.singletonList(
+            "Find By Location"));
 
     private BookingAppConstants() {
     }

@@ -68,6 +68,22 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
                                                                 @LookupField(name = "visit.type") VisitType type,
                                                                 @LookupField(name = "bookingPlannedDate") Range<LocalDate> date);
 
+    @Lookup
+    List<VisitBookingDetails> findByClinicIdAndBookingPlannedDate(@LookupField(name = "clinic.id") Long clinicId,
+                                                                  @LookupField(name = "bookingPlannedDate") LocalDate date);
+
+    long countFindByClinicIdAndBookingPlannedDate(@LookupField(name = "clinic.id") Long clinicId,
+                                                  @LookupField(name = "bookingPlannedDate") LocalDate date);
+
+    @Lookup
+    List<VisitBookingDetails> findByClinicIdVisitTypeAndBookingPlannedDate(@LookupField(name = "clinic.id") Long clinicId,
+                                                                           @LookupField(name = "visit.type") VisitType type,
+                                                                           @LookupField(name = "bookingPlannedDate") LocalDate date);
+
+    long countFindByClinicIdVisitTypeAndBookingPlannedDate(@LookupField(name = "clinic.id") Long clinicId,
+                                                           @LookupField(name = "visit.type") VisitType type,
+                                                           @LookupField(name = "bookingPlannedDate") LocalDate date);
+
     /**
      *  UI Lookups
      */
