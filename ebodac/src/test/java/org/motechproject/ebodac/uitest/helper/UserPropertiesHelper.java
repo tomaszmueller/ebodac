@@ -30,7 +30,7 @@ public class UserPropertiesHelper {
 
     public static final String CLERK_PASSWORD_PROPERTY = "clerk.password";
 
-    public static final String DEFAULT_CLERK_PASSWORD = "cl1rk34";
+    public static final String DEFAULT_CLERK_PASSWORD = "clerk123";
 
     public static final String DEFAULT_CLERK_USERNAME = "clerk";
 
