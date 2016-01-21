@@ -25,7 +25,12 @@
 }
 
 .prime-vaccination-schedule-modal-body > div > span.left {
-    width: 190px;
+    width: 250px;
+    text-align: left;
+}
+
+.visit-reschedule-modal-body > div > span.left {
+    width: 250px;
     text-align: left;
 }
 

@@ -37,6 +37,8 @@ public class PrimeVaccinationScheduleDto {
 
     private Long visitId;
 
+    private Boolean ignoreDateLimitation;
+
     public PrimeVaccinationScheduleDto() {
     }
 
@@ -71,6 +73,11 @@ public class PrimeVaccinationScheduleDto {
         setVisitBookingDetailsId(details.getId());
         setVisitId(details.getVisit().getId());
         setParticipantGender(details.getSubject().getGender());
+        if (details.getIgnoreDateLimitation() != null) {
+            setIgnoreDateLimitation(details.getIgnoreDateLimitation());
+        } else {
+            setIgnoreDateLimitation(false);
+        }
         if (details.getClinic() != null) {
             setLocation(details.getSubject().getSiteName());
         }
@@ -171,5 +178,13 @@ public class PrimeVaccinationScheduleDto {
 
     public void setVisitId(Long visitId) {
         this.visitId = visitId;
+    }
+
+    public Boolean getIgnoreDateLimitation() {
+        return ignoreDateLimitation;
+    }
+
+    public void setIgnoreDateLimitation(Boolean ignoreDateLimitation) {
+        this.ignoreDateLimitation = ignoreDateLimitation;
     }
 }

@@ -50,6 +50,9 @@ public class VisitBookingDetails {
     @Field
     private String owner;
 
+    @Field
+    private Boolean ignoreDateLimitation;
+
     public VisitBookingDetails() {
     }
 
@@ -152,5 +155,13 @@ public class VisitBookingDetails {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public Boolean getIgnoreDateLimitation() {
+        return ignoreDateLimitation;
+    }
+
+    public void setIgnoreDateLimitation(Boolean ignoreDateLimitation) {
+        this.ignoreDateLimitation = ignoreDateLimitation;
     }
 }

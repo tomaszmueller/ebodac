@@ -73,11 +73,11 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
 
         Clinic clinic = primeDetails.getClinic();
 
+        validateDate(dto);
+
         if (clinic != null && !ignoreLimitation) {
             checkNumberOfPatients(dto, clinic);
         }
-
-        validateDate(dto);
 
         return new PrimeVaccinationScheduleDto(updateVisitWithDto(primeDetails, screeningDetails, dto));
     }
@@ -102,6 +102,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         primeDetails.setEndTime(calculateEndTime(dto.getStartTime()));
         primeDetails.setBookingPlannedDate(dto.getDate());
         primeDetails.getSubjectBookingDetails().setFemaleChildBearingAge(dto.getFemaleChildBearingAge());
+        primeDetails.setIgnoreDateLimitation(dto.getIgnoreDateLimitation());
 
         screeningDetails.setBookingActualDate(dto.getBookingScreeningActualDate());
 
@@ -163,20 +164,23 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         if (dto.getDate() == null) {
             throw new IllegalArgumentException("Prime Vaccination Planned Date cannot be empty");
         }
-
-        LocalDate actualScreeningDate = dto.getBookingScreeningActualDate();
-
-        LocalDate earliestDate = dto.getFemaleChildBearingAge() != null && dto.getFemaleChildBearingAge()
-                ? actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE)
-                : actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
-        LocalDate latestDate = actualScreeningDate.plusDays(BookingAppConstants.LATEST_DATE);
-
         if (dto.getDate().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("The date can not be in past");
         }
-        if (dto.getDate().isBefore(earliestDate) || dto.getDate().isAfter(latestDate)) {
-            throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
-                    earliestDate, latestDate, dto.getDate()));
+
+        if (!dto.getIgnoreDateLimitation()) {
+
+            LocalDate actualScreeningDate = dto.getBookingScreeningActualDate();
+
+            LocalDate earliestDate = dto.getFemaleChildBearingAge() != null && dto.getFemaleChildBearingAge()
+                    ? actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE)
+                    : actualScreeningDate.plusDays(BookingAppConstants.EARLIEST_DATE);
+            LocalDate latestDate = actualScreeningDate.plusDays(BookingAppConstants.LATEST_DATE);
+
+            if (dto.getDate().isBefore(earliestDate) || dto.getDate().isAfter(latestDate)) {
+                throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
+                        earliestDate, latestDate, dto.getDate()));
+            }
         }
     }
 

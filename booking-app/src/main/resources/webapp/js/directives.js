@@ -71,13 +71,13 @@
                 }
 
                 scope.$watch("$parent." + scope.min, function(value) {
-                    if (value) {
+                    if (value !== undefined && value !== '') {
                         angular.element(element).datepicker('option', 'minDate', value);
                     }
                 });
 
                 scope.$watch("$parent." + scope.max, function(value) {
-                    if (value) {
+                    if (value !== undefined && value !== '') {
                         angular.element(element).datepicker('option', 'maxDate', value);
                     }
                 });
@@ -304,6 +304,7 @@
     directives.directive('primeVaccinationGrid', function ($compile) {
 
         var gridDataExtension;
+        var rowsToColor = [];
 
         function createButton(rowId) {
             return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="printCardFrom(' +
@@ -318,6 +319,7 @@
             rowExtraData.visitId = rowObject.visitId;
             rowExtraData.participantGender = rowObject.participantGender;
             rowExtraData.actualScreeningDate = rowObject.actualScreeningDate;
+            rowExtraData.ignoreDateLimitation = rowObject.ignoreDateLimitation;
 
             gridDataExtension[options.rowId] = rowExtraData;
 
@@ -345,6 +347,7 @@
                     colModel: [
                         {
                             name: "location",
+                            formatter: rowColorFormatter,
                             index: 'subject.siteName'
                         },
                         {
@@ -386,6 +389,9 @@
                         $compile($('.printBtn'))(scope);
                         $('#primeVaccinationTable .ui-jqgrid-hdiv').addClass("table-lightblue");
                         $('#primeVaccinationTable .ui-jqgrid-btable').addClass("table-lightblue");
+                        for (var i = 0; i < rowsToColor.length; i++) {
+                            $("#" + rowsToColor[i]).find("td").css("color", "red");
+                        }
                     },
                     pager: "#pager",
                     rowNum: 50,
@@ -404,6 +410,7 @@
                     },
                     beforeRequest: function() {
                         gridDataExtension = [];
+                        rowsToColor = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
                         if (iCol !== 7) {
@@ -420,8 +427,9 @@
                             scope.form.dto.startTime = rowData.startTime;
                             scope.form.dto.visitId = extraRowData.visitId;
                             scope.form.dto.participantGender = extraRowData.participantGender;
+                            scope.form.dto.ignoreDateLimitation = extraRowData.ignoreDateLimitation;
                             scope.form.range = scope.calculateRange(scope.form.dto.bookingScreeningActualDate,
-                                scope.form.dto.femaleChildBearingAge);
+                                scope.form.dto.femaleChildBearingAge, scope.form.dto.ignoreDateLimitation);
                             scope.reloadSelects();
                             $('#primeVaccinationScheduleModal').modal('show');
                         }
@@ -448,6 +456,18 @@
                         }
                     }).trigger('reloadGrid');
                 });
+
+                function rowColorFormatter(cellValue, options, rowObject) {
+                    var range = scope.calculateRange(rowObject.bookingScreeningActualDate,
+                        rowObject.femaleChildBearingAge, false);
+                    var min = range.min.getTime();
+                    var max = range.max.getTime();
+                    var bookingDate = Date.parse(rowObject.date);
+                    if ((max < bookingDate || min > bookingDate) && !rowObject.ignoreDateLimitation) {
+                        rowsToColor[rowsToColor.length] = options.rowId;
+                    }
+                    return cellValue;
+                }
             }
         };
     });
@@ -455,6 +475,7 @@
     directives.directive('visitRescheduleGrid', function ($compile) {
 
         var gridDataExtension;
+        var rowsToColor = [];
 
         function createButton(id) {
             return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="print()"><i class="fa fa-fw fa-print"></i></button>';
@@ -468,6 +489,7 @@
             rowExtraData.visitBookingDetailsId = rowObject.visitBookingDetailsId;
             rowExtraData.earliestDate = rowObject.earliestDate;
             rowExtraData.latestDate = rowObject.latestDate;
+            rowExtraData.ignoreDateLimitation = rowObject.ignoreDateLimitation;
 
             gridDataExtension[options.rowId] = rowExtraData;
 
@@ -521,6 +543,7 @@
                         },
                         {
                             name: "plannedDate",
+                            formatter: rowColorFormatter,
                             index: 'visit.motechProjectedDate'
                         },
                         {
@@ -538,6 +561,9 @@
                         $compile($('.printBtn'))(scope);
                         $('#visitRescheduleTable .ui-jqgrid-hdiv').addClass("table-lightblue");
                         $('#visitRescheduleTable .ui-jqgrid-btable').addClass("table-lightblue");
+                        for (var i = 0; i < rowsToColor.length; i++) {
+                            $("#" + rowsToColor[i]).find("td").css("color", "red");
+                        }
                     },
                     pager: "#pager",
                     rowNum: 50,
@@ -556,6 +582,7 @@
                     },
                     beforeRequest: function() {
                         gridDataExtension = [];
+                        rowsToColor = [];
                     },
                     onCellSelect: function(rowId, iCol, cellContent, e) {
                         if (iCol !== 8) {
@@ -580,8 +607,16 @@
                                 scope.form.dto.startTime = rowData.startTime;
                                 scope.form.dto.visitId = extraRowData.visitId;
                                 scope.form.dto.visitBookingDetailsId = extraRowData.visitBookingDetailsId;
-                                scope.form.dto.minDate = scope.parseDate(extraRowData.earliestDate);
-                                scope.form.dto.maxDate = scope.parseDate(extraRowData.latestDate);
+                                scope.form.dto.ignoreDateLimitation = extraRowData.ignoreDateLimitation;
+                                scope.earliestDateToReturn = scope.parseDate(extraRowData.earliestDate);
+                                scope.latestDateToReturn = scope.parseDate(extraRowData.latestDate);
+                                if (!scope.form.dto.ignoreDateLimitation) {
+                                    scope.form.dto.minDate = scope.earliestDateToReturn;
+                                    scope.form.dto.maxDate = scope.latestDateToReturn;
+                                } else {
+                                    scope.form.dto.minDate = new Date();
+                                    scope.form.dto.maxDate = null;
+                                }
                                 scope.showRescheduleModal(scope.msg('bookingApp.visitReschedule.update'), scope.msg('bookingApp.visitReschedule.updateSuccessful'));
                             }
                         } else {
@@ -610,6 +645,17 @@
                         }
                     }).trigger('reloadGrid');
                 });
+
+                function rowColorFormatter(cellValue, options, rowObject) {
+                    var min = Date.parse(rowObject.earliestDate);
+                    var max = Date.parse(rowObject.latestDate);
+                    var bookingDate = Date.parse(rowObject.plannedDate);
+                    if ((max < bookingDate || min > bookingDate) && !rowObject.ignoreDateLimitation &&
+                        (rowObject.actualDate == null || rowObject.actualDate == undefined || rowObject.actualDate == "")) {
+                        rowsToColor[rowsToColor.length] = options.rowId;
+                    }
+                    return cellValue;
+                }
             }
         };
     });
