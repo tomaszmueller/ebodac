@@ -129,6 +129,12 @@ public final class BookingAppConstants {
     public static final List<String> AVAILABLE_LOOKUPS_FOR_CAPACITY_REPORT = new ArrayList<>(Collections.singletonList(
             "Find By Location"));
 
+    public static final List<String> CLINIC_FIELDS = new ArrayList<>(Arrays.asList("Site Id", "Location", "Max Capacity By Day",
+            "Max Screening Visits", "Max Prime Visits", "Max Booster Visits", "Amount of Rooms", "Max Prime First Follow Up Visits",
+            "Max Prime Second Follow Up Visits", "Max Booster First Follow Up Visits", "Max Booster Second Follow Up Visits",
+            "Max Booster Third Follow Up Visits", "Max First Long Term Follow Up Visits", "Max Second Long Term Follow Up Visits",
+            "Max Third Long Term Follow Up Visits", "Max Prime Follow Up Visits"));
+
     private BookingAppConstants() {
     }
 }

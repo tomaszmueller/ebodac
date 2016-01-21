@@ -1,5 +1,6 @@
 package org.motechproject.bookingapp.web;
 
+import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,11 @@ public class ClinicController {
     @ResponseBody
     private List<Clinic> getSites() {
         return clinicService.getClinics();
+    }
+
+    @RequestMapping(value = "/clinicFields", method = RequestMethod.GET)
+    @ResponseBody
+    private List<String> getClinicFields() {
+        return BookingAppConstants.CLINIC_FIELDS;
     }
 }

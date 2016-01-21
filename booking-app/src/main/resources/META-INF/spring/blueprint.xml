@@ -58,4 +58,6 @@
 
     <osgi:service ref="reportService" interface="org.motechproject.bookingapp.service.ReportService" />
 
+    <osgi:service ref="bookingAppConfigService" interface="org.motechproject.bookingapp.service.ConfigService" />
+
 </beans>
