@@ -135,7 +135,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             }
 
             if (visits.size() >= maxVisits) {
-                throw new LimitationExceededException("The limit of the type of the visit is reached for this day");
+                throw new LimitationExceededException("The limit for this type of visit has been reached for this day");
             }
             if (patients >= numberOfRooms) {
                 throw new LimitationExceededException("Too many visits at the same time");
