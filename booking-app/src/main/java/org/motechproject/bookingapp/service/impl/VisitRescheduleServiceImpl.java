@@ -103,7 +103,7 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto));
     }
 
-    private void checkNumberOfPatients(VisitRescheduleDto dto, Clinic clinic) {
+    private void checkNumberOfPatients(VisitRescheduleDto dto, Clinic clinic) { //NO CHECKSTYLE CyclomaticComplexity
 
         List<VisitBookingDetails> visits = visitBookingDetailsDataService
                 .findByClinicIdVisitPlannedDateAndType(clinic.getId(), dto.getPlannedDate(), dto.getVisitType());
@@ -115,13 +115,17 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             int maxVisits = visitLimitationHelper.getMaxVisitCountForVisitType(dto.getVisitType(), clinic);
             int patients = 0;
 
+            Time startTime = dto.getStartTime();
+            Time endTime = null;
+
+            if (startTime != null) {
+                endTime = calculateEndTime(startTime);
+            }
+
             for (VisitBookingDetails visit : visits) {
                 if (visit.getId().equals(dto.getVisitBookingDetailsId())) {
                     maxVisits++;
-                } else {
-                    Time startTime = dto.getStartTime();
-                    Time endTime = calculateEndTime(startTime);
-
+                } else if (startTime != null && visit.getStartTime() != null) {
                     if (startTime.isBefore(visit.getStartTime())) {
                         if (visit.getStartTime().isBefore(endTime)) {
                             patients++;
