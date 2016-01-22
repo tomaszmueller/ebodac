@@ -38,6 +38,10 @@
     margin-bottom: 10px !important;
 }
 
+.prime-vaccination-schedule-modal.input-group {
+    width: 100%;
+}
+
 .validator {
     width: 15px;
 }
