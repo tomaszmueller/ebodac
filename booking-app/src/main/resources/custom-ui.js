@@ -12,15 +12,11 @@ $scope.showAdvanced = false;
 $scope.advancedButtonIndex = 6;
 
 $scope.showOrHideAdvanced = function() {
-    var i, lastFieldIndex = 16;
+    var i;
     $scope.showAdvanced = !$scope.showAdvanced;
 
-    for (i = $scope.advancedButtonIndex + 1; i <= lastFieldIndex; i += 1) {
-        if ($scope.showAdvanced) {
-            $scope.fields[i].nonDisplayable = false;
-        } else {
-            $scope.fields[i].nonDisplayable = true;
-        }
+    for (i = $scope.advancedButtonIndex + 1; i < $scope.fields.length; i += 1) {
+        $scope.fields[i].nonDisplayable = !$scope.showAdvanced;
     }
 };
 
@@ -35,7 +31,7 @@ $scope.getAdvancedButtonLabel = function() {
 $scope.editInstance = function(id, module, entityName) {
     blockUI();
     $scope.setHiddenFilters();
-    $scope.instanceEditMode = true;
+    $scope.instanceEditMode = false;
     $scope.setModuleEntity(module, entityName);
     $scope.loadedFields = Instances.selectInstance({
         id: $scope.selectedEntity.id,
@@ -45,31 +41,50 @@ $scope.editInstance = function(id, module, entityName) {
             $scope.selectedInstance = id;
             $scope.currentRecord = data;
             $scope.fields = data.fields;
+
             if (entityName === "Clinic") {
-                var i, showAdvancedButton = {
-                    'name': 'showAdvanced',
-                    'displayName': '',
-                    'tooltip': '',
-                    'value': '',
-                    'type': {
-                        'displayName': 'mds.field.string'
-                    },
-                    'required': false,
-                    'nonEditable': false,
-                    'nonDisplayable': false
-                };
+                $http.get('../booking-app/booking-app-config')
+                .success(function(response) {
+                    var i, j, fieldsMap = {},
+                        clinicMainFields = response.clinicMainFields,
+                        clinicExtendedFields = response.clinicExtendedFields,
+                        showAdvancedButton = {
+                            'name': 'showAdvanced',
+                            'displayName': '',
+                            'tooltip': '',
+                            'value': '',
+                            'type': {
+                                'displayName': 'mds.field.string'
+                            },
+                            'required': false,
+                            'nonEditable': false,
+                            'nonDisplayable': false
+                        };
 
-                $scope.showAdvanced = false;
-                $scope.fields.splice($scope.advancedButtonIndex, 0, showAdvancedButton);
+                    $scope.showAdvanced = false;
 
-                for (i = 0; i < $scope.fields.length; i += 1) {
-                    if ($scope.fields[i].name === "location" || $scope.fields[i].name === "siteId") {
-                        $scope.fields[i].nonEditable = true;
+                    for (i = 0; i < $scope.fields.length; i += 1) {
+                        if ($scope.fields[i].name === "location" || $scope.fields[i].name === "siteId") {
+                            $scope.fields[i].nonEditable = true;
+                        }
+                        fieldsMap[$scope.fields[i].displayName] = $scope.fields[i];
                     }
-                    if (i > $scope.advancedButtonIndex) {
+
+                    $scope.fields = [];
+
+                    for (i = 0; i < clinicMainFields.length; i += 1) {
+                        $scope.fields[i] = fieldsMap[clinicMainFields[i]];
+                    }
+
+                    $scope.advancedButtonIndex = i;
+                    $scope.fields[i] = showAdvancedButton;
+
+                    for (j = 0; j < clinicExtendedFields.length; j += 1) {
+                        i += 1;
+                        $scope.fields[i] = fieldsMap[clinicExtendedFields[j]];
                         $scope.fields[i].nonDisplayable = true;
                     }
-                }
+                });
             }
 
             unblockUI();

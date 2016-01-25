@@ -59,6 +59,7 @@
         }
 
         $routeProvider
+            .when('/bookingApp/settings', {templateUrl: '../booking-app/resources/partials/settings.html', controller: 'BookingAppSettingsCtrl'})
             .when('/bookingApp/welcomeTab', { redirectTo: '/bookingApp/' + BOOKING_AVAILABLE_TABS[0] });
 
     });

@@ -11,15 +11,17 @@
             <li ng-show="active('#/bookingApp/unscheduledVisit')" ng-class="active('#/bookingApp/unscheduledVisit')">{{msg('bookingApp.visitLimitation')}}</li>
             <li ng-show="active('#/bookingApp/visitLimitation')" ng-class="active('#/bookingApp/visitLimitation')">{{msg('bookingApp.visitLimitation')}}</li>
             <li ng-show="active('#/bookingApp/reports')" ng-class="active('#/bookingApp/reports')">{{msg('bookingApp.reports')}}</li>
+            <li ng-show="active('#/bookingApp/settings')" ng-class="active('#/bookingApp/settings')">{{msg('bookingApp.settings.title')}}</li>
         </ul>
     </div>
     <div class="header-footer" style="overflow:auto;">
         <ul id="content-tabs" class="nav nav-tabs">
-            <li ng-class="active('#/bookingApp/' + tab)" ng-repeat="tab in BOOKING_AVAILABLE_TABS">
+            <li ng-hide="active('#/bookingApp/settings')" ng-class="active('#/bookingApp/' + tab)" ng-repeat="tab in BOOKING_AVAILABLE_TABS">
                 <a href="#/bookingApp/{{tab}}">
                     {{msg('bookingApp.' + tab)}}
                 </a>
             </li>
+            <li ng-show="active('#/bookingApp/settings')" ng-class="active('#/bookingApp/settings')"><a href="#/bookingApp/settings">{{msg('bookingApp.settings.title')}}</a></li>
         </ul>
     </div>
     <div class="ui-layout-content">

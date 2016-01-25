@@ -25,6 +25,7 @@
                 <entry key="messages" value="../booking-app/resources/messages/" />
             </map>
         </constructor-arg>
+        <property name="settingsURL" value="/bookingApp/settings" />
         <property name="defaultURL" value="/bookingApp/welcomeTab"/>
         <property name="roleForAccess">
             <list>
@@ -42,6 +43,7 @@
     <bean id="bookingAppSettings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
         <property name="rawConfigFiles">
             <list>
+                <value>classpath:booking-app-config.json</value>
                 <value>classpath:custom-ui.js</value>
             </list>
         </property>

@@ -435,6 +435,113 @@
         };
     });
 
+    controllers.controller('BookingAppSettingsCtrl', function ($scope, $http, $timeout) {
+        $scope.errors = [];
+        $scope.messages = [];
+
+        $scope.clinicFields = [];
+        $scope.availableMainFields = [];
+        $scope.availableExtendedFields = [];
+
+        $scope.mainFieldsChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.text;
+                $scope.config.clinicMainFields.push(value);
+                $scope.availableExtendedFields.removeObject(value);
+            } else if (change.removed) {
+                value = change.removed.text;
+                $scope.config.clinicMainFields.removeObject(value);
+                $scope.availableExtendedFields.push(value);
+            }
+
+            $scope.updateAvailableClinicFields();
+            $scope.$apply();
+        };
+
+        $scope.extendedFieldsChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.text;
+                $scope.config.clinicExtendedFields.push(value);
+                $scope.availableMainFields.removeObject(value);
+            } else if (change.removed) {
+                value = change.removed.text;
+                $scope.config.clinicExtendedFields.removeObject(value);
+                $scope.availableMainFields.push(value);
+            }
+
+            $scope.updateAvailableClinicFields();
+            $scope.$apply();
+        };
+
+        $scope.updateAvailableClinicFields = function() {
+            $scope.availableMainFields = $scope.clinicFields.filter(function(el) {
+               return $scope.config.clinicExtendedFields.indexOf(el) < 0;
+            });
+
+            $scope.availableExtendedFields = $scope.clinicFields.filter(function(el) {
+               return $scope.config.clinicMainFields.indexOf(el) < 0;
+            });
+        };
+
+        $http.get('../booking-app/booking-app-config')
+            .success(function(response){
+                var i;
+                $scope.config = response;
+                $scope.originalConfig = angular.copy($scope.config);
+
+                $http.get('../booking-app/clinicFields')
+                    .success(function(response) {
+                        $scope.clinicFields = response;
+                        $scope.updateAvailableClinicFields();
+
+                        $timeout(function() {
+                            $('#clinicMainFields').select2('val', $scope.config.clinicMainFields);
+                            $('#clinicExtendedFields').select2('val', $scope.config.clinicExtendedFields);
+                        }, 50);
+
+                    })
+                    .error(function(response) {
+                        $scope.errors.push($scope.msg('bookingApp.settings.advancedSettings.clinicFields.error', response));
+                    });
+            })
+            .error(function(response) {
+                $scope.errors.push($scope.msg('bookingApp.settings.noConfig', response));
+            });
+
+        $scope.reset = function () {
+            $scope.config = angular.copy($scope.originalConfig);
+            $scope.updateAvailableClinicFields();
+            $timeout(function() {
+                $('#clinicMainFields').select2('val', $scope.config.clinicMainFields);
+                $('#clinicExtendedFields').select2('val', $scope.config.clinicExtendedFields);
+            }, 50);
+        };
+
+        function hideMsgLater(index) {
+            return $timeout(function() {
+                $scope.messages.splice(index, 1);
+            }, 5000);
+        }
+
+        $scope.submit = function () {
+            $http.post('../booking-app/booking-app-config', $scope.config)
+                .success(function (response) {
+                    $scope.config = response;
+                    $scope.originalConfig = angular.copy($scope.config);
+                    var index = $scope.messages.push($scope.msg('bookingApp.settings.saved'));
+                    hideMsgLater(index-1);
+                })
+                .error (function (response) {
+                    //todo: better than that!
+                    handleWithStackTrace('bookingApp.error.header', 'bookingApp.error.body', response);
+                });
+        };
+    });
+
     controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Clinics) {
 
         $scope.getLookups("../booking-app/screenings/getLookupsForScreening");
