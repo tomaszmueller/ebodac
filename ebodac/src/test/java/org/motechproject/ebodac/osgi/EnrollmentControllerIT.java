@@ -160,6 +160,10 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         secondSubject.setPrimerVaccinationDate(new LocalDate(2115, 10, 10));
 
+        firstSubject.setStageId(1l);
+        secondSubject.setStageId(1l);
+        thirdSubject.setStageId(1l);
+
         testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));
 

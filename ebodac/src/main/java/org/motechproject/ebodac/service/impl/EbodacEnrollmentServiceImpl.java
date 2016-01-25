@@ -235,7 +235,11 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !visit.getMotechProjectedDate().equals(enrollment.getReferenceDate())) {
-            updateReferenceDateIfUnenrolled(enrollment, subjectEnrollments, visit);
+            try {
+                updateReferenceDateIfUnenrolled(enrollment, subjectEnrollments, visit);
+            } catch (EbodacEnrollmentException e) {
+                LOGGER.debug(e.getMessage(), e);
+            }
         }
 
         return false;
@@ -976,8 +980,15 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private String addStageIdToCampaignNameIfNeeded(String campaignName, Long stageId) {
-        if (stageId != null && stageId > 1) {
-            return campaignName + EbodacConstants.STAGE + stageId;
+        Long actualStageId = stageId;
+        if (actualStageId == null) {
+            actualStageId = configService.getConfig().getActiveStageId();
+        }
+        if (actualStageId == null) {
+            throw new EbodacEnrollmentException("Participant StageId cannot be empty", "ebodac.enrollment.error.emptyStageId");
+        }
+        if (actualStageId > 1) {
+            return campaignName + EbodacConstants.STAGE + actualStageId;
         }
         return campaignName;
     }
@@ -988,13 +999,13 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (newSubject.getBoosterVaccinationDate() != null && oldSubject.getBoosterVaccinationDate() == null && visits != null) {
             List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
             for (Visit visit : visits) {
-                String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getValue(), newSubject.getStageId());
-                if (boosterRelatedMessages.contains(campaignName)) {
-                    try {
+                try {
+                    String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getValue(), newSubject.getStageId());
+                    if (boosterRelatedMessages.contains(campaignName)) {
                         enrollNew(newSubject, campaignName, visit.getMotechProjectedDate(), null);
-                    } catch (EbodacEnrollmentException e) {
-                        LOGGER.debug(e.getMessage(), e);
                     }
+                } catch (EbodacEnrollmentException e) {
+                    LOGGER.debug(e.getMessage(), e);
                 }
             }
         }

@@ -12,6 +12,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
+import org.motechproject.ebodac.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
 
     @Autowired
     private VisitScheduleOffsetService visitScheduleOffsetService;
+
+    @Autowired
+    private ConfigService configService;
 
     @Override
     public Map<String, String> getPrimeVaccinationDateAndDateRange(String subjectId) {
@@ -128,7 +132,16 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
             throw new VisitScheduleException("Cannot calculate Planned Dates, because Prime Vaccination Date is empty");
         }
 
-        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAsMapByStageId(stageId);
+        Long actualStageId = stageId;
+        if (actualStageId == null) {
+            actualStageId = configService.getConfig().getActiveStageId();
+        }
+
+        if (actualStageId == null) {
+            throw new VisitScheduleException("Cannot calculate Planned Dates, because Participant stageId is empty");
+        }
+
+        Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAsMapByStageId(actualStageId);
         List<VisitBookingDetails> detailsList = new ArrayList<>();
         LocalDate screeningDate = null;
         VisitBookingDetails primeVacDetails = null;
