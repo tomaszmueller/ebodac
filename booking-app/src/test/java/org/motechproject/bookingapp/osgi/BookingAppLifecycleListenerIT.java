@@ -82,7 +82,7 @@ public class BookingAppLifecycleListenerIT extends BasePaxIT {
         Visit firstVisit = createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter));
 
-        Visit secondVisit = createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+        Visit secondVisit = createVisit(firstSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-20", formatter));
 
         Visit thirdVisit = createVisit(firstSubject, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),

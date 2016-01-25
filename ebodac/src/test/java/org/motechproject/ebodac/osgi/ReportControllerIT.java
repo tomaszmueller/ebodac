@@ -142,13 +142,13 @@ public class ReportControllerIT extends BasePaxIT {
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-17", formatter), "owner"));
 
-        testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+        testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-19", formatter), "owner"));
 
         testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-19", formatter), "owner"));
 
-        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
                 LocalDate.parse("2014-10-21", formatter), "owner"));
 
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_DAY, LocalDate.parse("2014-10-17", formatter),
@@ -255,7 +255,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsByPlannedDateAndType() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"2014-10-21\",\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":\"2014-10-21\",\"type\":\"PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT\"}",
                 "Find By Planned Visit Date And Type", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();
@@ -279,7 +279,7 @@ public class ReportControllerIT extends BasePaxIT {
     @Test
     public void shouldGetVisitsByPlannedDateRangeAndType() throws IOException, InterruptedException {
         addTestVisitsToDB();
-        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"},\"type\":\"PRIME_VACCINATION_FOLLOW_UP_VISIT\"}",
+        String jsonInput = getVisitsByLookup("{\"motechProjectedDate\":{\"min\":\"2014-10-20\",\"max\":\"2014-10-21\"},\"type\":\"PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT\"}",
                 "Find By Planned Visit Date Range And Type", 1, 5);
 
         List<Visit> visits = deserializeVisits(jsonInput).getRows();

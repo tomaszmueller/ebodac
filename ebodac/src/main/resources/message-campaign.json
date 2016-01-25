@@ -135,7 +135,7 @@
     ]
   },
   {
-    "name": "Prime Vaccination Follow-up visit",
+    "name": "Prime Vaccination First Follow-up visit",
     "type": "OFFSET",
     "messages": [
       {

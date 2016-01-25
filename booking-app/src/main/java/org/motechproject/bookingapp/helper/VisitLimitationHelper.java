@@ -50,8 +50,6 @@ public class VisitLimitationHelper {
         switch (visitType) {
             case PRIME_VACCINATION_DAY:
                 return clinic.getMaxPrimeVisits();
-            case PRIME_VACCINATION_FOLLOW_UP_VISIT:
-                return clinic.getMaxPrimeFollowUpVisits();
             case PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT:
                 return clinic.getMaxPrimeFirstFollowUpVisits();
             case PRIME_VACCINATION_SECOND_FOLLOW_UP_VISIT:

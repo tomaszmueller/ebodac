@@ -131,7 +131,7 @@ public class LookupServiceIT extends BasePaxIT {
         testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.SCREENING, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-21", formatter), "owner"));
 
-        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
+        testVisits.add(VisitUtils.createVisit(secondSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-21", formatter),
                 LocalDate.parse("2014-10-23", formatter), "owner"));
 
         testVisits.add(VisitUtils.createVisit(firstSubject, VisitType.BOOST_VACCINATION_DAY, LocalDate.parse("2014-10-22", formatter),

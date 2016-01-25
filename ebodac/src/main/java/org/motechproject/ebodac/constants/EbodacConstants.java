@@ -72,11 +72,11 @@ public final class EbodacConstants {
     public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
-            "Booster related messages", "Prime Vaccination Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
+            "Booster related messages", "Prime Vaccination First Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
             "Second Long-term Follow-up visit", "Third Long-term Follow-up visit", "Prime Vaccination Day - stage 2",
-            "Booster related messages - stage 2", "Prime Vaccination Follow-up visit - stage 2", "Boost Vaccination Day - stage 2",
-            "Boost Vaccination First Follow-up visit - stage 2", "Boost Vaccination Second Follow-up visit - stage 2",
+            "Booster related messages - stage 2", "Prime Vaccination First Follow-up visit - stage 2", "Prime Vaccination Second Follow-up visit - stage 2",
+            "Boost Vaccination Day - stage 2", "Boost Vaccination First Follow-up visit - stage 2", "Boost Vaccination Second Follow-up visit - stage 2",
             "Boost Vaccination Third Follow-up visit - stage 2", "First Long-term Follow-up visit - stage 2", "Second Long-term Follow-up visit - stage 2"));
 
     public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";

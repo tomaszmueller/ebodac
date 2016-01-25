@@ -153,8 +153,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
                 details.setBookingActualDate(primeVaccinationDate);
                 detailsList.add(details);
                 primeVacDetails = details;
-            } else if (VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT.equals(details.getVisit().getType())
-                    || VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.equals(details.getVisit().getType())) {
+            } else if (VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.equals(details.getVisit().getType())) {
                 details.setBookingPlannedDate(primeVaccinationDate.plusDays(offsetMap.get(details.getVisit().getType()).getTimeOffset()));
                 detailsList.add(details);
             }
