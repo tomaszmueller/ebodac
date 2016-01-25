@@ -815,6 +815,7 @@
         $scope.formIsFilled = function() {
             return $scope.form
                 && $scope.form.dto
+                && $scope.form.dto.participantId
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
                 && ($scope.form.dto.participantGender == 'Female' ? $scope.form.dto.femaleChildBearingAge !== undefined : true);
