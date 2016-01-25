@@ -84,6 +84,9 @@ public interface VisitBookingDetailsDataService extends MotechDataService<VisitB
                                                            @LookupField(name = "visit.type") VisitType type,
                                                            @LookupField(name = "bookingPlannedDate") LocalDate date);
 
+    @Lookup
+    List<VisitBookingDetails> findByExactParticipantSiteId(@LookupField(name = "subject.siteId") String siteId);
+
     /**
      *  UI Lookups
      */

@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("bookingAppLifecycleListener")
 public class BookingAppLifecycleListenerImpl implements BookingAppLifecycleListener {
 
@@ -52,5 +54,15 @@ public class BookingAppLifecycleListenerImpl implements BookingAppLifecycleListe
         }
 
         visitBookingDetailsDataService.create(visitBookingDetails);
+    }
+
+    @Override
+    public void addClinicToVisitBookingDetails(Clinic clinic) {
+        List<VisitBookingDetails> visitBookingDetailsList = visitBookingDetailsDataService.findByExactParticipantSiteId(clinic.getSiteId());
+
+        for (VisitBookingDetails details : visitBookingDetailsList) {
+            details.setClinic(clinic);
+            visitBookingDetailsDataService.update(details);
+        }
     }
 }
