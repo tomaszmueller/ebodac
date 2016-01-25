@@ -18,6 +18,7 @@ import org.motechproject.bookingapp.web.domain.BookingGridSettings;
 import org.motechproject.commons.api.Range;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.constants.EbodacConstants;
+import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.VisitDataService;
@@ -71,12 +72,15 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         Records<VisitBookingDetails> detailsRecords = lookupService.getEntities(VisitBookingDetails.class, settings.getLookup(), settings.getFields(), queryParams);
 
         Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
-        List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
+        Config config = configService.getConfig();
+        List<String> boosterRelatedMessages = config.getBoosterRelatedMessages();
+        Long activeStageId = config.getActiveStageId();
 
         List<VisitRescheduleDto> dtos = new ArrayList<>();
 
         for (VisitBookingDetails details: detailsRecords.getRows()) {
-            dtos.add(new VisitRescheduleDto(details, calculateEarliestAndLatestDate(details.getVisit(), offsetMap, boosterRelatedMessages)));
+            dtos.add(new VisitRescheduleDto(details, calculateEarliestAndLatestDate(details.getVisit(), offsetMap,
+                    boosterRelatedMessages, activeStageId)));
         }
 
         return new Records<>(detailsRecords.getPage(), detailsRecords.getTotal(), detailsRecords.getRecords(), dtos);
@@ -157,9 +161,11 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         }
 
         Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
-        List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
+        Config config = configService.getConfig();
+        List<String> boosterRelatedMessages = config.getBoosterRelatedMessages();
+        Long activeStageId = config.getActiveStageId();
 
-        Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages);
+        Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages, activeStageId);
 
         if (dateRange == null) {
             throw new IllegalArgumentException("Cannot calculate Earliest and Latest Date");
@@ -203,8 +209,19 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         return new Time(endTimeHour, startTime.getMinute());
     }
 
-    private Range<LocalDate> calculateEarliestAndLatestDate(Visit visit, Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap, List<String> boosterRelatedMessages) {
-        Map<VisitType, VisitScheduleOffset> visitTypeOffset = offsetMap.get(visit.getSubject().getStageId());
+    private Range<LocalDate> calculateEarliestAndLatestDate(Visit visit, Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap,
+                                                            List<String> boosterRelatedMessages, Long activeStageId) {
+        Long stageId = visit.getSubject().getStageId();
+
+        if (stageId == null) {
+            stageId = activeStageId;
+        }
+
+        if (stageId == null) {
+            return null;
+        }
+
+        Map<VisitType, VisitScheduleOffset> visitTypeOffset = offsetMap.get(stageId);
 
         if (visitTypeOffset == null) {
             return null;
@@ -217,9 +234,8 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         }
 
         String campaignName;
-        Long stageId = visit.getSubject().getStageId();
 
-        if (stageId != null && stageId > 1) {
+        if (stageId > 1) {
             campaignName = visit.getType().getValue() + EbodacConstants.STAGE + stageId;
         } else {
             campaignName = visit.getType().getValue();

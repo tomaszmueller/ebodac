@@ -559,6 +559,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     public void shouldCheckIfSubjectIsEnrolled() throws IOException {
         Subject subject = createSubjectWithRequireData("1");
         subject.setPrimerVaccinationDate(new LocalDate(2115, 10, 11));
+        subject.setStageId(1l);
         subjectService.update(subject);
 
         Visit visit = new Visit();
@@ -1412,6 +1413,46 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
             assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         }
+    }
+
+    @Test
+    public void shouldUseActiveStageIdWhenSubjectStageIdIsNull() throws IOException {
+        Config config = new Config();
+        config.setActiveStageId(2l);
+        configService.updateConfig(config);
+
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimpleWithEmptyStage.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithEmptyStage.csv");
+        inputStream.close();
+
+        List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId(subject.getSubjectId());
+        for (Enrollment enrollment : enrollmentList) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
+            assertEquals(2, nameParts.length);
+            assertEquals("2", nameParts[1]);
+        }
+
+        config = new Config();
+        config.setActiveStageId(2l);
+        configService.updateConfig(config);
+    }
+
+    @Test
+    public void shouldNotEnrollWhenActiveStageIdAndSubjectStageIdIsNull() throws IOException {
+        Config config = new Config();
+        config.setActiveStageId(null);
+        configService.updateConfig(config);
+
+        Subject subject = createSubjectWithRequireData("1");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimpleWithEmptyStage.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithEmptyStage.csv");
+        inputStream.close();
+
+        assertNull(subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId()));
     }
 
     private void clearJobs() throws SchedulerException {

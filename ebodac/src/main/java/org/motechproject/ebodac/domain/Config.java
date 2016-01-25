@@ -62,6 +62,8 @@ public class Config {
 
     private List<String> boosterRelatedMessages;
 
+    private Long activeStageId;
+
     private List<String> availableLookupsForDailyClinicVisitScheduleReport;
 
     private List<String> availableLookupsForFollowupsAfterPrimeInjectionReport;
@@ -323,6 +325,14 @@ public class Config {
 
     public void setBoosterRelatedMessages(List<String> boosterRelatedMessages) {
         this.boosterRelatedMessages = boosterRelatedMessages;
+    }
+
+    public Long getActiveStageId() {
+        return activeStageId;
+    }
+
+    public void setActiveStageId(Long activeStageId) {
+        this.activeStageId = activeStageId;
     }
 
     public List<String> getAvailableLookupsForDailyClinicVisitScheduleReport() {
