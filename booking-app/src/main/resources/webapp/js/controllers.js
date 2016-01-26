@@ -735,7 +735,7 @@
         $scope.subjectChanged = function() {
             $scope.reloadSelects();
             if ($scope.form.dto) {
-                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, $scope.form.dto.femaleChildBearingAge);
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, $scope.form.dto.femaleChildBearingAge, $scope.form.dto.ignoreDateLimitation);
             }
         }
 
@@ -781,33 +781,44 @@
             }, 100);
         };
 
-        $scope.calculateRange = function(forDate, femaleChildBearingAge) {
+        $scope.calculateRange = function(forDate, femaleChildBearingAge, ignoreDateLimitation) {
             var range = {};
-
-            if (femaleChildBearingAge == "Yes") {
-                range.min = $scope.parseDate(forDate, 14);
-            } else {
-                range.min = $scope.parseDate(forDate, 1);
-            }
             var today = new Date();
-            if (today > range.min) {
-                range.min = today;
-            }
 
-            range.max = $scope.parseDate(forDate, 28);
+            if (ignoreDateLimitation == undefined || ignoreDateLimitation == '' || ignoreDateLimitation == null || ignoreDateLimitation == false) {
+                if (femaleChildBearingAge == "Yes") {
+                    range.min = $scope.parseDate(forDate, 14);
+                } else {
+                    range.min = $scope.parseDate(forDate, 1);
+                }
+                if (today > range.min) {
+                    range.min = today;
+                }
+
+                range.max = $scope.parseDate(forDate, 28);
+            } else {
+                range.min = today;
+                range.max = null;
+            }
 
             return range;
         };
 
         $scope.$watch('form.dto.femaleChildBearingAge', function (value) {
             if ($scope.form.dto) {
-                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, value);
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, value, $scope.form.dto.ignoreDateLimitation);
             }
         });
 
         $scope.$watch('form.dto.bookingScreeningActualDate', function (value) {
             if ($scope.form.dto) {
-                $scope.form.range = $scope.calculateRange(value, $scope.form.dto.femaleChildBearingAge);
+                $scope.form.range = $scope.calculateRange(value, $scope.form.dto.femaleChildBearingAge, $scope.form.dto.ignoreDateLimitation);
+            }
+        });
+
+        $scope.$watch('form.dto.ignoreDateLimitation', function (value) {
+            if ($scope.form.dto) {
+                $scope.form.range = $scope.calculateRange($scope.form.dto.bookingScreeningActualDate, $scope.form.dto.femaleChildBearingAge, value);
             }
         });
 
@@ -1078,6 +1089,17 @@
             $scope.exportInstanceWithUrl(url);
         };
 
+        $scope.$watch('form.dto.ignoreDateLimitation', function (value) {
+            if ($scope.form.dto) {
+                if (!value) {
+                    $scope.form.dto.minDate = $scope.earliestDateToReturn;
+                    $scope.form.dto.maxDate = $scope.latestDateToReturn;
+                } else {
+                    $scope.form.dto.minDate = new Date();
+                    $scope.form.dto.maxDate = null;
+                }
+            }
+        });
 
         $scope.setPrintData = function(document, location, participantId, participantName, plannedDate) {
 

@@ -40,6 +40,8 @@ public class VisitRescheduleDto {
 
     private LocalDate latestDate;
 
+    private Boolean ignoreDateLimitation;
+
     public VisitRescheduleDto() {
     }
 
@@ -53,6 +55,11 @@ public class VisitRescheduleDto {
         setStartTime(details.getStartTime());
         setVisitId(details.getVisit().getId());
         setVisitBookingDetailsId(details.getId());
+        if (details.getIgnoreDateLimitation() != null) {
+            setIgnoreDateLimitation(details.getIgnoreDateLimitation());
+        } else {
+            setIgnoreDateLimitation(false);
+        }
         if (details.getClinic() != null) {
             setLocation(details.getSubject().getSiteName());
         }
@@ -168,6 +175,14 @@ public class VisitRescheduleDto {
     @JsonDeserialize(using = CustomDateDeserializer.class)
     public void setLatestDate(LocalDate latestDate) {
         this.latestDate = latestDate;
+    }
+
+    public Boolean getIgnoreDateLimitation() {
+        return ignoreDateLimitation;
+    }
+
+    public void setIgnoreDateLimitation(Boolean ignoreDateLimitation) {
+        this.ignoreDateLimitation = ignoreDateLimitation;
     }
 
     private void calculateEarliestAndLatestDate(Range<LocalDate> dateRange) {

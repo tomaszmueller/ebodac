@@ -96,12 +96,13 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
 
         Clinic clinic = visitBookingDetails.getClinic();
 
+        Visit visit = visitBookingDetails.getVisit();
+        validateDate(visitRescheduleDto, visit);
+
         if (clinic != null && !ignoreLimitation) {
             checkNumberOfPatients(visitRescheduleDto, clinic);
         }
 
-        Visit visit = visitBookingDetails.getVisit();
-        validateDate(visitRescheduleDto, visit);
         updateVisitPlannedDate(visit, visitRescheduleDto);
 
         return new VisitRescheduleDto(updateVisitDetailsWithDto(visitBookingDetails, visitRescheduleDto));
@@ -160,29 +161,32 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             throw new IllegalArgumentException("Date cannot be in the past");
         }
 
-        Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
-        Config config = configService.getConfig();
-        List<String> boosterRelatedMessages = config.getBoosterRelatedMessages();
-        Long activeStageId = config.getActiveStageId();
+        if (!dto.getIgnoreDateLimitation()) {
+            Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = visitScheduleOffsetService.getAllAsMap();
+            Config config = configService.getConfig();
+            List<String> boosterRelatedMessages = config.getBoosterRelatedMessages();
+            Long activeStageId = config.getActiveStageId();
 
-        Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages, activeStageId);
+            Range<LocalDate> dateRange = calculateEarliestAndLatestDate(visit, offsetMap, boosterRelatedMessages, activeStageId);
 
-        if (dateRange == null) {
-            throw new IllegalArgumentException("Cannot calculate Earliest and Latest Date");
-        }
+            if (dateRange == null) {
+                throw new IllegalArgumentException("Cannot calculate Earliest and Latest Date");
+            }
 
-        LocalDate earliestDate = dateRange.getMin();
-        LocalDate latestDate = dateRange.getMax();
+            LocalDate earliestDate = dateRange.getMin();
+            LocalDate latestDate = dateRange.getMax();
 
-        if (dto.getPlannedDate().isBefore(earliestDate) || dto.getPlannedDate().isAfter(latestDate)) {
-            throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
-                    earliestDate, latestDate, dto.getPlannedDate()));
+            if (dto.getPlannedDate().isBefore(earliestDate) || dto.getPlannedDate().isAfter(latestDate)) {
+                throw new IllegalArgumentException(String.format("The date should be between %s and %s but is %s",
+                        earliestDate, latestDate, dto.getPlannedDate()));
+            }
         }
     }
 
     private VisitBookingDetails updateVisitDetailsWithDto(VisitBookingDetails details, VisitRescheduleDto dto) {
         details.setStartTime(dto.getStartTime());
         details.setEndTime(calculateEndTime(dto.getStartTime()));
+        details.setIgnoreDateLimitation(dto.getIgnoreDateLimitation());
         return visitBookingDetailsDataService.update(details);
     }
 
