@@ -41,7 +41,7 @@ public class VisitLimitationHelper {
             int visitBookingDetailsCount = (int) visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(date, clinic.getId(), visitBookingDetailsId);
             int visitCount = screeningCount + visitBookingDetailsCount + unscheduledVisitCount;
             if (visitCount >= clinic.getMaxCapacityByDay()) {
-                throw new LimitationExceededException("The limit of the capacity by day in the clinic is reached");
+                throw new LimitationExceededException("The clinic capacity limit for this day has been reached");
             }
         }
     }
