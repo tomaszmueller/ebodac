@@ -2,3 +2,7 @@ SiteNumber,Subject,BRTHDT,SEX,STAGE,PRMDT,BOOSTDT,VACDSDT,TRDSDT,VISIT,VISITDT,V
 B05-SL10001,1,1968-12-29,M,1,,,,,Prime Vaccination Day,,2115-10-10
 B05-SL10001,1,1968-12-29,M,1,,,,,Boost Vaccination Second Follow-up visit,,2115-10-10
 B05-SL10001,1,1968-12-29,M,1,,,,,Boost Vaccination Third Follow-up visit,,2115-10-10
+B05-SL10001,2,1968-12-29,M,2,,,,,Prime Vaccination Day,,2115-10-10
+B05-SL10001,2,1968-12-29,M,2,,,,,Boost Vaccination Second Follow-up visit,,2115-10-10
+B05-SL10001,2,1968-12-29,M,2,,,,,Boost Vaccination Third Follow-up visit,,2115-10-10
+

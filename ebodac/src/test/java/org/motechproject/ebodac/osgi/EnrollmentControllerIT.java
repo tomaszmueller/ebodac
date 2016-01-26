@@ -636,6 +636,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldCreateEnrollmentRecordsForSubjectWhenLanguageIsAdded() throws IOException, InterruptedException {
 
         Subject subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
         subject.setSubjectId("1");
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
@@ -677,6 +682,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldCreateEnrollmentRecordsForSubjectWhenPhoneNumberIsAdded() throws IOException, InterruptedException {
 
         Subject subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
         subject.setSubjectId("1");
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
@@ -719,6 +729,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldUpdateUnenrolledEnrollmentWhenVisitProjectedDateIsChanged() throws IOException, InterruptedException {
 
         Subject subject1 = new Subject();
+        subject1.setSubjectId("2");
+        subject1.setSiteName("siteName");
+        subjectDataService.create(subject1);
+
+        subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
         subject1.setSiteName("siteName");
@@ -784,6 +799,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldEnrollSubjectWithInitialStatus() throws IOException, InterruptedException {
 
         Subject subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
         subject.setSubjectId("1");
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
@@ -832,6 +852,11 @@ public class EnrollmentControllerIT extends BasePaxIT {
     public void shouldEnrollCampaignWithInitialStatus() throws IOException, InterruptedException {
 
         Subject subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
         subject.setSubjectId("1");
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
