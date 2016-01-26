@@ -38,10 +38,6 @@ public class Clinic {
     @Field(required = true, defaultValue = "5")
     private Integer maxPrimeVisits;
 
-    @UIDisplayable(position = 15)
-    @Field(required = true, defaultValue = "10")
-    private Integer maxPrimeFollowUpVisits;
-
     @UIDisplayable(position = 7)
     @Field(required = true, defaultValue = "10")
     private Integer maxPrimeFirstFollowUpVisits;
@@ -128,14 +124,6 @@ public class Clinic {
 
     public void setMaxPrimeVisits(Integer maxPrimeVisits) {
         this.maxPrimeVisits = maxPrimeVisits;
-    }
-
-    public Integer getMaxPrimeFollowUpVisits() {
-        return maxPrimeFollowUpVisits;
-    }
-
-    public void setMaxPrimeFollowUpVisits(Integer maxPrimeFollowUpVisits) {
-        this.maxPrimeFollowUpVisits = maxPrimeFollowUpVisits;
     }
 
     public Integer getMaxPrimeFirstFollowUpVisits() {

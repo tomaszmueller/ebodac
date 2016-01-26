@@ -1,7 +1,7 @@
 SiteNumber,Subject,BRTHDT,SEX,STAGE,PRMDT,BOOSTDT,VACDSDT,TRDSDT,VISIT,VISITDT,VISITDTPRJ
 B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Day,2115-09-10,2115-09-10
 B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Day,,2115-09-11
-B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Follow-up visit,,2115-09-12
+B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination First Follow-up visit,,2115-09-12
 B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination First Follow-up visit,,2115-09-13
 B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Second Follow-up visit,,2115-09-14
 B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Third Follow-up visit,,2115-09-15
@@ -11,7 +11,7 @@ B05-SL10001,1,1968-12-29,M,1,2015-06-30,2015-06-30,,,Third Long-term Follow-up v
 
 B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Day,2115-09-10,2115-09-10
 B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Day,,2115-09-11
-B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Follow-up visit,,2115-09-13
+B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination First Follow-up visit,,2115-09-13
 B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination First Follow-up visit,,2115-09-14
 B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Second Follow-up visit,,2115-09-15
 B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Third Follow-up visit,,2115-09-12
@@ -21,7 +21,7 @@ B05-SL10001,2,1968-12-29,M,1,2015-06-30,2015-06-30,,,Third Long-term Follow-up v
 
 B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Day,2115-09-10,2115-09-10
 B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Day,,2115-09-11
-B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Follow-up visit,,2115-09-14
+B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination First Follow-up visit,,2115-09-14
 B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination First Follow-up visit,,2115-09-15
 B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Second Follow-up visit,,2115-09-12
 B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Third Follow-up visit,,2115-09-13
@@ -31,7 +31,7 @@ B05-SL10001,3,1968-12-29,M,1,2015-06-30,2015-06-30,,,Third Long-term Follow-up v
 
 B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Day,2115-09-10,2115-09-10
 B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Day,,2115-09-11
-B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Follow-up visit,,2115-09-15
+B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination First Follow-up visit,,2115-09-15
 B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination First Follow-up visit,,2115-09-12
 B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Second Follow-up visit,,2115-09-13
 B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Third Follow-up visit,,2115-09-14
@@ -41,7 +41,7 @@ B05-SL10001,4,1968-12-29,M,1,2015-06-30,2015-06-30,,,Third Long-term Follow-up v
 
 B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Day,2115-09-10,2115-09-10
 B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Day,,2115-09-11
-B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination Follow-up visit,,2115-09-12
+B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Prime Vaccination First Follow-up visit,,2115-09-12
 B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination First Follow-up visit,,2115-09-13
 B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Second Follow-up visit,,2115-09-14
 B05-SL10001,5,1968-12-29,M,1,2015-06-30,2015-06-30,,,Boost Vaccination Third Follow-up visit,,2115-09-15

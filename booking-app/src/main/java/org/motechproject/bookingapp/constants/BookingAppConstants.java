@@ -36,9 +36,9 @@ public final class BookingAppConstants {
 
     public static final Set<VisitType> AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN = new HashSet<>(Arrays.asList(VisitType.BOOST_VACCINATION_DAY,
             VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.PRIME_VACCINATION_SECOND_FOLLOW_UP_VISIT,
-            VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT,
-            VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT, VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT,
-            VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, VisitType.SECOND_LONG_TERM_FOLLOW_UP_VISIT, VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT));
+            VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT,
+            VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT,
+            VisitType.SECOND_LONG_TERM_FOLLOW_UP_VISIT, VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT));
 
     public static final String SCREENING_TAB_PERMISSION = "screeningBookingTab";
     public static final String PRIME_VAC_TAB_PERMISSION = "primeVaccinationBookingTab";
@@ -133,7 +133,7 @@ public final class BookingAppConstants {
             "Max Screening Visits", "Max Prime Visits", "Max Booster Visits", "Amount of Rooms", "Max Prime First Follow Up Visits",
             "Max Prime Second Follow Up Visits", "Max Booster First Follow Up Visits", "Max Booster Second Follow Up Visits",
             "Max Booster Third Follow Up Visits", "Max First Long Term Follow Up Visits", "Max Second Long Term Follow Up Visits",
-            "Max Third Long Term Follow Up Visits", "Max Prime Follow Up Visits"));
+            "Max Third Long Term Follow Up Visits"));
 
     private BookingAppConstants() {
     }

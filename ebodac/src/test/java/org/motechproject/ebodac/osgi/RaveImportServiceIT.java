@@ -194,7 +194,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         checkVisit(visits.get(1), subjects.get(1), VisitType.PRIME_VACCINATION_DAY,
                 null, LocalDate.parse("2015-07-12", formatter));
 
-        checkVisit(visits.get(2), subjects.get(1), VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT,
+        checkVisit(visits.get(2), subjects.get(1), VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT,
                 null, null);
     }
 

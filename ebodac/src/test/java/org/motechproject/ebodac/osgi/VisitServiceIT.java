@@ -80,7 +80,7 @@ public class VisitServiceIT extends BasePaxIT {
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
 
-        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-20", formatter), "owner");
 
 
@@ -151,7 +151,7 @@ public class VisitServiceIT extends BasePaxIT {
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
 
-        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
+        Visit secondVisit = VisitUtils.createVisit(firstSubject, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, LocalDate.parse("2014-10-19", formatter),
                 LocalDate.parse("2014-10-20", formatter), "owner");
 
 
