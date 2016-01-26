@@ -19,7 +19,6 @@ public final class ScreeningValidator {
     private static void validate(ScreeningDto screeningDto) {
         Validate.notEmpty(screeningDto.getClinicId(), "Clinic ID cannot be null or empty!");
         Validate.notEmpty(screeningDto.getDate(), "Screening date cannot be null or empty!");
-        Validate.notEmpty(screeningDto.getStartTime(), "Screening start time cannot be null or empty!");
     }
 
     private ScreeningValidator() {

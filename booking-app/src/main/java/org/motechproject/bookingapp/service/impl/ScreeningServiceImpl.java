@@ -1,5 +1,6 @@
 package org.motechproject.bookingapp.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -96,11 +97,18 @@ public class ScreeningServiceImpl implements ScreeningService {
         return screeningDataService.findById(id).toDto();
     }
 
-    private void checkNumberOfPatientsAndSetScreeningData(ScreeningDto screeningDto, Screening screening, Boolean ignoreLimitation) {
+    private void checkNumberOfPatientsAndSetScreeningData(ScreeningDto screeningDto, Screening screening, Boolean ignoreLimitation) { //NO CHECKSTYLE CyclomaticComplexity
         Clinic clinic = clinicDataService.findById(Long.parseLong(screeningDto.getClinicId()));
         LocalDate date = LocalDate.parse(screeningDto.getDate());
-        Time startTime = Time.valueOf(screeningDto.getStartTime());
-        Time endTime = calculateEndTime(startTime);
+        Time startTime;
+        Time endTime;
+        if (StringUtils.isNotBlank(screeningDto.getStartTime())) {
+            startTime = Time.valueOf(screeningDto.getStartTime());
+            endTime = calculateEndTime(startTime);
+        } else {
+            startTime = null;
+            endTime = null;
+        }
 
         if (!ignoreLimitation) {
             visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
@@ -114,7 +122,7 @@ public class ScreeningServiceImpl implements ScreeningService {
                 for (Screening s : screeningList) {
                     if (s.getId().equals(screening.getId())) {
                         maxVisits++;
-                    } else {
+                    } else if (startTime != null && s.getStartTime() != null) {
                         if (startTime.isBefore(s.getStartTime())) {
                             if (s.getStartTime().isBefore(endTime)) {
                                 patients++;
