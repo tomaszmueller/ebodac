@@ -25,7 +25,7 @@ public enum VisitType {
             return UNSCHEDULED_VISIT;
         }
         for (VisitType visitType : VisitType.values()) {
-            if (visitType.getValue().equals(value)) {
+            if (visitType.getValue().equalsIgnoreCase(value)) {
                 return visitType;
             }
         }
