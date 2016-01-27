@@ -142,6 +142,25 @@ public class RaveImportServiceIT extends BasePaxIT {
         assertEquals(beforeUpdate.getDistrict(),          subject.getDistrict());
     }
 
+    @Test
+    public void visitTypeShouldBeCaseInsensitive() throws Exception {
+        List<Subject> subjects = subjectDataService.retrieveAll();
+        assertEquals(0, subjects.size());
+        List<Visit> visits = visitDataService.retrieveAll();
+        assertEquals(0, visits.size());
+
+        InputStream in = getClass().getResourceAsStream("/raveIgnoreCase.csv");
+        assertNotNull(in);
+
+        raveImportService.importCsv(new InputStreamReader(in), "/raveIgnoreCase.csv");
+        in.close();
+
+        subjects = subjectDataService.retrieveAll();
+        assertEquals(1, subjects.size());
+        visits = visitDataService.retrieveAll();
+        assertEquals(9, visits.size());
+    }
+
     private void checkSubjectData() {
         DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
         List<Subject> subjects = subjectDataService.retrieveAll();
