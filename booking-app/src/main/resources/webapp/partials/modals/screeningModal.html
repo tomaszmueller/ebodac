@@ -37,7 +37,7 @@
             </div>
             <div ng-if="!form.dto">
                 <div ng-if="form.type == 'add'" class="modal-body">
-                    {{msg('bookingApp.screening.scheduleSuccessful')}}
+                    {{msg('bookingApp.screening.scheduleSuccessful', screeningForPrint.volunteer.id)}}
                 </div>
                 <div ng-if="form.type == 'edit'" class="modal-body">
                     {{msg('bookingApp.screening.updateSuccessful')}}
