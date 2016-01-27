@@ -347,7 +347,6 @@
                     colModel: [
                         {
                             name: "location",
-                            formatter: rowColorFormatter,
                             index: 'subject.siteName'
                         },
                         {
@@ -357,6 +356,7 @@
                         },
                         {
                             name: "participantName",
+                            formatter: rowColorFormatter,
                             index: 'subject.name'
                         },
                         {
