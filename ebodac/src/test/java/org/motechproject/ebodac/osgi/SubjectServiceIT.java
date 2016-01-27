@@ -94,6 +94,8 @@ public class SubjectServiceIT extends BasePaxIT {
         firstSubject.setAddress("newAddress");
         firstSubject.setLanguage(Language.Limba);
         firstSubject.setPhoneNumber("600700800");
+        firstSubject.setSiteName("newSite");
+        firstSubject.setSiteId("newSiteId");
 
         subjectService.createOrUpdateForZetes(firstSubject); // should update Subject
         subjects = subjectDataService.retrieveAll();
@@ -306,6 +308,7 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(expected.getLanguageCode(), actual.getLanguageCode());
         assertEquals(expected.getCommunity(),        actual.getCommunity());
         assertEquals(expected.getSiteId(), actual.getSiteId());
+        assertEquals(expected.getSiteName(), actual.getSiteName());
         assertEquals(expected.getChiefdom(), actual.getChiefdom());
         assertEquals(expected.getSection(),        actual.getSection());
         assertEquals(expected.getDistrict(), actual.getDistrict());
