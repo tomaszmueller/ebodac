@@ -828,7 +828,8 @@
                 && $scope.form.dto.participantId
                 && $scope.form.dto.date
                 && $scope.form.dto.startTime
-                && ($scope.form.dto.participantGender == 'Female' ? $scope.form.dto.femaleChildBearingAge !== undefined : true);
+                && $scope.form.dto.femaleChildBearingAge
+                && $scope.form.dto.bookingScreeningActualDate;
         };
 
         $scope.exportInstance = function() {
