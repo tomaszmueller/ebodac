@@ -200,6 +200,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         for (Subject subject : subjects) {
             Visit screeningVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.SCREENING);
             Visit primeVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.PRIME_VACCINATION_DAY);
+            Visit followUpVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
             if (screeningVisit == null) {
                 screeningVisit = new Visit();
                 screeningVisit.setType(VisitType.SCREENING);
@@ -211,6 +212,12 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
                 primeVisit.setSubject(subject);
                 primeVisit.setType(VisitType.PRIME_VACCINATION_DAY);
                 visitDataService.create(primeVisit);
+            }
+            if (followUpVisit == null) {
+                followUpVisit = new Visit();
+                followUpVisit.setSubject(subject);
+                followUpVisit.setType(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
+                visitDataService.create(followUpVisit);
             }
         }
     }
