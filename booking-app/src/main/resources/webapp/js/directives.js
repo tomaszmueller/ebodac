@@ -460,6 +460,8 @@
                 function rowColorFormatter(cellValue, options, rowObject) {
                     var range = scope.calculateRange(rowObject.bookingScreeningActualDate,
                         rowObject.femaleChildBearingAge, false);
+                    range.min.setHours(0,0,0,0);
+                    range.max.setHours(23,59,59,0);
                     var min = range.min.getTime();
                     var max = range.max.getTime();
                     var bookingDate = Date.parse(rowObject.date);
