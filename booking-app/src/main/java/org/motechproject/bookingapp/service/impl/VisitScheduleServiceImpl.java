@@ -132,16 +132,15 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
             throw new VisitScheduleException("Cannot calculate Planned Dates, because Prime Vaccination Date is empty");
         }
 
-        Long actualStageId = stageId;
-        if (actualStageId == null) {
-            actualStageId = configService.getConfig().getActiveStageId();
-        }
-
-        if (actualStageId == null) {
-            throw new VisitScheduleException("Cannot calculate Planned Dates, because Participant stageId is empty");
-        }
+        Long actualStageId = getActualStageId(stageId);
 
         Map<VisitType, VisitScheduleOffset> offsetMap = visitScheduleOffsetService.getAsMapByStageId(actualStageId);
+
+        if (offsetMap == null || offsetMap.isEmpty()) {
+            throw new VisitScheduleException(String.format("Cannot calculate Planned Dates, because no Visit Schedule Offset found for stageId: %s",
+                    stageId.toString()));
+        }
+
         List<VisitBookingDetails> detailsList = new ArrayList<>();
         LocalDate screeningDate = null;
         VisitBookingDetails primeVacDetails = null;
@@ -154,7 +153,12 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
                 detailsList.add(details);
                 primeVacDetails = details;
             } else if (VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.equals(details.getVisit().getType())) {
-                details.setBookingPlannedDate(primeVaccinationDate.plusDays(offsetMap.get(details.getVisit().getType()).getTimeOffset()));
+                VisitScheduleOffset offset = offsetMap.get(details.getVisit().getType());
+                if (offset == null) {
+                    throw new VisitScheduleException(String.format("Cannot calculate Planned Dates, because no Visit Schedule Offset found for visit: %s",
+                            details.getVisit().getType().getValue()));
+                }
+                details.setBookingPlannedDate(primeVaccinationDate.plusDays(offset.getTimeOffset()));
                 detailsList.add(details);
             }
         }
@@ -162,6 +166,19 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
         validateDate(primeVaccinationDate, screeningDate, primeVacDetails);
 
         return detailsList;
+    }
+
+    private Long getActualStageId(Long stageId) {
+        Long actualStageId = stageId;
+        if (actualStageId == null) {
+            actualStageId = configService.getConfig().getActiveStageId();
+        }
+
+        if (actualStageId == null) {
+            throw new VisitScheduleException("Cannot calculate Planned Dates, because Participant stageId is empty");
+        }
+
+        return actualStageId;
     }
 
     private void validateDate(LocalDate date, LocalDate screeningDate, VisitBookingDetails details) {

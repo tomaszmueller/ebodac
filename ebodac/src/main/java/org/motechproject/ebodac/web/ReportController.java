@@ -30,11 +30,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -282,6 +284,14 @@ public class ReportController {
             }
         }
         return ret;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public String handleException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
+        return e.getMessage();
     }
 
     private Records<?> getDailyClinicVisitScheduleReport(GridSettings settings) {

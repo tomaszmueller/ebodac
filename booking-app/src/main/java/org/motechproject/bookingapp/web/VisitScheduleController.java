@@ -9,6 +9,8 @@ import org.motechproject.bookingapp.service.VisitScheduleService;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import java.util.Map;
 @RequestMapping("/schedule")
 @PreAuthorize(BookingAppConstants.HAS_CLINIC_VISIT_SCHEDULE_TAB_ROLE)
 public class VisitScheduleController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(VisitScheduleController.class);
 
     @Autowired
     private VisitDataService visitDataService;
@@ -88,6 +92,14 @@ public class VisitScheduleController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public String handleBadRequest(Exception e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public String handleException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
         return e.getMessage();
     }
 }

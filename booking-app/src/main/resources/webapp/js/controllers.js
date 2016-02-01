@@ -713,6 +713,9 @@
             $http.get('../booking-app/getPrimeVacDtos')
             .success(function(data) {
                 $scope.primeVacDtos = data;
+            })
+            .error(function(response) {
+                motechAlert('bookingApp.primeVaccination.getParticipantsError', 'bookingApp.error', response);
             });
         }
 
@@ -922,6 +925,9 @@
                     $scope.dateRange = {};
                     $scope.dateRange.min = $scope.parseDate(data.earliestDate);
                     $scope.dateRange.max = $scope.parseDate(data.latestDate);
+                })
+                .error(function(response) {
+                    motechAlert('bookingApp.schedule.plannedDates.calculate.error', 'bookingApp.schedule.error', response);
                 });
             }
         }

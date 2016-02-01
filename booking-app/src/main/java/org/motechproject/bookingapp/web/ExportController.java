@@ -33,10 +33,14 @@ import org.motechproject.mds.service.impl.csv.writer.CsvTableWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -111,6 +115,14 @@ public class ExportController {
         }
 
         exportEntity(outputFormat, response, BookingAppConstants.CAPACITY_REPORT_NAME, capacityReportDtoList, BookingAppConstants.CAPACITY_REPORT_FIELDS_MAP);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public String handleException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
+        return e.getMessage();
     }
 
     private void exportEntity(BookingGridSettings settings, String exportRecords, String outputFormat, HttpServletResponse response, //NO CHECKSTYLE ParameterNumber
