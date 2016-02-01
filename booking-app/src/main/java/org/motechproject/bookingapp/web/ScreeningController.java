@@ -73,6 +73,14 @@ public class ScreeningController {
         return e.getMessage();
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public String handleException(Exception e) {
+        LOGGER.debug(e.getMessage(), e);
+        return e.getMessage();
+    }
+
     @RequestMapping(value = "/getLookupsForScreening", method = RequestMethod.GET)
     @ResponseBody
     public List<LookupDto> getLookupsForScreening() {
