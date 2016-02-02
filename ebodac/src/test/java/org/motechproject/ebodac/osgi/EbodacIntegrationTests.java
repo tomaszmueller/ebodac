@@ -19,7 +19,8 @@ import org.junit.runners.Suite;
         ReportControllerIT.class,
         SubjectCsvImportCustomizerIT.class,
         SubjectServiceIT.class,
-        VisitServiceIT.class
+        VisitServiceIT.class,
+        ZetesControllerIT.class
 })
 public class EbodacIntegrationTests {
 }
