@@ -75,6 +75,20 @@ public class HistoryServiceIT extends BasePaxIT {
 
     @Test
     public void shouldCreateHistoryRecordsForSubject() throws IOException {
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("3");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
 
         InputStream in = getClass().getResourceAsStream("/history.csv");
         raveImportService.importCsv(new InputStreamReader(in), "/history.csv");
@@ -84,27 +98,36 @@ public class HistoryServiceIT extends BasePaxIT {
 
         List<List<Subject>> subjectsHistoryRecords = new ArrayList<List<Subject>>();
 
-        for (Subject subject : subjectDataService.retrieveAll()) {
-            subjectsHistoryRecords.add(historyService.getHistoryForInstance(subject, qp));
+        for (Subject s : subjectDataService.retrieveAll()) {
+            subjectsHistoryRecords.add(historyService.getHistoryForInstance(s, qp));
         }
-        assertEquals(3, subjectsHistoryRecords.get(0).size());
-        assertEquals(1, subjectsHistoryRecords.get(1).size());
+        assertEquals(4, subjectsHistoryRecords.get(0).size());
+        assertEquals(2, subjectsHistoryRecords.get(1).size());
 
         in = getClass().getResourceAsStream("/history2.csv");
         raveImportService.importCsv(new InputStreamReader(in), "/history2.csv");
         in.close();
 
         subjectsHistoryRecords.clear();
-        for (Subject subject : subjectDataService.retrieveAll()) {
-            subjectsHistoryRecords.add(historyService.getHistoryForInstance(subject, qp));
+        for (Subject s : subjectDataService.retrieveAll()) {
+            subjectsHistoryRecords.add(historyService.getHistoryForInstance(s, qp));
         }
-        assertEquals(4, subjectsHistoryRecords.get(0).size());
-        assertEquals(1, subjectsHistoryRecords.get(1).size());
-        assertEquals(2, subjectsHistoryRecords.get(2).size());
+        assertEquals(5, subjectsHistoryRecords.get(0).size());
+        assertEquals(2, subjectsHistoryRecords.get(1).size());
+        assertEquals(3, subjectsHistoryRecords.get(2).size());
     }
 
     @Test
     public void shouldCreateHistoryRecordsForVisit() throws IOException {
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
 
         InputStream in = getClass().getResourceAsStream("/history3.csv");
         raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
@@ -130,17 +153,27 @@ public class HistoryServiceIT extends BasePaxIT {
 
     @Test
     public void newRecordsForSubjectWhenAddingNewVisit() throws IOException {
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("2");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream in = getClass().getResourceAsStream("/history3.csv");
         raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
 
-        Subject subject = subjectDataService.findBySubjectId("2");
+        subject = subjectDataService.findBySubjectId("2");
         List<Subject> subjectHistoryRecords = new ArrayList<Subject>();
         subjectHistoryRecords = historyService.getHistoryForInstance(subject, qp);
 
-        assertEquals(4, subjectHistoryRecords.size());
+        assertEquals(5, subjectHistoryRecords.size());
     }
 
     @Ignore

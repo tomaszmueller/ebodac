@@ -70,12 +70,12 @@ public class Subject {
 
     @NonEditable
     @UIDisplayable(position = 8)
-    @Field(required = true)
+    @Field
     private String siteId;
 
     @NonEditable
     @UIDisplayable(position = 9)
-    @Field
+    @Field(required = true)
     private String siteName;
 
     @UIDisplayable(position = 10)

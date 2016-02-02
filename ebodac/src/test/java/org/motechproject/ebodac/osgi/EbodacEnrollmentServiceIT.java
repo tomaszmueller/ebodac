@@ -137,6 +137,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         }
     }
 
+    @Ignore
     @Test
     public void shouldEnrollWhenGetZetesDataAfterRave() throws IOException {
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
@@ -189,11 +190,16 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
     @Test
     public void shouldNotEnrollWhenSubjectDoesntHaveLanguageOrPhoneNumber() throws IOException {
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectService.create(subject);
+
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectService.findSubjectBySubjectId("1");
+        subject = subjectService.findSubjectBySubjectId("1");
 
         subject.setPhoneNumber("123456789");
         subject.setLanguage(null);
@@ -786,6 +792,10 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         Subject subject1 = createSubjectWithRequireData("1");
         Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = new Subject();
+        subject3.setSubjectId("3");
+        subject3.setSiteName("siteName");
+        subjectService.create(subject3);
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
@@ -1471,6 +1481,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         subject.setLanguage(Language.English);
         subject.setPhoneNumber("123456789");
         subject.setSiteId("asdas");
+        subject.setSiteName("siteName");
         subjectService.create(subject);
         return subject;
     }
