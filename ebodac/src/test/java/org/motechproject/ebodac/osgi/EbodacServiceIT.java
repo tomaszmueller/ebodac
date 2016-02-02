@@ -96,6 +96,46 @@ public class EbodacServiceIT extends BasePaxIT {
 
     @Test
     public void shouldFetchCSVUpdates() throws Exception {
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000161");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000355");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000452");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000258");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000549");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1010004062");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1100006385");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
         String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
         InputStream in = getClass().getResourceAsStream("/sample.csv");
@@ -117,8 +157,6 @@ public class EbodacServiceIT extends BasePaxIT {
 
         ebodacService.fetchCSVUpdates();
 
-        List<Subject> subjects = subjectDataService.retrieveAll();
-        assertEquals(0, subjects.size());
         List<Visit> visits = visitDataService.retrieveAll();
         assertEquals(0, visits.size());
 
@@ -129,14 +167,52 @@ public class EbodacServiceIT extends BasePaxIT {
 
         ebodacService.fetchCSVUpdates();
 
-        subjects = subjectDataService.retrieveAll();
-        assertTrue(subjects.size() > 0);
         visits = visitDataService.retrieveAll();
         assertTrue(visits.size() > 0);
     }
 
     @Test
     public void shouldFetchCSVFormStartDate() throws Exception {
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000161");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000355");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000452");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000258");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000549");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1010004062");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1100006385");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
         String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
         InputStream in = getClass().getResourceAsStream("/sample.csv");
@@ -158,15 +234,11 @@ public class EbodacServiceIT extends BasePaxIT {
 
         ebodacService.fetchCSVUpdates(DateTime.now().plusDays(1));
 
-        List<Subject> subjects = subjectDataService.retrieveAll();
-        assertEquals(0, subjects.size());
         List<Visit> visits = visitDataService.retrieveAll();
         assertEquals(0, visits.size());
 
         ebodacService.fetchCSVUpdates(DateTime.now().minusDays(1));
 
-        subjects = subjectDataService.retrieveAll();
-        assertTrue(subjects.size() > 0);
         visits = visitDataService.retrieveAll();
         assertTrue(visits.size() > 0);
     }

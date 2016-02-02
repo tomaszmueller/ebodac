@@ -78,6 +78,46 @@ public class RaveImportServiceIT extends BasePaxIT {
         List<Visit> visits = visitDataService.retrieveAll();
         assertEquals(0, visits.size());
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000161");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000355");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000452");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000258");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000549");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1010004062");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1100006385");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream in = getClass().getResourceAsStream("/sample.csv");
         assertNotNull(in);
 
@@ -96,6 +136,16 @@ public class RaveImportServiceIT extends BasePaxIT {
     public void shouldImportFromCsvWithBrokenData() throws Exception {
         assertEquals(0, subjectDataService.retrieveAll().size());
         assertEquals(0, visitDataService.retrieveAll().size());
+
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000161");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
 
         InputStream in = getClass().getResourceAsStream("/rave.csv");
         assertNotNull(in);
@@ -117,7 +167,12 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         subjectDataService.create(beforeUpdate);
 
-        assertEquals(1, subjectDataService.retrieveAll().size());
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        assertEquals(2, subjectDataService.retrieveAll().size());
 
         InputStream in = getClass().getResourceAsStream("/rave.csv");
         assertNotNull(in);
@@ -127,7 +182,7 @@ public class RaveImportServiceIT extends BasePaxIT {
         List<Subject> subjects = subjectDataService.retrieveAll();
         assertEquals(2, subjects.size());
 
-        Subject subject = subjectDataService.findBySubjectId("1000000161");
+        subject = subjectDataService.findBySubjectId("1000000161");
 
         assertEquals(beforeUpdate.getSubjectId(), subject.getSubjectId());
         assertEquals(beforeUpdate.getName(), subject.getName());
@@ -149,6 +204,11 @@ public class RaveImportServiceIT extends BasePaxIT {
         List<Visit> visits = visitDataService.retrieveAll();
         assertEquals(0, visits.size());
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream in = getClass().getResourceAsStream("/raveIgnoreCase.csv");
         assertNotNull(in);
 
@@ -168,7 +228,6 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         Subject subject = subjectDataService.findBySubjectId("1000000161");
 
-        assertEquals("B05-SL10001", subject.getSiteId());
         assertEquals("1000000161",  subject.getSubjectId());
         assertEquals(Gender.Male, subject.getGender());
         assertEquals(1, (long) subject.getStageId());
@@ -180,7 +239,6 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         subject = subjectDataService.findBySubjectId("1000000646");
 
-        assertEquals("B05-SL10001", subject.getSiteId());
         assertEquals("1000000646", subject.getSubjectId());
         assertEquals(Gender.Female, subject.getGender());
         assertEquals(2, (long) subjects.get(1).getStageId());

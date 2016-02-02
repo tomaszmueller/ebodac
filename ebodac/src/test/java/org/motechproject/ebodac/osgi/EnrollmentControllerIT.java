@@ -254,6 +254,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -261,9 +262,15 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject2 = new Subject();
         subject2.setSubjectId("2");
         subject2.setSiteId("SiteId");
+        subject2.setSiteName("siteName");
         subject2.setLanguage(Language.English);
         subject2.setPhoneNumber("1111111");
         subjectDataService.create(subject2);
+
+        Subject subject3 = new Subject();
+        subject3.setSubjectId("3");
+        subject3.setSiteName("siteName");
+        subjectDataService.create(subject3);
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
@@ -293,6 +300,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject = new Subject();
         subject.setSubjectId("1");
         subject.setSiteId("SiteId");
+        subject.setSiteName("siteName");
         subject.setLanguage(Language.English);
         subjectDataService.create(subject);
 
@@ -309,6 +317,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -316,9 +325,15 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject2 = new Subject();
         subject2.setSubjectId("2");
         subject2.setSiteId("SiteId");
+        subject2.setSiteName("siteName");
         subject2.setLanguage(Language.English);
         subject2.setPhoneNumber("123456789");
         subjectDataService.create(subject2);
+
+        Subject subject3 = new Subject();
+        subject3.setSubjectId("3");
+        subject3.setSiteName("siteName");
+        subjectDataService.create(subject3);
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
@@ -374,6 +389,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -381,9 +397,15 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject2 = new Subject();
         subject2.setSubjectId("2");
         subject2.setSiteId("SiteId");
+        subject2.setSiteName("siteName");
         subject2.setLanguage(Language.English);
         subject2.setPhoneNumber("123456789");
         subjectDataService.create(subject2);
+
+        Subject subject3 = new Subject();
+        subject3.setSubjectId("3");
+        subject3.setSiteName("siteName");
+        subjectDataService.create(subject3);
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
@@ -439,6 +461,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -446,6 +469,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject2 = new Subject();
         subject2.setSubjectId("2");
         subject2.setSiteId("SiteId");
+        subject2.setSiteName("siteName");
         subject2.setLanguage(Language.English);
         subject2.setPhoneNumber("123456789");
         subjectDataService.create(subject2);
@@ -453,6 +477,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject3 = new Subject();
         subject3.setSubjectId("3");
         subject3.setSiteId("SiteId");
+        subject3.setSiteName("siteName");
         subject3.setLanguage(Language.English);
         subject3.setPhoneNumber("987654321");
         subjectDataService.create(subject3);
@@ -526,6 +551,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -533,6 +559,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject2 = new Subject();
         subject2.setSubjectId("2");
         subject2.setSiteId("SiteId");
+        subject2.setSiteName("siteName");
         subject2.setLanguage(Language.English);
         subject2.setPhoneNumber("123456789");
         subjectDataService.create(subject2);
@@ -540,6 +567,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject3 = new Subject();
         subject3.setSubjectId("3");
         subject3.setSiteId("SiteId");
+        subject3.setSiteName("siteName");
         subject3.setLanguage(Language.English);
         subject3.setPhoneNumber("987654321");
         subjectDataService.create(subject3);
@@ -607,11 +635,16 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Test
     public void shouldCreateEnrollmentRecordsForSubjectWhenLanguageIsAdded() throws IOException, InterruptedException {
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
@@ -643,11 +676,16 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Test
     public void shouldCreateEnrollmentRecordsForSubjectWhenPhoneNumberIsAdded() throws IOException, InterruptedException {
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
@@ -683,6 +721,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         Subject subject1 = new Subject();
         subject1.setSubjectId("1");
         subject1.setSiteId("SiteId");
+        subject1.setSiteName("siteName");
         subject1.setLanguage(Language.English);
         subject1.setPhoneNumber("123456789");
         subjectDataService.create(subject1);
@@ -744,11 +783,16 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Test
     public void shouldEnrollSubjectWithInitialStatus() throws IOException, InterruptedException {
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
@@ -787,11 +831,16 @@ public class EnrollmentControllerIT extends BasePaxIT {
     @Test
     public void shouldEnrollCampaignWithInitialStatus() throws IOException, InterruptedException {
 
+        Subject subject = new Subject();
+        subject.setSubjectId("1");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
         inputStream.close();
 
-        Subject subject = subjectDataService.findBySubjectId("1");
+        subject = subjectDataService.findBySubjectId("1");
         assertNotNull(subject);
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());

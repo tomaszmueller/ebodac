@@ -491,6 +491,12 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
     @Test
     public void shouldCreateEnrollmentRecordsForSubjectWhenLanguageOrPhoneNumberIsAdded() throws IOException, InterruptedException {
 
+        Subject subject2 = new Subject();
+        subject2.setSubjectId("2");
+        subject2.setSiteName("siteName");
+        subject2.setSiteId("siteId");
+        subjectService.create(subject2);
+
         EntityDto entityDto = entityService.getEntityByClassName(Subject.class.getName());
         InputStream inputStream = getClass().getResourceAsStream("/participantsWithoutRequiredData.csv");
         Reader reader = new InputStreamReader(inputStream);
