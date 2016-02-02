@@ -966,7 +966,7 @@
             $('#versionDate', document).html($scope.getCurrentDate());
             $('#subjectId', document).html($scope.selectedSubject.subjectId);
             $('#subjectName', document).html($scope.selectedSubject.name);
-            $('#primeVacFollowup', document).html($scope.visitPlannedDates.PRIME_VACCINATION_FOLLOW_UP_VISIT);
+            $('#primeVacFirstFollowup', document).html($scope.visitPlannedDates.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
             $('#location', document).html($scope.selectedSubject.location);
         };
 
