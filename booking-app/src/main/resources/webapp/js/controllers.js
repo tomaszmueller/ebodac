@@ -784,9 +784,8 @@
             }, 100);
         };
 
-        $scope.calculateRange = function(forDate, femaleChildBearingAge, ignoreDateLimitation) {
+        $scope.calculateRangeForGrid = function(forDate, femaleChildBearingAge, ignoreDateLimitation) {
             var range = {};
-            var today = new Date();
 
             if (ignoreDateLimitation == undefined || ignoreDateLimitation == '' || ignoreDateLimitation == null || ignoreDateLimitation == false) {
                 if (femaleChildBearingAge == "Yes") {
@@ -794,14 +793,22 @@
                 } else {
                     range.min = $scope.parseDate(forDate, 1);
                 }
-                if (today > range.min) {
-                    range.min = today;
-                }
 
                 range.max = $scope.parseDate(forDate, 28);
             } else {
-                range.min = today;
+                range.min = new Date();
                 range.max = null;
+            }
+
+            return range;
+        };
+
+        $scope.calculateRange = function(forDate, femaleChildBearingAge, ignoreDateLimitation) {
+            var range = $scope.calculateRangeForGrid(forDate, femaleChildBearingAge, ignoreDateLimitation);
+            var today = new Date();
+
+            if (today > range.min) {
+                range.min = today;
             }
 
             return range;
@@ -1097,7 +1104,7 @@
         };
 
         $scope.$watch('form.dto.ignoreDateLimitation', function (value) {
-            if ($scope.form.dto) {
+            if ($scope.form && $scope.form.dto) {
                 if (!value) {
                     $scope.form.dto.minDate = $scope.earliestDateToReturn;
                     $scope.form.dto.maxDate = $scope.latestDateToReturn;
