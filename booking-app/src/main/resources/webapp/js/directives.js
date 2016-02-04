@@ -458,7 +458,7 @@
                 });
 
                 function rowColorFormatter(cellValue, options, rowObject) {
-                    var range = scope.calculateRange(rowObject.bookingScreeningActualDate,
+                    var range = scope.calculateRangeForGrid(rowObject.bookingScreeningActualDate,
                         rowObject.femaleChildBearingAge, false);
                     range.min.setHours(0,0,0,0);
                     range.max.setHours(23,59,59,0);
@@ -649,12 +649,13 @@
                 });
 
                 function rowColorFormatter(cellValue, options, rowObject) {
-                    var min = Date.parse(rowObject.earliestDate);
+                    var min = Date.parse(rowObject.earliestWindowDate);
                     var max = Date.parse(rowObject.latestDate);
                     var bookingDate = Date.parse(rowObject.plannedDate);
-                    if ((max < bookingDate || min > bookingDate) && !rowObject.ignoreDateLimitation &&
-                        (rowObject.actualDate == null || rowObject.actualDate == undefined || rowObject.actualDate == "")) {
-                        rowsToColor[rowsToColor.length] = options.rowId;
+                    if (max !== null && max !== undefined && min !== null && min !== undefined &&
+                          (max < bookingDate || min > bookingDate) && !rowObject.ignoreDateLimitation &&
+                          (rowObject.actualDate === null || rowObject.actualDate === undefined || rowObject.actualDate === "")) {
+                       rowsToColor[rowsToColor.length] = options.rowId;
                     }
                     return cellValue;
                 }

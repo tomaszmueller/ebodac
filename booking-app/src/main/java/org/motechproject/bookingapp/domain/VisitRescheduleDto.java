@@ -40,6 +40,8 @@ public class VisitRescheduleDto {
 
     private LocalDate latestDate;
 
+    private LocalDate earliestWindowDate;
+
     private Boolean ignoreDateLimitation;
 
     public VisitRescheduleDto() {
@@ -177,6 +179,16 @@ public class VisitRescheduleDto {
         this.latestDate = latestDate;
     }
 
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public LocalDate getEarliestWindowDate() {
+        return earliestWindowDate;
+    }
+
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    public void setEarliestWindowDate(LocalDate earliestWindowDate) {
+        this.earliestWindowDate = earliestWindowDate;
+    }
+
     public Boolean getIgnoreDateLimitation() {
         return ignoreDateLimitation;
     }
@@ -190,6 +202,7 @@ public class VisitRescheduleDto {
             LocalDate maxDate = dateRange.getMax();
             if (!maxDate.isBefore(LocalDate.now())) {
                 LocalDate minDate = dateRange.getMin();
+                earliestWindowDate = minDate;
                 if (minDate.isBefore(LocalDate.now())) {
                     minDate = LocalDate.now();
                 }
