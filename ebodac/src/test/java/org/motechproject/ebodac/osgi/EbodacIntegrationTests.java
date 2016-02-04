@@ -14,15 +14,12 @@ import org.junit.runners.Suite;
         EbodacWebIT.class,
         EnrollmentControllerIT.class,
         HistoryServiceIT.class,
-        JobImporterIT.class,
-        MessageCampaignImporterIT.class,
         LookupServiceIT.class,
         RaveImportServiceIT.class,
         ReportControllerIT.class,
         ReportServiceIT.class,
         SubjectCsvImportCustomizerIT.class,
         SubjectServiceIT.class,
-        TaskImporterIT.class,
         VisitServiceIT.class
 })
 public class EbodacIntegrationTests {

@@ -21,7 +21,7 @@ public class MessageCampaignImporter implements OsgiServiceLifecycleListener {
     @Override
     public void bind(Object o, Map map) throws Exception {
         this.messageCampaignService = (MessageCampaignService) o;
-        importMessageCampaigns(getClass().getResourceAsStream("/message-campaign.json"));
+        importMessageCampaigns();
     }
 
     @Override
@@ -29,8 +29,8 @@ public class MessageCampaignImporter implements OsgiServiceLifecycleListener {
         this.messageCampaignService = null;
     }
 
-    public void importMessageCampaigns(InputStream inputStream) {
-        InputStream campaigns = inputStream;
+    public void importMessageCampaigns() {
+        InputStream campaigns = getClass().getResourceAsStream("/message-campaign.json");
         List<CampaignRecord> campaignRecords = campaignJsonLoader.loadCampaigns(campaigns);
 
         for (CampaignRecord campaignRecord : campaignRecords) {

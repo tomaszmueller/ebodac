@@ -25,7 +25,6 @@ import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.ebodac.utils.VisitUtils;
 import org.motechproject.ebodac.web.domain.Records;
-import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
@@ -176,10 +175,6 @@ public class LookupServiceIT extends BasePaxIT {
         };
         int []expectedResults = {2, 2, 4, 2, 2, 3, 2, 2};
 
-        List<LookupDto> lookupDtos = lookupService.getAvailableLookups(Visit.class.getName());
-
-        List<Visit> visitList1 = visitDataService.retrieveAll();
-
         QueryParams queryParams = new QueryParams(1, null);
         for (int i = 0; i < lookups.length; i++) {
             Records<Visit> records = lookupService.getEntities(Visit.class, lookups[i], fields[i], queryParams);
@@ -209,7 +204,6 @@ public class LookupServiceIT extends BasePaxIT {
         };
         int []expectedResults = {1, 2, 1, 1, 2, 2};
 
-        List<Subject> subject = subjectDataService.retrieveAll();
         QueryParams queryParams = new QueryParams(1, null);
         for (int i = 0; i < lookups.length; i++) {
             Records<Subject> records = lookupService.getEntities(Subject.class, lookups[i], fields[i], queryParams);
