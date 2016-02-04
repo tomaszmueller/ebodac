@@ -402,7 +402,7 @@
       "align": "center"
     }, {
       "name": "sms",
-      "index": "sms",
+      "index": "smsStatus",
       "align": "center"
     }, {
       "name": "smsReceivedDate",

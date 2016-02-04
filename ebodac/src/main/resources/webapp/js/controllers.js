@@ -146,6 +146,11 @@
                 if (!$scope.lookupBy[$scope.buildLookupFieldName(field)]) {
                     $scope.lookupBy[$scope.buildLookupFieldName(field)] = {min: '', max: ''};
                 }
+            } else if ($scope.isSetLookup(field)) {
+                type = 'set';
+                if (!$scope.lookupBy[$scope.buildLookupFieldName(field)]) {
+                    $scope.lookupBy[$scope.buildLookupFieldName(field)] = [];
+                }
             }
 
             return '../ebodac/resources/partials/lookups/{0}-{1}.html'
@@ -154,6 +159,10 @@
 
         $scope.isRangedLookup = function(field) {
             return $scope.isLookupFieldOfType(field, 'RANGE');
+        };
+
+        $scope.isSetLookup = function(field) {
+            return $scope.isLookupFieldOfType(field, 'SET');
         };
 
         $scope.isLookupFieldOfType = function(field, type) {

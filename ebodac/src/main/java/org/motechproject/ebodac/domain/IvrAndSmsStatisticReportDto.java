@@ -60,12 +60,8 @@ public class IvrAndSmsStatisticReportDto {
         messagePercentListened = ivrAndSmsStatisticReport.getMessagePercentListened();
         receivedDate = ivrAndSmsStatisticReport.getReceivedDate();
         numberOfAttempts = ivrAndSmsStatisticReport.getNumberOfAttempts();
-        if (ivrAndSmsStatisticReport.isSmsFailed()) {
-            sms = "FAIL";
-        } else if (ivrAndSmsStatisticReport.getSms()) {
-            sms = "YES";
-        } else {
-            sms = "NO";
+        if (ivrAndSmsStatisticReport.getSmsStatus() != null) {
+            sms = ivrAndSmsStatisticReport.getSmsStatus().toString();
         }
         smsReceivedDate = ivrAndSmsStatisticReport.getSmsReceivedDate();
     }
