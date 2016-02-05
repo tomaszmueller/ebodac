@@ -31,11 +31,11 @@ public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup(name = "Find By Primer Vaccination Date Range")
     List<Subject> findByPrimerVaccinationDateRange(@LookupField(name = "primerVaccinationDate")
-                                                           Range<LocalDate> dateRange);
+                                                   Range<LocalDate> dateRange);
 
     @Lookup(name = "Find By Booster Vaccination Date Range")
     List<Subject> findByBoosterVaccinationDateRange(@LookupField(name = "boosterVaccinationDate")
-                                                            Range<LocalDate> dateRange);
+                                                    Range<LocalDate> dateRange);
 
     @Lookup(name = "Find By Primer Vaccination Date")
     List<Subject> findByPrimerVaccinationDate(@LookupField(name = "primerVaccinationDate") LocalDate dateRange);
@@ -57,4 +57,8 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     @Lookup(name = "Find By Visit Type and Actual Date")
     List<Subject> findByVisitTypeAndActualDate(@LookupField(name = "visits.type") VisitType visitType,
                                                @LookupField(name = "visits.date", customOperator = Constants.Operators.NEQ) LocalDate date);
+
+    @Lookup(name = "Find By Stage Id")
+    List<Subject> findByStageId(@LookupField(name = "stageId") Long stageId);
+
 }
