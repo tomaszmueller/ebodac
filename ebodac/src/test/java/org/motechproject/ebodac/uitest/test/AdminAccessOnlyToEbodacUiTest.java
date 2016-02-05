@@ -41,6 +41,7 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
         }
     }
 
+    @Ignore
     @Test //Test for EBODAC-531
     public void adminAccessOnlyToEbodacUiTest() throws Exception {
         homePage.clickModules();

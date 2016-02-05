@@ -21,14 +21,12 @@ public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase 
     private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
-    private DataServicesPage dataServicesPage;
     private String L1adminUser;
     private String L1adminpassword;
     private String testNumber = "55577755";
     private String changedNumber;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
-    private TestParticipant testParticipant;
     @Before
     public void setUp() {
         L1adminUser = properties.getUserName();
@@ -38,40 +36,28 @@ public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase 
         ebodacPage = new EBODACPage(driver);
         participantPage = new ParticipantPage(driver);
         participantEditPage = new ParticipantEditPage(driver);
-        dataServicesPage = new DataServicesPage(driver);
         url = properties.getWebAppUrl();
-        testParticipant = new TestParticipant();
-    }
-
-    @Test //Test for EBODAC-508/EBODAC-509
-    public void changePhoneNumberAndGetParticipantFromZetesTest() throws Exception {
-        httpClientHelper = new UITestHttpClientHelper(url);
-        httpClientHelper.addParticipant(new TestParticipant(), L1adminUser, L1adminpassword);
+        if(url.contains("localhost")) {
+            httpClientHelper = new UITestHttpClientHelper(url);
+            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
+        }
         if(homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(L1adminUser, L1adminpassword);
         }
+    }
+
+    @Test //Test for EBODAC-508/EBODAC-509
+    public void changePhoneNumberTest() throws Exception {
         homePage.openEBODACModule();
         ebodacPage.showParticipants();
-        assertTrue(participantPage.findParticipant(testParticipant.id));
         participantPage.openFirstParticipant();
         participantEditPage.changePhoneNumber(testNumber);
         changedNumber = participantPage.getFirstParticipantNumber();
         assertEquals(changedNumber, testNumber);
     }
 
-
     @After
     public void tearDown() throws Exception {
-        deleteParticipant();
         logout();
-    }
-
-    private void deleteParticipant() throws Exception  {
-        homePage.openDataServicesModule();
-        Thread.sleep(500);
-        dataServicesPage.showParticipants();
-        participantPage.findParticipant(testParticipant.id);
-        participantPage.openFirstParticipant();
-        participantEditPage.deleteParticipant();
     }
 }
