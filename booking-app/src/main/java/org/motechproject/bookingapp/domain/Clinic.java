@@ -78,6 +78,27 @@ public class Clinic {
     @Field
     private String owner;
 
+    public Clinic() {
+    }
+
+    public Clinic(String siteId, String location, Integer numberOfRooms, Integer maxCapacityByDay, Integer maxScreeningVisits, Integer maxPrimeVisits, Integer maxPrimeFirstFollowUpVisits, Integer maxPrimeSecondFollowUpVisits, Integer maxBoosterVisits, Integer maxBoosterFirstFollowUpVisits, Integer maxBoosterSecondFollowUpVisits, Integer maxBoosterThirdFollowUpVisits, Integer maxFirstLongTermFollowUpVisits, Integer maxSecondLongTermFollowUpVisits, Integer maxThirdLongTermFollowUpVisits) {
+        this.siteId = siteId;
+        this.location = location;
+        this.numberOfRooms = numberOfRooms;
+        this.maxCapacityByDay = maxCapacityByDay;
+        this.maxScreeningVisits = maxScreeningVisits;
+        this.maxPrimeVisits = maxPrimeVisits;
+        this.maxPrimeFirstFollowUpVisits = maxPrimeFirstFollowUpVisits;
+        this.maxPrimeSecondFollowUpVisits = maxPrimeSecondFollowUpVisits;
+        this.maxBoosterVisits = maxBoosterVisits;
+        this.maxBoosterFirstFollowUpVisits = maxBoosterFirstFollowUpVisits;
+        this.maxBoosterSecondFollowUpVisits = maxBoosterSecondFollowUpVisits;
+        this.maxBoosterThirdFollowUpVisits = maxBoosterThirdFollowUpVisits;
+        this.maxFirstLongTermFollowUpVisits = maxFirstLongTermFollowUpVisits;
+        this.maxSecondLongTermFollowUpVisits = maxSecondLongTermFollowUpVisits;
+        this.maxThirdLongTermFollowUpVisits = maxThirdLongTermFollowUpVisits;
+    }
+
     public Long getId() {
         return id;
     }
