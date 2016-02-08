@@ -1,17 +1,19 @@
-package org.motechproject.ebodac.osgi;
+package org.motechproject.ebodac.service;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
+import org.motechproject.ebodac.domain.Gender;
 import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
@@ -21,165 +23,170 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
 import org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService;
-import org.motechproject.ebodac.repository.SubjectDataService;
-import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
-import org.motechproject.ebodac.repository.VisitDataService;
-import org.motechproject.ebodac.service.ConfigService;
-import org.motechproject.ebodac.service.RaveImportService;
-import org.motechproject.ebodac.service.ReportService;
-import org.motechproject.ebodac.service.ReportUpdateService;
+import org.motechproject.ebodac.service.impl.ReportServiceImpl;
+import org.motechproject.ebodac.service.impl.ReportUpdateServiceImpl;
 import org.motechproject.ivr.domain.CallDetailRecord;
 import org.motechproject.ivr.domain.CallDirection;
 import org.motechproject.ivr.repository.CallDetailRecordDataService;
-import org.motechproject.testing.osgi.BasePaxIT;
-import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
-import org.ops4j.pax.exam.ExamFactory;
-import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.PerSuite;
+import org.motechproject.mds.query.QueryParams;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.commons.date.util.DateUtil.newDateTime;
 import static org.motechproject.testing.utils.TimeFaker.fakeNow;
 import static org.motechproject.testing.utils.TimeFaker.stopFakingTime;
 
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerSuite.class)
-@ExamFactory(MotechNativeTestContainerFactory.class)
-public class ReportServiceIT extends BasePaxIT {
+public class ReportServiceTest {
 
-    @Inject
-    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+    @InjectMocks
+    private ReportService reportService = new ReportServiceImpl();
 
-    @Inject
-    private CallDetailRecordDataService callDetailRecordDataService;
-
-    @Inject
-    private SubjectDataService subjectDataService;
-
-    @Inject
-    private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
-
-    @Inject
-    private VisitDataService visitDataService;
-
-    @Inject
+    @Mock
     private ConfigService configService;
 
-    @Inject
+    @Mock
+    private SubjectService subjectService;
+
+    @Mock
+    private CallDetailRecordDataService callDetailRecordDataService;
+
+    @Mock
+    private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
+
+    @Mock
     private ReportPrimerVaccinationDataService primerVaccinationDataService;
 
-    @Inject
+    @Mock
     private ReportBoosterVaccinationDataService boosterVaccinationDataService;
 
-    @Inject
-    private RaveImportService raveImportService;
-
-    @Inject
-    private ReportUpdateService reportUpdateService;
-
-    @Inject
-    private ReportService reportService;
-
-    private Config savedConfig;
-
-    private Config config;
+    @Mock
+    private ReportUpdateServiceImpl reportUpdateService;
 
     @Before
-    public void setUp() throws Exception {
-        savedConfig = configService.getConfig();
-        callDetailRecordDataService.deleteAll();
-        ivrAndSmsStatisticReportDataService.deleteAll();
-        visitDataService.deleteAll();
-        subjectEnrollmentsDataService.deleteAll();
-        subjectDataService.deleteAll();
-        boosterVaccinationDataService.deleteAll();
-        primerVaccinationDataService.deleteAll();
-        reportUpdateService.setConfigService(configService);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        configService.updateConfig(savedConfig);
-        callDetailRecordDataService.deleteAll();
-        ivrAndSmsStatisticReportDataService.deleteAll();
-        visitDataService.deleteAll();
-        subjectEnrollmentsDataService.deleteAll();
-        subjectDataService.deleteAll();
-        boosterVaccinationDataService.deleteAll();
-        primerVaccinationDataService.deleteAll();
+    public void setUp() {
+        initMocks(this);
     }
 
     @Test
-    public void shouldGenerateDailyReports() throws IOException {
+    public void shouldGenerateDailyReports() {
         try {
             fakeNow(newDateTime(2015, 6, 29, 10, 0, 0));
 
-            assertEquals(0, primerVaccinationDataService.retrieveAll().size());
-            assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
-
-            assertEquals(0, subjectDataService.retrieveAll().size());
-            assertEquals(0, visitDataService.retrieveAll().size());
-
-            createSubjectsWithRequiredData(1000000161, 1000000258);
-
             DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-            LocalDate startDate = LocalDate.parse("2015-06-27", formatter);
+            LocalDate startDate = LocalDate.parse("2015-06-28", formatter);
 
-            InputStream in = getClass().getResourceAsStream("/report.csv");
-            assertNotNull(in);
-            raveImportService.importCsv(new InputStreamReader(in), "/report.csv");
-            in.close();
+            List<Subject> subjectList = new ArrayList<>();
 
-            assertEquals(98, subjectDataService.retrieveAll().size());
-            assertEquals(98, visitDataService.retrieveAll().size());
+            Subject subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(2010, 12, 29));
+            subject.setGender(Gender.Male);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(2007, 12, 29));
+            subject.setGender(Gender.Male);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(2001, 12, 29));
+            subject.setGender(Gender.Male);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(1968, 12, 29));
+            subject.setGender(Gender.Male);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(1968, 12, 29));
+            subject.setGender(Gender.Female);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(1968, 12, 29));
+            subject.setGender(Gender.Undifferentiated);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(1968, 12, 29));
+            subject.setGender(Gender.Unknown);
+            subjectList.add(subject);
+
+            subject = new Subject();
+            subject.setDateOfBirth(new LocalDate(1968, 12, 29));
+            subjectList.add(subject);
+
+
+            Mockito.when(subjectService.findSubjectsPrimerVaccinatedAtDay(startDate)).thenReturn(subjectList);
+            Mockito.when(subjectService.findSubjectsBoosterVaccinatedAtDay(startDate)).thenReturn(subjectList);
 
             reportService.generateDailyReportsFromDate(startDate);
 
-            LocalDate now = LocalDate.parse("2015-06-29", formatter);
-            for (LocalDate date = startDate; date.isBefore(now); date = date.plusDays(1)) {
-                checkUpdateBoosterVaccinationReportsForDates(date);
-                checkUpdatePrimerVaccinationReportsForDates(date);
-            }
+            ArgumentCaptor<ReportPrimerVaccination> reportPrimerCaptor = ArgumentCaptor.forClass(ReportPrimerVaccination.class);
+            Mockito.verify(primerVaccinationDataService, Mockito.times(1)).create(reportPrimerCaptor.capture());
+            ReportPrimerVaccination reportPrimer = reportPrimerCaptor.getValue();
+
+            ArgumentCaptor<ReportBoosterVaccination> reportBoosterCaptor = ArgumentCaptor.forClass(ReportBoosterVaccination.class);
+            Mockito.verify(boosterVaccinationDataService, Mockito.times(1)).create(reportBoosterCaptor.capture());
+            ReportBoosterVaccination reportBooster = reportBoosterCaptor.getValue();
+
+            assertEquals(1, (int) reportPrimer.getChildrenFrom1To5());
+            assertEquals(1, (int) reportPrimer.getChildrenFrom6To11());
+            assertEquals(1, (int) reportPrimer.getChildrenFrom12To17());
+            assertEquals(1, (int) reportPrimer.getAdultFemales());
+            assertEquals(1, (int) reportPrimer.getAdultMales());
+            assertEquals(1, (int) reportPrimer.getAdultUndifferentiated());
+            assertEquals(2, (int) reportPrimer.getAdultUnidentified());
+            assertEquals(8, (int) reportPrimer.getPeopleVaccinated());
+
+            assertEquals(1, (int) reportBooster.getChildrenFrom1To5());
+            assertEquals(1, (int) reportBooster.getChildrenFrom6To11());
+            assertEquals(1, (int) reportBooster.getChildrenFrom12To17());
+            assertEquals(1, (int) reportBooster.getAdultFemales());
+            assertEquals(1, (int) reportBooster.getAdultMales());
+            assertEquals(1, (int) reportBooster.getAdultUndifferentiated());
+            assertEquals(2, (int) reportBooster.getAdultUnidentified());
+            assertEquals(8, (int) reportBooster.getPeopleBoostered());
         } finally {
             stopFakingTime();
         }
     }
 
-    @Ignore
     @Test
-    public void shouldGenerateNewReports() throws IOException {
+    public void shouldGenerateNewReports() {
         try {
             fakeNow(newDateTime(2015, 7, 6, 1, 0, 0));
             DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
-            assertEquals(0, primerVaccinationDataService.retrieveAll().size());
-            assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
 
-            config = configService.getConfig();
+            Config config = new Config();
             config.setLastCalculationDate(DateUtil.now().minusDays(5).toString(formatter));
             config.setGenerateReports(true);
-            configService.updateConfig(config);
+            Mockito.when(configService.getConfig()).thenReturn(config);
 
             reportService.generateDailyReports();
 
-            assertEquals(5, primerVaccinationDataService.retrieveAll().size());
-            assertEquals(5, boosterVaccinationDataService.retrieveAll().size());
-            for (int i = 2; i < 6; i++) {
-                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
-                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
+            ArgumentCaptor<ReportPrimerVaccination> reportPrimerCaptor = ArgumentCaptor.forClass(ReportPrimerVaccination.class);
+            Mockito.verify(primerVaccinationDataService, Mockito.times(4)).create(reportPrimerCaptor.capture());
+            List<ReportPrimerVaccination> reportPrimerList = reportPrimerCaptor.getAllValues();
+
+            ArgumentCaptor<ReportBoosterVaccination> reportBoosterCaptor = ArgumentCaptor.forClass(ReportBoosterVaccination.class);
+            Mockito.verify(boosterVaccinationDataService, Mockito.times(4)).create(reportBoosterCaptor.capture());
+            List<ReportBoosterVaccination> reportBoosterList = reportBoosterCaptor.getAllValues();
+
+            for (int i = 0; i < 4; i++) {
+                LocalDate date = new LocalDate(2015, 7, i + 2);
+                assertEquals(reportPrimerList.get(i).getDate(), date);
+                assertEquals(reportBoosterList.get(i).getDate(), date);
             }
         } finally {
             stopFakingTime();
@@ -187,75 +194,64 @@ public class ReportServiceIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldUpdateDailyReports() throws IOException {
+    public void shouldUpdateDailyReports() {
         try {
             fakeNow(newDateTime(2015, 7, 6, 12, 0, 0));
             DateTimeFormatter formatter = DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT);
 
-            config = configService.getConfig();
+            Config config = new Config();
             config.setLastCalculationDate(DateUtil.now().minusDays(5).toString(formatter));
             config.setGenerateReports(true);
-            config.setPrimerVaccinationReportsToUpdate(null);
-            config.setBoosterVaccinationReportsToUpdate(null);
-            configService.updateConfig(config);
+            config.setPrimerVaccinationReportsToUpdate(new HashSet<>(Arrays.asList("2015-06-21", "2015-06-19")));
+            config.setBoosterVaccinationReportsToUpdate(new HashSet<>(Arrays.asList("2015-06-17", "2015-06-14")));
+            Mockito.when(configService.getConfig()).thenReturn(config);
 
-            assertEquals(0, config.getPrimerVaccinationReportsToUpdate().size());
-            assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
+            Mockito.doCallRealMethod().when(reportUpdateService).setConfigService(Mockito.any(ConfigService.class));
+            Mockito.when(reportUpdateService.getPrimerVaccinationReportsToUpdate()).thenCallRealMethod();
+            Mockito.when(reportUpdateService.getBoosterVaccinationReportsToUpdate()).thenCallRealMethod();
 
-            createSubjectsWithRequiredData(1000000160, 1000000164);
-
-            InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
-            in.close();
-
-            config = configService.getConfig();
-            assertEquals(2, config.getPrimerVaccinationReportsToUpdate().size());
-            assertEquals(3, config.getBoosterVaccinationReportsToUpdate().size());
+            reportUpdateService.setConfigService(configService);
 
             reportService.generateDailyReports();
-            config = configService.getConfig();
+
             assertEquals(0, config.getPrimerVaccinationReportsToUpdate().size());
             assertEquals(0, config.getBoosterVaccinationReportsToUpdate().size());
 
-            for (int i = 2; i < 6; i++) {
-                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
-                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 7, i)));
-            }
-            assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, 21)));
-            assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, 29)));
-            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 19)));
-            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 21)));
-            assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, 27)));
+            Mockito.verify(primerVaccinationDataService, Mockito.times(6)).create(Mockito.any(ReportPrimerVaccination.class));
+            Mockito.verify(boosterVaccinationDataService, Mockito.times(6)).create(Mockito.any(ReportBoosterVaccination.class));
         } finally {
             stopFakingTime();
         }
     }
 
     @Test
-    public void shouldStartGenerateFromOldestVaccinationDay() throws IOException {
+    public void shouldStartGenerateFromOldestVaccinationDay() {
         try {
             fakeNow(newDateTime(2015, 6, 28, 12, 0, 0));
 
-            config = new Config();
+            Config config = new Config();
             config.setGenerateReports(true);
-            configService.updateConfig(config);
+            Mockito.when(configService.getConfig()).thenReturn(config);
 
             assertNull(config.getLastCalculationDate());
             assertNull(config.getFirstCalculationStartDate());
 
-            createSubjectsWithRequiredData(1000000160, 1000000164);
-
-            InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
-            in.close();
+            Mockito.when(subjectService.findOldestPrimerVaccinationDate()).thenReturn(new LocalDate(2015, 6, 21));
 
             reportService.generateDailyReports();
-            assertEquals(7, primerVaccinationDataService.retrieveAll().size());
-            assertEquals(7, boosterVaccinationDataService.retrieveAll().size());
 
-            for (int i = 21; i < 28; i++) {
-                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
-                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
+            ArgumentCaptor<ReportPrimerVaccination> reportPrimerCaptor = ArgumentCaptor.forClass(ReportPrimerVaccination.class);
+            Mockito.verify(primerVaccinationDataService, Mockito.times(7)).create(reportPrimerCaptor.capture());
+            List<ReportPrimerVaccination> reportPrimerList = reportPrimerCaptor.getAllValues();
+
+            ArgumentCaptor<ReportBoosterVaccination> reportBoosterCaptor = ArgumentCaptor.forClass(ReportBoosterVaccination.class);
+            Mockito.verify(boosterVaccinationDataService, Mockito.times(7)).create(reportBoosterCaptor.capture());
+            List<ReportBoosterVaccination> reportBoosterList = reportBoosterCaptor.getAllValues();
+
+            for (int i = 0; i < 7; i++) {
+                LocalDate date = new LocalDate(2015, 6, i + 21);
+                assertEquals(reportPrimerList.get(i).getDate(), date);
+                assertEquals(reportBoosterList.get(i).getDate(), date);
             }
         } finally {
             stopFakingTime();
@@ -263,30 +259,31 @@ public class ReportServiceIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldUseReportStartDateIfLastReportDateIsNull() throws IOException {
+    public void shouldUseReportStartDateIfLastReportDateIsNull() {
         try {
             fakeNow(newDateTime(2015, 6, 28, 12, 0, 0));
 
-            config = new Config();
+            Config config = new Config();
             config.setFirstCalculationStartDate("2015-06-25");
             config.setGenerateReports(true);
-            configService.updateConfig(config);
+            Mockito.when(configService.getConfig()).thenReturn(config);
 
             assertNull(config.getLastCalculationDate());
 
-            createSubjectsWithRequiredData(1000000160, 1000000164);
-
-            InputStream in = getClass().getResourceAsStream("/sample2.csv");
-            raveImportService.importCsv(new InputStreamReader(in), "/sample2.csv");
-            in.close();
-
             reportService.generateDailyReports();
-            assertEquals(3, primerVaccinationDataService.retrieveAll().size());
-            assertEquals(3, boosterVaccinationDataService.retrieveAll().size());
 
-            for (int i = 25; i < 28; i++) {
-                assertNotNull(primerVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
-                assertNotNull(boosterVaccinationDataService.findByDate(new LocalDate(2015, 6, i)));
+            ArgumentCaptor<ReportPrimerVaccination> reportPrimerCaptor = ArgumentCaptor.forClass(ReportPrimerVaccination.class);
+            Mockito.verify(primerVaccinationDataService, Mockito.times(3)).create(reportPrimerCaptor.capture());
+            List<ReportPrimerVaccination> reportPrimerList = reportPrimerCaptor.getAllValues();
+
+            ArgumentCaptor<ReportBoosterVaccination> reportBoosterCaptor = ArgumentCaptor.forClass(ReportBoosterVaccination.class);
+            Mockito.verify(boosterVaccinationDataService, Mockito.times(3)).create(reportBoosterCaptor.capture());
+            List<ReportBoosterVaccination> reportBoosterList = reportBoosterCaptor.getAllValues();
+
+            for (int i = 0; i < 3; i++) {
+                LocalDate date = new LocalDate(2015, 6, i + 25);
+                assertEquals(reportPrimerList.get(i).getDate(), date);
+                assertEquals(reportBoosterList.get(i).getDate(), date);
             }
         } finally {
             stopFakingTime();
@@ -295,13 +292,15 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldGenerateIvrAndSmsStatisticReportsForAllRecordsIfLastCalculationDateIsEmpty() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -310,7 +309,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -320,7 +319,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "22");
@@ -329,7 +328,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "102", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -339,7 +338,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "02", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("02"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -348,7 +347,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -358,22 +357,28 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(3, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(3)).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldGenerateIvrAndSmsStatisticReportsFromLastCalculationDate() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports("2015-10-01");
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -382,7 +387,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -392,7 +397,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "22");
@@ -401,7 +406,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "102", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -411,7 +416,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "02", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("02"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -420,7 +425,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -430,22 +435,34 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
+        for (CallDetailRecord detailRecord : initialCallDetailRecords) {
+            Mockito.when(callDetailRecordDataService.findByMotechTimestampAndCallStatus(detailRecord.getMotechTimestamp().split(" ")[0], EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(Collections.singletonList(detailRecord));
+        }
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(2, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(2)).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldAddReportToUpdateListIfSmsHasNoFinishedStatus() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords2 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -454,7 +471,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -464,12 +481,13 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "22");
@@ -478,7 +496,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "102", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -488,12 +506,13 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords2.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "02", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords2.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("02"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords2);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -502,7 +521,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -512,13 +531,15 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(3, ivrAndSmsStatisticReportDataService.count());
-
-        config = configService.getConfig();
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(3)).create(Mockito.any(IvrAndSmsStatisticReport.class));
 
         assertEquals(2, config.getIvrAndSmsStatisticReportsToUpdate().size());
         assertTrue(config.getIvrAndSmsStatisticReportsToUpdate().contains("101"));
@@ -527,13 +548,18 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldUpdateReports() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports("2015-10-20");
         config.setIvrAndSmsStatisticReportsToUpdate(new HashSet<>(Arrays.asList("101", "102")));
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords2 = new ArrayList<>();
+        List<CallDetailRecord> recordsToUpdate = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -542,7 +568,9 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
+        recordsToUpdate.add(callDetailRecord);
+
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -552,12 +580,12 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -565,7 +593,8 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:06:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "22");
@@ -574,7 +603,8 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "102", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
+        recordsToUpdate.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -584,12 +614,13 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "02", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords2.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "02", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-09-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords2.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("02"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords2);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -598,7 +629,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "1");
@@ -608,13 +639,21 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByMotechCallIds(config.getIvrAndSmsStatisticReportsToUpdate())).thenReturn(recordsToUpdate);
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
+        for (CallDetailRecord detailRecord : initialCallDetailRecords) {
+            Mockito.when(callDetailRecordDataService.findByMotechTimestampAndCallStatus(detailRecord.getMotechTimestamp().split(" ")[0], EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(Collections.singletonList(detailRecord));
+        }
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(3, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(3)).create(Mockito.any(IvrAndSmsStatisticReport.class));
 
-        config = configService.getConfig();
 
         assertEquals(1, config.getIvrAndSmsStatisticReportsToUpdate().size());
         assertTrue(config.getIvrAndSmsStatisticReportsToUpdate().contains("102"));
@@ -622,13 +661,16 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldNotAddSmsReceivedDateIfSmsSentButHasNoFinishedRecord() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -637,7 +679,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -647,17 +689,25 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+
+
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(1, ivrAndSmsStatisticReportDataService.count());
-        IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.retrieveAll().get(0);
+
+        ArgumentCaptor<IvrAndSmsStatisticReport> reportCaptor = ArgumentCaptor.forClass(IvrAndSmsStatisticReport.class);
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(1)).create(reportCaptor.capture());
+
+        IvrAndSmsStatisticReport ivrAndSmsStatisticReport = reportCaptor.getValue();
 
         assertEquals(SmsStatus.YES, ivrAndSmsStatisticReport.getSmsStatus());
         assertNull(ivrAndSmsStatisticReport.getSmsReceivedDate());
@@ -665,13 +715,16 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldSetAllDataAndGetReceivedDateFromFinishedRecordForCallAndSms() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -680,7 +733,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -690,12 +743,12 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -703,7 +756,8 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -712,7 +766,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -722,11 +776,19 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        List<IvrAndSmsStatisticReport> ivrAndSmsStatisticReports = ivrAndSmsStatisticReportDataService.retrieveAll();
+
+        ArgumentCaptor<IvrAndSmsStatisticReport> reportCaptor = ArgumentCaptor.forClass(IvrAndSmsStatisticReport.class);
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(2)).create(reportCaptor.capture());
+
+        List<IvrAndSmsStatisticReport> ivrAndSmsStatisticReports = reportCaptor.getAllValues();
         assertEquals(2, ivrAndSmsStatisticReports.size());
 
         IvrAndSmsStatisticReport smsStatisticReport;
@@ -765,17 +827,19 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldCreateReportsForAllSubjectsInTheList() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject1 = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject1);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject1);
         Subject subject2 = new Subject("2", "", "", "", "111111111","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject2);
+        Mockito.when(subjectService.findSubjectBySubjectId("2")).thenReturn(subject2);
         Subject subject3 = new Subject("3", "", "", "", "222222222","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject3);
+        Mockito.when(subjectService.findSubjectBySubjectId("3")).thenReturn(subject3);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -784,7 +848,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -794,11 +858,18 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        List<IvrAndSmsStatisticReport> ivrAndSmsStatisticReports = ivrAndSmsStatisticReportDataService.retrieveAll();
+        ArgumentCaptor<IvrAndSmsStatisticReport> reportCaptor = ArgumentCaptor.forClass(IvrAndSmsStatisticReport.class);
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.times(3)).create(reportCaptor.capture());
+
+        List<IvrAndSmsStatisticReport> ivrAndSmsStatisticReports = reportCaptor.getAllValues();
         assertEquals(3, ivrAndSmsStatisticReports.size());
 
         assertEquals(subject1, ivrAndSmsStatisticReports.get(0).getSubject());
@@ -808,13 +879,16 @@ public class ReportServiceIT extends BasePaxIT {
 
     @Test
     public void shouldNotCreateReportsWhenProviderCallIdOrProviderExtraDataAreEmpty() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -823,7 +897,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -833,12 +907,12 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -846,14 +920,15 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
 
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -863,19 +938,26 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldNotCreateReportsWhenSubjectIdsIsEmptyOrNoSubjectsFound() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -883,7 +965,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -893,12 +975,12 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -906,7 +988,8 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -915,7 +998,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -925,22 +1008,29 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldNotCreateReportsWhenNoProviderTimestampFoundForFinishedRecord() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -949,7 +1039,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -959,19 +1049,20 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -980,7 +1071,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -989,22 +1080,30 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("03"), Mockito.any(QueryParams.class))).thenReturn(Collections.singletonList(callDetailRecord));
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldNotCreateReportsWhenTooMuchRecordsWithFinishedStatus() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords3 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -1013,7 +1112,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -1023,12 +1122,12 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FAILED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -1036,7 +1135,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -1044,7 +1143,8 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -1053,7 +1153,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -1063,7 +1163,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords3.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "2");
@@ -1073,22 +1173,30 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "03", providerExtraData, "22", "100");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords3.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords3);
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldNotCreateReportsWhenSmsSentAndThereAreNoFailedCallRecord() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
+        List<CallDetailRecord> callDetailRecords1 = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "21");
@@ -1097,7 +1205,7 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "101", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_NUMBER_OF_ATTEMPTS, "3");
@@ -1107,7 +1215,7 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_SUBMITTED, "", "", "01", null, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:05:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
 
         providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.IVR_CALL_DETAIL_RECORD_END_TIMESTAMP, "2015-10-10 8:06:00");
@@ -1115,22 +1223,29 @@ public class ReportServiceIT extends BasePaxIT {
         callDetailRecord = new CallDetailRecord("", "", "", "", null,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_FINISHED, "", "", "01", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-10 8:07:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        callDetailRecords1.add(callDetailRecord);
+        Mockito.when(callDetailRecordDataService.findByExactProviderCallId(Mockito.eq("01"), Mockito.any(QueryParams.class))).thenReturn(callDetailRecords1);
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 
     @Test
     public void shouldNotCreateReportsWhenNoSmsSentAndThereAreNoFinishedCallRecord() {
-        config = new Config();
+        Config config = new Config();
         config.setLastCalculationDateForIvrReports(null);
         config.setIvrAndSmsStatisticReportsToUpdate(null);
-        configService.updateConfig(config);
+        Mockito.when(configService.getConfig()).thenReturn(config);
 
         Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
-        subjectDataService.create(subject);
+        Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
+
+        List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
 
         Map<String, String> providerExtraData = new HashMap<>();
         providerExtraData.put(EbodacConstants.MESSAGE_ID, "23");
@@ -1139,48 +1254,14 @@ public class ReportServiceIT extends BasePaxIT {
         CallDetailRecord callDetailRecord = new CallDetailRecord("", "", "", "", CallDirection.OUTBOUND,
                 EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED, "", "103", "03", providerExtraData, "", "");
         callDetailRecord.setMotechTimestamp("2015-10-21 8:00:00.0000");
-        callDetailRecordDataService.create(callDetailRecord);
+        initialCallDetailRecords.add(callDetailRecord);
+
+
+        Mockito.when(callDetailRecordDataService.findByCallStatus(EbodacConstants.IVR_CALL_DETAIL_RECORD_STATUS_INITIATED)).thenReturn(initialCallDetailRecords);
+
 
         reportService.generateIvrAndSmsStatisticReports();
 
-        assertEquals(0, ivrAndSmsStatisticReportDataService.count());
-    }
-
-    private void checkUpdateBoosterVaccinationReportsForDates(LocalDate date) {
-        ReportBoosterVaccination existingBoosterReport = boosterVaccinationDataService.findByDate(date);
-
-        assertEquals(7, (int) existingBoosterReport.getChildrenFrom1To5());
-        assertEquals(7, (int) existingBoosterReport.getChildrenFrom6To11());
-        assertEquals(7, (int) existingBoosterReport.getChildrenFrom12To17());
-        assertEquals(7, (int) existingBoosterReport.getAdultFemales());
-        assertEquals(7, (int) existingBoosterReport.getAdultMales());
-        assertEquals(7, (int) existingBoosterReport.getAdultUndifferentiated());
-        assertEquals(7, (int) existingBoosterReport.getAdultUnidentified());
-
-        assertEquals(35, (int) existingBoosterReport.getPeopleBoostered());
-    }
-
-    private void checkUpdatePrimerVaccinationReportsForDates(LocalDate date) {
-        ReportPrimerVaccination existingPrimerReport = primerVaccinationDataService.findByDate(date);
-
-        assertEquals(7, (int) existingPrimerReport.getChildrenFrom1To5());
-        assertEquals(7, (int) existingPrimerReport.getChildrenFrom6To11());
-        assertEquals(7, (int) existingPrimerReport.getChildrenFrom12To17());
-        assertEquals(7, (int) existingPrimerReport.getAdultFemales());
-        assertEquals(7, (int) existingPrimerReport.getAdultMales());
-        assertEquals(7, (int) existingPrimerReport.getAdultUndifferentiated());
-        assertEquals(7, (int) existingPrimerReport.getAdultUnidentified());
-
-        assertEquals(35, (int) existingPrimerReport.getPeopleVaccinated());
-    }
-
-    private void createSubjectsWithRequiredData(int minSubjectId, int maxSubjectId) {
-        for (int i = minSubjectId; i <= maxSubjectId; i++) {
-            Subject subject = new Subject();
-            subject.setSubjectId(Integer.toString(i));
-            subject.setSiteName("siteName");
-            subjectDataService.create(subject);
-        }
+        Mockito.verify(ivrAndSmsStatisticReportDataService, Mockito.never()).create(Mockito.any(IvrAndSmsStatisticReport.class));
     }
 }
-
