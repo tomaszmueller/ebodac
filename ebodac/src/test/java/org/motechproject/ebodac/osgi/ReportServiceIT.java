@@ -16,6 +16,7 @@ import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
 import org.motechproject.ebodac.domain.Language;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
+import org.motechproject.ebodac.domain.SmsStatus;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.ReportBoosterVaccinationDataService;
@@ -48,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -659,7 +659,7 @@ public class ReportServiceIT extends BasePaxIT {
         assertEquals(1, ivrAndSmsStatisticReportDataService.count());
         IvrAndSmsStatisticReport ivrAndSmsStatisticReport = ivrAndSmsStatisticReportDataService.retrieveAll().get(0);
 
-        assertTrue(ivrAndSmsStatisticReport.getSms());
+        assertEquals(SmsStatus.YES, ivrAndSmsStatisticReport.getSmsStatus());
         assertNull(ivrAndSmsStatisticReport.getSmsReceivedDate());
     }
 
@@ -747,7 +747,7 @@ public class ReportServiceIT extends BasePaxIT {
         assertEquals(0, smsStatisticReport.getMessagePercentListened(), 0.001);
         assertEquals(0, smsStatisticReport.getTimeListenedTo(), 0.001);
         assertNull(smsStatisticReport.getReceivedDate());
-        assertTrue(smsStatisticReport.getSms());
+        assertEquals(SmsStatus.YES, smsStatisticReport.getSmsStatus());
         assertEquals(new DateTime(2015, 10, 10, 8, 6, 0), smsStatisticReport.getSmsReceivedDate());
         assertEquals(subject, smsStatisticReport.getSubject());
 
@@ -758,7 +758,7 @@ public class ReportServiceIT extends BasePaxIT {
         assertEquals(100, ivrStatisticReport.getMessagePercentListened(), 0.001);
         assertEquals(22, ivrStatisticReport.getTimeListenedTo(), 0.001);
         assertEquals(new DateTime(2015, 10, 21, 8, 4, 0), ivrStatisticReport.getReceivedDate());
-        assertFalse(ivrStatisticReport.getSms());
+        assertEquals(SmsStatus.NO, ivrStatisticReport.getSmsStatus());
         assertNull(ivrStatisticReport.getSmsReceivedDate());
         assertEquals(subject, ivrStatisticReport.getSubject());
     }

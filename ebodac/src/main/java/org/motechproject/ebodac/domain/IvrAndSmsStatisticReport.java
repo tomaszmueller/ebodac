@@ -42,10 +42,7 @@ public class IvrAndSmsStatisticReport {
     private int numberOfAttempts;
 
     @Field
-    private boolean sms;
-
-    @Field
-    private boolean smsFailed;
+    private SmsStatus smsStatus;
 
     @Field
     private DateTime smsReceivedDate;
@@ -65,8 +62,7 @@ public class IvrAndSmsStatisticReport {
         this.messagePercentListened = messagePercentListened;
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
-        this.sms = sms;
-        this.smsFailed = smsFailed;
+        this.smsStatus = calculateSmsStatus(sms, smsFailed);
         this.smsReceivedDate = smsReceivedDate;
     }
 
@@ -134,20 +130,12 @@ public class IvrAndSmsStatisticReport {
         this.numberOfAttempts = numberOfAttempts;
     }
 
-    public boolean getSms() {
-        return sms;
+    public SmsStatus getSmsStatus() {
+        return smsStatus;
     }
 
-    public void setSms(boolean sms) {
-        this.sms = sms;
-    }
-
-    public boolean isSmsFailed() {
-        return smsFailed;
-    }
-
-    public void setSmsFailed(boolean smsFailed) {
-        this.smsFailed = smsFailed;
+    public void setSmsStatus(SmsStatus smsStatus) {
+        this.smsStatus = smsStatus;
     }
 
     public DateTime getSmsReceivedDate() {
@@ -185,8 +173,17 @@ public class IvrAndSmsStatisticReport {
         this.messagePercentListened = messagePercentListened;
         this.receivedDate = receivedDate;
         this.numberOfAttempts = numberOfAttempts;
-        this.sms = sms;
-        this.smsFailed = smsFailed;
+        this.smsStatus = calculateSmsStatus(sms, smsFailed);
         this.smsReceivedDate = smsReceivedDate;
+    }
+
+    private SmsStatus calculateSmsStatus(boolean sms, boolean smsFailed) {
+        if (smsFailed) {
+            return SmsStatus.FAIL;
+        }
+        if (sms) {
+            return SmsStatus.YES;
+        }
+        return SmsStatus.NO;
     }
 }
