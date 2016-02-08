@@ -41,17 +41,19 @@ public class TaskImporter implements OsgiServiceLifecycleListener {
     public void importTasks(Bundle bundle) {
         Enumeration<URL> urls = bundle.findEntries("tasks/", "*.json", false);
 
-        while (urls.hasMoreElements()) {
-            URL url = urls.nextElement();
-            try {
-                InputStream inputStream = url.openStream();
-                String json = IOUtils.toString(inputStream);
+        if (urls != null) {
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                try {
+                    InputStream inputStream = url.openStream();
+                    String json = IOUtils.toString(inputStream);
 
-                if (!taskExists(json)) {
-                    taskService.importTask(json);
+                    if (!taskExists(json)) {
+                        taskService.importTask(json);
+                    }
+                } catch (IOException ioe) {
+                    LOGGER.error("Couldn't read task file " + url.getPath());
                 }
-            } catch (IOException ioe) {
-                LOGGER.error("Couldn't read task file " + url.getPath());
             }
         }
     }
