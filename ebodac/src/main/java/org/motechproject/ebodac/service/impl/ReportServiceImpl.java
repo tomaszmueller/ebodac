@@ -209,7 +209,8 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
-        int peopleBoostered = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
+        int peopleBoostered = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales
+                + adultFemales  + adultUndifferentiated + adultUnidentified;
 
         ReportBoosterVaccination existingReport = boosterVaccinationDataService.findByDate(date);
 
@@ -264,7 +265,8 @@ public class ReportServiceImpl implements ReportService {
             }
         }
 
-        int peopleVaccinated = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales + adultFemales;
+        int peopleVaccinated = childrenFrom1To5 + childrenFrom6To11 + childrenFrom12To17 + adultMales
+                + adultFemales + adultUndifferentiated + adultUnidentified;
 
         ReportPrimerVaccination existingReport = primerVaccinationDataService.findByDate(date);
 
