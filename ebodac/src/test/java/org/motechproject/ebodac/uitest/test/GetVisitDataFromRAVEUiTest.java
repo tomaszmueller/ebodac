@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.uitest.test;
 
+import org.junit.Ignore;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +13,7 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.*;
 
 import static junit.framework.Assert.assertTrue;
-
+@Ignore
 public class GetVisitDataFromRAVEUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;
