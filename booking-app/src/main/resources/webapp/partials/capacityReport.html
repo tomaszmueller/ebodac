@@ -8,7 +8,7 @@
 
         <div class="btn-group">
             <button type="button" class="btn btn-default">{{selectedFilter.name}}</button>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" range-setter>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" range-setter ng-click="hideLookupDialog()">
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
@@ -19,9 +19,9 @@
         <div class="form-group" ng-if="selectedFilter === filters[5]">
             <div class="input-group">
                 <span class="left input-group-addon">{{msg('bookingApp.screening.from')}}</span>
-                <input type="text" class="form-control" mds-date-picker grid-reload-trigger placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="selectedFilter.startDate">
+                <input type="text" class="form-control" mds-date-picker grid-reload-trigger placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="selectedFilter.startDate" ng-click="hideLookupDialog()">
                 <span class="middle input-group-addon">{{msg('bookingApp.screening.to')}}</span>
-                <input type="text" class="form-control" mds-date-picker grid-reload-trigger placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="selectedFilter.endDate">
+                <input type="text" class="form-control" mds-date-picker grid-reload-trigger placeholder="{{msg('bookingApp.datePlaceholder')}}" ng-model="selectedFilter.endDate" ng-click="hideLookupDialog()">
             </div>
         </div>
 
