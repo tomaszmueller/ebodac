@@ -52,7 +52,7 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
         bookingAppCapacityInfoPage.filterNext7Days();
         Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(7*maxCapacity));
         bookingAppCapacityInfoPage.filterDateRange();
-        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(31*maxCapacity));
+        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(28*maxCapacity));
 
     }
 
