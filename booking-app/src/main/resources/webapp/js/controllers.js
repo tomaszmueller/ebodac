@@ -952,8 +952,14 @@
         });
 
         $scope.save = function() {
-            motechConfirm("bookingApp.schedule.confirm.shouldSaveDates", "bookingApp.confirm",
-                          function(confirmed) {
+            var confMessage = "bookingApp.schedule.confirm.shouldSaveDates", date, now;
+            now = new Date();
+            date = $scope.parseDate($scope.primeVac.date);
+            date.setHours(23,59,59,0);
+            if (date < now) {
+                confMessage = "bookingApp.schedule.confirm.shouldSavePastDates";
+            }
+            motechConfirm(confMessage, "bookingApp.confirm", function(confirmed) {
                 if (confirmed) {
                     if ($scope.checkSubjectAndPrimeVacDate()) {
                         $http.get('../booking-app/schedule/savePlannedDates/' + $scope.selectedSubject.subjectId + '/' + $scope.primeVac.date)
