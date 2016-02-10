@@ -17,7 +17,6 @@ import org.junit.runners.Suite;
         LookupServiceIT.class,
         RaveImportServiceIT.class,
         ReportControllerIT.class,
-        ReportServiceIT.class,
         SubjectCsvImportCustomizerIT.class,
         SubjectServiceIT.class,
         VisitServiceIT.class

@@ -168,7 +168,7 @@ public class ReportControllerIT extends BasePaxIT {
             subjectDataService.create(secondSubject);
             assertEquals(2, subjectDataService.retrieveAll().size());
 
-            HttpResponse response = getReports("2014-10-17");
+            HttpResponse response = getReports("2014-10-17", null);
             assertEquals(HttpServletResponse.SC_OK, response.getStatusLine().getStatusCode());
 
             List<ReportPrimerVaccination> primerVaccinationReport =  primerVaccinationDataService.retrieveAll();
@@ -195,10 +195,10 @@ public class ReportControllerIT extends BasePaxIT {
         assertEquals(0, primerVaccinationDataService.retrieveAll().size());
         assertEquals(0, boosterVaccinationDataService.retrieveAll().size());
 
-        HttpResponse response = getReports("10-17-2014");
+        HttpResponse response = getReports("10-17-2014", HttpServletResponse.SC_BAD_REQUEST);
         assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatusLine().getStatusCode());
 
-        response = getReports("");
+        response = getReports("", HttpServletResponse.SC_BAD_REQUEST);
         assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatusLine().getStatusCode());
     }
 
@@ -215,7 +215,7 @@ public class ReportControllerIT extends BasePaxIT {
             subjectDataService.create(secondSubject);
             assertEquals(2, subjectDataService.retrieveAll().size());
 
-            HttpResponse response = getReports("2015-10-17");
+            HttpResponse response = getReports("2015-10-17", null);
             assertEquals(HttpServletResponse.SC_OK, response.getStatusLine().getStatusCode());
 
             assertEquals(0, primerVaccinationDataService.retrieveAll().size());
@@ -368,13 +368,18 @@ public class ReportControllerIT extends BasePaxIT {
         return response;
     }
 
-    private HttpResponse getReports(String startDate) throws IOException, InterruptedException {
+    private HttpResponse getReports(String startDate, Integer expectedErrorCode) throws IOException, InterruptedException {
         HttpPost post = new HttpPost(String.format("http://localhost:%d/ebodac/generateReports", TestContext.getJettyPort()));
         StringEntity dateEntity = new StringEntity(startDate);
         post.setEntity(dateEntity);
         post.setHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=ISO-8859-1");
 
-        HttpResponse response = getHttpClient().execute(post);
+        HttpResponse response;
+        if (expectedErrorCode == null) {
+            response = getHttpClient().execute(post);
+        } else {
+            response = getHttpClient().execute(post, expectedErrorCode);
+        }
         assertNotNull(response);
 
         return response;
