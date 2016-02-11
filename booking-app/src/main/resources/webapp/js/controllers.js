@@ -311,6 +311,10 @@
             $("div.arrow").css({'left': 50});
         };
 
+        $scope.hideLookupDialog = function() {
+            $("#lookup-dialog").hide();
+        };
+
         /**
         * Marks passed lookup as selected. Sets fields that belong to the given lookup and resets lookupBy object
         * used to filter instances by given values
