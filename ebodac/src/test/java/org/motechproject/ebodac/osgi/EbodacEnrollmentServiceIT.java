@@ -19,6 +19,7 @@ import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
+import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.RaveImportService;
@@ -85,6 +86,9 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
     @Inject
     private RaveImportService raveImportService;
+
+    @Inject
+    private VisitDataService visitDataService;
 
     private Scheduler scheduler;
 
@@ -627,13 +631,12 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     }
 
     @Test
-    public void shouldUseActiveStageIdWhenSubjectStageIdIsNull() throws IOException {
+    public void shouldCreateVisitsAndEnrollWithActiveStageIdWhenSubjectStageIdIsNull() throws IOException {
         Config config = new Config();
         config.setActiveStageId(2l);
         configService.updateConfig(config);
 
         Subject subject = createSubjectWithRequireData("1");
-        createSubjectWithRequireData("2");
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimpleWithEmptyStage.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithEmptyStage.csv");
@@ -647,24 +650,94 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             assertEquals("2", nameParts[1]);
         }
 
+        assertEquals(3, visitDataService.retrieveAll().size());
+
         config = new Config();
         config.setActiveStageId(2l);
         configService.updateConfig(config);
     }
 
     @Test
-    public void shouldNotEnrollWhenActiveStageIdAndSubjectStageIdIsNull() throws IOException {
+    public void shouldCreateVisitsAndEnrollForAllStagesWhenActiveStageIdIsNull() throws IOException {
+        Config config = new Config();
+        config.setActiveStageId(null);
+        configService.updateConfig(config);
+
+        createSubjectWithRequireData("1");
+        createSubjectWithRequireData("2");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId("2");
+        for (Enrollment enrollment : enrollmentList) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
+            assertEquals(2, nameParts.length);
+            assertEquals("2", nameParts[1]);
+        }
+
+        enrollmentList = enrollmentDataService.findBySubjectId("1");
+        for (Enrollment enrollment : enrollmentList) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
+            assertEquals(1, nameParts.length);
+        }
+
+        assertEquals(3, visitDataService.findBySubjectId("2").size());
+        assertEquals(3, visitDataService.findBySubjectId("1").size());
+
+        config = new Config();
+        config.setActiveStageId(2l);
+        configService.updateConfig(config);
+    }
+
+    @Test
+    public void shouldNotCreateVisitsAndNotEnrollWhenActiveStageIdAndSubjectStageIdAreNotNullAndAreDifferent() throws IOException {
+        Config config = new Config();
+        config.setActiveStageId(2l);
+        configService.updateConfig(config);
+
+        createSubjectWithRequireData("1");
+        createSubjectWithRequireData("2");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollSimple.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimple.csv");
+        inputStream.close();
+
+        List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId("2");
+        for (Enrollment enrollment : enrollmentList) {
+            assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
+            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
+            assertEquals(2, nameParts.length);
+            assertEquals("2", nameParts[1]);
+        }
+
+        enrollmentList = enrollmentDataService.findBySubjectId("1");
+        assertEquals(0, enrollmentList.size());
+
+        assertEquals(3, visitDataService.findBySubjectId("2").size());
+        assertEquals(0, visitDataService.findBySubjectId("1").size());
+
+        config = new Config();
+        config.setActiveStageId(2l);
+        configService.updateConfig(config);
+    }
+
+    @Test
+    public void shouldNotCreateVisitsAndNotEnrollWhenActiveStageIdAndSubjectStageIdAreNull() throws IOException {
         Config config = new Config();
         config.setActiveStageId(null);
         configService.updateConfig(config);
 
         Subject subject = createSubjectWithRequireData("1");
-        createSubjectWithRequireData("2");
 
         InputStream inputStream = getClass().getResourceAsStream("/enrollSimpleWithEmptyStage.csv");
         raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithEmptyStage.csv");
         inputStream.close();
 
+        assertEquals(0, visitDataService.findBySubjectId("1").size());
         assertNull(subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId()));
     }
 
