@@ -32,6 +32,10 @@ public interface SubjectEnrollmentsDataService extends MotechDataService<Subject
     List<SubjectEnrollments> findByDateOfUnenrollment(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment);
 
     @Lookup
+    List<SubjectEnrollments> findByDateOfUnenrollmentAndSiteName(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment,
+                                                                @LookupField(name = "subject.siteName", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName);
+
+    @Lookup
     List<SubjectEnrollments> findByStatus(@LookupField(name = "status") EnrollmentStatus status);
 
     @Lookup(name = "Find By Participant Id And Status")
@@ -50,4 +54,9 @@ public interface SubjectEnrollmentsDataService extends MotechDataService<Subject
     @Lookup(name = "Find By Participant Date Of Birth Range And Status")
     List<SubjectEnrollments> findBySubjectDateOfBirthRangeAndStatus(@LookupField(name = "subject.dateOfBirth") Range<LocalDate> dateOfBirth,
                                                                     @LookupField(name = "status") EnrollmentStatus status);
+
+    @Lookup
+    List<SubjectEnrollments> findByDateOfUnenrollmentAndSiteNameAndStatus(@LookupField(name = "dateOfUnenrollment") Range<LocalDate> dateOfUnenrollment,
+                                                                          @LookupField(name = "subject.siteName", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName,
+                                                                          @LookupField(name = "status") EnrollmentStatus status);
 }
