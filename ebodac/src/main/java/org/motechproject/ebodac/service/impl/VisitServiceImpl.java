@@ -5,8 +5,11 @@ import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.domain.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
+import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.VisitService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ import java.util.List;
 @Service("visitService")
 public class VisitServiceImpl implements VisitService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VisitServiceImpl.class);
+
     @Autowired
     private VisitDataService visitDataService;
 
@@ -27,6 +32,9 @@ public class VisitServiceImpl implements VisitService {
 
     @Autowired
     private EbodacEnrollmentService ebodacEnrollmentService;
+
+    @Autowired
+    private ConfigService configService;
 
     @Override
     public Visit create(Visit visit) {
@@ -64,6 +72,10 @@ public class VisitServiceImpl implements VisitService {
                 }
             }
 
+            if (checkStageId(visit)) {
+                return visit;
+            }
+
             ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(visit);
         }
         return visitDataService.create(visit);
@@ -97,5 +109,22 @@ public class VisitServiceImpl implements VisitService {
             existingVisit.setMotechProjectedDate(null);
             ebodacEnrollmentService.unenrollAndRemoveEnrollment(existingVisit);
         }
+    }
+
+    private boolean checkStageId(Visit visit) {
+        Long activeStageId = configService.getConfig().getActiveStageId();
+        Long stageId = visit.getSubject().getStageId();
+
+        if (activeStageId == null && stageId == null) {
+            LOGGER.warn("Visit of type: {} is not created for Participant with id: {}, because Participant Stage Id and Active Stage Id are empty",
+                    visit.getType().getValue(), visit.getSubject().getSubjectId());
+            return true;
+        }
+        if (activeStageId != null && stageId != null && !activeStageId.equals(stageId)) {
+            LOGGER.warn("Visit of type: {} is not created for Participant with id: {}, because Participant Stage Id and Active Stage Id are different",
+                    visit.getType().getValue(), visit.getSubject().getSubjectId());
+            return true;
+        }
+        return false;
     }
 }
