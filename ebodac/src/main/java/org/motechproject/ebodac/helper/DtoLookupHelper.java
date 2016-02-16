@@ -61,7 +61,7 @@ public final class DtoLookupHelper {
         return settings;
     }
 
-    public static GridSettings changeLookupAndOrderForFollowupsMissedClinicVisitsReport(GridSettings settings) throws IOException {
+    public static GridSettings changeLookupAndOrderForFollowupsMissedClinicVisitsReport(GridSettings settings) throws IOException { //NO CHECKSTYLE CyclomaticComplexity
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
         String newLookupName;
@@ -93,6 +93,7 @@ public final class DtoLookupHelper {
                     newLookupName = settings.getLookup() + " Eq";
                     break;
                 case "Find By Planned Visit Date Range":
+                case "Find By Planned Visit Date Range And Site Name":
                 case "Find By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
@@ -117,7 +118,7 @@ public final class DtoLookupHelper {
         return settings;
     }
 
-    public static GridSettings changeLookupAndOrderForMandEMissedClinicVisitsReport(GridSettings settings) throws IOException {
+    public static GridSettings changeLookupAndOrderForMandEMissedClinicVisitsReport(GridSettings settings) throws IOException { //NO CHECKSTYLE CyclomaticComplexity
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
         String newLookupName;
@@ -146,6 +147,7 @@ public final class DtoLookupHelper {
                     newLookupName = settings.getLookup() + " And Actual Visit Date";
                     break;
                 case "Find By Planned Visit Date Range":
+                case "Find By Planned Visit Date Range And Site Name":
                 case "Find By Planned Visit Date Range And Type":
                     Range<LocalDate> dateRange = getDateRangeFromLookupFields(settings.getFields(),
                             Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME);
