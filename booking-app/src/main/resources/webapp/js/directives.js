@@ -214,7 +214,7 @@
                         },
                         {
                             name: "clinicName",
-                            index: 'clinic.location'
+                            index: 'subject.siteName'
                         },
                         {
                             name: "date"
