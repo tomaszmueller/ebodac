@@ -9,6 +9,7 @@ import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
@@ -97,7 +98,32 @@ public class ScreeningServiceImpl implements ScreeningService {
         return screeningDataService.findById(id).toDto();
     }
 
-    private void checkNumberOfPatientsAndSetScreeningData(ScreeningDto screeningDto, Screening screening, Boolean ignoreLimitation) { //NO CHECKSTYLE CyclomaticComplexity
+    @Override
+    public void cancelScreening(Long id) {
+        Screening screening = screeningDataService.findById(id);
+
+        if (screening != null) {
+            screening.setStatus(ScreeningStatus.CANCELED);
+            screeningDataService.update(screening);
+        }
+    }
+
+    @Override
+    public void activateScreening(Long id, Boolean ignoreLimitation) {
+        Screening screening = screeningDataService.findById(id);
+
+        if (screening != null) {
+            screening.setStatus(ScreeningStatus.ACTIVE);
+
+            if (screening.getClinic() != null) {
+                checkNumberOfPatients(screening.getClinic(), screening.getDate(), screening.getStartTime(), screening.getEndTime(), screening, ignoreLimitation);
+            }
+
+            screeningDataService.update(screening);
+        }
+    }
+
+    private void checkNumberOfPatientsAndSetScreeningData(ScreeningDto screeningDto, Screening screening, Boolean ignoreLimitation) {
         Clinic clinic = clinicDataService.findById(Long.parseLong(screeningDto.getClinicId()));
         LocalDate date = LocalDate.parse(screeningDto.getDate());
         Time startTime;
@@ -110,9 +136,18 @@ public class ScreeningServiceImpl implements ScreeningService {
             endTime = null;
         }
 
-        if (!ignoreLimitation) {
+        checkNumberOfPatients(clinic, date, startTime, endTime, screening, ignoreLimitation);
+
+        screening.setDate(date);
+        screening.setStartTime(startTime);
+        screening.setEndTime(endTime);
+        screening.setClinic(clinic);
+    }
+
+    private void checkNumberOfPatients(Clinic clinic, LocalDate date, Time startTime, Time endTime, Screening screening, Boolean ignoreLimitation) { //NO CHECKSTYLE CyclomaticComplexity
+        if (!ignoreLimitation && !ScreeningStatus.CANCELED.equals(screening.getStatus())) {
             visitLimitationHelper.checkCapacityForScreening(date, clinic, screening.getId());
-            List<Screening> screeningList = screeningDataService.findByDateAndClinicId(date, clinic.getId());
+            List<Screening> screeningList = screeningDataService.findByClinicIdAndDateAndStatus(clinic.getId(), date, ScreeningStatus.ACTIVE);
 
             if (screeningList != null) {
                 int numberOfRooms = clinic.getNumberOfRooms();
@@ -143,11 +178,6 @@ public class ScreeningServiceImpl implements ScreeningService {
                 }
             }
         }
-
-        screening.setDate(date);
-        screening.setStartTime(startTime);
-        screening.setEndTime(endTime);
-        screening.setClinic(clinic);
     }
 
     private Map<String, Object> getFields(String json) throws IOException {

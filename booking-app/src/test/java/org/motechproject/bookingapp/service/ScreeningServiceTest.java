@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
@@ -69,7 +70,7 @@ public class ScreeningServiceTest {
                 createScreeningVisit(2l, clinic, new LocalDate(2217, 1, 1), new Time(11, 0), new Time(12, 0))
         ));
 
-        when(screeningDataService.findByDateAndClinicId(new LocalDate(2217, 1, 1), 1l)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "11:00");
         Screening screening = new Screening();
@@ -90,7 +91,7 @@ public class ScreeningServiceTest {
                 createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByDateAndClinicId(new LocalDate(2217, 1, 1), 1l)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "12:00");
         Screening screening = new Screening();
@@ -110,7 +111,7 @@ public class ScreeningServiceTest {
                 createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByDateAndClinicId(new LocalDate(2217, 1, 1), 1l)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         doThrow(new LimitationExceededException("The clinic capacity limit for this day has been reached")).when(visitLimitationHelper).checkCapacityForScreening(any(LocalDate.class), any(Clinic.class), anyLong());
 
@@ -132,7 +133,7 @@ public class ScreeningServiceTest {
                 createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByDateAndClinicId(new LocalDate(2217, 1, 1), 1l)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "12:00");
         Screening screening = new Screening();

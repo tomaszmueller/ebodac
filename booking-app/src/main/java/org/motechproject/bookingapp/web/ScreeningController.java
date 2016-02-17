@@ -65,6 +65,23 @@ public class ScreeningController {
         }
     }
 
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    @ResponseBody
+    public void cancelScreening(@RequestBody Long id) {
+        screeningService.cancelScreening(id);
+    }
+
+    @RequestMapping(value = "/activate/{ignoreLimitation}", method = RequestMethod.POST)
+    @ResponseBody
+    public String  activateScreening(@PathVariable Boolean ignoreLimitation, @RequestBody Long id) {
+        try {
+            screeningService.activateScreening(id, ignoreLimitation);
+        } catch (LimitationExceededException e) {
+            return e.getMessage();
+        }
+        return null;
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

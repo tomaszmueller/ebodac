@@ -88,7 +88,7 @@
     directives.directive('screeningGrid', function ($compile) {
 
         function createButton(id) {
-            return '<button type="button" class="btn btn-primary btn-sm ng-binding printBtn" ng-click="printRow(' +
+            return '<button type="button" class="btn btn-primary btn-sm ng-binding compileBtn" ng-click="printRow(' +
                                id + ')"><i class="fa fa-fw fa-print"></i></button>';
         };
 
@@ -104,22 +104,38 @@
                     colNames: [
                         scope.msg("bookingApp.location"),
                         scope.msg("bookingApp.screening.bookingId"),
+                        scope.msg("bookingApp.screening.status"),
                         scope.msg("bookingApp.screening.date"),
                         scope.msg("bookingApp.screening.time"),
-                        ""],
+                        "", ""],
                     colModel: [
                         { name: "clinic.location" },
                         { name: "volunteer.id" },
+                        { name: "status" },
                         { name: "date" },
                         { name: "startTime" },
-                        { name: "print", align: "center", sortable: false, width: 40}
+                        { name: "print", align: "center", sortable: false, width: 40 },
+                        { name: "changeStatus", align: "center", sortable: false, width: 60,
+                             formatter: function(cellValue, options, rowObject) {
+                                 if (rowObject.status === 'Active') {
+                                     return "<button ng-click='cancel(\"" + rowObject.id + "\")'" +
+                                             " type='button' class='btn btn-danger compileBtn' ng-disabled='updateInProgress'>" +
+                                             scope.msg('bookingApp.screening.btn.cancel') + "</button>";
+                                 } else if (rowObject.status === 'Canceled') {
+                                     return "<button ng-click='activate(\"" + rowObject.id + "\")'" +
+                                             " type='button' class='btn btn-success compileBtn' ng-disabled='updateInProgress'>" +
+                                             scope.msg('bookingApp.screening.btn.activate') + "</button>";
+                                 }
+                                 return '';
+                             }
+                        }
                     ],
                     gridComplete: function() {
                         var ids = elem.getDataIDs();
                         for(var i = 0; i < ids.length; i++){
                             elem.setRowData(ids[i], {print: createButton(ids[i])})
                         }
-                        $compile($('.printBtn'))(scope);
+                        $compile($('.compileBtn'))(scope);
                         $('#screeningTable .ui-jqgrid-hdiv').addClass("table-lightblue");
                         $('#screeningTable .ui-jqgrid-btable').addClass("table-lightblue");
                     },
@@ -150,7 +166,7 @@
                         return false;
                     },
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 4) {
+                        if (iCol !== 5 && iCol !== 6) {
                             scope.editScreening(id);
                         }
                     }

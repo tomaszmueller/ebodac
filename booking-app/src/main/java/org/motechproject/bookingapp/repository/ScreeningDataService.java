@@ -2,6 +2,7 @@ package org.motechproject.bookingapp.repository;
 
 import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.domain.Screening;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.commons.api.Range;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
@@ -16,17 +17,15 @@ public interface ScreeningDataService extends MotechDataService<Screening> {
     List<Screening> findByDate(@LookupField(name = "date") Range<LocalDate> dateRange);
 
     @Lookup
-    List<Screening> findByDateAndClinicId(@LookupField(name = "date") LocalDate date,
-                                          @LookupField(name = "clinic.id") Long clinicId);
+    List<Screening> findByClinicIdDateAndScreeningIdAndStatus(@LookupField(name = "date") LocalDate date,
+                                                              @LookupField(name = "clinic.id") Long clinicId,
+                                                              @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id,
+                                                              @LookupField(name = "status") ScreeningStatus status);
 
-    @Lookup
-    List<Screening> findByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date,
-                                                     @LookupField(name = "clinic.id") Long clinicId,
-                                                     @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
-
-    long countFindByClinicIdDateAndScreeningId(@LookupField(name = "date") LocalDate date,
-                                               @LookupField(name = "clinic.id") Long clinicId,
-                                               @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id);
+    long countFindByClinicIdDateAndScreeningIdAndStatus(@LookupField(name = "date") LocalDate date,
+                                                        @LookupField(name = "clinic.id") Long clinicId,
+                                                        @LookupField(name = "id", customOperator = Constants.Operators.NEQ) Long id,
+                                                        @LookupField(name = "status") ScreeningStatus status);
 
     @Lookup
     List<Screening> findByClinicLocationAndDate(@LookupField(name = "date") Range<LocalDate> date,
@@ -43,16 +42,20 @@ public interface ScreeningDataService extends MotechDataService<Screening> {
                                            @LookupField(name = "volunteer.id") Long bookingId);
 
     @Lookup
-    List<Screening> findByClinicIdAndDateRange(@LookupField(name = "clinic.id") Long clinicId,
-                                               @LookupField(name = "date") Range<LocalDate> date);
+    List<Screening> findByClinicIdAndDateRangeAndStatus(@LookupField(name = "clinic.id") Long clinicId,
+                                                        @LookupField(name = "date") Range<LocalDate> date,
+                                                        @LookupField(name = "status") ScreeningStatus status);
 
-    long countFindByClinicIdAndDateRange(@LookupField(name = "clinic.id") Long clinicId,
-                                         @LookupField(name = "date") Range<LocalDate> date);
+    long countFindByClinicIdAndDateRangeAndStatus(@LookupField(name = "clinic.id") Long clinicId,
+                                                  @LookupField(name = "date") Range<LocalDate> date,
+                                                  @LookupField(name = "status") ScreeningStatus status);
 
     @Lookup
-    List<Screening> findByClinicIdAndDate(@LookupField(name = "clinic.id") Long clinicId,
-                                          @LookupField(name = "date") LocalDate date);
+    List<Screening> findByClinicIdAndDateAndStatus(@LookupField(name = "clinic.id") Long clinicId,
+                                                   @LookupField(name = "date") LocalDate date,
+                                                   @LookupField(name = "status") ScreeningStatus status);
 
-    long countFindByClinicIdAndDate(@LookupField(name = "clinic.id") Long clinicId,
-                                    @LookupField(name = "date") LocalDate date);
+    long countFindByClinicIdAndDateAndStatus(@LookupField(name = "clinic.id") Long clinicId,
+                                             @LookupField(name = "date") LocalDate date,
+                                             @LookupField(name = "status") ScreeningStatus status);
 }
