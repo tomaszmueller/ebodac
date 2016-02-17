@@ -160,9 +160,9 @@ public class EnrollmentControllerIT extends BasePaxIT {
 
         secondSubject.setPrimerVaccinationDate(new LocalDate(2115, 10, 10));
 
-        firstSubject.setStageId(1l);
-        secondSubject.setStageId(1l);
-        thirdSubject.setStageId(1l);
+        firstSubject.setStageId(1L);
+        secondSubject.setStageId(1L);
+        thirdSubject.setStageId(1L);
 
         testVisits.add(VisitUtils.createVisit(thirdSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 null, "owner"));
@@ -215,7 +215,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         visit = testVisits.get(1);
         visit.setType(VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT);
         visit.setMotechProjectedDate(LocalDate.parse("2115-10-10", formatter));
-        checkResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ));
+        checkResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR , "ebodac.enrollment.error.noVisitInDB", reenrollVisit(visit, HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 
 
         ebodacEnrollmentService.enrollSubject(secondSubject);

@@ -119,7 +119,7 @@ public class ZetesControllerIT extends BasePaxIT {
         post.setEntity(entity);
         post.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         HttpResponse response;
-        if(expectedErrorCode == null) {
+        if (expectedErrorCode == null) {
             response = getHttpClient().execute(post);
         } else {
             response  = getHttpClient().execute(post, expectedErrorCode);

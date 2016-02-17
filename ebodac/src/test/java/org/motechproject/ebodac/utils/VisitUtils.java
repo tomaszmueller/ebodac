@@ -10,7 +10,8 @@ import static junit.framework.Assert.assertEquals;
 
 public final class VisitUtils {
 
-    private VisitUtils(){}
+    private VisitUtils() {
+    }
 
     public static Visit createVisit(Subject subject, VisitType type, LocalDate date,
                               LocalDate projectedDate, String owner) {
