@@ -916,9 +916,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
         }
 
-        stage = stage.equals("1") ? "" : "2";
-        inputStream = getClass().getResourceAsStream("/enrollActualDate" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollActualDate" + stage + ".csv");
+        inputStream = getClass().getResourceAsStream("/enrollActualDateStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollActualDateStage" + stage + ".csv");
         inputStream.close();
 
         enrollmentList = enrollmentDataService.findBySubjectId(stage);
@@ -1188,7 +1187,6 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         subject = subjectService.findSubjectBySubjectId(stage);
         ebodacEnrollmentService.enrollSubject(subject);
 
-        SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertTrue(ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visit));
 
         ebodacEnrollmentService.unenrollSubject(subject.getSubjectId());
@@ -1577,13 +1575,12 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
         final String runonce = "-runonce";
 
-        stage = stage.equals("1") ? "" : "2";
-        Subject subject1 = createSubjectWithRequireData(stage + "1");
-        Subject subject2 = createSubjectWithRequireData(stage + "2");
-        Subject subject3 = createSubjectWithRequireData(stage + "3");
+        Subject subject1 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "1");
+        Subject subject2 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "2");
+        Subject subject3 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "3");
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple" + stage + ".csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage" + stage + ".csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -1652,13 +1649,12 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
         final String runonce = "-runonce";
 
-        stage = stage.equals("1") ? "" : "2";
-        Subject subject1 = createSubjectWithRequireData(stage + "1");
-        Subject subject2 = createSubjectWithRequireData(stage + "2");
-        Subject subject3 = createSubjectWithRequireData(stage + "3");
+        Subject subject1 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "1");
+        Subject subject2 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "2");
+        Subject subject3 = createSubjectWithRequireData((stage.equals("1") ? "" : "2") + "3");
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple" + stage + ".csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage" + stage + ".csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -1725,14 +1721,12 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         createSubjectWithRequireData("22");
         createSubjectWithRequireData("23");
 
-        stage = stage.equals("1") ? "" : "2";
-
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple" + stage + ".csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage" + stage + ".csv");
         inputStream.close();
 
-        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(stage + "1");
-        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(stage + "2");
+        SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId((stage.equals("1") ? "" : "2") + "1");
+        SubjectEnrollments subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId((stage.equals("1") ? "" : "2") + "2");
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -1753,8 +1747,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         ebodacEnrollmentService.reenrollSubjectWithNewDate(enrollment2.getExternalId(), enrollment2.getCampaignName(), new LocalDate(2115, 9, 22));
 
-        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(stage + "1");
-        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(stage + "2");
+        subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId((stage.equals("1") ? "" : "2") + "1");
+        subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId((stage.equals("1") ? "" : "2") + "2");
 
         assertEquals(1, subjectEnrollments1.getEnrollments().size());
         assertEquals(1, subjectEnrollments2.getEnrollments().size());
@@ -1797,9 +1791,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue()).getStatus());
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT.getValue()).getStatus());
 
-        stage = stage.equals("1") ? "" : "2";
-        inputStream = getClass().getResourceAsStream("/enrollActualDate" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollActualDate" + stage + ".csv");
+        inputStream = getClass().getResourceAsStream("/enrollActualDateStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollActualDateStage" + stage + ".csv");
         inputStream.close();
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
@@ -1840,9 +1833,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
         }
 
-        stage = stage.equals("1") ? "" : "2";
-        inputStream = getClass().getResourceAsStream("/enrollSimpleWithActualDate" + stage + ".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithActualDate" + stage + ".csv");
+        inputStream = getClass().getResourceAsStream("/enrollSimpleWithActualDateStage" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithActualDateStage" + stage + ".csv");
         inputStream.close();
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());

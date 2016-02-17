@@ -126,8 +126,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertNotNull(subject3.getLanguage());
         assertNotNull(subject3.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId("1");
@@ -177,8 +177,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject1.getPhoneNumber());
         assertEquals("123456789", subject2.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -250,8 +250,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject1.getPhoneNumber());
         assertEquals("123456789", subject2.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -325,8 +325,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject2.getPhoneNumber());
         assertEquals("987654321", subject3.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -417,8 +417,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertEquals("123456789", subject2.getPhoneNumber());
         assertEquals("987654321", subject3.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -512,8 +512,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         assertNull(subject3.getLanguage());
         assertNotNull(subject3.getPhoneNumber());
 
-        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());

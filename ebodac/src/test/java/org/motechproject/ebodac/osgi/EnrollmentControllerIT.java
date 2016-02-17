@@ -272,8 +272,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject3.setSiteName("siteName");
         subjectDataService.create(subject3);
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -335,8 +335,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject3.setSiteName("siteName");
         subjectDataService.create(subject3);
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -407,8 +407,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject3.setSiteName("siteName");
         subjectDataService.create(subject3);
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -482,8 +482,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject3.setPhoneNumber("987654321");
         subjectDataService.create(subject3);
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
@@ -572,8 +572,8 @@ public class EnrollmentControllerIT extends BasePaxIT {
         subject3.setPhoneNumber("987654321");
         subjectDataService.create(subject3);
 
-        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimple.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimple.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedSimpleStage1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedSimpleStage1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId());
