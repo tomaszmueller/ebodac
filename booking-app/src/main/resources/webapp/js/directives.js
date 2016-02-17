@@ -229,7 +229,7 @@
                             name: "print",
                             align: "center",
                             sortable: false,
-                            width: 40
+                            hidden: true
                         }
                     ],
                     gridComplete: function() {
