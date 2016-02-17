@@ -47,7 +47,6 @@ public class IvrCallHelper {
     @Autowired
     private EnrollmentDataService enrollmentDataService;
 
-    @Autowired
     private OutboundCallService outboundCallService;
 
     public void initiateIvrCall(String campaignName, String messageKey, String externalId) {
@@ -132,5 +131,10 @@ public class IvrCallHelper {
         }
 
         return votoMessage.getVotoIvrId();
+    }
+
+    @Autowired
+    public void setOutboundCallService(OutboundCallService outboundCallService) {
+        this.outboundCallService = outboundCallService;
     }
 }
