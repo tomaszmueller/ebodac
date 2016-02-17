@@ -381,7 +381,7 @@
                 <configuration>
                     <configLocation>${modules.root.dir}/checkstyle.xml</configLocation>
                     <suppressionsLocation>${modules.root.dir}/checkstyle-suppressions.xml</suppressionsLocation>
-                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <enableFilesSummary>true</enableFilesSummary>
                     <failsOnError>true</failsOnError>
                     <consoleOutput>true</consoleOutput>
