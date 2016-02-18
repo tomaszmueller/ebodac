@@ -297,7 +297,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "", "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -375,7 +375,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -457,7 +457,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -553,7 +553,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(new HashSet<>(Arrays.asList("101", "102")));
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -666,7 +666,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "", "",  "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -720,7 +720,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -832,11 +832,11 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject1 = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject1 = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject1);
-        Subject subject2 = new Subject("2", "", "", "", "111111111","", Language.English, "com", "",  "", "", "", "");
+        Subject subject2 = new Subject("2", "", "", "", "111111111", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("2")).thenReturn(subject2);
-        Subject subject3 = new Subject("3", "", "", "", "222222222","", Language.English, "com", "",  "", "", "", "");
+        Subject subject3 = new Subject("3", "", "", "", "222222222", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("3")).thenReturn(subject3);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -884,7 +884,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -1026,7 +1026,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "", "",  "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -1098,7 +1098,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "", "",  "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -1192,7 +1192,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "",  "", "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "",  "", "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();
@@ -1242,7 +1242,7 @@ public class ReportServiceTest {
         config.setIvrAndSmsStatisticReportsToUpdate(null);
         Mockito.when(configService.getConfig()).thenReturn(config);
 
-        Subject subject = new Subject("1", "", "", "", "123456789","", Language.English, "com", "", "",  "", "", "");
+        Subject subject = new Subject("1", "", "", "", "123456789", "", Language.English, "com", "", "",  "", "", "");
         Mockito.when(subjectService.findSubjectBySubjectId("1")).thenReturn(subject);
 
         List<CallDetailRecord> initialCallDetailRecords = new ArrayList<>();

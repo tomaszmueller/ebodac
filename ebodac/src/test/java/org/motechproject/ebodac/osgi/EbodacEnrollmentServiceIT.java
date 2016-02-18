@@ -633,7 +633,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     @Test
     public void shouldCreateVisitsAndEnrollWithActiveStageIdWhenSubjectStageIdIsNull() throws IOException {
         Config config = new Config();
-        config.setActiveStageId(2l);
+        config.setActiveStageId(2L);
         configService.updateConfig(config);
 
         Subject subject = createSubjectWithRequireData("1");
@@ -653,7 +653,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         assertEquals(3, visitDataService.retrieveAll().size());
 
         config = new Config();
-        config.setActiveStageId(2l);
+        config.setActiveStageId(2L);
         configService.updateConfig(config);
     }
 
@@ -1175,7 +1175,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     private void shouldCheckIfSubjectIsEnrolledForStage(String stage) throws IOException {
         Subject subject = createSubjectWithRequireData(stage);
         subject.setPrimerVaccinationDate(new LocalDate(2115, 10, 11));
-        subject.setStageId(1l);
+        subject.setStageId(1L);
         subjectService.update(subject);
 
         Visit visit = new Visit();
@@ -1841,8 +1841,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         }
 
         stage = stage.equals("1") ? "" : "2";
-        inputStream = getClass().getResourceAsStream("/enrollSimpleWithActualDate" + stage +".csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithActualDate" + stage +".csv");
+        inputStream = getClass().getResourceAsStream("/enrollSimpleWithActualDate" + stage + ".csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollSimpleWithActualDate" + stage + ".csv");
         inputStream.close();
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());

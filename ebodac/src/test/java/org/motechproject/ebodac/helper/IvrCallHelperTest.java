@@ -60,8 +60,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @PrepareForTest({IvrCallHelper.class, OutboundCallServiceImpl.class})
 public class IvrCallHelperTest {
 
-    private final static int RETRY_ATTEMPTS = 3;
-    private final static int RETRY_DELAY = 15;
+    private static final int RETRY_ATTEMPTS = 3;
+    private static final int RETRY_DELAY = 15;
 
     @InjectMocks
     private IvrCallHelper ivrCallHelper = new IvrCallHelper();
