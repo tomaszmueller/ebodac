@@ -72,12 +72,10 @@
         };
 
         $scope.setPrintData = function(document, rowData) {
-
             $('#versionDate', document).html($scope.getCurrentDate());
             $('#location', document).html(rowData.clinicName);
-            $('#visitType', document).html('Unscheduled');
-            $('#participantId', document).html(rowData.participantId);
-            $('#scheduledDate', document).html(rowData.date);
+            $('#subjectId', document).html(rowData.participantId);
+            $('#date', document).html(rowData.date);
         };
 
         $scope.printFrom = function(source) {
