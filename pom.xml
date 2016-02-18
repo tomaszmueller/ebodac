@@ -423,9 +423,7 @@
                                             <followSymlinks>false</followSymlinks>
                                             <directory>${user.home}/.motech/config</directory>
                                             <includes>
-                                                <include>bootstrap.properties</include>
-                                                <include>motech-settings.properties</include>
-                                                <include>datanucleus.properties</include>
+                                                <include>**/*</include>
                                             </includes>
                                         </fileset>
                                     </filesets>
