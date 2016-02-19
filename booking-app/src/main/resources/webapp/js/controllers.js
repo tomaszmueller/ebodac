@@ -52,7 +52,9 @@
             } else {
                 motechConfirm("bookingApp.uncheduledVisit.confirm.shouldScheduleScreening", "bookingApp.confirm",
                     function(confirmed) {
-                        sendRequest();
+                        if (confirmed) {
+                            sendRequest();
+                        }
                 })
             }
         };
@@ -775,7 +777,9 @@
             } else {
                 motechConfirm("bookingApp.primeVaccination.confirm.shouldUpdatePrimeVaccination",
                               "bookingApp.confirm", function(confirmed) {
-                    sendRequest();
+                    if (confirmed) {
+                        sendRequest();
+                    }
                 })
             }
         };
@@ -1071,7 +1075,9 @@
             } else {
                 motechConfirm("bookingApp.visitReschedule.confirm.shouldSavePlannedDate", "bookingApp.confirm",
                     function(confirmed) {
-                        sendRequest();
+                        if (confirmed) {
+                            sendRequest();
+                        }
                 })
             }
         };
