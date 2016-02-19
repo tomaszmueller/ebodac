@@ -130,7 +130,6 @@ public class Subject {
     /**
      * Motech internal fields
      */
-    @NonEditable(display = false)
     @Field(defaultValue = "false")
     private boolean changed;
 
