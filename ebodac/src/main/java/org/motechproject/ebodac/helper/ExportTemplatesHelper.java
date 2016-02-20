@@ -15,6 +15,7 @@ import org.motechproject.ebodac.service.LookupService;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
 import org.motechproject.ebodac.template.PdfReportATemplate;
 import org.motechproject.ebodac.template.PdfReportBTemplate;
+import org.motechproject.ebodac.template.PdfReportCLandscapeTemplate;
 import org.motechproject.ebodac.template.PdfReportCTemplate;
 import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.ebodac.template.XlsReportATemplate;
@@ -47,7 +48,7 @@ public class ExportTemplatesHelper {
     private static final String FROM = "min";
     private static final String TO = "max";
 
-    public PdfBasicTemplate createTemplateForPdf(String reportName, Class<?> entityType, GridSettings settings,
+    public PdfBasicTemplate createTemplateForPdf(String reportName, Class<?> entityType, GridSettings settings, //NO CHECKSTYLE CyclomaticComplexity
                                                  String exportRecords, String oldLookupFields, OutputStream outputStream) {
         Config config = configService.getConfig();
         Map<String, String> map = findMinAndMaxDateForReport(reportName, entityType, settings, exportRecords, oldLookupFields);
@@ -64,6 +65,8 @@ public class ExportTemplatesHelper {
             template = new PdfReportBTemplate(outputStream);
             ((PdfReportBTemplate) template).setAdditionalCellValues(reportName.replaceAll("([A-Z])", " $1"), config.getDistrict(), config.getChiefdom(),
                     StringUtils.isBlank(from) ? "" : from, StringUtils.isBlank(to) ? "" : to);
+        } else if ("MandEMissedClinicVisitsReport".equals(reportName) || "NumberOfTimesParticipantsListenedToEachMessageReport".equals(reportName)) {
+            template = new PdfReportCLandscapeTemplate(outputStream);
         } else {
             template = new PdfReportCTemplate(outputStream);
         }
