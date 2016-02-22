@@ -115,3 +115,14 @@ $scope.loadEditValueForm = function (field) {
 
     return $scope.loadEditValueFormDefault(field);
 };
+
+$scope.msg = function () {
+    if (arguments !== undefined && arguments !== null && arguments.length === 1) {
+        if (arguments[0] === 'mds.btn.lookup') {
+            arguments[0] = 'bookingApp.btn.lookup';
+        } else if (arguments[0] === 'mds.form.label.lookup') {
+            arguments[0] = 'bookingApp.form.label.lookup';
+        }
+    }
+    return $scope.$parent.msg.apply(null, arguments);
+}
