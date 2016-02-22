@@ -8,6 +8,7 @@ import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.CapacityInfoDto;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.DateFilter;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
@@ -57,7 +58,7 @@ public class CapacityInfoServiceImpl implements CapacityInfoService {
                 int visitCount = (int) visitBookingDetailsDataService.countFindByClinicIdAndBookingPlannedDateRange(clinic.getId(), dateRange);
                 int primeVacCount = (int) visitBookingDetailsDataService.countFindByClinicIdVisitTypeAndBookingPlannedDateRange(clinic.getId(),
                         VisitType.PRIME_VACCINATION_DAY, dateRange);
-                int screeningCount = (int) screeningDataService.countFindByClinicIdAndDateRange(clinic.getId(), dateRange);
+                int screeningCount = (int) screeningDataService.countFindByClinicIdAndDateRangeAndStatus(clinic.getId(), dateRange, ScreeningStatus.ACTIVE);
                 int unscheduledCount = (int) unscheduledVisitDataService.countFindByClinicIdAndDateRange(clinic.getId(), dateRange);
 
                 int allVisitsCount = visitCount + screeningCount + unscheduledCount;

@@ -554,6 +554,66 @@
 
         $scope.clinics = Clinics.query();
 
+        $scope.updateInProgress = false;
+
+        $scope.cancel = function(id) {
+            $scope.updateInProgress = true;
+
+            motechConfirm("bookingApp.screening.confirm.cancel", "bookingApp.confirm", function(confirmed) {
+                if (confirmed) {
+                    $http.post('../booking-app/screenings/cancel/', id)
+                        .success(function(data) {
+                            $("#screenings").trigger('reloadGrid');
+                            $scope.updateInProgress = false;
+                        })
+                        .error(function(response) {
+                            motechAlert('bookingApp.screening.updateError', 'bookingApp.error', response);
+                            $scope.updateInProgress = false;
+                        });
+                } else {
+                    $scope.updateInProgress = false;
+                    $scope.$apply();
+                }
+            });
+        }
+
+        $scope.activate = function(id) {
+            $scope.updateInProgress = true;
+
+            function sendRequest(ignoreLimitation) {
+                $http.post('../booking-app/screenings/activate/' + ignoreLimitation, id)
+                    .success(function(data) {
+                        if (data !== null && data !== undefined && data !== '') {
+                            jConfirm($scope.msg('bookingApp.screening.confirmMsg', data), $scope.msg('bookingApp.confirm'),
+                                function (confirmed) {
+                                    if (confirmed) {
+                                        sendRequest(true);
+                                    } else {
+                                        $scope.updateInProgress = false;
+                                        $scope.$apply();
+                                    }
+                                });
+                        } else {
+                            $("#screenings").trigger('reloadGrid');
+                            $scope.updateInProgress = false;
+                        }
+                    })
+                    .error(function(response) {
+                        motechAlert('bookingApp.screening.updateError', 'bookingApp.error', response);
+                        $scope.updateInProgress = false;
+                    });
+            }
+
+            motechConfirm("bookingApp.screening.confirm.activate", "bookingApp.confirm", function(confirmed) {
+                if (confirmed) {
+                    sendRequest(false);
+                } else {
+                    $scope.updateInProgress = false;
+                    $scope.$apply();
+                }
+            });
+        }
+
         $scope.newForm = function(type) {
             $scope.form = {};
             $scope.form.type = type;

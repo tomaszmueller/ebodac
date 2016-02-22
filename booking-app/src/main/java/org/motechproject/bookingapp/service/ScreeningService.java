@@ -19,4 +19,7 @@ public interface ScreeningService {
 
     ScreeningDto getScreeningById(Long id);
 
+    void cancelScreening(Long id);
+
+    void activateScreening(Long id, Boolean ignoreLimitation);
 }

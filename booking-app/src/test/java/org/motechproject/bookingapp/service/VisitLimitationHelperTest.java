@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.motechproject.bookingapp.domain.Clinic;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
@@ -52,7 +53,7 @@ public class VisitLimitationHelperTest {
 
     @Test(expected = LimitationExceededException.class)
     public void shouldThrowLimitationExceededExceptionWhenCapacityLimitIsReached() {
-        when(screeningDataService.countFindByClinicIdDateAndScreeningId(new LocalDate(2217, 1, 1), clinic.getId(), 1l)).thenReturn(2l);
+        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1l, ScreeningStatus.ACTIVE)).thenReturn(2l);
         when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
         when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(4l);
 
@@ -61,7 +62,7 @@ public class VisitLimitationHelperTest {
 
     @Test
     public void shouldNotThrowLimitationExceededExceptionWhenCapacityLimitIsNotReached() {
-        when(screeningDataService.countFindByClinicIdDateAndScreeningId(new LocalDate(2217, 1, 1), clinic.getId(), 1l)).thenReturn(2l);
+        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1l, ScreeningStatus.ACTIVE)).thenReturn(2l);
         when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
         when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
 

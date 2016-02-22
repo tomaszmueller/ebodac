@@ -2,6 +2,7 @@ package org.motechproject.bookingapp.helper;
 
 import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.domain.Clinic;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
@@ -36,7 +37,7 @@ public class VisitLimitationHelper {
 
     private void checkCapacity(LocalDate date, Clinic clinic, Long screeningId, Long unscheduledVisitId, Long visitBookingDetailsId) {
         if (clinic != null && date != null) {
-            int screeningCount = (int) screeningDataService.countFindByClinicIdDateAndScreeningId(date, clinic.getId(), screeningId);
+            int screeningCount = (int) screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(date, clinic.getId(), screeningId, ScreeningStatus.ACTIVE);
             int unscheduledVisitCount = (int) unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(date, clinic.getId(), unscheduledVisitId);
             int visitBookingDetailsCount = (int) visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(date, clinic.getId(), visitBookingDetailsId);
             int visitCount = screeningCount + visitBookingDetailsCount + unscheduledVisitCount;

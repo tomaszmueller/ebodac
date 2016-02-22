@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.motechproject.bookingapp.domain.CapacityInfoDto;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.DateFilter;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
@@ -71,12 +72,12 @@ public class CapacityInfoServiceTest {
 
         when(visitBookingDetailsDataService.countFindByClinicIdAndBookingPlannedDateRange(1l, dateRange)).thenReturn(8l);
         when(visitBookingDetailsDataService.countFindByClinicIdVisitTypeAndBookingPlannedDateRange(1l, VisitType.PRIME_VACCINATION_DAY, dateRange)).thenReturn(7l);
-        when(screeningDataService.countFindByClinicIdAndDateRange(1l, dateRange)).thenReturn(4l);
+        when(screeningDataService.countFindByClinicIdAndDateRangeAndStatus(1l, dateRange, ScreeningStatus.ACTIVE)).thenReturn(4l);
         when(unscheduledVisitDataService.countFindByClinicIdAndDateRange(1l, dateRange)).thenReturn(3l);
 
         when(visitBookingDetailsDataService.countFindByClinicIdAndBookingPlannedDateRange(2l, dateRange)).thenReturn(4l);
         when(visitBookingDetailsDataService.countFindByClinicIdVisitTypeAndBookingPlannedDateRange(2l, VisitType.PRIME_VACCINATION_DAY, dateRange)).thenReturn(2l);
-        when(screeningDataService.countFindByClinicIdAndDateRange(2l, dateRange)).thenReturn(6l);
+        when(screeningDataService.countFindByClinicIdAndDateRangeAndStatus(2l, dateRange, ScreeningStatus.ACTIVE)).thenReturn(6l);
         when(unscheduledVisitDataService.countFindByClinicIdAndDateRange(2l, dateRange)).thenReturn(1l);
 
         when(clinicDataService.count()).thenReturn(2l);

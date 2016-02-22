@@ -7,6 +7,7 @@ import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.CapacityReportDto;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.DateFilter;
+import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
@@ -54,7 +55,7 @@ public class ReportServiceImpl implements ReportService {
                     int visitCount = (int) visitBookingDetailsDataService.countFindByClinicIdAndBookingPlannedDate(clinic.getId(), date);
                     int primeVacCount = (int) visitBookingDetailsDataService.countFindByClinicIdVisitTypeAndBookingPlannedDate(clinic.getId(),
                             VisitType.PRIME_VACCINATION_DAY, date);
-                    int screeningCount = (int) screeningDataService.countFindByClinicIdAndDate(clinic.getId(), date);
+                    int screeningCount = (int) screeningDataService.countFindByClinicIdAndDateAndStatus(clinic.getId(), date, ScreeningStatus.ACTIVE);
                     int unscheduledCount = (int) unscheduledVisitDataService.countFindByClinicIdAndDate(clinic.getId(), date);
 
                     int allVisitsCount = visitCount + screeningCount + unscheduledCount;

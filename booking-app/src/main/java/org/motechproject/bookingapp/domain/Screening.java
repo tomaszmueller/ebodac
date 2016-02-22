@@ -3,6 +3,7 @@ package org.motechproject.bookingapp.domain;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.util.CustomDateSerializer;
+import org.motechproject.bookingapp.util.CustomScreeningStatusSerializer;
 import org.motechproject.bookingapp.util.CustomTimeSerializer;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.mds.annotations.Entity;
@@ -35,9 +36,17 @@ public class Screening {
     @JsonSerialize(using = CustomTimeSerializer.class)
     private Time endTime;
 
+    @Field
+    @JsonSerialize(using = CustomScreeningStatusSerializer.class)
+    private ScreeningStatus status;
+
     @NonEditable(display = false)
     @Field
     private String owner;
+
+    public Screening() {
+        status = ScreeningStatus.ACTIVE;
+    }
 
     public ScreeningDto toDto() {
         ScreeningDto dto = new ScreeningDto();
@@ -99,6 +108,14 @@ public class Screening {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    public ScreeningStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ScreeningStatus status) {
+        this.status = status;
     }
 
     public String getOwner() {
