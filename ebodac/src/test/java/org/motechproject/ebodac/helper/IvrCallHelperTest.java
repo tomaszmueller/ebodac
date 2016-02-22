@@ -57,7 +57,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({IvrCallHelper.class, OutboundCallServiceImpl.class})
+@PrepareForTest({IvrCallHelper.class, OutboundCallServiceImpl.class })
 public class IvrCallHelperTest {
 
     private static final int RETRY_ATTEMPTS = 3;
@@ -578,7 +578,7 @@ public class IvrCallHelperTest {
         assertEquals("15", params.get("retry_delay_short").toString());
         assertEquals("1", params.get("retry_attempts_long").toString());
         assertEquals("1", params.get("send_sms_if_voice_fails").toString());
-        List<Map<String, Object>> subscribers = (List<Map<String, Object>>)params.get("subscribers");
+        List<Map<String, Object>> subscribers = (List<Map<String, Object>>) params.get("subscribers");
         assertEquals(1, subscribers.size());
         Map<String, Object> subscriber = subscribers.get(0);
         assertEquals(subjectPhoneNumber, subscriber.get("phone").toString());

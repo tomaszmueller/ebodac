@@ -73,11 +73,11 @@ public class VisitServiceIT extends BasePaxIT {
     public void shouldCreateOrUpdate() {
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
                 "729402018364", "address", Language.English, "community", "B05-SL10001", "siteName", "chiefdom", "section", "district");
-        firstSubject.setStageId(2l);
+        firstSubject.setStageId(2L);
 
         Subject secondSubject = new Subject("1000000162", "Rafal", "Dabacki", "Ebacki",
                 "44443333222", "address", Language.Susu, "community", "B05-SL10001", "siteName", "chiefdom", "section", "district");
-        secondSubject.setStageId(2l);
+        secondSubject.setStageId(2L);
 
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
@@ -129,7 +129,7 @@ public class VisitServiceIT extends BasePaxIT {
     public void shouldFetchWithNullPhone() {
         Subject subject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
                 null , "address", Language.English, "community", "B05-SL10001", "siteName", "chiefdom", "section", "district");
-        subject.setStageId(2l);
+        subject.setStageId(2L);
 
         Visit visit = VisitUtils.createVisit(subject, VisitType.SCREENING, null,
                 LocalDate.parse("2014-10-17", formatter), "owner");
@@ -150,7 +150,7 @@ public class VisitServiceIT extends BasePaxIT {
 
         Subject firstSubject = new Subject("1000000161", "Michal", "Abacki", "Cabacki",
                 "729402018364", "address", Language.English, "community", "B05-SL10001", "siteName", "chiefdom", "section", "district");
-        firstSubject.setStageId(2l);
+        firstSubject.setStageId(2L);
 
         Visit firstVisit = VisitUtils.createVisit(firstSubject, VisitType.SCREENING, LocalDate.parse("2014-10-17", formatter),
                 LocalDate.parse("2014-10-18", formatter), "owner");
