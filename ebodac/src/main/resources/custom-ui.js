@@ -323,3 +323,30 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
         unblockUI();
     });
 };
+
+$scope.editInstance = function(id, module, entityName) {
+    blockUI();
+    $scope.setHiddenFilters();
+    $scope.instanceEditMode = true;
+    $scope.setModuleEntity(module, entityName);
+    $scope.loadedFields = Instances.selectInstance({
+        id: $scope.selectedEntity.id,
+        param: id
+        },
+        function (data) {
+            $scope.selectedInstance = id;
+            $scope.currentRecord = data;
+            $scope.fields = data.fields;
+
+            if (entityName === "Participant") {
+                var i;
+                for (i = 0; i < $scope.fields.length; i += 1) {
+                    if ($scope.fields[i].name === "changed") {
+                        $scope.fields[i].nonDisplayable = true;
+                    }
+                }
+            }
+
+            unblockUI();
+        }, angularHandler('mds.error', 'mds.error.cannotUpdateInstance'));
+};
