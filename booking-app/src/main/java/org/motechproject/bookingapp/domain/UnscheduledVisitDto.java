@@ -22,7 +22,9 @@ public class UnscheduledVisitDto {
     public UnscheduledVisitDto(UnscheduledVisit unscheduledVisit) {
         setId(unscheduledVisit.getId().toString());
         setParticipantId(unscheduledVisit.getSubject().getSubjectId());
-        setClinicName(unscheduledVisit.getClinic().getLocation());
+        if (unscheduledVisit.getClinic() != null) {
+            setClinicName(unscheduledVisit.getSubject().getSiteName());
+        }
         setDate(unscheduledVisit.getDate());
         setStartTime(unscheduledVisit.getStartTime());
         setPurpose(unscheduledVisit.getPurpose());
