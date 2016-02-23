@@ -932,6 +932,9 @@
             if ($scope.checkSubject()) {
                 $http.get('../booking-app/schedule/getPrimeVacDate/' + $scope.selectedSubject.subjectId)
                 .success(function(data) {
+                    $timeout(function() {
+                        $('#primeVacDateInput').val(data.primeVacDate);
+                        }, 1);
                     $scope.primeVac.date = data.primeVacDate;
                     $scope.dateRange = {};
                     $scope.dateRange.min = $scope.parseDate(data.earliestDate);
