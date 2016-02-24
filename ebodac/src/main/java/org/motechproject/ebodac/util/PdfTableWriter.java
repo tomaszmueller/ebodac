@@ -23,7 +23,7 @@ public class PdfTableWriter implements TableWriter {
 
     private PdfBasicTemplate template;
 
-    private PdfPTable dataTable;
+    protected PdfPTable dataTable; //NO CHECKSTYLE VisibilityModifierCheck
 
     public PdfTableWriter(PdfBasicTemplate template) {
         this.template = template;
@@ -57,6 +57,7 @@ public class PdfTableWriter implements TableWriter {
             PdfPCell cell = new PdfPCell(new Paragraph(header, PdfBasicTemplate.HEADER_FONT));
             cell.setBackgroundColor(BaseColor.GRAY);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             this.dataTable.addCell(cell);
         }
     }
