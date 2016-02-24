@@ -61,6 +61,25 @@ public final class DtoLookupHelper {
         return settings;
     }
 
+    public static GridSettings changeLookupForScreeningReport(GridSettings settings) throws IOException {
+        Map<String, Object> fieldsMap = new HashMap<>();
+
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
+
+        if (StringUtils.isBlank(settings.getLookup())) {
+            settings.setLookup("Find By Type");
+        } else {
+            fieldsMap = getFields(settings.getFields());
+            settings.setLookup(settings.getLookup() + " And Type");
+        }
+
+        fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, VisitType.SCREENING.toString());
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
+        return settings;
+    }
+
     public static GridSettings changeLookupAndOrderForFollowupsMissedClinicVisitsReport(GridSettings settings) throws IOException { //NO CHECKSTYLE CyclomaticComplexity
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, String> fieldsMap = new HashMap<>();
