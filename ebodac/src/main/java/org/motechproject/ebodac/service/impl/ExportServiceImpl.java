@@ -4,10 +4,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.ebodac.service.ExportService;
 import org.motechproject.ebodac.service.LookupService;
-import org.motechproject.ebodac.util.ExcelTableWriter;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
-import org.motechproject.ebodac.util.PdfTableWriter;
 import org.motechproject.ebodac.template.XlsBasicTemplate;
+import org.motechproject.ebodac.util.CustomColumnWidthPdfTableWriter;
+import org.motechproject.ebodac.util.ExcelTableWriter;
+import org.motechproject.ebodac.util.PdfTableWriter;
 import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.service.impl.csv.writer.CsvTableWriter;
@@ -34,7 +35,7 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public void exportEntityToPDF(PdfBasicTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
                                   String lookup, String lookupFields, QueryParams queryParams) throws IOException {
-        PdfTableWriter tableWriter = new PdfTableWriter(template);
+        PdfTableWriter tableWriter = new CustomColumnWidthPdfTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 

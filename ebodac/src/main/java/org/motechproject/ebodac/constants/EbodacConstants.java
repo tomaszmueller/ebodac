@@ -232,6 +232,16 @@ public final class EbodacConstants {
         }
     };
 
+    public static final Map<String, Float> REPORT_COLUMN_WIDTHS = new LinkedHashMap<String, Float>() {
+        {
+            put("Participant Id", 64f);
+            put("Stage ID", 32f);
+            put("Gender", 48f);
+            put("Age", 24f);
+            put("SMS", 32f);
+        }
+    };
+
     private EbodacConstants() {
     }
 }
