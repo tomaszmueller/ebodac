@@ -19,6 +19,7 @@ import org.motechproject.mds.dto.LookupFieldType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -289,6 +290,33 @@ public final class DtoLookupHelper {
             settings.setFields(setNewMaxDateInRangeFields(settings.getFields(), Visit.MOTECH_PROJECTED_DATE_PROPERTY_NAME, maxDate));
         }
         return true;
+    }
+
+    public static GridSettings changeLookupForDay8AndDay57Report(GridSettings settings) throws IOException {
+        Map<String, Object> fieldsMap = new HashMap<>();
+
+        if (StringUtils.isBlank(settings.getFields())) {
+            settings.setFields("{}");
+        }
+
+        if (StringUtils.isBlank(settings.getLookup())) {
+            settings.setLookup("Find By Type Set");
+            fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, new HashSet<>(
+                    Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString(),
+                            VisitType.BOOST_VACCINATION_DAY.toString())
+            ));
+        } else {
+            fieldsMap = getFields(settings.getFields());
+            String type = (String) fieldsMap.get(Visit.VISIT_TYPE_PROPERTY_NAME);
+            List<String> availableVisitTypes = Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString(),
+                    VisitType.BOOST_VACCINATION_DAY.toString());
+            if (StringUtils.isBlank(type) || !availableVisitTypes.contains(type)) {
+                fieldsMap.put(Visit.VISIT_TYPE_PROPERTY_NAME, null);
+            }
+        }
+
+        settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
+        return settings;
     }
 
     private static void changeOrderForFollowupsMissedClinicVisitsReport(GridSettings settings)

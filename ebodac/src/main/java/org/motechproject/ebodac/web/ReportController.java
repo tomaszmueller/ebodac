@@ -125,6 +125,8 @@ public class ReportController {
                 return getIvrAndSmsStatisticReport(settings);
             case "screeningReport" :
                 return getScreeningReport(settings);
+            case "day8AndDay57Report":
+                return getDay8AndDay57Report(settings);
             default:
                 return null;
         }
@@ -309,6 +311,27 @@ public class ReportController {
         return ret;
     }
 
+    @RequestMapping(value = "/getLookupsForDay8AndDay57Report", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForDay8AndDay57Report() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
+        try {
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForDay8AndDay57Report();
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -413,6 +436,22 @@ public class ReportController {
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
             return lookupService.getEntities(IvrAndSmsStatisticReportDto.class, IvrAndSmsStatisticReport.class,
                     newSettings.getLookup(), newSettings.getFields(), queryParams);
+        } catch (IOException | EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new Records<Object>(null);
+        }
+    }
+
+
+    private Records<?> getDay8AndDay57Report(GridSettings settings) {
+        GridSettings newSettings = settings;
+        try {
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
+            newSettings = DtoLookupHelper.changeLookupForDay8AndDay57Report(settings);
+            if (newSettings == null) {
+                return new Records<Object>(null);
+            }
+            return lookupService.getEntities(Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
         } catch (IOException | EbodacLookupException e) {
             LOGGER.error(e.getMessage(), e);
             return new Records<Object>(null);

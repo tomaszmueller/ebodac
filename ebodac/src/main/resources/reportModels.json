@@ -486,5 +486,52 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
     }]
+  },
+  "day8AndDay57Report" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.day8AndDay57Report.subjectId",
+      "ebodac.web.reports.day8AndDay57Report.type",
+      "ebodac.web.reports.day8AndDay57Report.plannedVisitDate",
+      "ebodac.web.reports.day8AndDay57Report.date",
+      "ebodac.web.reports.day8AndDay57Report.stageId",
+      "ebodac.web.reports.day8AndDay57Report.siteName"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    }, {
+      "name": "subjectId",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.subjectId){ return ''; } return cellValue.subjectId; }"
+    }, {
+      "name": "type",
+      "index": "type",
+      "align": "center"
+    }, {
+      "name": "motechProjectedDate",
+      "index": "motechProjectedDate",
+      "align": "center",
+      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "date",
+      "index": "date",
+      "align": "center",
+      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
+      "name": "subjectSiteName",
+      "jsonmap": "subject",
+      "index": "subject.siteName",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.siteName){ return ''; } return cellValue.siteName; }"
+    }]
   }
 }

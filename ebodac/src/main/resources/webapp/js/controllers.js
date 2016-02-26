@@ -365,6 +365,10 @@
                 url = "../ebodac/getLookupsForScreeningReport";
                 $scope.reportName = $scope.msg('ebodac.web.reports.screeningReport');
                 break;
+            case "day8AndDay57Report":
+                url = "../ebodac/getLookupsForDay8AndDay57Report";
+                $scope.reportName = $scope.msg('ebodac.web.reports.day8AndDay57Report');
+                break;
         }
          $scope.getLookups(url);
 
@@ -431,6 +435,9 @@
                     break;
                 case "screeningReport":
                     url = "../ebodac/exportScreeningReport";
+                    break;
+                case "ivrAndSmsStatisticReport":
+                    url = "../ebodac/exportDay8AndDay57Report";
                     break;
             }
             url = url + "?outputFormat=" + $scope.exportFormat;
