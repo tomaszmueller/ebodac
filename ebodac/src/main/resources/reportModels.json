@@ -357,6 +357,42 @@
       "formatter":"function(cellValue, options, rowObject) { if (!cellValue || !cellValue.siteName){ return ''; } return cellValue.siteName; }"
     }]
   },
+  "screeningReport" : {
+    "colNames": ["ebodac.web.reports.rowId",
+      "ebodac.web.reports.screeningReport.subjectId",
+      "ebodac.web.reports.screeningReport.date",
+      "ebodac.web.reports.screeningReport.stageId",
+      "ebodac.web.reports.screeningReport.siteName"],
+    "colModel": [{
+      "name": "rowId",
+      "index": "rowId",
+      "hidden": true,
+      "key": true
+    }, {
+      "name": "subjectId",
+      "jsonmap": "subject",
+      "index": "subject.subjectId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.subjectId){ return ''; } return cellValue.subjectId; }"
+    }, {
+      "name": "date",
+      "index": "date",
+      "align": "center",
+      "formatter":"date", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
+      "name": "subjectSiteName",
+      "jsonmap": "subject",
+      "index": "subject.siteName",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.siteName){ return ''; } return cellValue.siteName; }"
+    }]
+  },
   "ivrAndSmsStatisticReport" : {
     "colNames": ["ebodac.web.reports.rowId",
       "ebodac.web.reports.IvrAndSmsStatisticReport.subjectId",

@@ -234,6 +234,23 @@ public class InstanceController {
         }
     }
 
+    @RequestMapping(value = "/exportScreeningReport", method = RequestMethod.GET)
+    public void exportScreeningReport(GridSettings settings,
+                                                    @RequestParam String exportRecords,
+                                                    @RequestParam String outputFormat,
+                                                    HttpServletResponse response) throws IOException {
+
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupForScreeningReport(settings);
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
+        } else {
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.SCREENING_REPORT_NAME,
+                    null, Visit.class, EbodacConstants.SCREENING_REPORT_MAP, oldLookupFields);
+        }
+    }
+
     @RequestMapping(value = "/exportIvrAndSmsStatisticReport", method = RequestMethod.GET)
     public void exportIvrAndSmsStatisticReport(GridSettings settings,
                                                @RequestParam String exportRecords,

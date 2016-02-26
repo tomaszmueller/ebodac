@@ -361,6 +361,10 @@
                 url = "../ebodac/getLookupsForOptsOutOfMotechMessagesReport";
                 $scope.reportName = $scope.msg('ebodac.web.reports.optsOutOfMotechMessagesReport');
                 break;
+            case "screeningReport":
+                url = "../ebodac/getLookupsForScreeningReport";
+                $scope.reportName = $scope.msg('ebodac.web.reports.screeningReport');
+                break;
         }
          $scope.getLookups(url);
 
@@ -424,6 +428,9 @@
                     break;
                 case "ivrAndSmsStatisticReport":
                     url = "../ebodac/exportIvrAndSmsStatisticReport";
+                    break;
+                case "screeningReport":
+                    url = "../ebodac/exportScreeningReport";
                     break;
             }
             url = url + "?outputFormat=" + $scope.exportFormat;

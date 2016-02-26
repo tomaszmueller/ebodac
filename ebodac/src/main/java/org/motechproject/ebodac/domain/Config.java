@@ -80,6 +80,8 @@ public class Config {
 
     private List<String> availableLookupsForSubjectEnrollments;
 
+    private List<String> availableLookupsForScreeningReport;
+
     private Boolean enableZetesJob = false;
 
     private Boolean enableRaveJob = false;
@@ -421,6 +423,17 @@ public class Config {
 
     public void setAvailableLookupsForSubjectEnrollments(List<String> availableLookupsForSubjectEnrollments) {
         this.availableLookupsForSubjectEnrollments = availableLookupsForSubjectEnrollments;
+    }
+
+    public List<String> getAvailableLookupsForScreeningReport() {
+        if (availableLookupsForScreeningReport == null) {
+            availableLookupsForScreeningReport = new ArrayList<>();
+        }
+        return availableLookupsForScreeningReport;
+    }
+
+    public void setAvailableLookupsForScreeningReport(List<String> availableLookupsForScreeningReport) {
+        this.availableLookupsForScreeningReport = availableLookupsForScreeningReport;
     }
 
     public Boolean getEnableZetesJob() {

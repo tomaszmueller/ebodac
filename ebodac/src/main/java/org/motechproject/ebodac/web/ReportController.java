@@ -123,6 +123,8 @@ public class ReportController {
                 return getOptsOutOfMotechMessagesReport(settings);
             case "ivrAndSmsStatisticReport" :
                 return getIvrAndSmsStatisticReport(settings);
+            case "screeningReport" :
+                return getScreeningReport(settings);
             default:
                 return null;
         }
@@ -150,6 +152,27 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForDailyClinicVisitScheduleReport();
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/getLookupsForScreeningReport", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForScreeningReport() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
+        try {
+            availableLookups = lookupService.getAvailableLookups(Visit.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForScreeningReport();
         for (LookupDto lookupDto : availableLookups) {
             if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);
@@ -309,6 +332,21 @@ public class ReportController {
         try {
             QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
             newSettings = DtoLookupHelper.changeLookupForFollowupsAfterPrimeInjectionReport(settings);
+            if (newSettings == null) {
+                return new Records<Object>(null);
+            }
+            return lookupService.getEntities(Visit.class, newSettings.getLookup(), newSettings.getFields(), queryParams);
+        } catch (IOException | EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new Records<Object>(null);
+        }
+    }
+
+    private Records<?> getScreeningReport(GridSettings settings) {
+        GridSettings newSettings = settings;
+        try {
+            QueryParams queryParams = QueryParamsBuilder.buildQueryParams(newSettings, getFields(newSettings.getFields()));
+            newSettings = DtoLookupHelper.changeLookupForScreeningReport(settings);
             if (newSettings == null) {
                 return new Records<Object>(null);
             }
