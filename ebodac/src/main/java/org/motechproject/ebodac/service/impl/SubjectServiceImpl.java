@@ -13,6 +13,8 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.EventRelay;
 import org.motechproject.mds.query.QueryParams;
 import org.motechproject.mds.util.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ import java.util.Map;
  */
 @Service("subjectService")
 public class SubjectServiceImpl implements SubjectService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectServiceImpl.class);
 
     @Autowired
     private SubjectDataService subjectDataService;
@@ -84,28 +88,33 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject createOrUpdateForRave(Subject newSubject) {
 
-        Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
+        try {
+            Subject subjectInDb = findSubjectBySubjectId(newSubject.getSubjectId());
 
-        reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
+            reportUpdateService.addReportsToUpdateIfNeeded(subjectInDb, newSubject);
 
-        if (subjectInDb != null) {
-            if (subjectInDb.equalsForRave(newSubject)) {
-                return subjectInDb;
+            if (subjectInDb != null) {
+                if (subjectInDb.equalsForRave(newSubject)) {
+                    return subjectInDb;
+                }
+
+                ebodacEnrollmentService.withdrawalOrEnrollSubject(subjectInDb, newSubject);
+
+                subjectInDb.setGender(newSubject.getGender());
+                subjectInDb.setStageId(newSubject.getStageId());
+                subjectInDb.setDateOfBirth(newSubject.getDateOfBirth());
+                subjectInDb.setPrimerVaccinationDate(newSubject.getPrimerVaccinationDate());
+                subjectInDb.setBoosterVaccinationDate(newSubject.getBoosterVaccinationDate());
+                subjectInDb.setDateOfDisconVac(newSubject.getDateOfDisconVac());
+                subjectInDb.setDateOfDisconStd(newSubject.getDateOfDisconStd());
+
+                return update(subjectInDb);
+            } else {
+                return create(newSubject);
             }
-
-            ebodacEnrollmentService.withdrawalOrEnrollSubject(subjectInDb, newSubject);
-
-            subjectInDb.setGender(newSubject.getGender());
-            subjectInDb.setStageId(newSubject.getStageId());
-            subjectInDb.setDateOfBirth(newSubject.getDateOfBirth());
-            subjectInDb.setPrimerVaccinationDate(newSubject.getPrimerVaccinationDate());
-            subjectInDb.setBoosterVaccinationDate(newSubject.getBoosterVaccinationDate());
-            subjectInDb.setDateOfDisconVac(newSubject.getDateOfDisconVac());
-            subjectInDb.setDateOfDisconStd(newSubject.getDateOfDisconStd());
-
-            return update(subjectInDb);
-        } else {
-            return create(newSubject);
+        } catch (Exception ex) {
+            LOGGER.error("Error when creating or updating Subject with id: " + newSubject.getSubjectId(), ex);
+            return null;
         }
     }
 
