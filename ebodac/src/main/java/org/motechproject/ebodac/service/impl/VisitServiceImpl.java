@@ -48,37 +48,42 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public Visit createOrUpdate(Visit visit) {
-        if (visit.getSubject() != null) {
-            if (visit.getSubject().getPrimerVaccinationDate() != null) {
-                visit.setMotechProjectedDate(visit.getDateProjected());
-            }
-            List<Visit> visits = visit.getSubject().getVisits();
-            if (visits.contains(visit)) {
-                Visit existingVisit = visits.get(visits.indexOf(visit));
-                if (existingVisit.visitDatesChanged(visit)) {
-                    checkAndSetMotechProjectedDate(visit, existingVisit);
-                    if (visit.getDate() == null && existingVisit.getDate() != null) {
-                        ebodacEnrollmentService.rollbackOrRemoveEnrollment(visit);
-                    }
-
-                    existingVisit.setDate(visit.getDate());
-                    existingVisit.setDateProjected(visit.getDateProjected());
-
-                    ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(existingVisit);
-
-                    return visitDataService.update(existingVisit);
-                } else {
-                    return existingVisit;
+        try {
+            if (visit.getSubject() != null) {
+                if (visit.getSubject().getPrimerVaccinationDate() != null) {
+                    visit.setMotechProjectedDate(visit.getDateProjected());
                 }
-            }
+                List<Visit> visits = visit.getSubject().getVisits();
+                if (visits.contains(visit)) {
+                    Visit existingVisit = visits.get(visits.indexOf(visit));
+                    if (existingVisit.visitDatesChanged(visit)) {
+                        checkAndSetMotechProjectedDate(visit, existingVisit);
+                        if (visit.getDate() == null && existingVisit.getDate() != null) {
+                            ebodacEnrollmentService.rollbackOrRemoveEnrollment(visit);
+                        }
 
-            if (checkStageId(visit)) {
-                return visit;
-            }
+                        existingVisit.setDate(visit.getDate());
+                        existingVisit.setDateProjected(visit.getDateProjected());
 
-            ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(visit);
+                        ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(existingVisit);
+
+                        return visitDataService.update(existingVisit);
+                    } else {
+                        return existingVisit;
+                    }
+                }
+
+                if (checkStageId(visit)) {
+                    return visit;
+                }
+
+                ebodacEnrollmentService.enrollOrCompleteCampaignForSubject(visit);
+            }
+            return visitDataService.create(visit);
+        } catch (Exception ex) {
+            LOGGER.error("Error when creating or updating Visit: " + visit.getType() + " for Subject: " + visit.getSubject().getSubjectId(), ex);
+            return null;
         }
-        return visitDataService.create(visit);
     }
 
     @Override
