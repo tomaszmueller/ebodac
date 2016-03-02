@@ -756,16 +756,22 @@
         $scope.form.dto = undefined;
 
         $scope.primeVacDtos = [];
+        $scope.participantsLoading = false;
 
         $scope.getPrimeVacDtos = function() {
+            $scope.participantsLoading = true;
             $http.get('../booking-app/getPrimeVacDtos')
             .success(function(data) {
                 $scope.primeVacDtos = data;
+                $scope.participantsLoading = false;
             })
             .error(function(response) {
                 motechAlert('bookingApp.primeVaccination.getParticipantsError', 'bookingApp.error', response);
+                $scope.participantsLoading = false;
             });
         }
+
+        $scope.getPrimeVacDtos();
 
         $scope.newForm = function(type) {
             $scope.form = {};
@@ -774,8 +780,6 @@
         };
 
         $scope.addPrimeVaccination = function() {
-            $scope.primeVacDtos = [];
-            $scope.getPrimeVacDtos();
             $scope.newForm("add");
             $timeout(function() {
                 $('#subjectIdSelect').trigger('change');
@@ -807,6 +811,8 @@
                                 });
                         } else {
                             $("#primeVaccinationSchedule").trigger('reloadGrid');
+                            $scope.primeVacDtos = [];
+                            $scope.getPrimeVacDtos();
                             $scope.form.updated = data;
                             $scope.form.dto = undefined;
                         }

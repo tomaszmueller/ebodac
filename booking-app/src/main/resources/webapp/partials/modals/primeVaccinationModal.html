@@ -10,7 +10,7 @@
                 <div class="modal-body prime-vaccination-schedule-modal-body">
                     <div class="booking-app input-group" ng-if="form.type == 'add'">
                         <span class="left input-group-addon">{{msg('bookingApp.primeVaccination.participantId')}}</span>
-                        <select class="form-control" ui-select2 id="subjectIdSelect" ng-model="form.dto" ng-change="subjectChanged()" ng-options="primeVacDto as primeVacDto.participantId for primeVacDto in primeVacDtos">
+                        <select class="form-control" ui-select2 id="subjectIdSelect" ng-model="form.dto" ng-disabled="participantsLoading" ng-change="subjectChanged()" ng-options="primeVacDto as primeVacDto.participantId for primeVacDto in primeVacDtos">
                             <option value=""></option>
                         </select>
                         <span class="input-group-addon validator" ng-class="{'alert-danger': !form.dto.participantId, 'alert-success': form.dto.participantId}"><i class="fa fa-fw fa-check"></i></span>
