@@ -3,7 +3,7 @@
 
     var controllers = angular.module('bookingApp.controllers', []);
 
-    controllers.controller('BookingAppUnscheduledVisitCtrl', function ($scope, $timeout, $http , ScreenedParticipants) {
+    controllers.controller('BookingAppUnscheduledVisitCtrl', function ($scope, $timeout, $http, $filter, ScreenedParticipants) {
 
         $scope.getLookups("../booking-app/unscheduledVisits/getLookupsForUnscheduled");
 
@@ -74,10 +74,10 @@
         };
 
         $scope.setPrintData = function(document, rowData) {
-            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#versionDate', document).html($filter('date')(new Date(), $scope.cardDateTimeFormat));
             $('#location', document).html(rowData.clinicName);
             $('#subjectId', document).html(rowData.participantId);
-            $('#date', document).html(rowData.date);
+            $('#date', document).html($filter('date')($scope.parseDate(rowData.date), $scope.cardDateFormat));
         };
 
         $scope.printFrom = function(source) {
@@ -169,6 +169,9 @@
                 $scope.refreshGrid();
             }
         };
+
+        $scope.cardDateFormat = "dd-MM-yyyy";
+        $scope.cardDateTimeFormat = "dd-MM-yyyy HH:mm";
 
         $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
         $scope.availableExportFormats = ['pdf','xls'];
@@ -264,25 +267,6 @@
             }
 
             return startTime.hours < endTime.hours;
-        };
-
-        $scope.getCurrentDate = function() {
-
-            function parseToTwoDigits(number) {
-                if (number < 10) {
-                    return "0" + number;
-                }
-                return number;
-            }
-
-            var date = new Date(),
-                dateString = "",
-                month = parseToTwoDigits(date.getMonth() + 1),
-                day = parseToTwoDigits(date.getDate()),
-                hours = parseToTwoDigits(date.getHours()),
-                minutes = parseToTwoDigits(date.getMinutes());
-
-            return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes;
         };
 
         $scope.lookupBy = {};
@@ -546,7 +530,7 @@
         };
     });
 
-    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, Screenings, Clinics) {
+    controllers.controller('BookingAppScreeningCtrl', function ($scope, $timeout, $http, $filter, Screenings, Clinics) {
 
         $scope.getLookups("../booking-app/screenings/getLookupsForScreening");
 
@@ -720,9 +704,9 @@
 
         $scope.setPrintData = function(document, bookingId, date, location) {
 
-            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#versionDate', document).html($filter('date')(new Date(), $scope.cardDateTimeFormat));
             $('#bookingId', document).html(bookingId);
-            $('#screeningDate', document).html(date);
+            $('#screeningDate', document).html($filter('date')($scope.parseDate(date), $scope.cardDateFormat));
             $('#location', document).html(location);
         };
 
@@ -760,7 +744,7 @@
         }
     });
 
-    controllers.controller('BookingAppPrimeVaccinationCtrl', function ($scope, $timeout, $http) {
+    controllers.controller('BookingAppPrimeVaccinationCtrl', function ($scope, $timeout, $http, $filter) {
 
         $scope.getLookups("../booking-app/getLookupsForPrimeVaccinationSchedule");
 
@@ -938,11 +922,11 @@
 
         $scope.setPrintData = function(document, rowData) {
 
-            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#versionDate', document).html($filter('date')(new Date(), $scope.cardDateTimeFormat));
             $('#location', document).html(rowData.location);
             $('#participantId', document).html(rowData.participantId);
             $('#name', document).html(rowData.participantName);
-            $('#primeVaccinationDate', document).html(rowData.date);
+            $('#primeVaccinationDate', document).html($filter('date')($scope.parseDate(rowData.date), $scope.cardDateFormat));
             $('#appointmentTime', document).html(rowData.startTime);
             $('#location', document).html(rowData.location);
         };
@@ -1045,10 +1029,10 @@
 
         $scope.setPrintData = function(document) {
 
-            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#versionDate', document).html($filter('date')(new Date(), $scope.cardDateTimeFormat));
             $('#subjectId', document).html($scope.selectedSubject.subjectId);
             $('#subjectName', document).html($scope.selectedSubject.name);
-            $('#primeVacFirstFollowup', document).html($scope.visitPlannedDates.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
+            $('#primeVacFirstFollowup', document).html($filter('date')($scope.parseDate($scope.visitPlannedDates.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT), $scope.cardDateFormat));
             $('#location', document).html($scope.selectedSubject.location);
         };
 
@@ -1090,7 +1074,7 @@
 
     });
 
-    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http, $timeout) {
+    controllers.controller('BookingAppRescheduleCtrl', function ($scope, $http, $timeout, $filter) {
         $scope.getLookups("../booking-app/getLookupsForVisitReschedule");
 
         $scope.$parent.selectedFilter.startDate = undefined;
@@ -1194,11 +1178,11 @@
 
         $scope.setPrintData = function(document, location, participantId, participantName, plannedDate) {
 
-            $('#versionDate', document).html($scope.getCurrentDate());
+            $('#versionDate', document).html($filter('date')(new Date(), $scope.cardDateTimeFormat));
             $('#location', document).html(location);
             $('#subjectId', document).html(participantId);
             $('#subjectName', document).html(participantName);
-            $('#date', document).html(plannedDate);
+            $('#date', document).html($filter('date')($scope.parseDate(plannedDate), $scope.cardDateFormat));
         };
 
         $scope.print = function() {
