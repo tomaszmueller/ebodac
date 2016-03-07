@@ -85,7 +85,7 @@
         };
     }]);
 
-    directives.directive('screeningGrid', function ($compile) {
+    directives.directive('screeningGrid', function ($compile, $timeout) {
 
         function createButton(id) {
             return '<button type="button" class="btn btn-primary btn-sm ng-binding compileBtn" ng-click="printRow(' +
@@ -95,7 +95,7 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var elem = angular.element(element);
+                var elem = angular.element(element), eventChange, eventResize;
 
                 elem.jqGrid({
                     url: "../booking-app/screenings",
@@ -182,11 +182,28 @@
                     }).trigger('reloadGrid');
                 });
 
+                $(window).on('resize', function() {
+                    clearTimeout(eventResize);
+                    eventResize = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                        $(".ui-layout-content").scrollTop(0);
+                    }, 200);
+                }).trigger('resize');
+
+                $('#inner-center').on('change', function() {
+                    clearTimeout(eventChange);
+                    eventChange = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                    }, 200);
+                });
+
             }
         };
     });
 
-    directives.directive('unscheduledVisitGrid', function ($compile) {
+    directives.directive('unscheduledVisitGrid', function ($compile, $timeout) {
 
         var gridDataExtension;
 
@@ -209,7 +226,7 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var elem = angular.element(element);
+                var elem = angular.element(element), eventChange, eventResize;
 
                 elem.jqGrid({
                     url: "../booking-app/unscheduledVisits",
@@ -313,11 +330,27 @@
                     }).trigger('reloadGrid');
                 });
 
+                $(window).on('resize', function() {
+                    clearTimeout(eventResize);
+                    eventResize = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                        $(".ui-layout-content").scrollTop(0);
+                    }, 200);
+                }).trigger('resize');
+
+                $('#inner-center').on('change', function() {
+                    clearTimeout(eventChange);
+                    eventChange = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                    }, 200);
+                });
             }
         };
     });
 
-    directives.directive('primeVaccinationGrid', function ($compile) {
+    directives.directive('primeVaccinationGrid', function ($compile, $timeout) {
 
         var gridDataExtension;
         var rowsToColor = [];
@@ -345,7 +378,7 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var elem = angular.element(element);
+                var elem = angular.element(element), eventChange, eventResize;
 
                 elem.jqGrid({
                     url: "../booking-app/primeVaccinationSchedule",
@@ -486,11 +519,28 @@
                     }
                     return cellValue;
                 }
+
+                $(window).on('resize', function() {
+                    clearTimeout(eventResize);
+                    eventResize = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                        $(".ui-layout-content").scrollTop(0);
+                    }, 200);
+                }).trigger('resize');
+
+                $('#inner-center').on('change', function() {
+                    clearTimeout(eventChange);
+                    eventChange = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                    }, 200);
+                });
             }
         };
     });
 
-    directives.directive('visitRescheduleGrid', function ($compile) {
+    directives.directive('visitRescheduleGrid', function ($compile, $timeout) {
 
         var gridDataExtension;
         var rowsToColor = [];
@@ -517,7 +567,7 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var elem = angular.element(element);
+                var elem = angular.element(element), eventChange, eventResize;
 
                 elem.jqGrid({
                     url: "../booking-app/visitReschedule",
@@ -675,16 +725,33 @@
                     }
                     return cellValue;
                 }
+
+                $(window).on('resize', function() {
+                    clearTimeout(eventResize);
+                    eventResize = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                        $(".ui-layout-content").scrollTop(0);
+                    }, 200);
+                }).trigger('resize');
+
+                $('#inner-center').on('change', function() {
+                    clearTimeout(eventChange);
+                    eventChange = $timeout(function() {
+                        scope.resizeGridWidth(attrs.id);
+                        scope.resizeGridHeight(attrs.id);
+                    }, 200);
+                });
             }
         };
     });
 
-    directives.directive('capacityInfoGrid', function () {
+    directives.directive('capacityInfoGrid', function ($timeout) {
 
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var elem = angular.element(element);
+                var elem = angular.element(element), eventChange, eventResize;
 
                 elem.jqGrid({
                     url: "../booking-app/capacity/getCapacityInfo",
@@ -754,6 +821,23 @@
                     $('#' + attrs.id).jqGrid('setGridParam', {
                         page: 1
                     }).trigger('reloadGrid');
+                });
+
+                $(window).on('resize', function() {
+                    clearTimeout(eventResize);
+                    eventResize = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                        $(".ui-layout-content").scrollTop(0);
+                    }, 200);
+                }).trigger('resize');
+
+                $('#inner-center').on('change', function() {
+                    clearTimeout(eventChange);
+                    eventChange = $timeout(function() {
+                        scope.resizeGridHeight(attrs.id);
+                        scope.resizeGridWidth(attrs.id);
+                    }, 200);
                 });
             }
         };

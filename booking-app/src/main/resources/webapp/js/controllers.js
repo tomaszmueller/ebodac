@@ -421,6 +421,29 @@
             }
             return map;
         };
+
+        $scope.resizeGridHeight = function(gridId) {
+            var intervalHeightResize, gap, tableHeight;
+            clearInterval(intervalHeightResize);
+            intervalHeightResize = setInterval( function () {
+                if ($('.overrideJqgridTable').offset() !== undefined) {
+                    gap = 1 + $('.overrideJqgridTable').offset().top - $('.inner-center .ui-layout-content').offset().top;
+                    tableHeight = Math.floor($('.inner-center .ui-layout-content').height() - gap - $('.ui-jqgrid-pager').outerHeight() - $('.ui-jqgrid-hdiv').outerHeight());
+                    $('#' + gridId).jqGrid("setGridHeight", tableHeight);
+                }
+                clearInterval(intervalHeightResize);
+            }, 250);
+         }
+
+        $scope.resizeGridWidth = function(gridId) {
+            var intervalWidthResize, tableWidth;
+            clearInterval(intervalWidthResize);
+            intervalWidthResize = setInterval( function () {
+                tableWidth = $('.overrideJqgridTable').width();
+                $('#' + gridId).jqGrid("setGridWidth", tableWidth);
+                clearInterval(intervalWidthResize);
+            }, 250);
+        }
     });
 
     controllers.controller('BookingAppSettingsCtrl', function ($scope, $http, $timeout) {
