@@ -42,6 +42,8 @@
 
     <osgi:service ref="lookupService" interface="org.motechproject.ebodac.service.LookupService" />
 
+    <osgi:service ref="statisticService" interface="org.motechproject.ebodac.service.StatisticService" />
+
     <osgi:reference id="reportPrimerVaccinationDataService"
                     interface="org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService" />
 
