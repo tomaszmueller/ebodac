@@ -637,4 +637,130 @@
         }
     });
 
+    /*
+     *
+     * Statistics
+     *
+     */
+    controllers.controller('EbodacStatisticsCtrl', function ($scope, $http, $timeout, $routeParams, $controller) {
+
+        $controller('EbodacMessagesCtrl', {$scope: $scope});
+
+        innerLayout({
+            spacing_closed: 30,
+            east__minSize: 200,
+            east__maxSize: 350
+        });
+
+        $scope.filters = [{
+            name: $scope.msg('ebodac.screening.yesterday'),
+            dateFilter: "YESTERDAY"
+        },{
+            name: $scope.msg('ebodac.screening.lastWeek'),
+            dateFilter: "LAST_WEEK"
+        },{
+            name: $scope.msg('ebodac.screening.lastMonth'),
+            dateFilter: "LAST_MONTH"
+        },{
+            name: $scope.msg('ebodac.screening.dateRange'),
+            dateFilter: "DATE_RANGE"
+        }];
+
+        $scope.selectedFilter = $scope.filters[1];
+
+        $scope.selectFilter = function(value) {
+            $scope.selectedFilter = $scope.filters[value];
+            if (value !== 3) {
+                $scope.reloadData();
+            }
+        };
+
+        $scope.reloadData = function() {
+            $scope.loadData();
+        }
+
+        $scope.backToStatistics = function() {
+            window.location.replace('#/ebodac/statistics');
+        }
+
+        $scope.tableType = $routeParams.tableType;
+        $scope.graphType = $routeParams.graphType;
+
+        $scope.tableHeaders = [];
+        $scope.tableData = {};
+        $scope.graphData = {};
+
+        $scope.loadData = function() {
+            var url;
+
+            if ($scope.tableType !== undefined && $scope.tableType !== null) {
+                $scope.pageHeader = $scope.msg('ebodac.web.statistics.table.' + $scope.tableType);
+                url = "../ebodac/statistic/table/" + $scope.tableType + "?dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                if ($scope.selectedFilter.startDate) {
+                    url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                }
+
+                if ($scope.selectedFilter.endDate) {
+                    url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                }
+
+                $http.post(url)
+                .success(function(response) {
+                    $scope.tableHeaders = response.headers;
+                    if (response.data !== null && response.data !== undefined) {
+                        $scope.tableData = response.data;
+                    } else {
+                        $scope.tableData = [];
+                    }
+                })
+                .error(function(response) {
+                    motechAlert('ebodac.web.statistics.getStatistics.' + $scope.tableType + '.error', 'ebodac.web.statistics.error', $scope.getMessageFromData(response));
+                });
+            } else if ($scope.graphType !== undefined && $scope.graphType !== null) {
+                $scope.pageHeader = $scope.msg('ebodac.web.statistics.graphs.' + $scope.graphType);
+                url = "../ebodac/statistic/graphs/" + $scope.graphType + "?dateFilter=" + $scope.selectedFilter.dateFilter;
+
+                if ($scope.selectedFilter.startDate) {
+                    url = url + "&startDate=" + $scope.selectedFilter.startDate;
+                }
+
+                if ($scope.selectedFilter.endDate) {
+                    url = url + "&endDate=" + $scope.selectedFilter.endDate;
+                }
+
+                $http.post(url)
+                .success(function(response) {
+                    var i, j, labels = {}, data = {};
+
+                    $scope.graphs = response.graphs;
+                    if (response.data !== null && response.data !== undefined) {
+                        for (i = 0; i < $scope.graphs.length; i += 1) {
+                            var tmpLabels = [], tmpData = [];
+
+                            for (j = 0; j < response.headers[i].length; j += 1) {
+                                tmpLabels[j] = $scope.msg('ebodac.web.statistics.' + $scope.graphType + '.' + response.headers[i][j])
+                                tmpData[j] = response.data[response.headers[i][j]];
+                            }
+
+                            labels[$scope.graphs[i]] = tmpLabels;
+                            data[$scope.graphs[i]] = tmpData;
+                        }
+                    }
+
+                    $scope.labels = labels;
+                    $scope.data = data;
+                })
+                .error(function(response) {
+                    motechAlert('ebodac.web.statistics.getStatistics.' + $scope.graphType + '.error', 'ebodac.web.statistics.error', $scope.getMessageFromData(response));
+                });
+            } else {
+                $scope.pageHeader = $scope.msg('ebodac.web.statistics.ivrEngagement');
+            }
+        }
+
+        $scope.loadData();
+
+    });
+
 }());

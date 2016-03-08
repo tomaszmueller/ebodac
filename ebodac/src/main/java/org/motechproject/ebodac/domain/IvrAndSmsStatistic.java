@@ -18,6 +18,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getTotalAmount() {
+        if (totalAmount == null) {
+            return 0L;
+        }
         return totalAmount;
     }
 
@@ -26,6 +29,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getTotalPending() {
+        if (totalPending == null) {
+            return 0L;
+        }
         return totalPending;
     }
 
@@ -34,6 +40,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getTotalFailed() {
+        if (totalFailed == null) {
+            return 0L;
+        }
         return totalFailed;
     }
 
@@ -42,6 +51,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getTotalSucceed() {
+        if (totalSucceed == null) {
+            return 0L;
+        }
         return totalSucceed;
     }
 
@@ -50,6 +62,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getSendToMen() {
+        if (sendToMen == null) {
+            return 0L;
+        }
         return sendToMen;
     }
 
@@ -58,6 +73,9 @@ public class IvrAndSmsStatistic {
     }
 
     public Long getSendToWomen() {
+        if (sendToWomen == null) {
+            return 0L;
+        }
         return sendToWomen;
     }
 

@@ -51,6 +51,8 @@ public final class EbodacConstants {
 
     public static final String EBODAC_MODULE = "EBODAC Module";
 
+    public static final String DATE_PICKER_DATE_FORMAT = "yyyy-MM-dd";
+
     public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
     public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
 

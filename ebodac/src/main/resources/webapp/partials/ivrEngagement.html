@@ -1,0 +1,15 @@
+<div class="row">
+    <h4 class="frame-title">{{ pageHeader }}</h4>
+
+    <div class="clearfix toolbox form-horizontal">
+        <button ng-click="backToStatistics()" type="button" class="btn btn-primary">
+            <i class="fa fa-lg fa-level-up"></i>
+            {{msg('ebodac.btn.backToStatistics')}}
+        </button>
+    </div>
+
+    <div id="ivrEngagementStatistic" class="overrideJqgridTable">
+        <table id="ivrEngagementStatisticTable" ivr-engagement-statistic-grid="pageIvrEngagementStatisticTable"></table>
+        <div id="pageIvrEngagementStatisticTable"></div>
+    </div>
+</div>

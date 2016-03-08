@@ -7,6 +7,7 @@
             <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.visits')}}</li>
             <li ng-show="active('#/ebodac/reports')" ng-class="active('#/ebodac/reports')">{{msg('ebodac.web.reports.title')}}</li>
             <li ng-show="active('#/ebodac/enrollment')" ng-class="active('#/ebodac/enrollment')">{{msg('ebodac.web.enrollment.title')}}</li>
+            <li ng-show="active('#/ebodac/statistics')" ng-class="active('#/ebodac/statistics')">{{msg('ebodac.web.statistics.title')}}</li>
             <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')">{{msg('ebodac.web.settings.title')}}</li>
         </ul>
     </div>
@@ -16,6 +17,7 @@
             <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
             <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/reports')"><a ng-href="#/ebodac/reports" >{{msg('ebodac.web.reports.title')}}</a></li>
             <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/enrollment')"><a href="#/ebodac/enrollment" >{{msg('ebodac.web.enrollment.title')}}</a></li>
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/statistics')"><a ng-href="#/ebodac/statistics" >{{msg('ebodac.web.statistics.title')}}</a></li>
             <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')"><a href="#/ebodac/settings">{{msg('ebodac.web.settings.title')}}</a></li>
         </ul>
     </div>
