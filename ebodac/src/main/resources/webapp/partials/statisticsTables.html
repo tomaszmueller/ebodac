@@ -1,0 +1,42 @@
+<div class="row">
+    <h4 class="frame-title">{{ pageHeader }}</h4>
+
+    <div class="row inside form-inline">
+        <button ng-click="backToStatistics()" type="button" class="btn btn-primary">
+            <i class="fa fa-lg fa-level-up"></i>
+            {{msg('ebodac.btn.backToStatistics')}}
+        </button>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default">{{selectedFilter.name}}</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="filter in filters"><a ng-click="selectFilter($index)">{{filter.name}}</a></li>
+            </ul>
+        </div>
+        <div class="form-group" ng-if="selectedFilter === filters[3]">
+            <div class="input-group">
+                <span class="left input-group-addon">{{msg('ebodac.filter.from')}}</span>
+                <input type="text" class="form-control" mds-date-picker ebodac-reload-trigger placeholder="{{msg('ebodac.datePlaceholder')}}" ng-model="selectedFilter.startDate">
+                <span class="middle input-group-addon">{{msg('ebodac.filter.to')}}</span>
+                <input type="text" class="form-control" mds-date-picker ebodac-reload-trigger placeholder="{{msg('ebodac.datePlaceholder')}}" ng-model="selectedFilter.endDate">
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bundles table-bordered table-striped table-lightblue table-condensed table-centered margin-before2">
+        <thead>
+        <tr>
+            <th ng-repeat='header in tableHeaders'>{{msg('ebodac.web.statistics.' + tableType + '.' + header)}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td ng-repeat='header in tableHeaders'>{{tableData[header]}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

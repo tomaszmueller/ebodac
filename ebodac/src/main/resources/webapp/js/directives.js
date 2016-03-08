@@ -53,6 +53,18 @@
         };
     });
 
+    directives.directive('ebodacReloadTrigger', function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, element, attrs) {
+                scope.$watch("$parent." + attrs.ngModel, function () {
+                    scope.reloadData();
+                });
+            }
+        };
+    });
+
     directives.directive('reportGrid', function($http) {
         return {
             restrict: 'A',
@@ -360,6 +372,90 @@
                         postData: {
                         }
                     }).trigger('reloadGrid');
+                });
+            }
+        };
+    });
+
+    directives.directive('ivrEngagementStatisticGrid', function($http, $timeout) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var elem = angular.element(element), filters;
+
+                elem.jqGrid({
+                    url: '../ebodac/getIvrEngagementStatistic',
+                    datatype: 'json',
+                    jsonReader:{
+                        repeatitems:false,
+                        root: function (obj) {
+                            return obj;
+                        }
+                    },
+                    mtype: "POST",
+                    prmNames: {
+                        sort: 'sortColumn',
+                        order: 'sortDirection'
+                    },
+                    shrinkToFit: true,
+                    forceFit: true,
+                    autowidth: true,
+                    rownumbers: true,
+                    rowNum: 50,
+                    rowList: [10, 20, 50, 100],
+                    colNames: ['rowId', scope.msg('ebodac.web.statistics.subjectId'), scope.msg('ebodac.web.statistics.callsExpected'),
+                               scope.msg('ebodac.web.statistics.pushedSuccessfully'), scope.msg('ebodac.web.statistics.received'),
+                               scope.msg('ebodac.web.statistics.activelyListened'), scope.msg('ebodac.web.statistics.failed')],
+                    colModel: [{
+                       name: 'rowId',
+                       index: 'rowId',
+                       hidden: true,
+                       key: true
+                    }, {
+                       name: 'subjectId',
+                       index: 'subjectId',
+                       align: 'center'
+                    }, {
+                        name: 'callsExpected',
+                        index: 'callsExpected',
+                        align: 'center'
+                    }, {
+                        name: 'pushedSuccessfully',
+                        index: 'pushedSuccessfully',
+                        align: 'center'
+                    }, {
+                        name: 'received',
+                        index: 'received',
+                        align: 'center'
+                    }, {
+                        name: 'activelyListened',
+                        index: 'activelyListened',
+                        align: 'center'
+                    }, {
+                        name: 'failed',
+                        index: 'failed',
+                        align: 'center'
+                    }],
+                    pager: '#' + attrs.ivrEngagementStatisticGrid,
+                    width: '100%',
+                    height: 'auto',
+                    sortname: 'subjectId',
+                    sortorder: 'asc',
+                    viewrecords: true,
+                    loadonce: true,
+                    gridview: true,
+                    loadComplete : function(array) {
+                        $('.ui-jqgrid-htable').addClass('table-lightblue');
+                        $('.ui-jqgrid-btable').addClass("table-lightblue");
+                        if (elem.getGridParam('datatype') === "json") {
+                            setTimeout(function () {
+                               elem.trigger("reloadGrid");
+                            }, 10);
+                        }
+                    },
+                    gridComplete: function () {
+                      elem.jqGrid('setGridWidth', '100%');
+                    }
                 });
             }
         };
