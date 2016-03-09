@@ -102,6 +102,46 @@ public interface VisitDataService extends MotechDataService<Visit> {
     List<Visit> findByActualDateRangeStageIdAndSiteName(@LookupField(name = "date") Range<LocalDate> dateRange,
                                                             @LookupField(name = "subject.stageId") Long stageId,
                                                             @LookupField(name = "subject.siteName") String siteName);
+
+    /**
+     *  Day 8 and Day 58 Report Lookups
+     */
+
+    @Lookup
+    List<Visit> findByTypeSet(@LookupField(name = "type") Set<VisitType> visitType);
+
+    @Lookup
+    List<Visit> findByVisitTypeActualVisitDateAndSiteName(@LookupField(name = "type") VisitType visitType,
+                                                               @LookupField(name = "date") Range<LocalDate> motechProjectedDateRange,
+                                                               @LookupField(name = "subject.siteName", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName);
+
+    @Lookup
+    List<Visit> findByVisitTypeActualVisitDateAndStageId(@LookupField(name = "type") VisitType visitType,
+                                                               @LookupField(name = "date") Range<LocalDate> motechProjectedDateRange,
+                                                               @LookupField(name = "subject.stageId") Long stageId);
+
+    @Lookup
+    List<Visit> findByVisitTypeAndActualVisitDate(@LookupField(name = "type") VisitType visitType,
+                                                               @LookupField(name = "date") Range<LocalDate> motechProjectedDateRange);
+
+    @Lookup
+    List<Visit> findByVisitTypeAndSiteName(@LookupField(name = "type") VisitType visitType,
+                                           @LookupField(name = "subject.siteName", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName);
+
+    @Lookup
+    List<Visit> findByVisitTypeAndStageId(@LookupField(name = "type") VisitType visitType,
+                                          @LookupField(name = "subject.stageId") Long stageId);
+
+    @Lookup
+    List<Visit> findByVisitTypePlannedVisitDateAndSiteName(@LookupField(name = "type") VisitType visitType,
+                                                               @LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
+                                                               @LookupField(name = "subject.siteName", customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName);
+
+    @Lookup
+    List<Visit> findByVisitTypePlannedVisitDateAndStageId(@LookupField(name = "type") VisitType visitType,
+                                                               @LookupField(name = "motechProjectedDate") Range<LocalDate> motechProjectedDateRange,
+                                                               @LookupField(name = "subject.stageId") Long stageId);
+
     /**
      *  Followups After Prime Injection Report Lookups
      */

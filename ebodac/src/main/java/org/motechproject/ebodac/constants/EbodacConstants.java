@@ -112,6 +112,7 @@ public final class EbodacConstants {
     public static final String OPTS_OUT_OF_MOTECH_MESSAGES_REPORT_NAME = "ParticipantsWhoOptOutOfReceivingMotechMessagesReport";
     public static final String SCREENING_REPORT_NAME = "ScreeningReport";
     public static final String IVR_AND_SMS_STATISTIC_REPORT_NAME = "NumberOfTimesParticipantsListenedToEachMessageReport";
+    public static final String DAY_8_AND_DAY_57_REPORT_NAME = "Day8AndDay57Report";
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
@@ -241,6 +242,17 @@ public final class EbodacConstants {
             put("SMS",                      "sms");
             put("SMS Received Date",        "smsReceivedDate");
             put("Stage ID",                 "subject.stageId");
+        }
+    };
+
+    public static final Map<String, String> DAY_8_AND_DAY_57_REPORT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Participant Id",           "subject.subjectId");
+            put("Visit type",               "type");
+            put("Planned Visit Date",       "motechProjectedDate");
+            put("Actual Visit Date",        "date");
+            put("Stage ID",                 "subject.stageId");
+            put("Site Name",                "subject.siteName");
         }
     };
 
