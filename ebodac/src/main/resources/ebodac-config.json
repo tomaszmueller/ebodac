@@ -63,5 +63,6 @@
   "sendSmsIfVoiceFails":true,
   "detectVoiceMail":true,
   "retryAttempts":3,
-  "retryDelay":15
+  "retryDelay":15,
+  "setDisabledIvrCallsForStages":""
 }

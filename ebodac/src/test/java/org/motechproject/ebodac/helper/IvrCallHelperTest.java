@@ -377,6 +377,134 @@ public class IvrCallHelperTest {
         verify(outboundCallService, never()).initiateCall(config.getIvrSettingsName(), callParams);
     }
 
+    @Test
+    public void shouldNotSendIvrCallWhenDisabledIvrCallsForStagesContainsSubjectStageId() {
+        String campaignName = "campaign";
+        String messageKey = "message";
+        String externalId = "1";
+
+        String subjectPhoneNumber = "123";
+        String votoMessageId = "456";
+        String votoLanguageId = "789";
+
+        String subscribers = "[{\"phone\":\"123\",\"language\":\"789\"}]";
+        String subjectIds = "1";
+
+        Subject subject = new Subject();
+        subject.setSubjectId(externalId);
+        subject.setPhoneNumber(subjectPhoneNumber);
+        subject.setLanguage(Language.English);
+        subject.setStageId(4l);
+        when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
+
+        VotoLanguage votoLanguage = new VotoLanguage();
+        votoLanguage.setLanguage(Language.English);
+        votoLanguage.setVotoId(votoLanguageId);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+
+        VotoMessage votoMessage = new VotoMessage();
+        votoMessage.setMessageKey(messageKey);
+        votoMessage.setVotoIvrId(votoMessageId);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
+
+        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+
+        Config config = new Config();
+        config.setSendIvrCalls(true);
+        config.setDisabledIvrCallsForStages("1,2, 4");
+        config.setIvrSettingsName("Voto");
+        config.setApiKey("apiKey");
+        config.setStatusCallbackUrl("url");
+        config.setSendSmsIfVoiceFails(true);
+        config.setDetectVoiceMail(true);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
+        when(configService.getConfig()).thenReturn(config);
+
+        Map<String, String> callParams = new HashMap<>();
+        callParams.put(EbodacConstants.API_KEY, config.getApiKey());
+        callParams.put(EbodacConstants.MESSAGE_ID, votoMessageId);
+        callParams.put(EbodacConstants.STATUS_CALLBACK_URL, config.getStatusCallbackUrl());
+        callParams.put(EbodacConstants.SUBSCRIBERS, subscribers);
+        callParams.put(EbodacConstants.SEND_SMS_IF_VOICE_FAILS, "1");
+        callParams.put(EbodacConstants.DETECT_VOICEMAIL, "1");
+        callParams.put(EbodacConstants.RETRY_ATTEMPTS_SHORT, config.getRetryAttempts().toString());
+        callParams.put(EbodacConstants.RETRY_DELAY_SHORT, config.getRetryDelay().toString());
+        callParams.put(EbodacConstants.RETRY_ATTEMPTS_LONG, EbodacConstants.RETRY_ATTEMPTS_LONG_DEFAULT);
+        callParams.put(EbodacConstants.SUBJECT_IDS, subjectIds);
+        callParams.put(EbodacConstants.SUBJECT_PHONE_NUMBER, subjectPhoneNumber);
+
+        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+
+        verify(outboundCallService, never()).initiateCall(config.getIvrSettingsName(), callParams);
+
+    }
+
+    @Test
+    public void shouldSendIvrCallWhenDisabledIvrCallsForStagesIsEmpty() {
+        String campaignName = "campaign";
+        String messageKey = "message";
+        String externalId = "1";
+
+        String subjectPhoneNumber = "123";
+        String votoMessageId = "456";
+        String votoLanguageId = "789";
+
+        String subscribers = "[{\"phone\":\"123\",\"language\":\"789\"}]";
+        String subjectIds = "1";
+
+        Subject subject = new Subject();
+        subject.setSubjectId(externalId);
+        subject.setPhoneNumber(subjectPhoneNumber);
+        subject.setLanguage(Language.English);
+        subject.setStageId(4l);
+        when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
+
+        VotoLanguage votoLanguage = new VotoLanguage();
+        votoLanguage.setLanguage(Language.English);
+        votoLanguage.setVotoId(votoLanguageId);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+
+        VotoMessage votoMessage = new VotoMessage();
+        votoMessage.setMessageKey(messageKey);
+        votoMessage.setVotoIvrId(votoMessageId);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
+
+        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+
+        Config config = new Config();
+        config.setSendIvrCalls(true);
+        config.setDisabledIvrCallsForStages(null);
+        config.setIvrSettingsName("Voto");
+        config.setApiKey("apiKey");
+        config.setStatusCallbackUrl("url");
+        config.setSendSmsIfVoiceFails(true);
+        config.setDetectVoiceMail(true);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
+        when(configService.getConfig()).thenReturn(config);
+
+        Map<String, String> callParams = new HashMap<>();
+        callParams.put(EbodacConstants.API_KEY, config.getApiKey());
+        callParams.put(EbodacConstants.MESSAGE_ID, votoMessageId);
+        callParams.put(EbodacConstants.STATUS_CALLBACK_URL, config.getStatusCallbackUrl());
+        callParams.put(EbodacConstants.SUBSCRIBERS, subscribers);
+        callParams.put(EbodacConstants.SEND_SMS_IF_VOICE_FAILS, "1");
+        callParams.put(EbodacConstants.DETECT_VOICEMAIL, "1");
+        callParams.put(EbodacConstants.RETRY_ATTEMPTS_SHORT, config.getRetryAttempts().toString());
+        callParams.put(EbodacConstants.RETRY_DELAY_SHORT, config.getRetryDelay().toString());
+        callParams.put(EbodacConstants.RETRY_ATTEMPTS_LONG, EbodacConstants.RETRY_ATTEMPTS_LONG_DEFAULT);
+        callParams.put(EbodacConstants.SUBJECT_IDS, subjectIds);
+        callParams.put(EbodacConstants.SUBJECT_PHONE_NUMBER, subjectPhoneNumber);
+
+        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+
+        verify(outboundCallService, times(1)).initiateCall(config.getIvrSettingsName(), callParams);
+
+    }
+
     @Test(expected = EbodacInitiateCallException.class)
     public void shouldThrowExceptionWhenSubjectNotFound() {
         String campaignName = "campaign";

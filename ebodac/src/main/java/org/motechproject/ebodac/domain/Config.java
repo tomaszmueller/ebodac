@@ -110,6 +110,8 @@ public class Config {
 
     private Integer retryDelay;
 
+    private String disabledIvrCallsForStages;
+
     public Config() {
     }
 
@@ -551,5 +553,13 @@ public class Config {
 
     public void setRetryDelay(Integer retryDelay) {
         this.retryDelay = retryDelay;
+    }
+
+    public String getDisabledIvrCallsForStages() {
+        return disabledIvrCallsForStages;
+    }
+
+    public void setDisabledIvrCallsForStages(String disabledIvrCallsForStages) {
+        this.disabledIvrCallsForStages = disabledIvrCallsForStages;
     }
 }
