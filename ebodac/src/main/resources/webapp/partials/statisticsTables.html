@@ -17,7 +17,7 @@
                 <li ng-repeat="filter in filters"><a ng-click="selectFilter($index)">{{filter.name}}</a></li>
             </ul>
         </div>
-        <div class="form-group" ng-if="selectedFilter === filters[3]">
+        <div class="form-group" ng-if="selectedFilter === filters[5]">
             <div class="input-group">
                 <span class="left input-group-addon">{{msg('ebodac.filter.from')}}</span>
                 <input type="text" class="form-control" mds-date-picker ebodac-reload-trigger placeholder="{{msg('ebodac.datePlaceholder')}}" ng-model="selectedFilter.startDate">

@@ -13,11 +13,29 @@ public enum DateFilter {
         }
     },
 
-    LAST_WEEK {
+    LAST_7_DAYS {
         @Override
         public Range<LocalDate> getRange() {
             LocalDate endDate = LocalDate.now().minusDays(1);
-            LocalDate startDate = endDate.minusDays(6);  //NO CHECKSTYLE MagicNumber
+            LocalDate startDate = endDate.minusDays(6); //NO CHECKSTYLE MagicNumber
+            return new Range<>(startDate, endDate);
+        }
+    },
+
+    LAST_WEEK {
+        @Override
+        public Range<LocalDate> getRange() {
+            LocalDate endDate = LocalDate.now().withDayOfWeek(1).minusDays(1);
+            LocalDate startDate = endDate.minusDays(6); //NO CHECKSTYLE MagicNumber
+            return new Range<>(startDate, endDate);
+        }
+    },
+
+    LAST_30_DAYS {
+        @Override
+        public Range<LocalDate> getRange() {
+            LocalDate endDate = LocalDate.now().minusDays(1);
+            LocalDate startDate = endDate.minusDays(30); //NO CHECKSTYLE MagicNumber
             return new Range<>(startDate, endDate);
         }
     },
@@ -25,8 +43,8 @@ public enum DateFilter {
     LAST_MONTH {
         @Override
         public Range<LocalDate> getRange() {
-            LocalDate endDate = LocalDate.now().minusDays(1);
-            LocalDate startDate = endDate.minusMonths(1);
+            LocalDate endDate = LocalDate.now().withDayOfMonth(1).minusDays(1);
+            LocalDate startDate = endDate.withDayOfMonth(1);
             return new Range<>(startDate, endDate);
         }
     },

@@ -663,8 +663,14 @@
             name: $scope.msg('ebodac.screening.yesterday'),
             dateFilter: "YESTERDAY"
         },{
+            name: $scope.msg('ebodac.screening.lastSevenDays'),
+            dateFilter: "LAST_7_DAYS"
+        },{
             name: $scope.msg('ebodac.screening.lastWeek'),
             dateFilter: "LAST_WEEK"
+        },{
+            name: $scope.msg('ebodac.screening.lastThirtyDays'),
+            dateFilter: "LAST_30_DAYS"
         },{
             name: $scope.msg('ebodac.screening.lastMonth'),
             dateFilter: "LAST_MONTH"
@@ -673,11 +679,11 @@
             dateFilter: "DATE_RANGE"
         }];
 
-        $scope.selectedFilter = $scope.filters[1];
+        $scope.selectedFilter = $scope.filters[0];
 
         $scope.selectFilter = function(value) {
             $scope.selectedFilter = $scope.filters[value];
-            if (value !== 3) {
+            if (value !== 5) {
                 $scope.reloadData();
             }
         };
