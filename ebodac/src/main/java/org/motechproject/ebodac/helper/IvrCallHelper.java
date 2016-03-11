@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
@@ -52,8 +53,8 @@ public class IvrCallHelper {
     public void initiateIvrCall(String campaignName, String messageKey, String externalId) {
         Config config = configService.getConfig();
 
-        if (config.getSendIvrCalls() != null && config.getSendIvrCalls()) {
-            Subject subject = getSubject(externalId);
+        Subject subject = getSubject(externalId);
+        if (config.getSendIvrCalls() != null && config.getSendIvrCalls() && checkIfCallsForThisStageAreEnabled(config, subject.getStageId())) {
             String votoLanguageId = getVotoLanguageId(subject.getLanguage(), externalId);
             String votoMessageId = getVotoMessageId(messageKey, externalId);
 
@@ -97,6 +98,21 @@ public class IvrCallHelper {
 
             outboundCallService.initiateCall(config.getIvrSettingsName(), callParams);
         }
+    }
+
+    private boolean checkIfCallsForThisStageAreEnabled(Config config, Long stageId) {
+        if(StringUtils.isBlank(config.getDisabledIvrCallsForStages()) ) {
+            return true;
+        }
+        String stagesWithoutSpaces = config.getDisabledIvrCallsForStages().replaceAll("\\s+", "");
+        String[] ignoredCalls = stagesWithoutSpaces.split(",");
+        for (int i = 0; i < ignoredCalls.length; i++) {
+            String numberAsString = ignoredCalls[i];
+            if (StringUtils.isNotBlank(numberAsString) && Long.valueOf(numberAsString).equals(stageId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Subject getSubject(String subjectId) {

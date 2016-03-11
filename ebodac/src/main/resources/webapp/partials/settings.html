@@ -265,6 +265,14 @@
                         <input class="form-control" id="retryDelay" type="number" ng-model="config.retryDelay" ng-required="config.sendIvrCalls">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="disabledIvrCallsForStages">{{msg('ebodac.web.settings.calls.disabledIvrCallsForStages')}}</label>
+                    <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.calls.disabledIvrCallsForStages.tooltip')}}">
+                        <input class="form-control" id="disabledIvrCallsForStages" type="text" ng-model="config.disabledIvrCallsForStages" ng-pattern="/^([0-9]*)(\s*,\s*[0-9]+)*$/">
+                    </div>
+                </div>
+
             </div>
 
             <div class="form-inline">
