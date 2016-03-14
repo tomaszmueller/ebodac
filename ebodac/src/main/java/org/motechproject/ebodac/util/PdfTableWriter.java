@@ -21,6 +21,8 @@ public class PdfTableWriter implements TableWriter {
 
     private static final float WIDTH_PERCENTAGE = 100.0F;
 
+    private static final float CELL_PADDING_BOTTOM = 5.0F;
+
     private PdfBasicTemplate template;
 
     protected PdfPTable dataTable; //NO CHECKSTYLE VisibilityModifierCheck
@@ -44,6 +46,7 @@ public class PdfTableWriter implements TableWriter {
             PdfPCell cell = new PdfPCell(paragraph);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPaddingBottom(CELL_PADDING_BOTTOM);
             this.dataTable.addCell(cell);
         }
     }
@@ -58,6 +61,7 @@ public class PdfTableWriter implements TableWriter {
             cell.setBackgroundColor(BaseColor.GRAY);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPaddingBottom(CELL_PADDING_BOTTOM);
             this.dataTable.addCell(cell);
         }
     }
