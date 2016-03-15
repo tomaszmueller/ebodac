@@ -436,7 +436,7 @@
                 case "screeningReport":
                     url = "../ebodac/exportScreeningReport";
                     break;
-                case "ivrAndSmsStatisticReport":
+                case "day8AndDay57Report":
                     url = "../ebodac/exportDay8AndDay57Report";
                     break;
             }
