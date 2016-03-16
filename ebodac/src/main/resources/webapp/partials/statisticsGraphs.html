@@ -27,8 +27,10 @@
         </div>
     </div>
 
-    <div class="margin-before3" ng-repeat="graph in graphs">
-        <h4 class="frame-title title-centred">{{msg('ebodac.web.statistics.graphs.' + graph)}}</h4>
-        <canvas id="pie" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" height="100"></canvas>
+    <div class="margin-before">
+        <div class="col-md-6" ng-repeat="graph in graphs">
+            <h4 class="frame-title title-centred">{{msg('ebodac.web.statistics.graphs.' + graph)}}</h4>
+            <canvas id="pie" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" height="200"></canvas>
+        </div>
     </div>
 </div>
