@@ -702,6 +702,7 @@
         $scope.tableHeaders = [];
         $scope.tableData = {};
         $scope.graphData = {};
+        $scope.graphOptions = {tooltipTemplate : '<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)'};
 
         $scope.loadData = function() {
             var url;
