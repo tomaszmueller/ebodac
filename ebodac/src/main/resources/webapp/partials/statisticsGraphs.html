@@ -35,7 +35,10 @@
     <div class="margin-before">
         <div class="col-md-6 ebodac-graph" ng-repeat="graph in graphs">
             <h4 class="frame-title title-centred">{{msg('ebodac.web.statistics.graphs.' + graph)}}</h4>
-            <canvas id="{{graph}}" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" chart-options="graphOptions" chart-colours="graphColours" height="200" width="200"></canvas>
+            <canvas id="{{graph}}" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" chart-options="graphOptions" chart-colours="graphColours" height="200" width="200" ng-if="isGraphNotEmpty(graph)"></canvas>
+            <div id="graphEmptyMessage" ng-if="!isGraphNotEmpty(graph)">
+                <h3 class="frame-title title-centred">{{msg('ebodac.web.statistics.noData')}}</h3>
+            </div>
         </div>
     </div>
 
