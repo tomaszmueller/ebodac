@@ -329,7 +329,7 @@ public class ReportController {
                 ret.add(lookupDto);
             }
         }
-        return ret;
+        return DtoLookupHelper.changeLookupFieldsForDay8AndDay57Report(ret);
     }
 
     @ExceptionHandler
