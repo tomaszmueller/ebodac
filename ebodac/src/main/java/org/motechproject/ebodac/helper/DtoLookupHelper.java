@@ -16,6 +16,7 @@ import org.motechproject.ebodac.web.domain.GridSettings;
 import org.motechproject.mds.dto.LookupDto;
 import org.motechproject.mds.dto.LookupFieldDto;
 import org.motechproject.mds.dto.LookupFieldType;
+import org.motechproject.mds.dto.SettingDto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -317,6 +318,29 @@ public final class DtoLookupHelper {
 
         settings.setFields(OBJECT_MAPPER.writeValueAsString(fieldsMap));
         return settings;
+    }
+
+    public static List<LookupDto> changeLookupFieldsForDay8AndDay57Report(List<LookupDto> lookups) {
+
+        List<String> availableVisitTypes = Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString() + ":"  + VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.getValue(),
+                VisitType.BOOST_VACCINATION_DAY.toString() + ":"  + VisitType.BOOST_VACCINATION_DAY.getValue());
+        for(LookupDto lookup : lookups) {
+            for(LookupFieldDto lookupFieldDto : lookup.getLookupFields()) {
+
+                if(lookupFieldDto.getDisplayName().equals("Visit Type")) {
+                    for(SettingDto settingDto : lookupFieldDto.getSettings()) {
+
+                        if(settingDto.getName().equals("mds.form.label.values")) {
+                            settingDto.setValue(availableVisitTypes);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        return lookups;
     }
 
     private static void changeOrderForFollowupsMissedClinicVisitsReport(GridSettings settings)
