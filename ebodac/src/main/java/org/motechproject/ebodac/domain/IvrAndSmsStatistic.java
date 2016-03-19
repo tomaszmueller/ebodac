@@ -14,6 +14,10 @@ public class IvrAndSmsStatistic {
 
     private Long sendToWomen;
 
+    private Long successfulSendToMen;
+
+    private Long successfulSendToWomen;
+
     public IvrAndSmsStatistic() {
     }
 
@@ -81,5 +85,27 @@ public class IvrAndSmsStatistic {
 
     public void setSendToWomen(Long sendToWomen) {
         this.sendToWomen = sendToWomen;
+    }
+
+    public Long getSuccessfulSendToMen() {
+        if (successfulSendToMen == null) {
+            return 0L;
+        }
+        return successfulSendToMen;
+    }
+
+    public void setSuccessfulSendToMen(Long successfulSendToMen) {
+        this.successfulSendToMen = successfulSendToMen;
+    }
+
+    public Long getSuccessfulSendToWomen() {
+        if (successfulSendToWomen == null) {
+            return 0L;
+        }
+        return successfulSendToWomen;
+    }
+
+    public void setSuccessfulSendToWomen(Long successfulSentToWomen) {
+        this.successfulSendToWomen = successfulSentToWomen;
     }
 }
