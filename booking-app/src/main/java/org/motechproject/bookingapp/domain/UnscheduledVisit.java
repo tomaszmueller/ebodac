@@ -8,6 +8,7 @@ import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 
 @Entity(maxFetchDepth = 3)
 public class UnscheduledVisit {
@@ -35,6 +36,10 @@ public class UnscheduledVisit {
 
     @Field
     private String purpose;
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public Long getId() {
         return id;
@@ -90,5 +95,13 @@ public class UnscheduledVisit {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }
