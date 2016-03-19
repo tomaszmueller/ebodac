@@ -649,7 +649,7 @@
      * Statistics
      *
      */
-    controllers.controller('EbodacStatisticsCtrl', function ($scope, $http, $timeout, $routeParams, $controller) {
+    controllers.controller('EbodacStatisticsCtrl', function ($scope, $http, $routeParams, $controller, $filter, $timeout) {
 
         $controller('EbodacMessagesCtrl', {$scope: $scope});
 
@@ -696,13 +696,65 @@
             window.location.replace('#/ebodac/statistics');
         }
 
+        $scope.graphOptions = {
+            tooltipTemplate : '<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)',
+            onAnimationProgress: function() {
+                $scope.blockExportButton = true;
+                $scope.$apply();
+            },
+            onAnimationComplete: function() {
+                $scope.blockExportButton = false;
+                $scope.$apply();
+            }
+        };
+
+        $scope.graphColours = [ '#97BBCD', // blue
+                                '#F7464A', // red
+                                '#00E500', // green
+                                '#DCDCDC', // light grey
+                                '#FDB45C', // yellow
+                                '#949FB1', // grey
+                                '#4D5360'  // dark grey
+                              ];
+
         $scope.tableType = $routeParams.tableType;
         $scope.graphType = $routeParams.graphType;
 
         $scope.tableHeaders = [];
         $scope.tableData = {};
         $scope.graphData = {};
-        $scope.graphOptions = {tooltipTemplate : '<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)'};
+        $scope.graphs = [];
+
+        $scope.blockExportButton = false;
+        $scope.graphExport = {
+            exportToSeparateFiles: false,
+            selectedGraphs: []
+        }
+
+        $scope.showExportGraphsModal = function() {
+            $scope.graphExport.exportToSeparateFiles = false;
+            $scope.graphExport.selectedGraphs = angular.copy($scope.graphs);
+            $('#exportGraphsModal').modal('show');
+            $timeout(function() {
+                $('#exportGraphsSelect').select2('val', $scope.graphExport.selectedGraphs);
+            }, 50);
+        }
+
+        $scope.closeExportGraphsModal = function () {
+            $('#exportGraphsModal').modal('hide');
+        };
+
+        $scope.graphExportChanged = function(change) {
+            var value;
+
+            if (change.added) {
+                value = change.added.id;
+                $scope.graphExport.selectedGraphs.push(value);
+            } else if (change.removed) {
+                value = change.removed.id;
+                $scope.graphExport.selectedGraphs.removeObject(value);
+            }
+        };
 
         $scope.loadData = function() {
             var url;
@@ -774,6 +826,119 @@
         }
 
         $scope.loadData();
+
+        $scope.exportGraphs = function() {
+            var i, pdf = null;
+
+            $scope.blockExportButton = true;
+            $scope.closeExportGraphsModal();
+
+            var fileNameBeginning, fileNameEnd = "_" + $filter('date')(new Date(), "yyyyMMddHHmmss") + ".pdf";
+
+            if ($scope.graphExport.selectedGraphs.length === 1) {
+                fileNameBeginning = $scope.msg('ebodac.web.statistics.export.graphs.' + $scope.graphExport.selectedGraphs[0]);
+            } else {
+                fileNameBeginning = $scope.msg('ebodac.web.statistics.export.graphs.' + $scope.graphType);
+            }
+
+            for (i = 0; i < $scope.graphExport.selectedGraphs.length; i += 1) {
+                pdf = $scope.addGraphToPage(pdf, $scope.graphExport.selectedGraphs[i]);
+
+                if ($scope.graphExport.exportToSeparateFiles === true) {
+                    fileNameBeginning = $scope.msg('ebodac.web.statistics.export.graphs.' + $scope.graphExport.selectedGraphs[i]);
+                    pdf.save(fileNameBeginning + fileNameEnd);
+                    pdf = null;
+                }
+            }
+
+            if (pdf !== null) {
+                pdf.save(fileNameBeginning + fileNameEnd);
+            }
+
+            $scope.blockExportButton = false;
+        }
+
+        $scope.addGraphToPage = function(pdf, graph) {
+            var image = $scope.getGraphFromCanvas(graph, 400, 400);
+
+            if (image === null) {
+                return pdf;
+            }
+
+            if (pdf === null) {
+                pdf = new jsPDF('p', 'pt', 'a4');
+            } else {
+                pdf.addPage();
+            }
+
+            pdf.addImage(image, 'JPEG', 150, 60);
+
+            var pageWidth = pdf.internal.pageSize.width;
+            pdf.setTextColor(34, 68, 119);
+
+            var header = $scope.msg('ebodac.web.statistics.graphs.' + graph);
+            var fontSize = 16;
+
+            var txtWidth = pdf.getStringUnitWidth(header) * fontSize;
+            var x = (pageWidth - txtWidth) / 2;
+
+            pdf.setFontSize(fontSize);
+            pdf.setFont("helvetica", "bold");
+            pdf.text(header, x, 40)
+
+            fontSize = 10;
+            pdf.setFontSize(fontSize);
+            pdf.setFont("helvetica", "normal");
+
+            var i, r, g, b, legendRectSize = 12, spaceAfterRect = 5, spaceBetweenElements = 10;
+            txtWidth = 0;
+
+            for (i = 0; i < $scope.labels[graph].length; i += 1) {
+                txtWidth += pdf.getStringUnitWidth($scope.labels[graph][i]);
+            }
+
+            txtWidth = txtWidth * fontSize + $scope.labels[graph].length * (legendRectSize + spaceAfterRect + spaceBetweenElements) - spaceBetweenElements;
+            x = (pageWidth - txtWidth) / 2;
+
+            for (i = 0; i < $scope.labels[graph].length; i += 1) {
+                r = parseInt($scope.graphColours[i].substring(1, 3), 16);
+                g = parseInt($scope.graphColours[i].substring(3, 5), 16);
+                b = parseInt($scope.graphColours[i].substring(5, 7), 16);
+
+                pdf.setDrawColor(0);
+                pdf.setFillColor(r, g, b);
+                pdf.roundedRect(x, 380, legendRectSize, legendRectSize, 2, 2, 'F');
+
+                x += legendRectSize + spaceAfterRect;
+                pdf.text($scope.labels[graph][i], x, 390)
+
+                x += pdf.getStringUnitWidth($scope.labels[graph][i]) * fontSize + spaceBetweenElements;
+            }
+
+            return pdf;
+        }
+
+        $scope.getGraphFromCanvas = function(graph, imgWidth, imgHeight) {
+            var graphCanvas = $('#' + graph)[0];
+
+            if (graphCanvas === null || graphCanvas === undefined) {
+                return null;
+            }
+
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext('2d');
+
+            canvas.width = imgWidth;
+            canvas.height = imgHeight;
+
+            context.drawImage(graphCanvas, 0, 0, imgWidth, imgHeight);
+
+            context.globalCompositeOperation = "destination-over";
+            context.fillStyle = "#FFFFFF";
+            context.fillRect(0, 0, imgWidth, imgHeight);
+
+            return canvas.toDataURL("image/jpeg", 1.0);
+        }
 
     });
 
