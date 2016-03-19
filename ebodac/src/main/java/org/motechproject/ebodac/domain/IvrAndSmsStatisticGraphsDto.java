@@ -5,10 +5,10 @@ import java.util.List;
 
 public class IvrAndSmsStatisticGraphsDto {
 
-    private List<String> graphs = Arrays.asList("statusGraph", "genderGraph");
+    private List<String> graphs = Arrays.asList("statusGraph", "genderGraph", "successfulGenderGraph");
 
     private List<List<String>> headers = Arrays.asList(Arrays.asList("totalPending", "totalFailed", "totalSucceed"),
-            Arrays.asList("sendToMen", "sendToWomen"));
+            Arrays.asList("sendToMen", "sendToWomen"), Arrays.asList("successfulSendToMen", "successfulSendToWomen"));
 
     private IvrAndSmsStatistic data;
 
