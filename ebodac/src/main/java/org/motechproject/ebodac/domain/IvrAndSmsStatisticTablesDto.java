@@ -5,7 +5,8 @@ import java.util.List;
 
 public class IvrAndSmsStatisticTablesDto {
 
-    private List<String> headers = Arrays.asList("totalAmount", "totalPending", "totalFailed", "totalSucceed", "sendToMen", "sendToWomen");
+    private List<String> headers = Arrays.asList("totalAmount", "totalPending", "totalFailed", "totalSucceed", "sendToMen",
+            "sendToWomen", "successfulSendToMen", "successfulSendToWomen");
 
     private IvrAndSmsStatistic data;
 
