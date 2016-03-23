@@ -825,6 +825,18 @@
             }
         }
 
+        $scope.isGraphNotEmpty = function(graph) {
+            if ($scope.data === null || $scope.data === undefined || $scope.data[graph] === null || $scope.data[graph] === undefined) {
+                return false;
+            }
+            for(var i = 0; i < $scope.data[graph].length; i++) {
+                if($scope.data[graph][i] !== 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         $scope.loadData();
 
         $scope.exportGraphs = function() {

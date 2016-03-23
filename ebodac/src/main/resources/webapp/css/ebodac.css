@@ -83,3 +83,9 @@
   height: 20px;
   border-radius: 5px;
 }
+
+#graphEmptyMessage {
+  margin-top: 200px;
+  margin-bottom: 300px;
+
+}
