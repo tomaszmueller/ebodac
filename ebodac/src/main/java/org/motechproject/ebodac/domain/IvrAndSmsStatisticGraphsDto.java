@@ -10,13 +10,18 @@ public class IvrAndSmsStatisticGraphsDto {
     private List<List<String>> headers = Arrays.asList(Arrays.asList("totalPending", "totalFailed", "totalSucceed"),
             Arrays.asList("sendToMen", "sendToWomen"), Arrays.asList("successfulSendToMen", "successfulSendToWomen"));
 
-    private IvrAndSmsStatistic data;
+    private List<IvrAndSmsStatistic> data;
+
+    private IvrAndSmsStatistic dataSum;
+
+    private String sumHeader = "date";
 
     public IvrAndSmsStatisticGraphsDto() {
     }
 
-    public IvrAndSmsStatisticGraphsDto(IvrAndSmsStatistic data) {
+    public IvrAndSmsStatisticGraphsDto(List<IvrAndSmsStatistic> data) {
         this.data = data;
+        this.dataSum = new IvrAndSmsStatistic(data);
     }
 
     public List<String> getGraphs() {
@@ -35,11 +40,27 @@ public class IvrAndSmsStatisticGraphsDto {
         this.headers = headers;
     }
 
-    public IvrAndSmsStatistic getData() {
+    public List<IvrAndSmsStatistic> getData() {
         return data;
     }
 
-    public void setData(IvrAndSmsStatistic data) {
+    public void setData(List<IvrAndSmsStatistic> data) {
         this.data = data;
+    }
+
+    public IvrAndSmsStatistic getDataSum() {
+        return dataSum;
+    }
+
+    public void setDataSum(IvrAndSmsStatistic dataSum) {
+        this.dataSum = dataSum;
+    }
+
+    public String getSumHeader() {
+        return sumHeader;
+    }
+
+    public void setSumHeader(String sumHeader) {
+        this.sumHeader = sumHeader;
     }
 }
