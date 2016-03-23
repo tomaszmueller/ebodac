@@ -725,6 +725,7 @@
         $scope.graphData = {};
         $scope.graphs = [];
 
+        $scope.availableGraphsToExport = [];
         $scope.blockExportButton = false;
         $scope.graphExport = {
             exportToSeparateFiles: false,
@@ -733,7 +734,7 @@
 
         $scope.showExportGraphsModal = function() {
             $scope.graphExport.exportToSeparateFiles = false;
-            $scope.graphExport.selectedGraphs = angular.copy($scope.graphs);
+            $scope.graphExport.selectedGraphs = angular.copy($scope.availableGraphsToExport);
             $('#exportGraphsModal').modal('show');
             $timeout(function() {
                 $('#exportGraphsSelect').select2('val', $scope.graphExport.selectedGraphs);
@@ -754,6 +755,8 @@
                 value = change.removed.id;
                 $scope.graphExport.selectedGraphs.removeObject(value);
             }
+
+            $scope.$apply();
         };
 
         $scope.loadData = function() {
@@ -800,6 +803,7 @@
                     var i, j, labels = {}, data = {};
 
                     $scope.graphs = response.graphs;
+                    $scope.availableGraphsToExport = [];
                     if (response.data !== null && response.data !== undefined) {
                         for (i = 0; i < $scope.graphs.length; i += 1) {
                             var tmpLabels = [], tmpData = [];
@@ -811,6 +815,10 @@
 
                             labels[$scope.graphs[i]] = tmpLabels;
                             data[$scope.graphs[i]] = tmpData;
+
+                            if ($scope.isGraphNotEmpty(data, $scope.graphs[i]) === true) {
+                                $scope.availableGraphsToExport.push($scope.graphs[i]);
+                            }
                         }
                     }
 
@@ -825,12 +833,12 @@
             }
         }
 
-        $scope.isGraphNotEmpty = function(graph) {
-            if ($scope.data === null || $scope.data === undefined || $scope.data[graph] === null || $scope.data[graph] === undefined) {
+        $scope.isGraphNotEmpty = function(data, graph) {
+            if (data === null || data === undefined || data[graph] === null || data[graph] === undefined) {
                 return false;
             }
-            for(var i = 0; i < $scope.data[graph].length; i++) {
-                if($scope.data[graph][i] !== 0) {
+            for(var i = 0; i < data[graph].length; i++) {
+                if(data[graph][i] !== 0) {
                     return true;
                 }
             }
