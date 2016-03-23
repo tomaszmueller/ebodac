@@ -7,6 +7,11 @@
             {{msg('ebodac.btn.backToStatistics')}}
         </button>
 
+        <button ng-click="showExportGraphsModal()" type="button" ng-disabled="blockExportButton" class="btn btn-default">
+            <span class="glyphicon glyphicon-export"></span>
+            {{msg('ebodac.web.statistics.exportGraphs')}}
+        </button>
+
         <div class="btn-group">
             <button type="button" class="btn btn-default">{{selectedFilter.name}}</button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -28,9 +33,11 @@
     </div>
 
     <div class="margin-before">
-        <div class="col-md-6" ng-repeat="graph in graphs">
+        <div class="col-md-6 ebodac-graph" ng-repeat="graph in graphs">
             <h4 class="frame-title title-centred">{{msg('ebodac.web.statistics.graphs.' + graph)}}</h4>
-            <canvas id="pie" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" height="200" chart-options="graphOptions"></canvas>
+            <canvas id="{{graph}}" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" chart-options="graphOptions" chart-colours="graphColours" height="200" width="200"></canvas>
         </div>
     </div>
+
+    <div ng-include="'../ebodac/resources/partials/modals/exportGraphs.html'"></div>
 </div>

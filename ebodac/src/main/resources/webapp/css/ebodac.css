@@ -27,6 +27,10 @@
     border-right: 0px;
 }
 
+.ebodac-graph {
+    padding-left: 50px;
+    padding-right: 50px;
+}
 
 .chart-legend,
 .bar-legend,

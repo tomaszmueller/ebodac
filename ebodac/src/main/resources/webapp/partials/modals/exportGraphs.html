@@ -1,0 +1,41 @@
+<div id="exportGraphsModal" class="mds modal fade" tabindex="-1" role="dialog" aria-labelledby="exportGraphsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeExportGraphsModal()">&times;</button>
+                <h4 class="modal-title" id="exportGraphsModalLabel">{{msg('ebodac.web.statistics.exportGraphs')}}</h4>
+            </div>
+            <div class="modal-body">
+                <form id="exportGraphsForm" name="exportGraphsForm" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label" for="graphs">
+                            {{msg('ebodac.web.statistics.export.chooseGraphs')}}
+                        </label>
+                        <div class="form-inline col-md-7">
+                            <div id="graphs" class="btn-group col-md-12">
+                                <select id="exportGraphsSelect" class="form-control" ui-select2 multiple select2-ng-change="graphExportChanged">
+                                    <option ng-repeat="graphName in graphs" value="{{graphName}}">{{msg('ebodac.web.statistics.graphs.' + graphName)}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label" for="separateFiles">
+                            {{msg('ebodac.web.statistics.export.separateFiles')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="separateFiles">
+                                <input type="checkbox" ng-model="graphExport.exportToSeparateFiles" ng-checked="graphExport.exportToSeparateFiles">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="exportGraphs()" ng-disabled="blockExportButton">{{msg('ebodac.btn.export')}}</button>
+                <button class="btn btn-default" ng-click="closeExportGraphsModal()">{{msg('ebodac.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
