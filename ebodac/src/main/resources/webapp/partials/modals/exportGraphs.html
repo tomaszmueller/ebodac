@@ -14,7 +14,7 @@
                         <div class="form-inline col-md-7">
                             <div id="graphs" class="btn-group col-md-12">
                                 <select id="exportGraphsSelect" class="form-control" ui-select2 multiple select2-ng-change="graphExportChanged">
-                                    <option ng-repeat="graphName in graphs" value="{{graphName}}">{{msg('ebodac.web.statistics.graphs.' + graphName)}}</option>
+                                    <option ng-repeat="graphName in availableGraphsToExport" value="{{graphName}}">{{msg('ebodac.web.statistics.graphs.' + graphName)}}</option>
                                 </select>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="exportGraphs()" ng-disabled="blockExportButton">{{msg('ebodac.btn.export')}}</button>
+                <button class="btn btn-primary" ng-click="exportGraphs()" ng-disabled="blockExportButton || graphExport.selectedGraphs.length===0">{{msg('ebodac.btn.export')}}</button>
                 <button class="btn btn-default" ng-click="closeExportGraphsModal()">{{msg('ebodac.btn.cancel')}}</button>
             </div>
         </div>
