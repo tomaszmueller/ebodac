@@ -21,7 +21,7 @@
         var s = document.createElement("script");
         s.id = "jsPdf";
         s.type = "text/javascript";
-        s.src = "../ebodac/resources/js/jspdf.debug.js";
+        s.src = "../ebodac/resources/js/jspdf.min.js";
         $("head").append(s);
     };
 
