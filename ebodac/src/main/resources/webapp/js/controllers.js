@@ -978,11 +978,12 @@
             pdf.setFontSize(fontSize);
             pdf.setFont("helvetica", "normal");
 
-            var i, r, g, b, legendRectSize = 12, spaceAfterRect = 5, spaceBetweenElements = 10;
+            var i, r, g, b, legendRectSize = 12, spaceAfterRect = 5, spaceBetweenElements = 20, legendLabels = [];
             txtWidth = 0;
 
             for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
-                txtWidth += pdf.getStringUnitWidth($scope.graphSeries[graph][i]);
+                legendLabels[i] = $scope.graphSeries[graph][i] +  " = " + $scope.data[graph][i].toString();
+                txtWidth += pdf.getStringUnitWidth(legendLabels[i]);
             }
 
             txtWidth = txtWidth * fontSize + $scope.graphSeries[graph].length * (legendRectSize + spaceAfterRect + spaceBetweenElements) - spaceBetweenElements;
@@ -998,9 +999,9 @@
                 pdf.roundedRect(x, 380, legendRectSize, legendRectSize, 2, 2, 'F');
 
                 x += legendRectSize + spaceAfterRect;
-                pdf.text($scope.graphSeries[graph][i], x, 390)
+                pdf.text(legendLabels[i], x, 390)
 
-                x += pdf.getStringUnitWidth($scope.graphSeries[graph][i]) * fontSize + spaceBetweenElements;
+                x += pdf.getStringUnitWidth(legendLabels[i]) * fontSize + spaceBetweenElements;
             }
 
             return pdf;
