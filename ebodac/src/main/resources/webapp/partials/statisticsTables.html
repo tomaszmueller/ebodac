@@ -34,8 +34,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td ng-repeat='header in tableHeaders'>{{tableData[header]}}</td>
+        <tr ng-repeat='row in tableData'>
+            <td ng-repeat='header in tableHeaders'>{{row[header]}}</td>
+        </tr>
+        <tr class="sum-row" ng-if="sumHeader !== null">
+            <td ng-repeat='header in tableHeaders'>{{header === sumHeader ? msg('ebodac.web.statistics.sum') : tableDataSum[header]}}</td>
         </tr>
         </tbody>
     </table>

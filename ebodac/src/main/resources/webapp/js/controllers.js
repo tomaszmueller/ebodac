@@ -696,8 +696,11 @@
             window.location.replace('#/ebodac/statistics');
         }
 
+        $scope.tooltipTemplateSimple = "<%if (label){%><%=label%>: <%}%><%= value %>";
+        $scope.tooltipTemplateWithPercents = "<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)";
+
         $scope.graphOptions = {
-            tooltipTemplate : '<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)',
+            tooltipTemplate: $scope.tooltipTemplateWithPercents,
             onAnimationProgress: function() {
                 $scope.blockExportButton = true;
                 $scope.$apply();
@@ -705,7 +708,8 @@
             onAnimationComplete: function() {
                 $scope.blockExportButton = false;
                 $scope.$apply();
-            }
+            },
+            bezierCurve: false
         };
 
         $scope.graphColours = [ '#97BBCD', // blue
@@ -721,9 +725,14 @@
         $scope.graphType = $routeParams.graphType;
 
         $scope.tableHeaders = [];
-        $scope.tableData = {};
-        $scope.graphData = {};
+        $scope.tableData = [];
+        $scope.tableDataSum = {};
+        $scope.sumHeader = null;
         $scope.graphs = [];
+        $scope.graphData = {};
+        $scope.graphDataSum = {};
+        $scope.graphSeries = {};
+        $scope.graphLabels = {};
 
         $scope.availableGraphsToExport = [];
         $scope.blockExportButton = false;
@@ -759,6 +768,20 @@
             $scope.$apply();
         };
 
+        $scope.availableGraphTypes = ["Pie", "Doughnut", "PolarArea", "Line", "Bar"];
+        $scope.sumGraphTypes = ["Pie", "Doughnut", "PolarArea"];
+        $scope.selectedType = "Pie";
+
+        $scope.selectGraphType = function(type) {
+            $scope.selectedType = type;
+            if (type === "Pie" || type === "Doughnut") {
+                $scope.graphOptions.tooltipTemplate = $scope.tooltipTemplateWithPercents;
+            } else {
+                $scope.graphOptions.tooltipTemplate = $scope.tooltipTemplateSimple;
+            }
+            $scope.setGraphsData();
+        }
+
         $scope.loadData = function() {
             var url;
 
@@ -782,6 +805,18 @@
                     } else {
                         $scope.tableData = [];
                     }
+
+                    if (response.dataSum !== null && response.dataSum !== undefined) {
+                        $scope.tableDataSum = response.dataSum;
+                    } else {
+                        $scope.tableDataSum = {};
+                    }
+
+                    if (response.sumHeader !== null && response.sumHeader !== undefined && response.sumHeader !== "") {
+                        $scope.sumHeader = response.sumHeader;
+                    } else {
+                        $scope.sumHeader = null;
+                    }
                 })
                 .error(function(response) {
                     motechAlert('ebodac.web.statistics.getStatistics.' + $scope.tableType + '.error', 'ebodac.web.statistics.error', $scope.getMessageFromData(response));
@@ -800,36 +835,69 @@
 
                 $http.post(url)
                 .success(function(response) {
-                    var i, j, labels = {}, data = {};
+                    var i, j, k;
 
                     $scope.graphs = response.graphs;
+                    $scope.sumHeader = response.sumHeader;
                     $scope.availableGraphsToExport = [];
+
+                    $scope.graphData = {};
+                    $scope.graphDataSum = {};
+                    $scope.graphSeries = {};
+                    $scope.graphLabels = {};
+
                     if (response.data !== null && response.data !== undefined) {
                         for (i = 0; i < $scope.graphs.length; i += 1) {
-                            var tmpLabels = [], tmpData = [];
+                            var headers = [], tmpData = [], tmpDataSum = [], tmpLabels = [];
 
                             for (j = 0; j < response.headers[i].length; j += 1) {
-                                tmpLabels[j] = $scope.msg('ebodac.web.statistics.' + $scope.graphType + '.' + response.headers[i][j])
-                                tmpData[j] = response.data[response.headers[i][j]];
+                                headers[j] = $scope.msg('ebodac.web.statistics.' + $scope.graphType + '.' + response.headers[i][j])
+                                tmpDataSum[j] = response.dataSum[response.headers[i][j]];
+
+                                tmpData[j] = [];
+                                for (k = 0; k < response.data.length; k += 1) {
+                                    tmpData[j][k] = response.data[k][response.headers[i][j]];
+                                }
                             }
 
-                            labels[$scope.graphs[i]] = tmpLabels;
-                            data[$scope.graphs[i]] = tmpData;
+                            for (k = 0; k < response.data.length; k += 1) {
+                                tmpLabels[k] = response.data[k][response.sumHeader];
+                            }
 
-                            if ($scope.isGraphNotEmpty(data, $scope.graphs[i]) === true) {
+                            $scope.graphSeries[$scope.graphs[i]] = headers;
+                            $scope.graphLabels[$scope.graphs[i]] = tmpLabels;
+                            $scope.graphData[$scope.graphs[i]] = tmpData;
+                            $scope.graphDataSum[$scope.graphs[i]] = tmpDataSum;
+
+                            if ($scope.isGraphNotEmpty($scope.graphDataSum, $scope.graphs[i]) === true) {
                                 $scope.availableGraphsToExport.push($scope.graphs[i]);
                             }
                         }
                     }
 
-                    $scope.labels = labels;
-                    $scope.data = data;
+                    $scope.setGraphsData();
                 })
                 .error(function(response) {
                     motechAlert('ebodac.web.statistics.getStatistics.' + $scope.graphType + '.error', 'ebodac.web.statistics.error', $scope.getMessageFromData(response));
                 });
             } else {
                 $scope.pageHeader = $scope.msg('ebodac.web.statistics.ivrEngagement');
+            }
+        }
+
+        $scope.isSumGraph = function() {
+            return $scope.sumGraphTypes.indexOf($scope.selectedType) !== -1;
+        }
+
+        $scope.setGraphsData = function() {
+            if ($scope.isSumGraph()) {
+                $scope.labels = $scope.graphSeries;
+                $scope.data = $scope.graphDataSum;
+                $scope.series = {};
+            } else {
+                $scope.labels = $scope.graphLabels;
+                $scope.data = $scope.graphData;
+                $scope.series = $scope.graphSeries;
             }
         }
 
@@ -913,14 +981,14 @@
             var i, r, g, b, legendRectSize = 12, spaceAfterRect = 5, spaceBetweenElements = 10;
             txtWidth = 0;
 
-            for (i = 0; i < $scope.labels[graph].length; i += 1) {
-                txtWidth += pdf.getStringUnitWidth($scope.labels[graph][i]);
+            for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
+                txtWidth += pdf.getStringUnitWidth($scope.graphSeries[graph][i]);
             }
 
-            txtWidth = txtWidth * fontSize + $scope.labels[graph].length * (legendRectSize + spaceAfterRect + spaceBetweenElements) - spaceBetweenElements;
+            txtWidth = txtWidth * fontSize + $scope.graphSeries[graph].length * (legendRectSize + spaceAfterRect + spaceBetweenElements) - spaceBetweenElements;
             x = (pageWidth - txtWidth) / 2;
 
-            for (i = 0; i < $scope.labels[graph].length; i += 1) {
+            for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
                 r = parseInt($scope.graphColours[i].substring(1, 3), 16);
                 g = parseInt($scope.graphColours[i].substring(3, 5), 16);
                 b = parseInt($scope.graphColours[i].substring(5, 7), 16);
@@ -930,9 +998,9 @@
                 pdf.roundedRect(x, 380, legendRectSize, legendRectSize, 2, 2, 'F');
 
                 x += legendRectSize + spaceAfterRect;
-                pdf.text($scope.labels[graph][i], x, 390)
+                pdf.text($scope.graphSeries[graph][i], x, 390)
 
-                x += pdf.getStringUnitWidth($scope.labels[graph][i]) * fontSize + spaceBetweenElements;
+                x += pdf.getStringUnitWidth($scope.graphSeries[graph][i]) * fontSize + spaceBetweenElements;
             }
 
             return pdf;

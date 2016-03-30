@@ -13,6 +13,17 @@
         </button>
 
         <div class="btn-group">
+            <button type="button" class="btn btn-default">{{msg('ebodac.web.statistics.graphType.' + selectedType)}}</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="type in availableGraphTypes"><a ng-click="selectGraphType(type)">{{msg('ebodac.web.statistics.graphType.' + type)}}</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
             <button type="button" class="btn btn-default">{{selectedFilter.name}}</button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
@@ -35,8 +46,8 @@
     <div class="margin-before">
         <div class="col-md-6 ebodac-graph" ng-repeat="graph in graphs">
             <h4 class="frame-title title-centred">{{msg('ebodac.web.statistics.graphs.' + graph)}}</h4>
-            <canvas id="{{graph}}" class="chart chart-pie" chart-data="data[graph]" chart-labels="labels[graph]" chart-legend="true" chart-options="graphOptions" chart-colours="graphColours" height="200" width="200" ng-if="isGraphNotEmpty(data, graph)"></canvas>
-            <div id="graphEmptyMessage" ng-if="!isGraphNotEmpty(data, graph)">
+            <canvas id="{{graph}}" class="chart-base" chart-type="selectedType" chart-data="data[graph]" chart-labels="labels[graph]" chart-series="series[graph]" chart-legend="true" chart-options="graphOptions" chart-colours="graphColours" height="200" width="200" ng-if="isGraphNotEmpty(graphDataSum, graph)"></canvas>
+            <div id="graphEmptyMessage" ng-if="!isGraphNotEmpty(graphDataSum, graph)">
                 <h3 class="frame-title title-centred">{{msg('ebodac.web.statistics.noData')}}</h3>
             </div>
         </div>

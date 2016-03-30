@@ -32,6 +32,10 @@
     padding-right: 50px;
 }
 
+tr.sum-row>td {
+    border-top:4pt double black !important;
+}
+
 .chart-legend,
 .bar-legend,
 .line-legend,
