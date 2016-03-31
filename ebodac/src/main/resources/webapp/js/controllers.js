@@ -712,14 +712,34 @@
             bezierCurve: false
         };
 
-        $scope.graphColours = [ '#97BBCD', // blue
-                                '#F7464A', // red
-                                '#00E500', // green
-                                '#DCDCDC', // light grey
-                                '#FDB45C', // yellow
-                                '#949FB1', // grey
-                                '#4D5360'  // dark grey
-                              ];
+        $scope.graphColours = {
+            statusGraph:[ '#97BBCD', // blue
+                          '#F7464A', // red
+                          '#00E500', // green
+                          '#DCDCDC', // light grey
+                          '#FDB45C', // yellow
+                          '#949FB1', // grey
+                          '#4D5360'  // dark grey
+                        ],
+            genderGraph:[ '#97BBCD', // blue
+                          '#EE82EE', // violet
+                          '#00E500', // green
+                          '#DCDCDC', // light grey
+                          '#FDB45C', // yellow
+                          '#949FB1', // grey
+                          '#4D5360'  // dark grey
+                        ],
+            successfulGenderGraph:[ '#97BBCD', // blue
+                          '#EE82EE', // violet
+                          '#00E500', // green
+                          '#DCDCDC', // light grey
+                          '#FDB45C', // yellow
+                          '#949FB1', // grey
+                          '#4D5360'  // dark grey
+                        ]
+        }
+
+
 
         $scope.tableType = $routeParams.tableType;
         $scope.graphType = $routeParams.graphType;
@@ -990,9 +1010,9 @@
             x = (pageWidth - txtWidth) / 2;
 
             for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
-                r = parseInt($scope.graphColours[i].substring(1, 3), 16);
-                g = parseInt($scope.graphColours[i].substring(3, 5), 16);
-                b = parseInt($scope.graphColours[i].substring(5, 7), 16);
+                r = parseInt($scope.graphColours[graph][i].substring(1, 3), 16);
+                g = parseInt($scope.graphColours[graph][i].substring(3, 5), 16);
+                b = parseInt($scope.graphColours[graph][i].substring(5, 7), 16);
 
                 pdf.setDrawColor(0);
                 pdf.setFillColor(r, g, b);
