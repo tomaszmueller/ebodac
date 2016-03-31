@@ -14,7 +14,7 @@
                         <div class="form-inline col-md-7">
                             <div id="graphs" class="btn-group col-md-12">
                                 <select id="exportGraphsSelect" class="form-control" ui-select2 multiple select2-ng-change="graphExportChanged">
-                                    <option ng-repeat="graphName in availableGraphsToExport" value="{{graphName}}">{{msg('ebodac.web.statistics.graphs.' + graphName)}}</option>
+                                    <option ng-repeat="graphName in availableGraphsToExport" value="{{graphName}}">{{msg('ebodac.web.statistics.graphs.' + graphType + '.' + graphName)}}</option>
                                 </select>
                             </div>
                         </div>
