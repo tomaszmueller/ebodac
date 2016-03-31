@@ -964,7 +964,7 @@
             var pageWidth = pdf.internal.pageSize.width;
             pdf.setTextColor(34, 68, 119);
 
-            var header = $scope.msg('ebodac.web.statistics.graphs.' + graph);
+            var header = $scope.msg('ebodac.web.statistics.graphs.' + $scope.graphType + '.' + graph);
             var fontSize = 16;
 
             var txtWidth = pdf.getStringUnitWidth(header) * fontSize;
