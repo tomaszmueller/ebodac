@@ -949,6 +949,41 @@
                 fileNameBeginning = $scope.msg('ebodac.web.statistics.export.graphs.' + $scope.graphType);
             }
 
+            var date = new Date();
+
+            switch ($scope.selectedFilter.dateFilter) {
+                case "YESTERDAY":
+                    date.setDate(date.getDate() - 1);
+                    $scope.selectedFilter.endDate = $filter('date')(date, "yyyy-MM-dd");
+                    $scope.selectedFilter.startDate = $filter('date')(date, "yyyy-MM-dd");
+                    break;
+                case "LAST_7_DAYS":
+                    date.setDate(date.getDate() - 1).toString();
+                    $scope.selectedFilter.endDate = $filter('date')(date, "yyyy-MM-dd");
+                    date.setDate(date.getDate() - 6).toString();
+                    $scope.selectedFilter.startDate = $filter('date')(date, "yyyy-MM-dd");
+                    break;
+                case "LAST_WEEK":
+                    var currentDay = (date.getDay() + 8) % 8;
+                    date.setDate(date.getDate() - currentDay).toString();
+                    $scope.selectedFilter.endDate = $filter('date')(date, "yyyy-MM-dd");
+                    date.setDate(date.getDate() - 6).toString();
+                    $scope.selectedFilter.startDate = $filter('date')(date, "yyyy-MM-dd");
+                    break;
+                case "LAST_30_DAYS":
+                    date.setDate(date.getDate() - 1).toString();
+                    $scope.selectedFilter.endDate = $filter('date')(date, "yyyy-MM-dd");
+                    date.setDate(date.getDate() - 30).toString();
+                    $scope.selectedFilter.startDate = $filter('date')(date, "yyyy-MM-dd");
+                    break;
+                case "LAST_MONTH":
+                    date.setDate(0).toString();
+                    $scope.selectedFilter.endDate = $filter('date')(date, "yyyy-MM-dd");
+                    date.setDate(1).toString();
+                    $scope.selectedFilter.startDate = $filter('date')(date, "yyyy-MM-dd");
+                    break;
+            }
+
             for (i = 0; i < $scope.graphExport.selectedGraphs.length; i += 1) {
                 pdf = $scope.addGraphToPage(pdf, $scope.graphExport.selectedGraphs[i]);
 
@@ -979,7 +1014,7 @@
                 pdf.addPage();
             }
 
-            pdf.addImage(image, 'JPEG', 150, 60);
+            pdf.addImage(image, 'JPEG', 150, 70);
 
             var pageWidth = pdf.internal.pageSize.width;
             pdf.setTextColor(34, 68, 119);
@@ -998,7 +1033,13 @@
             pdf.setFontSize(fontSize);
             pdf.setFont("helvetica", "normal");
 
+            var exportDateRange = $scope.msg('ebodac.web.statistics.export.graphs.dateRange', $scope.selectedFilter.startDate, $scope.selectedFilter.endDate);
             var i, r, g, b, legendRectSize = 12, spaceAfterRect = 5, spaceBetweenElements = 20, legendLabels = [];
+
+            txtWidth = pdf.getStringUnitWidth(exportDateRange) * fontSize;
+            x = (pageWidth - txtWidth) / 2;
+            pdf.text(exportDateRange, x, 54)
+
             txtWidth = 0;
 
             for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
@@ -1016,10 +1057,10 @@
 
                 pdf.setDrawColor(0);
                 pdf.setFillColor(r, g, b);
-                pdf.roundedRect(x, 380, legendRectSize, legendRectSize, 2, 2, 'F');
+                pdf.roundedRect(x, 390, legendRectSize, legendRectSize, 2, 2, 'F');
 
                 x += legendRectSize + spaceAfterRect;
-                pdf.text(legendLabels[i], x, 390)
+                pdf.text(legendLabels[i], x, 400)
 
                 x += pdf.getStringUnitWidth(legendLabels[i]) * fontSize + spaceBetweenElements;
             }
