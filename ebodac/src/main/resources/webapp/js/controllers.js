@@ -696,19 +696,117 @@
             window.location.replace('#/ebodac/statistics');
         }
 
-        $scope.tooltipTemplateSimple = "<%if (label){%><%=label%>: <%}%><%= value %>";
-        $scope.tooltipTemplateWithPercents = "<%if (label){%><%=label%>: <%}%><%= value %> (<%= Math.round(circumference / 6.283 * 10000) / 100 %>%)";
+        $scope.drawLabel = function(ctx, x, y, text, textAlign, textBaseline) {
+            var rx = x, ry = y, textWidth, fontSize = 14, textPadding = 4;
+
+            ctx.font = fontSize + 'px Helvetica';
+            ctx.textAlign = textAlign;
+            ctx.textBaseline = textBaseline;
+            textWidth = ctx.measureText(text).width;
+
+            if (textAlign === 'center') {
+                rx = x - textWidth / 2;
+            } else if (textAlign === 'right') {
+                rx = x - textWidth;
+            }
+
+            if (textBaseline === 'middle') {
+                ry = y - fontSize / 2;
+            } else if (textBaseline === 'bottom') {
+                ry = y - fontSize;
+            }
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+            ctx.fillRect(rx - textPadding, ry - textPadding, textWidth + textPadding * 2, fontSize + textPadding * 2);
+
+            ctx.fillStyle = '#000000';
+            ctx.fillText(text, x, y);
+        }
+
+        $scope.drawBarLabel = function(ctx, x, y, width, height, text) {
+            var tx = x, ty,textWidth = ctx.measureText(text).width;
+            ty = y - 5 + height / 2;
+
+            ctx.save();
+            if (width != null && textWidth > width) {
+                ctx.translate(tx,ty);
+                ctx.rotate(-Math.PI / 2);
+                ctx.translate(-tx,-ty);
+
+                $scope.drawLabel(ctx, tx, ty, text, 'left', 'middle');
+            } else {
+                $scope.drawLabel(ctx, tx, ty, text, 'center', 'bottom');
+            }
+            ctx.restore();
+        }
 
         $scope.graphOptions = {
-            tooltipTemplate: $scope.tooltipTemplateWithPercents,
+            showTooltips : false,
+            tooltipCaretSize : 0,
+
             onAnimationProgress: function() {
                 $scope.blockExportButton = true;
                 $scope.$apply();
             },
+
             onAnimationComplete: function() {
                 $scope.blockExportButton = false;
                 $scope.$apply();
+
+                var i, textAlign, textBaseline, ctx = this.chart.ctx;
+
+                if (this.name === "Bar") {
+                    this.eachBars(function(bar) {
+                        if (bar.value > 0) {
+                            $scope.drawBarLabel(ctx, bar.x, bar.y, bar.width, bar.height(), bar.value);
+                        }
+                    });
+                } else if (this.name === "Line") {
+                    this.datasets.forEach(function (dataset) {
+                        for (i = 0; i < dataset.points.length; i++) {
+                            if (dataset.points[i].value > 0) {
+                                if (i === 0) {
+                                    textAlign = "left";
+                                } else {
+                                    textAlign = "center";
+                                }
+
+                                var x = dataset.points[i].x, y = dataset.points[i].y;
+
+                                if (y < 20) {
+                                    textBaseline = "top";
+                                    y = y + 8;
+                                } else {
+                                    textBaseline = "bottom";
+                                    y = y - 6;
+                                }
+
+                                $scope.drawLabel(ctx, x, y, dataset.points[i].value, textAlign, textBaseline);
+                            }
+
+                        }
+                    });
+                } else {
+                    var total = this.total;
+
+                    if (total === undefined || total === null) {
+                        total = 0;
+
+                        this.segments.forEach(function (seg) {
+                            total += seg.value;
+                        });
+                    }
+
+                    this.segments.forEach(function (seg) {
+                        var tooltipPosition = seg.tooltipPosition(), percentValue = Math.round(seg.value / total * 10000) / 100;
+
+                        if (seg.value > 0) {
+                            $scope.drawLabel(ctx, tooltipPosition.x, tooltipPosition.y, seg.value + ' (' + percentValue + '%)', 'center', 'middle');
+                        }
+                    });
+                }
             },
+
             bezierCurve: false
         };
 
@@ -794,11 +892,6 @@
 
         $scope.selectGraphType = function(type) {
             $scope.selectedType = type;
-            if (type === "Pie" || type === "Doughnut") {
-                $scope.graphOptions.tooltipTemplate = $scope.tooltipTemplateWithPercents;
-            } else {
-                $scope.graphOptions.tooltipTemplate = $scope.tooltipTemplateSimple;
-            }
             $scope.setGraphsData();
         }
 
@@ -1043,7 +1136,7 @@
             txtWidth = 0;
 
             for (i = 0; i < $scope.graphSeries[graph].length; i += 1) {
-                legendLabels[i] = $scope.graphSeries[graph][i] +  " = " + $scope.data[graph][i].toString();
+                legendLabels[i] = $scope.graphSeries[graph][i];
                 txtWidth += pdf.getStringUnitWidth(legendLabels[i]);
             }
 
