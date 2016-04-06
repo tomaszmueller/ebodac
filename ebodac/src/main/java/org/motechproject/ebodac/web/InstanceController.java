@@ -268,6 +268,24 @@ public class InstanceController {
         }
     }
 
+    @RequestMapping(value = "/exportDay8AndDay57Report", method = RequestMethod.GET)
+    public void exportDay8AndDay57Report(GridSettings settings,
+                                                    @RequestParam String exportRecords,
+                                                    @RequestParam String outputFormat,
+                                                    HttpServletResponse response) throws IOException {
+
+        GridSettings newSettings = settings;
+        String oldLookupFields = newSettings.getFields();
+        newSettings = DtoLookupHelper.changeLookupForDay8AndDay57Report(settings);
+        if (newSettings == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid lookups params");
+        } else {
+            exportEntity(newSettings, exportRecords, outputFormat, response, EbodacConstants.DAY_8_AND_DAY_57_REPORT_NAME,
+                    null, Visit.class, EbodacConstants.DAY_8_AND_DAY_57_REPORT_MAP, oldLookupFields);
+        }
+    }
+
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody

@@ -5,15 +5,21 @@ import java.util.List;
 
 public class IvrAndSmsStatisticTablesDto {
 
-    private List<String> headers = Arrays.asList("totalAmount", "totalPending", "totalFailed", "totalSucceed", "sendToMen", "sendToWomen");
+    private List<String> headers = Arrays.asList("date", "totalAmount", "totalPending", "totalFailed", "totalSucceed",
+            "sendToMen", "sendToWomen", "successfulSendToMen", "successfulSendToWomen");
 
-    private IvrAndSmsStatistic data;
+    private List<IvrAndSmsStatistic> data;
+
+    private IvrAndSmsStatistic dataSum;
+
+    private String sumHeader = "date";
 
     public IvrAndSmsStatisticTablesDto() {
     }
 
-    public IvrAndSmsStatisticTablesDto(IvrAndSmsStatistic data) {
+    public IvrAndSmsStatisticTablesDto(List<IvrAndSmsStatistic> data) {
         this.data = data;
+        this.dataSum = new IvrAndSmsStatistic(data);
     }
 
     public List<String> getHeaders() {
@@ -24,11 +30,27 @@ public class IvrAndSmsStatisticTablesDto {
         this.headers = headers;
     }
 
-    public IvrAndSmsStatistic getData() {
+    public List<IvrAndSmsStatistic> getData() {
         return data;
     }
 
-    public void setData(IvrAndSmsStatistic data) {
+    public void setData(List<IvrAndSmsStatistic> data) {
         this.data = data;
+    }
+
+    public IvrAndSmsStatistic getDataSum() {
+        return dataSum;
+    }
+
+    public void setDataSum(IvrAndSmsStatistic dataSum) {
+        this.dataSum = dataSum;
+    }
+
+    public String getSumHeader() {
+        return sumHeader;
+    }
+
+    public void setSumHeader(String sumHeader) {
+        this.sumHeader = sumHeader;
     }
 }

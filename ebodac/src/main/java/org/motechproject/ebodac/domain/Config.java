@@ -82,6 +82,8 @@ public class Config {
 
     private List<String> availableLookupsForScreeningReport;
 
+    private List<String> availableLookupsForDay8AndDay57Report;
+
     private Boolean enableZetesJob = false;
 
     private Boolean enableRaveJob = false;
@@ -107,6 +109,8 @@ public class Config {
     private Integer retryAttempts;
 
     private Integer retryDelay;
+
+    private String disabledIvrCallsForStages;
 
     public Config() {
     }
@@ -436,6 +440,17 @@ public class Config {
         this.availableLookupsForScreeningReport = availableLookupsForScreeningReport;
     }
 
+    public List<String> getAvailableLookupsForDay8AndDay57Report() {
+        if (availableLookupsForDay8AndDay57Report == null) {
+            availableLookupsForDay8AndDay57Report = new ArrayList<>();
+        }
+        return availableLookupsForDay8AndDay57Report;
+    }
+
+    public void setAvailableLookupsForDay8AndDay57Report(List<String> availableLookupsDay8AndDay57Report) {
+        this.availableLookupsForDay8AndDay57Report = availableLookupsDay8AndDay57Report;
+    }
+
     public Boolean getEnableZetesJob() {
         return enableZetesJob;
     }
@@ -538,5 +553,13 @@ public class Config {
 
     public void setRetryDelay(Integer retryDelay) {
         this.retryDelay = retryDelay;
+    }
+
+    public String getDisabledIvrCallsForStages() {
+        return disabledIvrCallsForStages;
+    }
+
+    public void setDisabledIvrCallsForStages(String disabledIvrCallsForStages) {
+        this.disabledIvrCallsForStages = disabledIvrCallsForStages;
     }
 }

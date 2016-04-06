@@ -4,6 +4,7 @@ import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
+import org.motechproject.mds.annotations.NonEditable;
 
 import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
@@ -25,6 +26,10 @@ public class SubjectBookingDetails {
     @Persistent(mappedBy = "subjectBookingDetails")
     @Cascade(delete = true)
     private List<VisitBookingDetails> visitBookingDetailsList = new ArrayList<>();
+
+    @NonEditable(display = false)
+    @Field
+    private String owner;
 
     public SubjectBookingDetails() {
     }
@@ -63,5 +68,13 @@ public class SubjectBookingDetails {
 
     public void setVisitBookingDetailsList(List<VisitBookingDetails> visitBookingDetailsList) {
         this.visitBookingDetailsList = visitBookingDetailsList;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

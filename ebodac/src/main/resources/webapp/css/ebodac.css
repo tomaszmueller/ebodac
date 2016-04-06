@@ -27,6 +27,14 @@
     border-right: 0px;
 }
 
+.ebodac-graph {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+tr.sum-row>td {
+    border-top:4pt double black !important;
+}
 
 .chart-legend,
 .bar-legend,
@@ -78,4 +86,10 @@
   width: 20px;
   height: 20px;
   border-radius: 5px;
+}
+
+#graphEmptyMessage {
+  margin-top: 200px;
+  margin-bottom: 300px;
+
 }

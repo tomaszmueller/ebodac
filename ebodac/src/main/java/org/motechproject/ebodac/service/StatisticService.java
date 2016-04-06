@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface StatisticService {
 
-    IvrAndSmsStatistic getStatisticForIvr(Range<DateTime> dateRange);
+    List<IvrAndSmsStatistic> getStatisticForIvr(Range<DateTime> dateRange);
 
-    IvrAndSmsStatistic getStatisticForSms(Range<DateTime> dateRange);
+    List<IvrAndSmsStatistic> getStatisticForSms(Range<DateTime> dateRange);
 
     List<IvrEngagementStatistic> getIvrEngagementStatistic();
 }

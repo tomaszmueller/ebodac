@@ -17,6 +17,14 @@
         $("head").append(s);
     };
 
+    if(!$('#jsPdf').length) {
+        var s = document.createElement("script");
+        s.id = "jsPdf";
+        s.type = "text/javascript";
+        s.src = "../ebodac/resources/js/jspdf.min.js";
+        $("head").append(s);
+    };
+
     /* App Module */
     var ebodac = angular.module('ebodac', ['motech-dashboard', 'ebodac.controllers', 'ebodac.directives',
     'ebodac.services', 'ngCookies' , 'ui.bootstrap', 'sms', 'chart.js']), subjectId, visitId,

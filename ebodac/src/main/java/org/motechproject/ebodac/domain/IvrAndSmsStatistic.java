@@ -1,6 +1,11 @@
 package org.motechproject.ebodac.domain;
 
+import java.sql.Date;
+import java.util.List;
+
 public class IvrAndSmsStatistic {
+
+    private Date date;
 
     private Long totalAmount;
 
@@ -14,7 +19,43 @@ public class IvrAndSmsStatistic {
 
     private Long sendToWomen;
 
+    private Long successfulSendToMen;
+
+    private Long successfulSendToWomen;
+
     public IvrAndSmsStatistic() {
+    }
+
+    public IvrAndSmsStatistic(List<IvrAndSmsStatistic> statisticList) {
+        totalAmount = 0L;
+        totalPending = 0L;
+        totalFailed = 0L;
+        totalSucceed = 0L;
+        sendToMen = 0L;
+        sendToWomen = 0L;
+        successfulSendToMen = 0L;
+        successfulSendToWomen = 0L;
+
+        if (statisticList != null) {
+            for (IvrAndSmsStatistic statistic : statisticList) {
+                totalAmount += statistic.getTotalAmount();
+                totalPending += statistic.getTotalPending();
+                totalFailed += statistic.getTotalFailed();
+                totalSucceed += statistic.getTotalSucceed();
+                sendToMen += statistic.getSendToMen();
+                sendToWomen += statistic.getSendToWomen();
+                successfulSendToMen += statistic.getSuccessfulSendToMen();
+                successfulSendToWomen += statistic.getSuccessfulSendToWomen();
+            }
+        }
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Long getTotalAmount() {
@@ -81,5 +122,27 @@ public class IvrAndSmsStatistic {
 
     public void setSendToWomen(Long sendToWomen) {
         this.sendToWomen = sendToWomen;
+    }
+
+    public Long getSuccessfulSendToMen() {
+        if (successfulSendToMen == null) {
+            return 0L;
+        }
+        return successfulSendToMen;
+    }
+
+    public void setSuccessfulSendToMen(Long successfulSendToMen) {
+        this.successfulSendToMen = successfulSendToMen;
+    }
+
+    public Long getSuccessfulSendToWomen() {
+        if (successfulSendToWomen == null) {
+            return 0L;
+        }
+        return successfulSendToWomen;
+    }
+
+    public void setSuccessfulSendToWomen(Long successfulSentToWomen) {
+        this.successfulSendToWomen = successfulSentToWomen;
     }
 }
