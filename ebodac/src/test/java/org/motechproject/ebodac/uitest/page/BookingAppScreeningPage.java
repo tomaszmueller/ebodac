@@ -52,7 +52,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         waitForElement(SCREENING_BUTTON);
         clickOn(SCREENING_BUTTON);
         clickWhenVisible(SCREENING_BUTTON);
-        findElement(SCREENING_BUTTON).sendKeys(Keys.ENTER);
+//        findElement(SCREENING_BUTTON).sendKeys(Keys.ENTER);
         clickWhenVisible(DATE_FIELD);
         clickWhenVisible(DAY);
         setTextToFieldNoEnter(TIME_FIELD, "12:00");
@@ -61,6 +61,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         Thread.sleep(1000);
         clickWhenVisible(CLINIC_LOCATION);
         clickWhenVisible(CLINIC);
+        waitForElement(SAVE_BUTTON);
         clickWhenVisible(SAVE_BUTTON);
         waitForElement(POPUP_OK);
         clickWhenVisible(POPUP_OK);
