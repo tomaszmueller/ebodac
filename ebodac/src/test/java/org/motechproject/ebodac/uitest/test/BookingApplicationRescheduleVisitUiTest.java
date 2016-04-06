@@ -38,6 +38,7 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
         homePage.clickModules();
         homePage.openBookingAppModule();
         bookingAppPage.openRescheduleVisit();
+        bookingAppRescheduleVisitPage.resizePage();
         bookingAppRescheduleVisitPage.sortByPlannedDateColumn();
         assertTrue(bookingAppRescheduleVisitPage.visitsExist());
         bookingAppRescheduleVisitPage.chooseVisit();
