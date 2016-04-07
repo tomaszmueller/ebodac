@@ -72,6 +72,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         String bookingString = findElement(BOOKING_STRING).getText().substring(52).replace(".", "").replace(" ","");
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
+        Thread.sleep(1000);
         ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
         driver.switchTo().window(tabs2.get(1));
         screeningCardPage = new ScreeningCardPage(driver);
