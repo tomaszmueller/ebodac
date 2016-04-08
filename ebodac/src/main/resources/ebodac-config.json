@@ -64,5 +64,5 @@
   "detectVoiceMail":true,
   "retryAttempts":3,
   "retryDelay":15,
-  "setDisabledIvrCallsForStages":""
+  "disabledIvrCallsForStages":""
 }
