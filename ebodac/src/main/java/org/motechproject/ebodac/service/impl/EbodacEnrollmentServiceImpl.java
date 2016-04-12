@@ -356,8 +356,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), EbodacConstants.BOOSTER_RELATED_MESSAGES);
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
             SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
-            rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, visit.getSubject(), visit.getType().getValue(),
-                    visit.getMotechProjectedDate(), EnrollmentStatus.COMPLETED);
+            if (subjectEnrollments != null) {
+                rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, visit.getSubject(), visit.getType().getValue(),
+                        visit.getMotechProjectedDate(), EnrollmentStatus.COMPLETED);
+            }
         }
     }
 
