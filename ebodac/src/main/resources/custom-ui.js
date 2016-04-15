@@ -211,7 +211,7 @@ $scope.addEntityInstance = function() {
     if ($scope.selectedEntity.name === "Participant") {
         var input = $("#phoneNumberForm");
         var fieldValue = input.val();
-        if (fieldValue !== null && fieldValue !== undefined) {
+        if (fieldValue !== null && fieldValue !== undefined && fieldValue !== '') {
             input.val(fieldValue.replace(/ /g, ''));
             input.trigger('input');
         }
