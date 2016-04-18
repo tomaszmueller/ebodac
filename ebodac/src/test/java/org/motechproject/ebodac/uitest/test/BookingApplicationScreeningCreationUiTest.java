@@ -1,16 +1,17 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
-import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
-import org.motechproject.ebodac.uitest.page.*;
+import org.motechproject.ebodac.uitest.page.BookingAppPage;
+import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
+import org.motechproject.ebodac.uitest.page.HomePage;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
@@ -19,10 +20,8 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
     private BookingAppScreeningPage bookingAppScreeningPage;
-    private ScreeningCardPage screeningCardPage;
     private String user;
     private String password;
-    private UserPropertiesHelper userPropertiesHelper;
 
     @Before
     public void setUp() {
@@ -32,7 +31,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         bookingAppScreeningPage = new BookingAppScreeningPage(driver);
         user = properties.getUserName();
         password = properties.getPassword();
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
     }
@@ -44,7 +43,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         homePage.openBookingAppModule();
         bookingAppPage.openScreening();
         bookingAppScreeningPage.changeFilterTo("Date range");
-        String bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(". ","");
+        String bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(". ", "");
         assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
         bookingAppScreeningPage.changeFilterTo("Today");
         dates.add(new Date());
