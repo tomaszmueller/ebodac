@@ -3,10 +3,14 @@ package org.motechproject.ebodac.domain;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
+import org.motechproject.ebodac.util.CustomDateTimeDeserializer;
+import org.motechproject.ebodac.util.CustomDateTimeSerializer;
+import org.motechproject.ebodac.util.CustomVisitListDeserializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
@@ -136,6 +140,12 @@ public class Subject {
     @NonEditable(display = false)
     @Field
     private String owner;
+
+    @Field
+    private DateTime creationDate;
+
+    @Field
+    private DateTime modificationDate;
 
     @NonEditable
     @Field
@@ -382,10 +392,31 @@ public class Subject {
         this.owner = owner;
     }
 
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    public DateTime getModificationDate() {
+        return modificationDate;
+    }
+
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    public void setModificationDate(DateTime modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
     public List<Visit> getVisits() {
         return visits;
     }
 
+    @JsonDeserialize(using = CustomVisitListDeserializer.class)
     public void setVisits(List<Visit> visits) {
         this.visits = visits;
     }

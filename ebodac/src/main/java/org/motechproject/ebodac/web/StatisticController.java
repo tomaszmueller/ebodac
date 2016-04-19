@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -32,35 +33,35 @@ public class StatisticController {
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/statistic/table/ivr", method = RequestMethod.POST)
     @ResponseBody
-    public IvrAndSmsStatisticTablesDto getStatisticForIvrTable(DateFilter dateFilter, String startDate, String endDate) {
+    public IvrAndSmsStatisticTablesDto getStatisticForIvrTable(DateFilter dateFilter, String startDate, String endDate) throws IOException {
         return new IvrAndSmsStatisticTablesDto(statisticService.getStatisticForIvr(getDateRangeFromFilter(dateFilter, startDate, endDate)));
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/statistic/table/sms", method = RequestMethod.POST)
     @ResponseBody
-    public IvrAndSmsStatisticTablesDto getStatisticForSmsTable(DateFilter dateFilter, String startDate, String endDate) {
+    public IvrAndSmsStatisticTablesDto getStatisticForSmsTable(DateFilter dateFilter, String startDate, String endDate) throws IOException {
         return new IvrAndSmsStatisticTablesDto(statisticService.getStatisticForSms(getDateRangeFromFilter(dateFilter, startDate, endDate)));
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/statistic/graphs/ivr", method = RequestMethod.POST)
     @ResponseBody
-    public IvrAndSmsStatisticGraphsDto getStatisticForIvrGraphs(DateFilter dateFilter, String startDate, String endDate) {
+    public IvrAndSmsStatisticGraphsDto getStatisticForIvrGraphs(DateFilter dateFilter, String startDate, String endDate) throws IOException {
         return new IvrAndSmsStatisticGraphsDto(statisticService.getStatisticForIvr(getDateRangeFromFilter(dateFilter, startDate, endDate)));
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/statistic/graphs/sms", method = RequestMethod.POST)
     @ResponseBody
-    public IvrAndSmsStatisticGraphsDto getStatisticForSmsGraphs(DateFilter dateFilter, String startDate, String endDate) {
+    public IvrAndSmsStatisticGraphsDto getStatisticForSmsGraphs(DateFilter dateFilter, String startDate, String endDate) throws IOException {
         return new IvrAndSmsStatisticGraphsDto(statisticService.getStatisticForSms(getDateRangeFromFilter(dateFilter, startDate, endDate)));
     }
 
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getIvrEngagementStatistic", method = RequestMethod.POST)
     @ResponseBody
-    public List<IvrEngagementStatistic> getIvrEngagementStatistic() {
+    public List<IvrEngagementStatistic> getIvrEngagementStatistic() throws IOException {
         return statisticService.getIvrEngagementStatistic();
     }
 

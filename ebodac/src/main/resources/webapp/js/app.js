@@ -80,8 +80,14 @@
 
     ebodac.config(function ($routeProvider) {
         $routeProvider
-            .when('/ebodac/subjects', { redirectTo: '/mds/dataBrowser/' + subjectId + '/ebodac' })
-            .when('/ebodac/visits', { redirectTo: '/mds/dataBrowser/' + visitId + '/ebodac' })
+            .when('/ebodac/subjects', { templateUrl: '../ebodac/resources/partials/ebodacInstances.html', controller: 'MdsDataBrowserCtrl', resolve: {
+                                                                                                                                                         entityId: function ($route) { $route.current.params.entityId = subjectId; },
+                                                                                                                                                         moduleName: function ($route) { $route.current.params.moduleName = 'ebodac'; }
+                                                                                                                                                     } })
+            .when('/ebodac/visits', { templateUrl: '../ebodac/resources/partials/ebodacInstances.html', controller: 'MdsDataBrowserCtrl', resolve: {
+                                                                                                                                                       entityId: function ($route) { $route.current.params.entityId = visitId; },
+                                                                                                                                                       moduleName: function ($route) { $route.current.params.moduleName = 'ebodac'; }
+                                                                                                                                                   } })
             .when('/ebodac/settings', {templateUrl: '../ebodac/resources/partials/settings.html', controller: 'EbodacSettingsCtrl'})
             .when('/ebodac/reports', {templateUrl: '../ebodac/resources/partials/reports.html', controller: 'EbodacBasicCtrl' })
             .when('/ebodac/reportPrimerVaccination', { redirectTo: '/mds/dataBrowser/' + reportPrimerVaccinationId + '/ebodac' })

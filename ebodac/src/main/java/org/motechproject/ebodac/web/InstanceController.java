@@ -13,6 +13,7 @@ import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.OptsOutOfMotechMessagesReportDto;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacExportException;
@@ -25,7 +26,10 @@ import org.motechproject.ebodac.service.impl.csv.SubjectCsvImportCustomizer;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
 import org.motechproject.ebodac.template.XlsBasicTemplate;
 import org.motechproject.ebodac.util.QueryParamsBuilder;
+import org.motechproject.ebodac.util.SubjectVisitsMixin;
+import org.motechproject.ebodac.util.VisitMixin;
 import org.motechproject.ebodac.web.domain.GridSettings;
+import org.motechproject.ebodac.web.domain.Records;
 import org.motechproject.mds.dto.CsvImportResults;
 import org.motechproject.mds.dto.EntityDto;
 import org.motechproject.mds.ex.csv.CsvImportException;
@@ -285,6 +289,39 @@ public class InstanceController {
         }
     }
 
+    @RequestMapping(value = "/instances/Participant", method = RequestMethod.POST)
+    @ResponseBody
+    public String getParticipantInstances(GridSettings settings) throws IOException {
+        String lookup = settings.getLookup();
+        Map<String, Object> fieldMap = getFields(settings);
+
+        QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, fieldMap);
+
+        Records<Subject> records = lookupService.getEntities(Subject.class, lookup, settings.getFields(), queryParams);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.getSerializationConfig().addMixInAnnotations(Subject.class, SubjectVisitsMixin.class);
+
+        return mapper.writeValueAsString(records);
+    }
+
+    @RequestMapping(value = "/instances/Visit", method = RequestMethod.POST)
+    @ResponseBody
+    public String getVisitInstances(GridSettings settings) throws IOException {
+        String lookup = settings.getLookup();
+        Map<String, Object> fieldMap = getFields(settings);
+
+        QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, fieldMap);
+
+        Records<Visit> records = lookupService.getEntities(Visit.class, lookup, settings.getFields(), queryParams);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.getSerializationConfig().addMixInAnnotations(Visit.class, VisitMixin.class);
+
+        return mapper.writeValueAsString(records);
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.service.impl;
 
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.IvrAndSmsStatistic;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.jdo.Query;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,41 +23,22 @@ public class StatisticServiceImpl implements StatisticService {
     @Autowired
     private IvrAndSmsStatisticReportDataService ivrAndSmsStatisticReportDataService;
 
-    private static final String IVR_STATISTIC_QUERY = "SELECT DATE(sendDate) as 'date', count(EBODAC_MODULE_IVRANDSMSSTATISTICREPORT.id) as 'totalAmount', " +
-            "0 as 'totalPending', SUM(if(receivedDate is null, 1, 0)) as 'totalFailed', SUM(if(receivedDate is not null, 1, 0)) as 'totalSucceed', " +
-            "SUM(if(gender = 'Male', 1, 0)) as 'sendToMen', SUM(if(gender = 'Male' AND receivedDate is not null, 1, 0)) as 'successfulSendToMen', " +
-            "SUM(if(gender = 'Female', 1, 0)) as 'sendToWomen', SUM(if(gender = 'Female' AND receivedDate is not null, 1, 0)) as 'successfulSendToWomen'" +
-            "FROM EBODAC_MODULE_IVRANDSMSSTATISTICREPORT left join EBODAC_MODULE_SUBJECT on EBODAC_MODULE_IVRANDSMSSTATISTICREPORT.subject_id_OID = EBODAC_MODULE_SUBJECT.id " +
-            "WHERE sendDate >= :minDate AND sendDate <= :maxDate GROUP BY date";
-
-    private static final String SMS_STATISTIC_QUERY = "SELECT DATE(sendDate) as 'date', count(EBODAC_MODULE_IVRANDSMSSTATISTICREPORT.id) as 'totalAmount', " +
-            "SUM(if(smsStatus = 'YES' && smsReceivedDate is null, 1, 0)) as 'totalPending', SUM(if(smsStatus = 'FAIL', 1, 0)) as 'totalFailed', " +
-            "SUM(if(smsStatus = 'YES' && smsReceivedDate is not null, 1, 0)) as 'totalSucceed', " +
-            "SUM(if(gender = 'Male', 1, 0)) as 'sendToMen', SUM(if(gender = 'Male' AND smsReceivedDate is not null, 1, 0)) as 'successfulSendToMen', " +
-            "SUM(if(gender = 'Female', 1, 0)) as 'sendToWomen', SUM(if(gender = 'Female' AND smsReceivedDate is not null, 1, 0)) as 'successfulSendToWomen' " +
-            "FROM EBODAC_MODULE_IVRANDSMSSTATISTICREPORT left join EBODAC_MODULE_SUBJECT on EBODAC_MODULE_IVRANDSMSSTATISTICREPORT.subject_id_OID = EBODAC_MODULE_SUBJECT.id " +
-            "WHERE smsStatus != 'NO' AND sendDate >= :minDate AND sendDate <= :maxDate GROUP BY date";
-
-    private static final String IVR_ENGAGEMENT_STATISTIC_QUERY = "SELECT subjectId, count(subjectId) as 'callsExpected', " +
-            "count(subjectId) as 'pushedSuccessfully', SUM(if(receivedDate is not null, 1, 0)) as 'received', " +
-            "SUM(if(messagePercentListened >= 50, 1, 0)) as 'activelyListened', SUM(if(receivedDate is null, 1, 0)) as 'failed' " +
-            "FROM EBODAC_MODULE_IVRANDSMSSTATISTICREPORT left join EBODAC_MODULE_SUBJECT on EBODAC_MODULE_IVRANDSMSSTATISTICREPORT.subject_id_OID = EBODAC_MODULE_SUBJECT.id " +
-            "GROUP BY subjectId";
-
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
-    public List<IvrAndSmsStatistic> getStatisticForIvr(final Range<DateTime> dateRange) {
-        return getStatisticForQuery(dateRange, IVR_STATISTIC_QUERY);
+    public List<IvrAndSmsStatistic> getStatisticForIvr(final Range<DateTime> dateRange) throws IOException {
+        return getStatisticForQuery(dateRange, IOUtils.toString(getClass().getResourceAsStream("/sql/ivr_statistic_query.sql")));
     }
 
     @Override
-    public List<IvrAndSmsStatistic> getStatisticForSms(final Range<DateTime> dateRange) {
-        return getStatisticForQuery(dateRange, SMS_STATISTIC_QUERY);
+    public List<IvrAndSmsStatistic> getStatisticForSms(final Range<DateTime> dateRange) throws IOException {
+        return getStatisticForQuery(dateRange, IOUtils.toString(getClass().getResourceAsStream("/sql/sms_statistic_query.sql")));
     }
 
     @Override
-    public List<IvrEngagementStatistic> getIvrEngagementStatistic() {
+    public List<IvrEngagementStatistic> getIvrEngagementStatistic() throws IOException {
+        final String query = IOUtils.toString(getClass().getResourceAsStream("/sql/ivr_engagement_statistic_query.sql"));
+
         return ivrAndSmsStatisticReportDataService.executeSQLQuery(new SqlQueryExecution<List<IvrEngagementStatistic>>() {
 
             @Override
@@ -67,7 +50,7 @@ public class StatisticServiceImpl implements StatisticService {
 
             @Override
             public String getSqlQuery() {
-                return IVR_ENGAGEMENT_STATISTIC_QUERY;
+                return query;
             }
         });
     }
@@ -97,6 +80,7 @@ public class StatisticServiceImpl implements StatisticService {
             public List<IvrAndSmsStatistic> execute(Query query) {
                 return executeQueryWithParams(query, dateRange);
             }
+
             @Override
             public String getSqlQuery() {
                 return query;

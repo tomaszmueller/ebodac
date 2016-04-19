@@ -2,9 +2,12 @@ package org.motechproject.ebodac.domain;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.util.CustomDateDeserializer;
 import org.motechproject.ebodac.util.CustomDateSerializer;
+import org.motechproject.ebodac.util.CustomDateTimeDeserializer;
+import org.motechproject.ebodac.util.CustomDateTimeSerializer;
 import org.motechproject.ebodac.util.CustomSubjectSerializer;
 import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
 import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
@@ -55,6 +58,12 @@ public class Visit {
     @NonEditable(display = false)
     @Field
     private String owner;
+
+    @Field
+    private DateTime creationDate;
+
+    @Field
+    private DateTime modificationDate;
 
     public Visit() {
     }
@@ -127,6 +136,26 @@ public class Visit {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @JsonSerialize(using = CustomDateTimeSerializer.class)
+    public DateTime getModificationDate() {
+        return modificationDate;
+    }
+
+    @JsonDeserialize(using = CustomDateTimeDeserializer.class)
+    public void setModificationDate(DateTime modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
     @Override //NO CHECKSTYLE CyclomaticComplexity
