@@ -5,11 +5,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 public class ParticipantEditPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
+    static final int SMALL_TIMEOUT = 500;
+    static final int TIMEOUT_BORDER = 10000;
     static final By PHONE_NUMBER_FIELD = By.id("phoneNumberForm");
     static final By SAVE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div[2]/div/button");
     static final By CONFIRMATION_BUTTON = By.xpath("//div[@id='editSubjectModal']/div[2]/div/div[3]/button");
@@ -35,14 +36,14 @@ public class ParticipantEditPage extends AbstractBasePage {
 
     public void changePhoneNumber(String number) throws InterruptedException {
         Long startTime = System.currentTimeMillis();
-        while((System.currentTimeMillis() - startTime) < 10000) {
+        while ((System.currentTimeMillis() - startTime) < TIMEOUT_BORDER) {
             findElement(PHONE_NUMBER_FIELD).clear();
             changeFocus();
-            Thread.sleep(500);
+            Thread.sleep(SMALL_TIMEOUT);
             findElement(PHONE_NUMBER_FIELD).sendKeys(number);
             changeFocus();
-            Thread.sleep(500);
-            if(findElement(PHONE_NUMBER_FIELD).getText().equals(number)) {
+            Thread.sleep(SMALL_TIMEOUT);
+            if (findElement(PHONE_NUMBER_FIELD).getText().equals(number)) {
                 break;
             }
         }
@@ -58,7 +59,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     public String changeLanguage(String languagePos) throws InterruptedException  {
         clickWhenVisible(LANGUAGE_FIELD);
         String language = chooseLanguage(languagePos);
-        Thread.sleep(500);
+        Thread.sleep(SMALL_TIMEOUT);
         clickOn(SAVE_BUTTON);
         clickWhenVisible(CONFIRMATION_BUTTON);
         return language;
@@ -68,14 +69,14 @@ public class ParticipantEditPage extends AbstractBasePage {
         try {
             clickOn(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END));
             return findElement(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END + "/input")).getText();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new AssertionError("No language at chosen position");
         }
     }
 
     public void deleteParticipant() throws InterruptedException {
         waitForElement(DELETE_BUTTON);
-        Thread.sleep(500);
+        Thread.sleep(SMALL_TIMEOUT);
         findElement(DELETE_BUTTON).sendKeys(Keys.RETURN);
         waitForElement(DELETE_CONFIRMATION_BUTTON);
         clickOn(DELETE_CONFIRMATION_BUTTON);
@@ -86,15 +87,15 @@ public class ParticipantEditPage extends AbstractBasePage {
         clickOn(POPUP_OK);
     }
 
-    public void clickPlannedVisitDate() throws InterruptedException{
-        Thread.sleep(500);
+    public void clickPlannedVisitDate() throws InterruptedException {
+        Thread.sleep(SMALL_TIMEOUT);
         clickWhenVisible(PLANNED_VISITS_DATE);
-        Thread.sleep(500);
+        Thread.sleep(SMALL_TIMEOUT);
         clickOn(DATE);
     }
 
-    public void clickOK() throws InterruptedException{
-        Thread.sleep(500);
+    public void clickOK() throws InterruptedException {
+        Thread.sleep(SMALL_TIMEOUT);
         clickOn(POPUP_OK);
     }
 
@@ -110,13 +111,13 @@ public class ParticipantEditPage extends AbstractBasePage {
         return driver.findElement(PICK_DATA).getText();
     }
 
-    public void enter() throws InterruptedException{
+    public void enter() throws InterruptedException {
         int  day = 1;
         do {
             day++;
-            Thread.sleep(500);
+            Thread.sleep(SMALL_TIMEOUT);
             clickOn(DATE_TABLE);
-            WebElement date  = findElement(By.linkText(""+day+""));
+            WebElement date  = findElement(By.linkText("" + day + ""));
             date.click();
             clickOn(SAVE_BUTTON);
             clickOn(POPUP_OK);

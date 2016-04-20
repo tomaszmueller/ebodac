@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 public class ParticipantPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
+    static final int SMALL_TIMEOUT = 500;
+    static final int BIG_TIMEOUT = 1000;
     static final By PARTICIPANT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
     static final By PHONE_NUMBER = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[@aria-describedby='instancesTable_phoneNumber']");
     static final By LANGUAGE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[@aria-describedby='instancesTable_language']");
@@ -27,9 +29,9 @@ public class ParticipantPage extends AbstractBasePage {
 
     public void openFirstParticipant() throws InterruptedException {
         try {
-            Thread.sleep(500);
+            Thread.sleep(SMALL_TIMEOUT);
             findElement(PARTICIPANT);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new AssertionError("No participants present");
         }
         clickWhenVisible(PARTICIPANT);
@@ -43,14 +45,14 @@ public class ParticipantPage extends AbstractBasePage {
         clickWhenVisible(FIND_UNIQUE_PARTICIPANT_BY_PARTICIPANT_ID);
         findElement(ID_FIELD).clear();
         findElement(ID_FIELD).sendKeys(id);
-        Thread.sleep(1000);
+        Thread.sleep(BIG_TIMEOUT);
         clickWhenVisible(FIND_BUTTON);
-        Thread.sleep(1000);
+        Thread.sleep(BIG_TIMEOUT);
         try {
-            Thread.sleep(500);
+            Thread.sleep(SMALL_TIMEOUT);
             findElement(PARTICIPANT);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

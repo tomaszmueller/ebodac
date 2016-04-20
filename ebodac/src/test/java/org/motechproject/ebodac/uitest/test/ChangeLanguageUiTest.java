@@ -23,8 +23,8 @@ public class ChangeLanguageUiTest extends TestBase {
     private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
-    private String L1adminUser;
-    private String L1adminpassword;
+    private String user;
+    private String password;
     private String testLanguage;
     private String changedLanguage;
     private UITestHttpClientHelper httpClientHelper;
@@ -32,31 +32,31 @@ public class ChangeLanguageUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        L1adminUser = properties.getUserName();
-        L1adminpassword = properties.getPassword();
+        user = properties.getUserName();
+        password = properties.getPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         ebodacPage = new EBODACPage(driver);
         participantPage = new ParticipantPage(driver);
         participantEditPage = new ParticipantEditPage(driver);
         url = properties.getWebAppUrl();
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
+            httpClientHelper.addParticipant(new TestParticipant(), user, password);
         }
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(L1adminUser, L1adminpassword);
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.login(user, password);
         }
     }
 
     @Test
     public void changeLanguageTest() throws Exception {
         homePage.openEBODACModule();
-        ebodacPage.showParticipants();
+//        ebodacPage.showParticipants();
         participantPage.openFirstParticipant();
         testLanguage = participantEditPage.changeLanguage("1");
         changedLanguage = participantPage.getFirstParticipantLanguage();
-        assertEquals(changedLanguage, testLanguage);
+        assertEquals(changedLanguage.replace(" ", ""), testLanguage.replace(" ", ""));
     }
 
     @After

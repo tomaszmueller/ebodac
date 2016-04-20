@@ -2,11 +2,8 @@ package org.motechproject.ebodac.uitest.page;
 
 import org.motech.page.AbstractBasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +20,9 @@ public class BookingAppScreeningPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/#/bookingApp/screening";
 
+    static final int TEXTPOINT = 52;
+    static final int TIMEOUT = 1000;
+    static final int MAX_PAGES = 10;
     static final By SCREENING_BUTTON = By.xpath("//div[@id='main-content']/div/div/div/button");
     static final By DATE_FIELD = By.xpath("//div[@class='modal-body']/div/input[@type='text']");
     static final By DAY = By.linkText("13");
@@ -45,6 +45,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     static final By END_DATE = By.xpath("//input[@ng-model='selectedFilter.endDate']");
     static final By FIRST_DAY = By.linkText("1");
     static final By LAST_DAY = By.linkText("28");
+    static final By NEXT_PAGE = By.xpath("//td[@id='next_pager']/span");
 
     private ScreeningCardPage screeningCardPage;
 
@@ -58,29 +59,29 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         setTextToFieldNoEnter(TIME_FIELD, "12:00");
         clickWhenVisible(TIME_DONE);
         waitForElement(CLINIC_LOCATION);
-        Thread.sleep(1000);
+        Thread.sleep(TIMEOUT);
         clickWhenVisible(CLINIC_LOCATION);
         clickWhenVisible(CLINIC);
         waitForElement(SAVE_BUTTON);
         clickWhenVisible(SAVE_BUTTON);
         waitForElement(POPUP_OK);
         clickWhenVisible(POPUP_OK);
-        Thread.sleep(1000);
+        Thread.sleep(TIMEOUT);
         clickWhenVisible(POPUP_OK);
-        Thread.sleep(1000);
+        Thread.sleep(TIMEOUT);
         waitForElement(BOOKING_STRING);
-        String bookingString = findElement(BOOKING_STRING).getText().substring(52).replace(".", "").replace(" ","");
+        String bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace(".", "").replace(" ", "");
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
-        Thread.sleep(1000);
-        ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+        Thread.sleep(TIMEOUT);
+        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(tabs2.get(1));
         screeningCardPage = new ScreeningCardPage(driver);
         String screeningBookingId = screeningCardPage.getBookingId();
         assertEquals(screeningBookingId, bookingString);
         driver.close();
         driver.switchTo().window(tabs2.get(0));
-        Thread.sleep(1000);
+        Thread.sleep(TIMEOUT);
         waitForElement(CLOSE_BUTTON);
         clickOn(CLOSE_BUTTON);
         clickWhenVisible(CLOSE_BUTTON);
@@ -117,16 +118,35 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     }
 
     public boolean bookingIdExists(String id) {
+        boolean exists = false;
+        int counter = 0;
+        while (findElement(NEXT_PAGE).isEnabled()) {
+            if (counter > MAX_PAGES) {
+                break;
+            }
+            if (bookingIdExistsOnPage(id)) {
+                exists = true;
+                break;
+            } else {
+                clickOn(NEXT_PAGE);
+            }
+            counter++;
+        }
+        return exists;
+
+    }
+
+    public boolean bookingIdExistsOnPage(String id) {
         try {
-            By ELEMENT_BOOKING_ID = By.cssSelector("td[title=\"" + id + "\"]");
-            Thread.sleep(1000);
-            waitForElement(ELEMENT_BOOKING_ID);
-            WebElement element = findElement(ELEMENT_BOOKING_ID);
+            By elementBookingId = By.cssSelector("td[title=\"" + id + "\"]");
+            Thread.sleep(TIMEOUT);
+            waitForElement(elementBookingId);
+            WebElement element = findElement(elementBookingId);
             if (element != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -139,21 +159,20 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             } else {
                 long dateparse = Date.parse((firstVisitElement.getAttribute("title")).toString());
                 Date date = new Date(dateparse);
-                if(containsDate(dates,date)) {
+                if (containsDate(dates, date)) {
                     return true;
                 }
                     return false;
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return true;
         }
     }
 
 
     public static boolean containsDate(ArrayList<Date> dates, Date date) {
-        for(Date thisDate : dates) {
-            if(isSameDay(thisDate, date)) {
+        for (Date thisDate : dates) {
+            if (isSameDay(thisDate, date)) {
                 return true;
             }
         }
