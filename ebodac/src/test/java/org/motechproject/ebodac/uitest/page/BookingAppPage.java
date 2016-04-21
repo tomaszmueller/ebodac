@@ -12,6 +12,7 @@ public class BookingAppPage extends AbstractBasePage {
     public static final By CAPACITY_INFO = By.linkText("Capacity Info");
     public static final By ADVANCED_SETTINGS = By.linkText("Advanced Settings");
     public static final By SCREENING = By.linkText("Screening");
+    public static final By RESCHEDULE_VISIT = By.linkText("Visit Schedule/Reschedule");
 
     public BookingAppPage(WebDriver driver) {
         super(driver);
@@ -27,6 +28,10 @@ public class BookingAppPage extends AbstractBasePage {
 
     public void openScreening() throws InterruptedException {
         clickWhenVisible(SCREENING);
+    }
+
+    public void openRescheduleVisit() throws InterruptedException {
+        clickWhenVisible(RESCHEDULE_VISIT);
     }
 
     @Override
