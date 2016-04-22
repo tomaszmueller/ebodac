@@ -32,7 +32,7 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
         ebodacPage = new EBODACPage(driver);
         reportPage = new ReportPage(driver);
         mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(driver);
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
     }

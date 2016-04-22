@@ -19,26 +19,26 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
     private EnrollmentPage enrollmentPage;
     private EBODACPage ebodacPage;
     private ParticipantEditPage participantEditPage;
-    private String L1adminUser;
-    private String L1adminpassword;
+    private String l1AdminUser;
+    private String l1AdminPassword;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
     @Before
     public void setUp() {
-        L1adminUser = properties.getUserName();
-        L1adminpassword = properties.getPassword();
+        l1AdminUser = properties.getUserName();
+        l1AdminPassword = properties.getPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         ebodacPage = new EBODACPage(driver);
         enrollmentPage = new EnrollmentPage(driver);
         participantEditPage = new ParticipantEditPage(driver);
         url = properties.getWebAppUrl();
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
+            httpClientHelper.addParticipant(new TestParticipant(),l1AdminUser,l1AdminPassword);
         }
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(L1adminUser, L1adminpassword);
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.login(l1AdminUser , l1AdminPassword);
         }
     }
     @Test  //Test for EBODAC-524, EBODAC-525
@@ -47,27 +47,27 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
         ebodacPage.goToEnrollment();
         enrollmentPage.clickAction();
         enrollmentPage.clickOK();
-        if(enrollmentPage.error()){
+        if (enrollmentPage.error()) {
             enrollmentPage.clickOK();
             enrollmentPage.nextAction();
             enrollmentPage.clickOK();
         }
-        if(enrollmentPage.enrolled()){
+        if (enrollmentPage.enrolled()) {
             assertTrue(enrollmentPage.enrolled());
             enrollmentPage.clickOK();
         }
-        if(enrollmentPage.unenrolled()){
+        if (enrollmentPage.unenrolled()) {
             assertTrue(enrollmentPage.unenrolled());
             enrollmentPage.clickOK();
         }
         enrollmentPage.actionSecond();
         enrollmentPage.clickOK();
         enrollmentPage.clickOK();
-        if(enrollmentPage.enrolled()){
+        if (enrollmentPage.enrolled()) {
             assertTrue(enrollmentPage.enrolled());
             enrollmentPage.clickOK();
         }
-        if(enrollmentPage.unenrolled()){
+        if (enrollmentPage.unenrolled()) {
             assertTrue(enrollmentPage.unenrolled());
             enrollmentPage.clickOK();
         }

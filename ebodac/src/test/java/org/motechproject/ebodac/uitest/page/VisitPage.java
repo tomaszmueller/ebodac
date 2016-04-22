@@ -9,6 +9,8 @@ public class VisitPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
+    static final int SLEEP_500 = 500;
+    static final int SLEEP_1000 = 1000;
 
 
     public VisitPage(WebDriver driver) {
@@ -22,16 +24,16 @@ public class VisitPage extends AbstractBasePage {
 
     public boolean visitsExist() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(SLEEP_1000);
             findElement(VISIT);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public void clickVisit() throws InterruptedException{
-        Thread.sleep(500);
+    public void clickVisit() throws InterruptedException {
+        Thread.sleep(SLEEP_500);
         waitForElement(VISIT);
         clickOn(VISIT);
     }

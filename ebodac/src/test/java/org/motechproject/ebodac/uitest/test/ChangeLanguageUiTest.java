@@ -42,17 +42,16 @@ public class ChangeLanguageUiTest extends TestBase {
         url = properties.getWebAppUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(), user, password);
+            httpClientHelper.addParticipant(new TestParticipant() , user , password);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(user, password);
+            loginPage.login(user , password);
         }
     }
 
     @Test
     public void changeLanguageTest() throws Exception {
         homePage.openEBODACModule();
-//        ebodacPage.showParticipants();
         participantPage.openFirstParticipant();
         testLanguage = participantEditPage.changeLanguage("1");
         changedLanguage = participantPage.getFirstParticipantLanguage();

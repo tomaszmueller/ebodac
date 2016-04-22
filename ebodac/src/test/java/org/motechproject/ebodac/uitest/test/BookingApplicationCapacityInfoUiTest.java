@@ -1,9 +1,11 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
-import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.BookingAppAdvancedSettingsPage;
 import org.motechproject.ebodac.uitest.page.BookingAppCapacityInfoPage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
@@ -29,7 +31,7 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
         bookingAppAdvancedSettingsPage = new BookingAppAdvancedSettingsPage(driver);
         user = properties.getUserName();
         password = properties.getPassword();
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
     }
@@ -48,11 +50,11 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
         bookingAppCapacityInfoPage.filterDayAfterTomorrow();
         Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + maxCapacity);
         bookingAppCapacityInfoPage.filterNext3Days();
-        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(3*maxCapacity));
+        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (3 * maxCapacity));
         bookingAppCapacityInfoPage.filterNext7Days();
-        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(7*maxCapacity));
+        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (7 * maxCapacity));
         bookingAppCapacityInfoPage.filterDateRange();
-        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), ""+(28*maxCapacity));
+        Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (28 * maxCapacity));
 
     }
 

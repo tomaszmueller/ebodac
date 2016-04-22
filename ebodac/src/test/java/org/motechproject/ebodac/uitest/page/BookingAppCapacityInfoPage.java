@@ -23,6 +23,7 @@ public class BookingAppCapacityInfoPage extends AbstractBasePage {
     static final By END_DATE = By.xpath("//input[@ng-model='selectedFilter.endDate']");
     static final By FIRST_DAY = By.linkText("1");
     static final By LAST_DAY = By.linkText("28");
+    static final int SLEEP_6500 = 6500;
 
     public BookingAppCapacityInfoPage(WebDriver driver) {
         super(driver);
@@ -31,31 +32,31 @@ public class BookingAppCapacityInfoPage extends AbstractBasePage {
     public void filterToday() throws InterruptedException {
         clickWhenVisible(FILTER_BUTTON);
         clickWhenVisible(TODAY);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public void filterTomorrow() throws InterruptedException {
         clickWhenVisible(FILTER_BUTTON);
         clickWhenVisible(TOMORROW);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public void filterDayAfterTomorrow() throws InterruptedException {
         clickWhenVisible(FILTER_BUTTON);
         clickWhenVisible(DAY_AFTER_TOMORROW);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public void filterNext3Days() throws InterruptedException {
         clickWhenVisible(FILTER_BUTTON);
         clickWhenVisible(NEXT_3_DAYS);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public void filterNext7Days() throws InterruptedException {
         clickWhenVisible(FILTER_BUTTON);
         clickWhenVisible(NEXT_7_DAYS);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public void filterDateRange() throws InterruptedException {
@@ -65,7 +66,7 @@ public class BookingAppCapacityInfoPage extends AbstractBasePage {
         clickWhenVisible(FIRST_DAY);
         clickWhenVisible(END_DATE);
         clickWhenVisible(LAST_DAY);
-        Thread.sleep(6500);
+        Thread.sleep(SLEEP_6500);
     }
 
     public String getMaxCapacity() {

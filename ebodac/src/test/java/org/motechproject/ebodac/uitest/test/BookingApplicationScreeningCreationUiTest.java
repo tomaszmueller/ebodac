@@ -32,7 +32,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         user = properties.getUserName();
         password = properties.getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(user, password);
+            loginPage.login(user , password);
         }
     }
 

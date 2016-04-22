@@ -8,9 +8,7 @@ import java.util.Properties;
 
 public class UserPropertiesHelper {
 
-    private static org.motech.page.TestProperties SINGLETON;
-
-
+    private static org.motech.page.TestProperties singleton;
 
     public static final String L1ADMIN_PASSWORD_PROPERTY = "admin.password";
 
@@ -37,10 +35,10 @@ public class UserPropertiesHelper {
     public static final String CLERK_USERNAME_PROPERTY = "clerk.username";
 
     public static org.motech.page.TestProperties instance() {
-        if (SINGLETON == null) {
-            SINGLETON = new org.motech.page.TestProperties();
+        if (singleton == null) {
+            singleton = new org.motech.page.TestProperties();
         }
-        return SINGLETON;
+        return singleton;
     }
 
     private Properties properties;
@@ -51,13 +49,13 @@ public class UserPropertiesHelper {
             URL resource = Thread.currentThread().getContextClassLoader()
                     .getResource("org/motech/uitestframework/test.properties");
             if (resource != null) {
-                System.out.println("test.properties found: " + resource.toExternalForm());
+                /**System.out.println("test.properties found: " + resource.toExternalForm());*/
                 InputStream input = resource.openStream();
                 properties.load(new InputStreamReader(input, "UTF-8"));
-                System.out.println("test.properties:");
-                System.out.println(properties);
+                /**System.out.println("test.properties:");
+                System.out.println(properties);*/
             }
-        }
+            }
         catch (IOException ioException) {
             throw new RuntimeException("test.properties not found. Error: ", ioException);
         }

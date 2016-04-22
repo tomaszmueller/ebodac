@@ -29,15 +29,15 @@ public class CreateUsersHelper {
     }
 
     public boolean createAdminUser() throws InterruptedException {
-        return createUser("admin", "testadmin", "EBODAC Administrator");
+        return createUser("admin" , "testadmin" , "EBODAC Administrator");
     }
 
     public boolean createAnalystUser() throws InterruptedException  {
-        return createUser("analyst","testanalyst","EBODAC Site-Analyst");
+        return createUser("analyst" , "testanalyst" , "EBODAC Site-Analyst");
     }
 
     public void createUsers() throws InterruptedException {
-        if(createAdminUser()) {
+        if (createAdminUser()) {
             createAnalystUser();
         }
     }

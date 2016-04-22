@@ -1,6 +1,10 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
 import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
@@ -13,31 +17,31 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;
-    private String L1adminUser;
-    private String L1adminpassword;
+    private String l1AdminUser;
+    private String l1AdminPassword;
     private UITestHttpClientHelper httpClientHelper;
     private UserPropertiesHelper userPropertiesHelper;
     private CreateUsersHelper createUsersHelper;
     private String url;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         url = properties.getWebAppUrl();
-        if(url.contains("localhost")){
+        if (url.contains("localhost")) {
             createUsersHelper = new CreateUsersHelper(driver);
             createUsersHelper.createUsersWithLogin(properties);
         }
         userPropertiesHelper = new UserPropertiesHelper();
-        L1adminUser = userPropertiesHelper.getAdminUserName();
-        L1adminpassword = userPropertiesHelper.getAdminPassword();
+        l1AdminUser = userPropertiesHelper.getAdminUserName();
+        l1AdminPassword = userPropertiesHelper.getAdminPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(),L1adminUser,L1adminpassword);
+            httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);
         }
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(L1adminUser, L1adminpassword);
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.login(l1AdminUser, l1AdminPassword);
         }
     }
 

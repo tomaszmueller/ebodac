@@ -26,11 +26,11 @@ public class MotechAccessToAllModuelsUiTest extends TestBase {
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         url = properties.getWebAppUrl();
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant(), user, password);
         }
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
     }

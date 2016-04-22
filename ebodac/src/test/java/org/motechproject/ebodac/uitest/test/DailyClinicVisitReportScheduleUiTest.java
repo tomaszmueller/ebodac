@@ -32,7 +32,7 @@ public class DailyClinicVisitReportScheduleUiTest extends TestBase {
         ebodacPage = new EBODACPage(driver);
         reportPage = new ReportPage(driver);
         dailyClinicVisitScheduleReportPage = new DailyClinicVisitScheduleReportPage(driver);
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
     }

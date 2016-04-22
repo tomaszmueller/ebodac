@@ -53,7 +53,6 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         waitForElement(SCREENING_BUTTON);
         clickOn(SCREENING_BUTTON);
         clickWhenVisible(SCREENING_BUTTON);
-//        findElement(SCREENING_BUTTON).sendKeys(Keys.ENTER);
         clickWhenVisible(DATE_FIELD);
         clickWhenVisible(DAY);
         setTextToFieldNoEnter(TIME_FIELD, "12:00");
@@ -70,7 +69,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(POPUP_OK);
         Thread.sleep(TIMEOUT);
         waitForElement(BOOKING_STRING);
-        String bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace(".", "").replace(" ", "");
+        String bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace("." , "").replace(" " , "");
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
         Thread.sleep(TIMEOUT);
