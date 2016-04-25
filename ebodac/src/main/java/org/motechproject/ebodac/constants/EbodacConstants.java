@@ -123,6 +123,7 @@ public final class EbodacConstants {
             put("Address",           "subject.address");
             put("Visit type",        "type");
             put("Community",         "subject.community");
+            put("Stage ID",          "subject.stageId");
             put("Site Name",         "subject.siteName");
         }
     };
@@ -139,6 +140,7 @@ public final class EbodacConstants {
             put("Booster Vaccination Date", "subject.boosterVaccinationDate");
             put("Date Of Follow-up Visit",  null);
             put("Community",                "subject.community");
+            put("Stage ID",                 "subject.stageId");
             put("Site Name",                "subject.siteName");
         }
     };
@@ -155,6 +157,7 @@ public final class EbodacConstants {
             put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit", "noOfDaysExceededVisit");
             put("Community",                "subject.community");
+            put("Stage ID",                 "subject.stageId");
             put("Site Name",                "subject.siteName");
         }
     };
@@ -173,6 +176,7 @@ public final class EbodacConstants {
             put("Planned Visit Date",       "motechProjectedDate");
             put("No Of Days Exceeded Visit", "noOfDaysExceededVisit");
             put("Community",                "subject.community");
+            put("Stage ID",                 "subject.stageId");
             put("Site Name",                "subject.siteName");
         }
     };
@@ -220,6 +224,7 @@ public final class EbodacConstants {
             put("Gender",                   "subject.gender");
             put("Age",                      "age");
             put("Date of Unenrollment",     "dateOfUnenrollment");
+            put("Stage ID",                 "subject.stageId");
             put("Site Name",                "subject.siteName");
         }
     };

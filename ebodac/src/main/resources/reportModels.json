@@ -8,6 +8,7 @@
       "ebodac.web.reports.dailyClinicVisitScheduleReport.subjectAddress",
       "ebodac.web.reports.dailyClinicVisitScheduleReport.visitType",
       "ebodac.web.reports.dailyClinicVisitScheduleReport.community",
+      "ebodac.web.reports.dailyClinicVisitScheduleReport.stageId",
       "ebodac.web.reports.dailyClinicVisitScheduleReport.siteName"],
     "colModel": [{
       "name": "rowId",
@@ -54,6 +55,12 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
       "name": "subjectSiteName",
       "jsonmap": "subject",
       "index": "subject.siteName",
@@ -72,6 +79,7 @@
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.primerVaccinationDate",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.boosterVaccinationDate",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.community",
+      "ebodac.web.reports.followupsAfterPrimeInjectionReport.stageId",
       "ebodac.web.reports.followupsAfterPrimeInjectionReport.siteName"],
     "colModel": [{
       "name": "rowId",
@@ -133,6 +141,12 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
       "name": "subjectSiteName",
       "jsonmap": "subject",
       "index": "subject.siteName",
@@ -152,6 +166,7 @@
       "ebodac.web.reports.followupsMissedClinicVisitsReport.planedVisitDate",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.noOfDaysExceededVisit",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.community",
+      "ebodac.web.reports.followupsMissedClinicVisitsReport.stageId",
       "ebodac.web.reports.followupsMissedClinicVisitsReport.siteName"],
     "colModel": [{
       "name": "rowId",
@@ -214,6 +229,12 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
       "name": "subjectSiteName",
       "jsonmap": "subject",
       "index": "subject.siteName",
@@ -235,6 +256,7 @@
       "ebodac.web.reports.MandEMissedClinicVisitsReport.planedVisitDate",
       "ebodac.web.reports.MandEMissedClinicVisitsReport.noOfDaysExceededVisit",
       "ebodac.web.reports.MandEMissedClinicVisitsReport.community",
+      "ebodac.web.reports.MandEMissedClinicVisitsReport.stageId",
       "ebodac.web.reports.MandEMissedClinicVisitsReport.siteName"],
     "colModel": [{
       "name": "rowId",
@@ -309,6 +331,12 @@
       "align": "center",
       "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.community){ return ''; } return cellValue.community; }"
     }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
+    }, {
       "name": "subjectSiteName",
       "jsonmap": "subject",
       "index": "subject.siteName",
@@ -322,6 +350,7 @@
       "ebodac.web.reports.optsOutOfMotechMessagesReport.subjectGender",
       "ebodac.web.reports.optsOutOfMotechMessagesReport.age",
       "ebodac.web.reports.optsOutOfMotechMessagesReport.dateOfUnenrollment",
+      "ebodac.web.reports.optsOutOfMotechMessagesReport.stageId",
       "ebodac.web.reports.optsOutOfMotechMessagesReport.siteName"],
     "colModel": [{
       "name": "rowId",
@@ -349,6 +378,12 @@
       "index": "dateOfUnenrollment",
       "align": "center",
       "formatter":"dateOfUnenrollment", "formatoptions": {"srcformat": "Y-m-d", "newformat":"Y-m-d"}
+    }, {
+      "name": "subjectStageId",
+      "jsonmap": "subject",
+      "index": "subject.stageId",
+      "align": "center",
+      "formatter": "function(cellValue, options, rowObject) { if (!cellValue || !cellValue.stageId){ return ''; } return cellValue.stageId; }"
     }, {
       "name": "subjectSiteName",
       "jsonmap": "subject",
