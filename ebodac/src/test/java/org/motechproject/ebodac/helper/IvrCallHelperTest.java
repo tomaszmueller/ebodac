@@ -394,7 +394,7 @@ public class IvrCallHelperTest {
         subject.setSubjectId(externalId);
         subject.setPhoneNumber(subjectPhoneNumber);
         subject.setLanguage(Language.English);
-        subject.setStageId(4l);
+        subject.setStageId(4L);
         when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
 
         VotoLanguage votoLanguage = new VotoLanguage();
@@ -458,7 +458,7 @@ public class IvrCallHelperTest {
         subject.setSubjectId(externalId);
         subject.setPhoneNumber(subjectPhoneNumber);
         subject.setLanguage(Language.English);
-        subject.setStageId(4l);
+        subject.setStageId(4L);
         when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
 
         VotoLanguage votoLanguage = new VotoLanguage();

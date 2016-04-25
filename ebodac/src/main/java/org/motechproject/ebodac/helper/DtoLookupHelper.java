@@ -324,13 +324,12 @@ public final class DtoLookupHelper {
 
         List<String> availableVisitTypes = Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString() + ":"  + VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.getValue(),
                 VisitType.BOOST_VACCINATION_DAY.toString() + ":"  + VisitType.BOOST_VACCINATION_DAY.getValue());
-        for(LookupDto lookup : lookups) {
-            for(LookupFieldDto lookupFieldDto : lookup.getLookupFields()) {
+        for (LookupDto lookup : lookups) {
+            for (LookupFieldDto lookupFieldDto : lookup.getLookupFields()) {
 
-                if(lookupFieldDto.getDisplayName().equals("Visit Type")) {
-                    for(SettingDto settingDto : lookupFieldDto.getSettings()) {
-
-                        if(settingDto.getName().equals("mds.form.label.values")) {
+                if ("Visit Type".equals(lookupFieldDto.getDisplayName())) {
+                    for (SettingDto settingDto : lookupFieldDto.getSettings()) {
+                        if ("mds.form.label.values".equals(settingDto.getName())) {
                             settingDto.setValue(availableVisitTypes);
                             break;
                         }

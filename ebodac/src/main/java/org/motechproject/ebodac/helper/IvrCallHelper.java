@@ -101,7 +101,7 @@ public class IvrCallHelper {
     }
 
     private boolean checkIfCallsForThisStageAreEnabled(Config config, Long stageId) {
-        if(StringUtils.isBlank(config.getDisabledIvrCallsForStages()) ) {
+        if (StringUtils.isBlank(config.getDisabledIvrCallsForStages())) {
             return true;
         }
         String stagesWithoutSpaces = config.getDisabledIvrCallsForStages().replaceAll("\\s+", "");

@@ -258,9 +258,9 @@ public final class EbodacConstants {
 
     public static final Map<String, Float> REPORT_COLUMN_WIDTHS = new LinkedHashMap<String, Float>() {
         {
-            put("Participant Id", 64f);
+            put("Participant Id", 64f); //NO CHECKSTYLE MagicNumber
             put("Stage ID", 32f);
-            put("Gender", 48f);
+            put("Gender", 48f); //NO CHECKSTYLE MagicNumber
             put("Age", 24f);
             put("SMS", 32f);
         }
