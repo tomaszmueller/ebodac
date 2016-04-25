@@ -2,7 +2,6 @@ package org.motechproject.ebodac.uitest.page;
 
 import org.motech.page.AbstractBasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 
@@ -15,7 +14,7 @@ public class ModulesPage extends AbstractBasePage {
         super(driver);
     }
 
-    public void openEbodacSettings() throws InterruptedException{
+    public void openEbodacSettings() throws InterruptedException {
         waitForElement(EBODAC_SETTINGS);
         clickWhenVisible(EBODAC_SETTINGS);
     }

@@ -27,7 +27,7 @@ public class ReportPage extends AbstractBasePage {
         clickWhenVisible(DAILYCLINICVISITSCHEDULEREPORT);
     }
 
-    public void showFollowUpsAfterPrimeInjectionReport () throws InterruptedException{
+    public void showFollowUpsAfterPrimeInjectionReport() throws InterruptedException {
         clickWhenVisible(FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT);
     }
 

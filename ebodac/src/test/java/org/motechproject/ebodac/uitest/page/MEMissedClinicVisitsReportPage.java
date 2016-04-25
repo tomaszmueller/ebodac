@@ -20,7 +20,7 @@ public class MEMissedClinicVisitsReportPage extends AbstractBasePage {
                 return false;
             }
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return true;
         }
     }

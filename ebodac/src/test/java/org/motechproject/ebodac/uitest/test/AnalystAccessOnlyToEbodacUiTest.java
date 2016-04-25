@@ -1,6 +1,10 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
 import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
@@ -23,7 +27,7 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
     @Before
     public void setUp() throws  Exception {
         url = properties.getWebAppUrl();
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             createUsersHelper = new CreateUsersHelper(driver);
             createUsersHelper.createUsersWithLogin(properties);
         }
@@ -32,12 +36,12 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
         L1analystpassword = userPropertiesHelper.getAnalystPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
-        if(url.contains("localhost")) {
+        if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(),L1analystUser,L1analystpassword);
+            httpClientHelper.addParticipant(new TestParticipant() , L1analystUser , L1analystpassword);
         }
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(L1analystUser, L1analystpassword);
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.login(L1analystUser , L1analystpassword);
         }
     }
 
@@ -53,3 +57,4 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
         loginPage.logOut();
     }
 }
+

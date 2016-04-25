@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.junit.Ignore;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,16 +20,16 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
     private EBODACPage ebodacPage;
     private VisitPage visitPage;
     private ServerLogPage serverLogPage;
-    private String AdminUser;
-    private String AdminPassword;
+    private String adminUser;
+    private String adminPassword;
     private UITestHttpClientHelper httpClientHelper;
     private RAVESettingsHelper raveSettingsHelper;
     private String url;
 
     @Before
     public void setUp() {
-        AdminUser = properties.getUserName();
-        AdminPassword = properties.getPassword();
+        adminUser = properties.getUserName();
+        adminPassword = properties.getPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         adminPage = new AdminPage(driver);
@@ -44,15 +43,15 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
 
     @Test//Test for EBODAC-512
     public void getVisitDataFromRAVETest() throws Exception {
-        if(homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(AdminUser, AdminPassword);
+        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.login(adminUser , adminPassword);
         }
-        if(url.contains("localhost")) {
-            httpClientHelper.addParticipant(new TestParticipant(),AdminUser,AdminPassword);
+        if (url.contains("localhost")) {
+            httpClientHelper.addParticipant(new TestParticipant() , adminUser , adminPassword);
             raveSettingsHelper.createNewRAVESettings();
         }
-        httpClientHelper.fetchCSV(AdminUser, AdminPassword);
-        if(url.contains("localhost")) {
+        httpClientHelper.fetchCSV(adminUser , adminPassword);
+        if (url.contains("localhost")) {
             adminPage.backToHomePage();
             homePage.openEBODACModule();
             ebodacPage.showVisits();

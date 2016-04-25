@@ -56,7 +56,7 @@ public class ParticipantEditPage extends AbstractBasePage {
         findElement(By.className("form-control")).sendKeys("");
     }
 
-    public String changeLanguage(String languagePos) throws InterruptedException  {
+    public String changeLanguage(String languagePos) throws InterruptedException {
         clickWhenVisible(LANGUAGE_FIELD);
         String language = chooseLanguage(languagePos);
         Thread.sleep(SMALL_TIMEOUT);

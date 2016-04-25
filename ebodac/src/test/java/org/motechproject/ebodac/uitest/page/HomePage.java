@@ -22,6 +22,7 @@ public class HomePage extends AbstractBasePage {
     static final By MODULES = By.linkText("Modules");
     static final By BOOKING_APP = By.linkText("Booking App");
     static final By ADMIN = By.linkText("Admin");
+    static final int SLEEP_500 = 500;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -41,22 +42,22 @@ public class HomePage extends AbstractBasePage {
     }
     public boolean isEBODACModulePresent() throws InterruptedException {
         try {
-            if(findElement(EBODAC)!=null) {
+            if (findElement(EBODAC) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isDataServicesModulePresent() throws InterruptedException {
         try {
-            if(findElement(DATA_SERVICES)!=null) {
+            if (findElement(DATA_SERVICES) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -71,80 +72,80 @@ public class HomePage extends AbstractBasePage {
 
     public boolean isEmailModulePresent() throws InterruptedException {
         try {
-            if(findElement(EMAIL)!=null) {
+            if (findElement(EMAIL) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isMessageCampaignModulePresent() throws InterruptedException {
         try {
-            if(findElement(MESSAGE_CAMPAIGN)!=null) {
+            if(findElement(MESSAGE_CAMPAIGN) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isIVRModulePresent() throws InterruptedException {
         try {
-            if(findElement(IVR)!=null) {
+            if (findElement(IVR) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isSMSModulePresent() throws InterruptedException {
         try {
-            if(findElement(SMS)!=null) {
+            if (findElement(SMS) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isSchedulerModulePresent() throws InterruptedException {
         try {
-            if(findElement(SCHEDULER)!=null) {
+            if (findElement(SCHEDULER) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean isTasksModulePresent() throws InterruptedException {
         try {
-            if(findElement(TASKS)!=null) {
+            if (findElement(TASKS) != null) {
                 return true;
             }
             return false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public void clickOnEbodac() throws InterruptedException{
-        Thread.sleep(500);
+    public void clickOnEbodac() throws InterruptedException {
+        Thread.sleep(SLEEP_500);
         clickOn(EBODAC);
     }
 
-    public void clickModules() throws InterruptedException{
+    public void clickModules() throws InterruptedException {
         clickWhenVisible(MODULES);
     }
 
-    public void openAdmin() throws InterruptedException{
+    public void openAdmin() throws InterruptedException {
         clickWhenVisible(ADMIN);
     }
 

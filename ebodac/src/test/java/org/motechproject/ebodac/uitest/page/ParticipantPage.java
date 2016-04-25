@@ -37,8 +37,6 @@ public class ParticipantPage extends AbstractBasePage {
         clickWhenVisible(PARTICIPANT);
     }
 
-
-
     public boolean findParticipant(String id) throws InterruptedException {
         clickWhenVisible(LOOKUP_DIALOG_BUTTON);
         clickWhenVisible(SELECT_LOOKUP_BUTTON);

@@ -14,6 +14,8 @@ public class RAVESettingsHelper {
     private AdminPage adminPage;
     private ModulesPage modulesPage;
     private EBODACSettingsPage ebodacSettingsPage;
+    static final long START_TIME_LONG_VALUE = 10000;
+
 
     public RAVESettingsHelper(WebDriver driver) {
         this.driver = driver;
@@ -29,7 +31,7 @@ public class RAVESettingsHelper {
         modulesPage.openEbodacSettings();
         Long startTime = Long.valueOf(System.currentTimeMillis());
 
-        while(System.currentTimeMillis() - startTime.longValue() < 10000L) {
+        while (System.currentTimeMillis() - startTime.longValue() < START_TIME_LONG_VALUE) {
             try {
                 ebodacSettingsPage.enableRAVE();
                 ebodacSettingsPage.setHostName();
@@ -38,7 +40,6 @@ public class RAVESettingsHelper {
                 ebodacSettingsPage.setUsername();
                 ebodacSettingsPage.setPassword();
                 ebodacSettingsPage.setEmail();
-                break;
             } catch (Exception e) {
 
             }
