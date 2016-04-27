@@ -78,6 +78,8 @@ public class Config {
 
     private List<String> availableLookupsForVisits;
 
+    private List<String> availableLookupsForSubjects;
+
     private List<String> availableLookupsForSubjectEnrollments;
 
     private List<String> availableLookupsForScreeningReport;
@@ -416,6 +418,17 @@ public class Config {
 
     public void setAvailableLookupsForVisits(List<String> availableLookupsForVisits) {
         this.availableLookupsForVisits = availableLookupsForVisits;
+    }
+
+    public List<String> getAvailableLookupsForSubjects() {
+        if (availableLookupsForSubjects == null) {
+            availableLookupsForSubjects = new ArrayList<>();
+        }
+        return availableLookupsForSubjects;
+    }
+
+    public void setAvailableLookupsForSubjects(List<String> availableLookupsForSubjects) {
+        this.availableLookupsForSubjects = availableLookupsForSubjects;
     }
 
     public List<String> getAvailableLookupsForSubjectEnrollments() {

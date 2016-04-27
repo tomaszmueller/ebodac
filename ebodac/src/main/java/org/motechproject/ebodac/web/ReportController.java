@@ -11,6 +11,7 @@ import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
 import org.motechproject.ebodac.domain.IvrAndSmsStatisticReportDto;
 import org.motechproject.ebodac.domain.MissedVisitsReportDto;
 import org.motechproject.ebodac.domain.OptsOutOfMotechMessagesReportDto;
+import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
 import org.motechproject.ebodac.exception.EbodacLookupException;
@@ -303,6 +304,27 @@ public class ReportController {
             return null;
         }
         List<String> lookupList = configService.getConfig().getAvailableLookupsForVisits();
+        for (LookupDto lookupDto : availableLookups) {
+            if (lookupList.contains(lookupDto.getLookupName())) {
+                ret.add(lookupDto);
+            }
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/getLookupsForSubjects", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
+    @ResponseBody
+    public List<LookupDto> getLookupsForSubjects() {
+        List<LookupDto> ret = new ArrayList<>();
+        List<LookupDto> availableLookups;
+        try {
+            availableLookups = lookupService.getAvailableLookups(Subject.class.getName());
+        } catch (EbodacLookupException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+        List<String> lookupList = configService.getConfig().getAvailableLookupsForSubjects();
         for (LookupDto lookupDto : availableLookups) {
             if (lookupList.contains(lookupDto.getLookupName())) {
                 ret.add(lookupDto);

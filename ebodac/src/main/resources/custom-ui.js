@@ -286,6 +286,11 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
                     .success(function(data) {
                         $scope.entityAdvanced.indexes = data;
                     });
+                } else if ($scope.selectedEntity.name === "Participant") {
+                    $http.get("../ebodac/getLookupsForSubjects")
+                    .success(function(data) {
+                        $scope.entityAdvanced.indexes = data;
+                    });
                 }
 
                 var filterableFields = $scope.entityAdvanced.browsing.filterableFields,
