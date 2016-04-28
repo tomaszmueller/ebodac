@@ -61,4 +61,15 @@ public interface SubjectDataService extends MotechDataService<Subject> {
     @Lookup(name = "Find By Stage Id")
     List<Subject> findByStageId(@LookupField(name = "stageId") Long stageId);
 
+    @Lookup
+    List<Subject> findBySiteName(@LookupField(name = "siteName",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName);
+
+    @Lookup
+    List<Subject> findBySiteNameAndStageId(@LookupField(name = "siteName",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String siteName,
+                                           @LookupField(name = "stageId") Long stageId);
+
+    @Lookup
+    List<Subject> findByWithdrawalDate(@LookupField(name = "dateOfDisconStd") Range<LocalDate> dateRange);
 }

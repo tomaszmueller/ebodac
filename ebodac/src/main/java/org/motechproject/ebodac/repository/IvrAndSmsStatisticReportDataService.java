@@ -45,4 +45,9 @@ public interface IvrAndSmsStatisticReportDataService extends MotechDataService<I
     @Lookup(name = "Find By SMS Status And Sent Date")
     List<IvrAndSmsStatisticReport> findBySmsStatusAndSentDate(@LookupField(name = "smsStatus") Set<SmsStatus> smsStatus,
                                                               @LookupField(name = "sendDate") Range<DateTime> sendDate);
+
+    @Lookup
+    List<IvrAndSmsStatisticReport> findByMessageIdAndSentDate(@LookupField(name = "messageId",
+            customOperator = Constants.Operators.MATCHES_CASE_INSENSITIVE) String messageId,
+                                                              @LookupField(name = "sendDate") Range<DateTime> sendDate);
 }
