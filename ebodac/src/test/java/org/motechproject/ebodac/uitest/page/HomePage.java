@@ -157,4 +157,10 @@ public class HomePage extends AbstractBasePage {
             return false;
         }
     }
+
+    public void openIVRModule() throws InterruptedException {
+        clickWhenVisible(IVR);
+        Thread.sleep(1000);
+        clickWhenVisible(IVR);
+    }
 }
