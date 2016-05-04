@@ -22,6 +22,18 @@
         <level value="OFF"/>
     </logger>
 
+    <logger name="org.motechproject.ebodac.service.impl.RaveImportServiceImpl">
+        <level value="OFF"/>
+    </logger>
+
+    <logger name="org.motechproject.ebodac.web.ReportController">
+        <level value="OFF"/>
+    </logger>
+
+    <logger name="org.motechproject.ebodac.web.ZetesController">
+        <level value="OFF"/>
+    </logger>
+
     <root>
         <priority value="ERROR"/>
         <appender-ref ref="CONSOLE"/>
