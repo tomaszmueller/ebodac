@@ -117,6 +117,10 @@ public class VisitServiceImpl implements VisitService {
     }
 
     private boolean checkStageId(Visit visit) {
+        if (VisitType.UNSCHEDULED_VISIT.equals(visit.getType())) {
+            return false;
+        }
+
         Long activeStageId = configService.getConfig().getActiveStageId();
         Long stageId = visit.getSubject().getStageId();
 
