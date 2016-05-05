@@ -44,7 +44,7 @@
     "Find By Planned Visit Date Range", "Find By Actual Date Range And Type", "Find By Planned Visit Date Range And Type", "Find By Participant Id"],
   "availableLookupsForSubjects": ["Find By Name", "Find By Primer Vaccination Date Range", "Find By Booster Vaccination Date Range",
     "Find By Address", "Find By Participant Id", "Find By exact Phone Number", "Find By Stage Id", "Find By Site Name",
-    "Find By Site Name And Stage Id", "Find By Withdrawal Date"],
+    "Find By Site Name And Stage Id", "Find By Withdrawal Date", "Find By Visit Type And Actual Date Range"],
   "availableLookupsForSubjectEnrollments": ["Find By Participant Id", "Find By Participant Name", "Find By Status"],
   "availableLookupsForDay8AndDay57Report": ["Find By Visit Type And Actual Visit Date", "Find By Visit Type Actual Visit Date And Stage Id",
     "Find By Visit Type Actual Visit Date And Site Name", "Find By Visit Type And Stage Id", "Find By Visit Type And Site Name",

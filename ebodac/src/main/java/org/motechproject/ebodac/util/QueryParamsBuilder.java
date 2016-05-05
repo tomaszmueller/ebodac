@@ -101,7 +101,9 @@ public final class QueryParamsBuilder {
 
         for (String fieldName : lookupMap.keySet()) {
             // we do ascending on each lookup field by default
-            orderList.add(new Order(fieldName, Order.Direction.ASC));
+            if (!fieldName.contains(".")) {
+                orderList.add(new Order(fieldName, Order.Direction.ASC));
+            }
         }
 
         if (!lookupMap.containsKey(Constants.Util.ID_FIELD_NAME)) {

@@ -72,4 +72,8 @@ public interface SubjectDataService extends MotechDataService<Subject> {
 
     @Lookup
     List<Subject> findByWithdrawalDate(@LookupField(name = "dateOfDisconStd") Range<LocalDate> dateRange);
+
+    @Lookup
+    List<Subject> findByVisitTypeAndActualDateRange(@LookupField(name = "visits.type") VisitType visitType,
+                                                    @LookupField(name = "visits.date") Range<LocalDate> date);
 }
