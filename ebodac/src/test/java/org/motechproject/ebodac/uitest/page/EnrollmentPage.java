@@ -28,24 +28,21 @@ public class EnrollmentPage extends AbstractBasePage {
     public boolean error() {
         try {
             return driver.findElement(POPUP_CONTENT).getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant with ");
-            }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
     public boolean enrolled() {
         try {
             return driver.findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully");
-            }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
     public boolean unenrolled() {
         try {
             return driver.findElement(POPUP_CONTENT).getText().contains("Participant was unenrolled successfully.");
-            }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
@@ -53,8 +50,12 @@ public class EnrollmentPage extends AbstractBasePage {
         int lastEnroll = LAST_ENROLL;
         do {
             lastEnroll++;
-            actionSecond();
-            clickOn(POPUP_OK);
+            try {
+                actionSecond();
+                clickOn(POPUP_OK);
+            } catch (Exception e) {
+                clickOn(POPUP_OK);
+            }
         }
         while (error());
     }

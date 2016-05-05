@@ -2,6 +2,7 @@ package org.motechproject.ebodac.uitest.test;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
@@ -10,7 +11,6 @@ import org.motechproject.ebodac.uitest.page.BookingAppRescheduleVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
 import static junit.framework.Assert.assertTrue;
-
 
 public class BookingApplicationRescheduleVisitUiTest extends TestBase {
 
