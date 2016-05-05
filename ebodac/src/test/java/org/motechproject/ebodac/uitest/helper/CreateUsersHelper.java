@@ -25,7 +25,7 @@ public class CreateUsersHelper {
     public boolean createUser(String userName, String password, String roles) throws InterruptedException {
         homePage.openSecurity();
         securityPage.openUserManagement();
-        return usersPage.addUser(userName,password,roles);
+        return usersPage.addUser(userName , password , roles);
     }
 
     public boolean createAdminUser() throws InterruptedException {
@@ -43,7 +43,7 @@ public class CreateUsersHelper {
     }
 
     public void createUsersWithLogin(TestProperties properties) throws InterruptedException {
-        loginPage.login(properties.getUserName(), properties.getPassword());
+        loginPage.login(properties.getUserName() , properties.getPassword());
         createUsers();
         loginPage.logOut();
     }

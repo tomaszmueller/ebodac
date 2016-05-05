@@ -17,8 +17,8 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;
-    private String L1analystUser;
-    private String L1analystpassword;
+    private String l1analystUser;
+    private String l1analystpassword;
     private UserPropertiesHelper userPropertiesHelper;
     private UITestHttpClientHelper httpClientHelper;
     private CreateUsersHelper createUsersHelper;
@@ -32,16 +32,16 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
             createUsersHelper.createUsersWithLogin(properties);
         }
         userPropertiesHelper = new UserPropertiesHelper();
-        L1analystUser = userPropertiesHelper.getAnalystUserName();
-        L1analystpassword = userPropertiesHelper.getAnalystPassword();
+        l1analystUser = userPropertiesHelper.getAnalystUserName();
+        l1analystpassword = userPropertiesHelper.getAnalystPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant() , L1analystUser , L1analystpassword);
+            httpClientHelper.addParticipant(new TestParticipant() , l1analystUser , l1analystpassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(L1analystUser , L1analystpassword);
+            loginPage.login(l1analystUser , l1analystpassword);
         }
     }
 

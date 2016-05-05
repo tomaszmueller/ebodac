@@ -7,7 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
-import org.motechproject.ebodac.uitest.page.*;
+import org.motechproject.ebodac.uitest.page.HomePage;
+import org.motechproject.ebodac.uitest.page.EBODACPage;
+import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
+import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
 import java.lang.Exception;
 

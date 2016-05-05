@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.uitest.helper;
 
+import org.mortbay.log.Log;
 import org.motechproject.ebodac.uitest.page.AdminPage;
 import org.motechproject.ebodac.uitest.page.EBODACSettingsPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -41,11 +42,10 @@ public class RAVESettingsHelper {
                 ebodacSettingsPage.setPassword();
                 ebodacSettingsPage.setEmail();
             } catch (Exception e) {
-
+                Log.info("createNewRAVESettings exception");
             }
         }
 
         ebodacSettingsPage.saveValues();
-//        Thread.sleep(100000);
     }
 }

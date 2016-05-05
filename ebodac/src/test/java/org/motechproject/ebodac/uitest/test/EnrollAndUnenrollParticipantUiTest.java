@@ -2,7 +2,6 @@ package org.motechproject.ebodac.uitest.test;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
@@ -36,7 +35,7 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
         url = properties.getWebAppUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(),l1AdminUser,l1AdminPassword);
+            httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(l1AdminUser , l1AdminPassword);

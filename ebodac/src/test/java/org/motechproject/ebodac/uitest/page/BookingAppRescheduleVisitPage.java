@@ -41,6 +41,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     static final int NUMDER_OF_DAYS = 5;
     static final int MAX_PAGES = 10;
 
+    static final int DEFAULT_VALUE = -1;
     static final int JANUARY = 0;
     static final int FEBRUARY = 1;
     static final int MARCH = 2;
@@ -180,33 +181,35 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     }
 
     public static int getMonthNumber(String monthName) {
+        int number = DEFAULT_VALUE;
         switch(monthName.toLowerCase()) {
             case "january":
-                return JANUARY;
+                number = JANUARY;
             case "february":
-                return FEBRUARY;
+                number = FEBRUARY;
             case "march":
-                return MARCH;
+                number = MARCH;
             case "april":
-                return APRIL;
+                number = APRIL;
             case "may":
-                return MAY;
+                number= MAY;
             case "june":
-                return JUNE;
+                number = JUNE;
             case "july":
-                return JULY;
+                number = JULY;
             case "august":
-                return AUGUST;
+                number = AUGUST;
             case "september":
-                return SEPTEMBER;
+                number = SEPTEMBER;
             case "october":
-                return OCTOBER;
+                number = OCTOBER;
             case "november":
-                return NOVEMBER;
+                number = NOVEMBER;
             case "december":
-                return DECEMBER;
+                number = DECEMBER;
             default:
-                return -1;
+                number = -1;
         }
+        return number;
     }
 }

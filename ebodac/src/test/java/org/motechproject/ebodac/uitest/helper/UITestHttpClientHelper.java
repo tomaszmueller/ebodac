@@ -13,7 +13,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
         fetchCsvUrl = serverURL + "/ebodac/web-api/fetch-csv";
     }
 
-    public void addParticipant(TestParticipant participant,String user, String password) {
+    public void addParticipant(TestParticipant participant , String user , String password) {
         sendJson(zatesRegistrationURL,
                 "{\"subjectId\":\"" + participant.id + "\"," +
                         "\"name\":\"" + participant.name + "\"," +
