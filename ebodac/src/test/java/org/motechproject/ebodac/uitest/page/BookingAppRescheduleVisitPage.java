@@ -8,8 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.Dimension;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,6 +32,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     static final By PREV = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Prev']");
     static final By NEXT = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Next']");
     static final By NEXT_PAGE = By.xpath("//td[@id='next_pager']/span");
+    static final By DIALOG_TEXT = By.xpath("//div[@class='modal-dialog']/div/div[2]/div");
     static final int BIG_TIMEOUT = 2000;
     static final int TIMEOUT = 1000;
     static final int WIDTH = 1920;
@@ -97,6 +96,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     }
 
     public boolean rescheduleVisit() throws InterruptedException {
+        Thread.sleep(TIMEOUT);
         waitForElement(IGNORE_EARLIEST_LATEST_DATE);
         clickWhenVisible(IGNORE_EARLIEST_LATEST_DATE);
         Thread.sleep(TIMEOUT);
@@ -130,30 +130,13 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         waitForElement(POPUP_OK);
         clickWhenVisible(POPUP_OK);
         clickWhenVisible(POPUP_OK);
+        String text = findElement(DIALOG_TEXT).getText();
         waitForElement(CLOSE_BUTTON);
         clickWhenVisible(CLOSE_BUTTON);
-        Thread.sleep(TIMEOUT);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String finalDate = dateFormat.format(myDate);
-        boolean finalDateExists = false;
-        int counter = 0;
-        while (findElement(NEXT_PAGE).isEnabled()) {
-            if (counter > MAX_PAGES) {
-                break;
-            }
-            try {
-                if (findElement(By.xpath("//table[@id='visitReschedule']/tbody/tr/td[contains(text(),'" + finalDate + "')]")) != null) {
-                    finalDateExists = true;
-                    break;
-                } else {
-                    clickOn(NEXT_PAGE);
-                }
-            } catch (Exception e) {
-                clickOn(NEXT_PAGE);
-            }
-            counter++;
+        if (text.contains("Visit Planned Date updated successfully.")) {
+            return true;
         }
-        return finalDateExists;
+        return false;
     }
 
     public void printCard() throws InterruptedException {

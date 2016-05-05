@@ -2,6 +2,7 @@ package org.motechproject.ebodac.uitest.test;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
@@ -50,7 +51,6 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
         if (enrollmentPage.error()) {
             enrollmentPage.clickOK();
             enrollmentPage.nextAction();
-            enrollmentPage.clickOK();
         }
         if (enrollmentPage.enrolled()) {
             assertTrue(enrollmentPage.enrolled());
