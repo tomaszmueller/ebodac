@@ -91,9 +91,9 @@ public class VisitRescheduleServiceTest {
         bookingGridSettings.setRows(10);
 
         List<VisitBookingDetails> visitBookingDetailses = new ArrayList<>(Arrays.asList(
-                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(1l, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject1)),
-                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(2l, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject1)),
-                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(1l, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject2))
+                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(1L, VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject1)),
+                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(2L, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject1)),
+                new VisitBookingDetails(new LocalDate(2217, 4, 1), createVisit(1L, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, null, new LocalDate(2217, 4, 1), subject2))
         ));
 
         Records<VisitBookingDetails> records = new Records<>(1, 10, 3, visitBookingDetailses);
@@ -101,22 +101,22 @@ public class VisitRescheduleServiceTest {
         when(lookupService.getEntities(eq(VisitBookingDetails.class), anyString(), anyString(), any(QueryParams.class))).thenReturn(records);
 
         List<VisitScheduleOffset> visitScheduleOffsets = new ArrayList<>(Arrays.asList(
-                createVistScheduleOffset(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, 2l, 10, 5, 12),
-                createVistScheduleOffset(VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, 2l, 20, 15, 24),
-                createVistScheduleOffset(VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, 2l, 30, 25, 27)
+                createVistScheduleOffset(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, 2L, 10, 5, 12),
+                createVistScheduleOffset(VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, 2L, 20, 15, 24),
+                createVistScheduleOffset(VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, 2L, 30, 25, 27)
         ));
         Map<VisitType, VisitScheduleOffset> offsetMapForStageId = new LinkedHashMap<>();
         offsetMapForStageId.put(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, visitScheduleOffsets.get(0));
         offsetMapForStageId.put(VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, visitScheduleOffsets.get(1));
         offsetMapForStageId.put(VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT, visitScheduleOffsets.get(2));
         Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap = new LinkedHashMap<>();
-        offsetMap.put(2l, offsetMapForStageId);
+        offsetMap.put(2L, offsetMapForStageId);
 
         when(visitScheduleOffsetService.getAllAsMap()).thenReturn(offsetMap);
 
         Config config = new Config();
         List<String> boosterRelatedMessage = new ArrayList<>(Arrays.asList("Boost Vaccination First Follow-up visit - stage 2"));
-        config.setActiveStageId(2l);
+        config.setActiveStageId(2L);
         config.setBoosterRelatedMessages(boosterRelatedMessage);
 
         when(configService.getConfig()).thenReturn(config);
@@ -139,15 +139,15 @@ public class VisitRescheduleServiceTest {
 
     @Test
     public void shouldSaveRescheduledVisit() {
-        VisitBookingDetails visitBookingDetails = new VisitBookingDetails(null, createVisit(1l, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 1, 1), subject1));
+        VisitBookingDetails visitBookingDetails = new VisitBookingDetails(null, createVisit(1L, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 1, 1), subject1));
 
         VisitRescheduleDto visitRescheduleDto = new VisitRescheduleDto(visitBookingDetails, new Range<LocalDate>(new LocalDate(2217, 2, 1), new LocalDate(2217, 3, 1)));
         Boolean ignoreLimitation = true;
         visitRescheduleDto.setStartTime(new Time(9, 0));
         visitRescheduleDto.setIgnoreDateLimitation(ignoreLimitation);
-        visitRescheduleDto.setVisitBookingDetailsId(1l);
+        visitRescheduleDto.setVisitBookingDetailsId(1L);
 
-        when(visitBookingDetailsDataService.findById(1l)).thenReturn(visitBookingDetails);
+        when(visitBookingDetailsDataService.findById(1L)).thenReturn(visitBookingDetails);
         when(ebodacEnrollmentService.checkIfEnrolledAndUpdateEnrollment(visitBookingDetails.getVisit())).thenReturn(true);
         when(visitDataService.update(visitBookingDetails.getVisit())).thenReturn(visitBookingDetails.getVisit());
         when(visitBookingDetailsDataService.update(visitBookingDetails)).thenReturn(visitBookingDetails);

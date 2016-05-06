@@ -51,7 +51,7 @@ public class ScreeningServiceTest {
     private VisitLimitationHelper visitLimitationHelper;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none(); //NO CHECKSTYLE VisibilityModifier
 
     private Clinic clinic;
 
@@ -59,22 +59,22 @@ public class ScreeningServiceTest {
     public void setUp() {
         initMocks(this);
         clinic = new Clinic("siteId", "location", 1, 5, 2, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10);
-        clinic.setId(1l);
+        clinic.setId(1L);
     }
 
     @Test
     public void shouldThrowLimitationExceededExceptionWhenNumberOfRoomsLimitIsReached() {
-        when(clinicDataService.findById(1l)).thenReturn(clinic);
+        when(clinicDataService.findById(1L)).thenReturn(clinic);
         when(volunteerDataService.create(any(Volunteer.class))).thenReturn(new Volunteer());
         List<Screening> screenings = new ArrayList<>(Arrays.asList(
-                createScreeningVisit(2l, clinic, new LocalDate(2217, 1, 1), new Time(11, 0), new Time(12, 0))
+                createScreeningVisit(2L, clinic, new LocalDate(2217, 1, 1), new Time(11, 0), new Time(12, 0))
         ));
 
-        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1L, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "11:00");
         Screening screening = new Screening();
-        screening.setId(1l);
+        screening.setId(1L);
 
         thrown.expect(LimitationExceededException.class);
         thrown.expectMessage("Too many visits at the same time");
@@ -84,18 +84,18 @@ public class ScreeningServiceTest {
 
     @Test
     public void shouldThrowLimitationExceededExceptionWhenTypeOfVisitLimitIsReached() {
-        when(clinicDataService.findById(1l)).thenReturn(clinic);
+        when(clinicDataService.findById(1L)).thenReturn(clinic);
         when(volunteerDataService.create(any(Volunteer.class))).thenReturn(new Volunteer());
         List<Screening> screenings = new ArrayList<>(Arrays.asList(
-                createScreeningVisit(2l, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
-                createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
+                createScreeningVisit(2L, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
+                createScreeningVisit(3L, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1L, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "12:00");
         Screening screening = new Screening();
-        screening.setId(1l);
+        screening.setId(1L);
 
         thrown.expect(LimitationExceededException.class);
         thrown.expectMessage("The booking limit for this type of visit has been reached");
@@ -104,20 +104,20 @@ public class ScreeningServiceTest {
 
     @Test
     public void shouldCheckCapacityLimitFirst() {
-        when(clinicDataService.findById(1l)).thenReturn(clinic);
+        when(clinicDataService.findById(1L)).thenReturn(clinic);
         when(volunteerDataService.create(any(Volunteer.class))).thenReturn(new Volunteer());
         List<Screening> screenings = new ArrayList<>(Arrays.asList(
-                createScreeningVisit(2l, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
-                createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
+                createScreeningVisit(2L, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
+                createScreeningVisit(3L, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1L, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         doThrow(new LimitationExceededException("The clinic capacity limit for this day has been reached")).when(visitLimitationHelper).checkCapacityForScreening(any(LocalDate.class), any(Clinic.class), anyLong());
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "12:00");
         Screening screening = new Screening();
-        screening.setId(1l);
+        screening.setId(1L);
 
         thrown.expect(LimitationExceededException.class);
         thrown.expectMessage("The clinic capacity limit for this day has been reached");
@@ -126,18 +126,18 @@ public class ScreeningServiceTest {
 
     @Test
     public void shouldNotCheckLimitationWhenIgnoreLimitationVariableIsTrue() {
-        when(clinicDataService.findById(1l)).thenReturn(clinic);
+        when(clinicDataService.findById(1L)).thenReturn(clinic);
         when(volunteerDataService.create(any(Volunteer.class))).thenReturn(new Volunteer());
         List<Screening> screenings = new ArrayList<>(Arrays.asList(
-                createScreeningVisit(2l, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
-                createScreeningVisit(3l, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
+                createScreeningVisit(2L, clinic, new LocalDate(2217, 1, 1), new Time(10, 0), new Time(11, 0)),
+                createScreeningVisit(3L, clinic, new LocalDate(2217, 1, 1), new Time(9, 0), new Time(10, 0))
         ));
 
-        when(screeningDataService.findByClinicIdAndDateAndStatus(1l, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
+        when(screeningDataService.findByClinicIdAndDateAndStatus(1L, new LocalDate(2217, 1, 1), ScreeningStatus.ACTIVE)).thenReturn(screenings);
 
         ScreeningDto screeningDto = createScreeningDto("1", "1", "2217-1-1", "12:00");
         Screening screening = new Screening();
-        screening.setId(1l);
+        screening.setId(1L);
 
         screeningService.add(screeningDto, true);
 
