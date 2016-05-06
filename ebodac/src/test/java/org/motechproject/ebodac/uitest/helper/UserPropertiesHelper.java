@@ -52,8 +52,7 @@ public class UserPropertiesHelper {
                 InputStream input = resource.openStream();
                 properties.load(new InputStreamReader(input, "UTF-8"));
             }
-        }
-        catch (IOException ioException) {
+        } catch (IOException ioException) {
             throw new RuntimeException("test.properties not found. Error: ", ioException);
         }
         
