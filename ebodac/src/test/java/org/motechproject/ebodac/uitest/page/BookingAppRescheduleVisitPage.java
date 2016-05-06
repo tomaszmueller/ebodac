@@ -180,7 +180,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
     }
 
-    public static int getMonthNumber(String monthName) {
+    public static int getMonthNumber(String monthName) {//NO CHECKSTYLE CyclomaticComplexity
         int number = DEFAULT_VALUE;
         switch(monthName.toLowerCase()) {
             case "january":
@@ -192,7 +192,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
             case "april":
                 number = APRIL;
             case "may":
-                number= MAY;
+                number = MAY;
             case "june":
                 number = JUNE;
             case "july":
