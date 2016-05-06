@@ -4,8 +4,12 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.event.MotechEvent;
+import org.motechproject.scheduler.contract.JobId;
+import org.motechproject.scheduler.contract.RepeatingPeriodJobId;
 import org.motechproject.scheduler.contract.RepeatingPeriodSchedulableJob;
 import org.motechproject.scheduler.service.MotechSchedulerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +19,7 @@ import java.util.Map;
 
 @Component
 public class EbodacScheduler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EbodacScheduler.class);
 
     private MotechSchedulerService motechSchedulerService;
 
@@ -69,5 +74,30 @@ public class EbodacScheduler {
 
     public void unscheduleDailyReportJob() {
         motechSchedulerService.safeUnscheduleAllJobs(EbodacConstants.DAILY_REPORT_EVENT);
+    }
+
+    public void scheduleEmailReportJob(DateTime startDate, Period period, Long reportId) {
+        if (reportId == null) {
+            throw new IllegalArgumentException("Cannot schedule job for report, because report id is empty");
+        }
+
+        Map<String, Object> eventParameters = new HashMap<>();
+        eventParameters.put(EbodacConstants.SEND_EMAIL_REPORT_EVENT_REPORT_ID, reportId);
+        eventParameters.put(MotechSchedulerService.JOB_ID_KEY, reportId.toString());
+
+        MotechEvent event = new MotechEvent(EbodacConstants.SEND_EMAIL_REPORT_EVENT, eventParameters);
+
+        RepeatingPeriodSchedulableJob job = new RepeatingPeriodSchedulableJob(event, startDate.toDate(), null, period, true);
+        motechSchedulerService.scheduleRepeatingPeriodJob(job);
+    }
+
+    public void unscheduleEmailReportJob(Long reportId) {
+        JobId jobId = new RepeatingPeriodJobId(EbodacConstants.SEND_EMAIL_REPORT_EVENT, reportId.toString());
+        motechSchedulerService.unscheduleJob(jobId);
+    }
+
+    public void rescheduleEmailReportJob(DateTime startDate, Period period, Long reportId) {
+        unscheduleEmailReportJob(reportId);
+        scheduleEmailReportJob(startDate, period, reportId);
     }
 }

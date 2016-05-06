@@ -44,6 +44,8 @@
 
     <osgi:service ref="statisticService" interface="org.motechproject.ebodac.service.StatisticService" />
 
+    <osgi:service ref="emailReportService" interface="org.motechproject.ebodac.service.EmailReportService" />
+
     <osgi:reference id="reportPrimerVaccinationDataService"
                     interface="org.motechproject.ebodac.repository.ReportPrimerVaccinationDataService" />
 
@@ -66,6 +68,18 @@
 
     <osgi:reference id="votoLanguageDataService"
                     interface="org.motechproject.ebodac.repository.VotoLanguageDataService" />
+
+    <osgi:reference id="emailRecipientDataService"
+                    interface="org.motechproject.ebodac.repository.EmailRecipientDataService" />
+
+    <osgi:reference id="emailReportDataService"
+                    interface="org.motechproject.ebodac.repository.EmailReportDataService" />
+
+    <osgi:reference id="ebodacEntityDataService"
+                    interface="org.motechproject.ebodac.repository.EbodacEntityDataService" />
+
+    <osgi:reference id="ebodacEntityFieldDataService"
+                    interface="org.motechproject.ebodac.repository.EbodacEntityFieldDataService" />
 
     <osgi:reference id="configurationServiceOsgi" interface="org.motechproject.config.service.ConfigurationService" />
 

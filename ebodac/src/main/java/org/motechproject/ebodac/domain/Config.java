@@ -58,6 +58,14 @@ public class Config {
 
     private Set<String> ivrAndSmsStatisticReportsToUpdate;
 
+    private String emailReportHost;
+
+    private Integer emailReportPort;
+
+    private String emailReportAddress;
+
+    private String emailReportPassword;
+
     private List<String> disconVacCampaignsList;
 
     private List<String> boosterRelatedMessages;
@@ -311,6 +319,38 @@ public class Config {
 
     public void setIvrAndSmsStatisticReportsToUpdate(Set<String> ivrAndSmsStatisticReportsToUpdate) {
         this.ivrAndSmsStatisticReportsToUpdate = ivrAndSmsStatisticReportsToUpdate;
+    }
+
+    public String getEmailReportHost() {
+        return emailReportHost;
+    }
+
+    public void setEmailReportHost(String emailReportHost) {
+        this.emailReportHost = emailReportHost;
+    }
+
+    public Integer getEmailReportPort() {
+        return emailReportPort;
+    }
+
+    public void setEmailReportPort(Integer emailReportPort) {
+        this.emailReportPort = emailReportPort;
+    }
+
+    public String getEmailReportAddress() {
+        return emailReportAddress;
+    }
+
+    public void setEmailReportAddress(String emailReportAddress) {
+        this.emailReportAddress = emailReportAddress;
+    }
+
+    public String getEmailReportPassword() {
+        return emailReportPassword;
+    }
+
+    public void setEmailReportPassword(String emailReportPassword) {
+        this.emailReportPassword = emailReportPassword;
     }
 
     public List<String> getDisconVacCampaignsList() {

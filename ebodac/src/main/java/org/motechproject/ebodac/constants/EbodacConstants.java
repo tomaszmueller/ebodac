@@ -103,6 +103,9 @@ public final class EbodacConstants {
     public static final String SUBJECT_ID = "subjectId";
     public static final String SITE_ID = "siteId";
 
+    public static final String SEND_EMAIL_REPORT_EVENT = "send_email_report_event";
+    public static final String SEND_EMAIL_REPORT_EVENT_REPORT_ID = "send_email_report_event_report_id";
+
     public static final String PRIMER_VACCINATION_REPORT_NAME = "PrimerVaccinationReport";
     public static final String BOOSTER_VACCINATION_REPORT_REPORT_NAME = "BoosterVaccinationReport";
     public static final String DAILY_CLINIC_VISIT_SCHEDULE_REPORT_NAME = "DailyClinicVisitScheduleReport";

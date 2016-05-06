@@ -60,16 +60,15 @@ public class LookupServiceImpl implements LookupService {
     }
 
     @Override
-    public <T> Records<T> getEntities(Class<T> entityType, String lookup,
-                                      String lookupFields, QueryParams queryParams) {
+    public <T> Records<T> getEntities(String entityClassName, String lookup, String lookupFields, QueryParams queryParams) {
         List<T> entities;
         long recordCount;
         int rowCount;
         QueryParams newQueryParams = queryParams;
         if (StringUtils.isNotBlank(lookup) && newQueryParams != null) {
             try {
-                entities = mdsLookupService.findMany(entityType.getName(), lookup, getFields(lookupFields), newQueryParams);
-                recordCount = mdsLookupService.count(entityType.getName(), lookup, getFields(lookupFields));
+                entities = mdsLookupService.findMany(entityClassName, lookup, getFields(lookupFields), newQueryParams);
+                recordCount = mdsLookupService.count(entityClassName, lookup, getFields(lookupFields));
             } catch (IOException e) {
                 throw new EbodacLookupException("Invalid lookup fields: " + lookupFields, e.getCause());
             }
@@ -87,17 +86,17 @@ public class LookupServiceImpl implements LookupService {
             return new Records<>(newQueryParams.getPage(), rowCount, (int) recordCount, entities);
         }
 
-        recordCount = mdsLookupService.countAll(entityType.getName());
+        recordCount = mdsLookupService.countAll(entityClassName);
 
         int page;
         if (newQueryParams != null && newQueryParams.getPageSize() != null && newQueryParams.getPage() != null) {
             rowCount = (int) Math.ceil(recordCount / (double) newQueryParams.getPageSize());
             page = newQueryParams.getPage();
-            entities = mdsLookupService.retrieveAll(entityType.getName(), newQueryParams);
+            entities = mdsLookupService.retrieveAll(entityClassName, newQueryParams);
         } else {
             rowCount = (int) recordCount;
             page = 1;
-            entities = mdsLookupService.retrieveAll(entityType.getName(), newQueryParams);
+            entities = mdsLookupService.retrieveAll(entityClassName, newQueryParams);
         }
 
         if (entities == null) {
@@ -129,6 +128,11 @@ public class LookupServiceImpl implements LookupService {
            throw new EbodacLookupException("Can not create: " + entityDtoType.getName() + " using: " + entityType.getName(), e);
         }
         return new Records<>(baseRecords.getPage(), baseRecords.getTotal(), baseRecords.getRecords(), entityDtoList);
+    }
+
+    @Override
+    public <T> Records<T> getEntities(Class<T> entityType, String lookup, String lookupFields, QueryParams queryParams) {
+        return getEntities(entityType.getName(), lookup, lookupFields, queryParams);
     }
 
     @Override

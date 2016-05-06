@@ -100,7 +100,8 @@
             .when('/ebodac/statistics', {templateUrl: '../ebodac/resources/partials/statistics.html', controller: 'EbodacBasicCtrl' })
             .when('/ebodac/statistics/tables/:tableType', {templateUrl: '../ebodac/resources/partials/statisticsTables.html', controller: 'EbodacStatisticsCtrl' })
             .when('/ebodac/statistics/graphs/:graphType', {templateUrl: '../ebodac/resources/partials/statisticsGraphs.html', controller: 'EbodacStatisticsCtrl' })
-            .when('/ebodac/statistics/ivrEngagement', {templateUrl: '../ebodac/resources/partials/ivrEngagement.html', controller: 'EbodacStatisticsCtrl' });
+            .when('/ebodac/statistics/ivrEngagement', {templateUrl: '../ebodac/resources/partials/ivrEngagement.html', controller: 'EbodacStatisticsCtrl' })
+            .when('/ebodac/emailReports', {templateUrl: '../ebodac/resources/partials/emailReports.html', controller: 'EbodacEmailReportsCtrl' });
     });
 
 }());
