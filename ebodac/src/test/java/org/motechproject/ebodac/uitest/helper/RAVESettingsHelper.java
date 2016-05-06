@@ -5,6 +5,8 @@ import org.motechproject.ebodac.uitest.page.EBODACSettingsPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ModulesPage;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RAVESettingsHelper {
@@ -15,6 +17,7 @@ public class RAVESettingsHelper {
     private ModulesPage modulesPage;
     private EBODACSettingsPage ebodacSettingsPage;
     static final long START_TIME_LONG_VALUE = 10000;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RAVESettingsHelper.class);
 
 
     public RAVESettingsHelper(WebDriver driver) {
@@ -41,11 +44,10 @@ public class RAVESettingsHelper {
                 ebodacSettingsPage.setPassword();
                 ebodacSettingsPage.setEmail();
             } catch (Exception e) {
-
+                LOGGER.info("CreateNewRAVESettings exception");
             }
         }
 
         ebodacSettingsPage.saveValues();
-//        Thread.sleep(100000);
     }
 }

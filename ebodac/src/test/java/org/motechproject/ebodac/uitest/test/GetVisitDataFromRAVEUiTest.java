@@ -9,7 +9,11 @@ import org.motech.test.TestBase;
 import org.motechproject.ebodac.uitest.helper.RAVESettingsHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
-import org.motechproject.ebodac.uitest.page.*;
+import org.motechproject.ebodac.uitest.page.HomePage;
+import org.motechproject.ebodac.uitest.page.EBODACPage;
+import org.motechproject.ebodac.uitest.page.AdminPage;
+import org.motechproject.ebodac.uitest.page.VisitPage;
+import org.motechproject.ebodac.uitest.page.ServerLogPage;
 
 import static junit.framework.Assert.assertTrue;
 @Ignore

@@ -25,15 +25,15 @@ public class CreateUsersHelper {
     public boolean createUser(String userName, String password, String roles) throws InterruptedException {
         homePage.openSecurity();
         securityPage.openUserManagement();
-        return usersPage.addUser(userName,password,roles);
+        return usersPage.addUser(userName, password, roles);
     }
 
     public boolean createAdminUser() throws InterruptedException {
-        return createUser("admin" , "testadmin" , "EBODAC Administrator");
+        return createUser("admin", "testadmin", "EBODAC Administrator");
     }
 
     public boolean createAnalystUser() throws InterruptedException  {
-        return createUser("analyst" , "testanalyst" , "EBODAC Site-Analyst");
+        return createUser("analyst", "testanalyst", "EBODAC Site-Analyst");
     }
 
     public void createUsers() throws InterruptedException {

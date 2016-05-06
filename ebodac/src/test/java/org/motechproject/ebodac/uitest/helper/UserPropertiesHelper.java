@@ -47,15 +47,12 @@ public class UserPropertiesHelper {
         properties = new Properties();
         try {
             URL resource = Thread.currentThread().getContextClassLoader()
-                    .getResource("org/motech/uitestframework/test.properties");
+                .getResource("org/motech/uitestframework/test.properties");
             if (resource != null) {
-                /**System.out.println("test.properties found: " + resource.toExternalForm());*/
                 InputStream input = resource.openStream();
                 properties.load(new InputStreamReader(input, "UTF-8"));
-                /**System.out.println("test.properties:");
-                System.out.println(properties);*/
             }
-            }
+        }
         catch (IOException ioException) {
             throw new RuntimeException("test.properties not found. Error: ", ioException);
         }

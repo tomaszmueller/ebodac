@@ -83,7 +83,7 @@ public class HomePage extends AbstractBasePage {
 
     public boolean isMessageCampaignModulePresent() throws InterruptedException {
         try {
-            if(findElement(MESSAGE_CAMPAIGN) != null) {
+            if (findElement(MESSAGE_CAMPAIGN) != null) {
                 return true;
             }
             return false;
