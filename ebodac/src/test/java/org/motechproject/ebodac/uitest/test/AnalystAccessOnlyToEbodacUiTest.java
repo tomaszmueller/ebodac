@@ -38,10 +38,10 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
         homePage = new HomePage(driver);
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant() , l1analystUser , l1analystpassword);
+            httpClientHelper.addParticipant(new TestParticipant(), l1analystUser, l1analystpassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(l1analystUser , l1analystpassword);
+            loginPage.login(l1analystUser, l1analystpassword);
         }
     }
 

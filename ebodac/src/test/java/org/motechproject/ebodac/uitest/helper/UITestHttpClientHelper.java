@@ -15,17 +15,17 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
 
     public void addParticipant(TestParticipant participant , String user , String password) {
         sendJson(zatesRegistrationURL,
-                "{\"subjectId\":\"" + participant.id + "\"," +
-                        "\"name\":\"" + participant.name + "\"," +
-                        "\"language\":\"" + participant.language + "\"," +
-                        "\"phoneNumber\":\"" + participant.phoneNumber + "\"," +
-                        "\"siteId\":\"" + participant.siteId + "\",\"headOfHousehold\":\"" + participant.headOfHousehold + "\"," +
-                        "\"householdName\":\"" + participant.householdName + "\"," +
-                        "\"community\":\"" + participant.community + "\",\"address\":\"" + participant.address + "\"" +
+                "{\"subjectId\":\"" + participant.getId() + "\"," +
+                        "\"name\":\"" + participant.getName() + "\"," +
+                        "\"language\":\"" + participant.getLanguage() + "\"," +
+                        "\"phoneNumber\":\"" + participant.getPhoneNumber() + "\"," +
+                        "\"siteId\":\"" + participant.getSiteId() + "\",\"headOfHousehold\":\"" + participant.getHeadOfHousehold() + "\"," +
+                        "\"householdName\":\"" + participant.getHeadOfHousehold() + "\"," +
+                        "\"community\":\"" + participant.getCommunity() + "\",\"address\":\"" + participant.getAddress() + "\"" +
                         "}" , user , password);
     }
 
     public void fetchCSV(String userName , String password) {
-        sendJson(fetchCsvUrl , "" , userName , password);
+        sendJson(fetchCsvUrl, "", userName, password);
     }
 }

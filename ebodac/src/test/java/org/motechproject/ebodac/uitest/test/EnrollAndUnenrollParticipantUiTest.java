@@ -35,10 +35,10 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
         url = properties.getWebAppUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);
+            httpClientHelper.addParticipant(new TestParticipant(), l1AdminUser, l1AdminPassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.login(l1AdminUser , l1AdminPassword);
+            loginPage.login(l1AdminUser, l1AdminPassword);
         }
     }
     @Test  //Test for EBODAC-524, EBODAC-525
