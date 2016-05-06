@@ -25,7 +25,7 @@ public enum DateFilter {
         @Override
         public Range<LocalDate> getRange() {
             LocalDate startDate = LocalDate.now();
-            LocalDate endDate = startDate.plusDays(6);
+            LocalDate endDate = startDate.plusDays(6); //NO CHECKSTYLE MagicNumber
             return new Range<>(startDate, endDate);
         }
     },

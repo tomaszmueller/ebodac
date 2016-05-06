@@ -39,7 +39,7 @@ public class VisitLimitationHelperTest {
     private ClinicDataService clinicDataService;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none(); //NO CHECKSTYLE VisibilityModifier
 
     private Clinic clinic;
 
@@ -47,26 +47,26 @@ public class VisitLimitationHelperTest {
     public void setUp() {
         initMocks(this);
         clinic = new Clinic("siteId", "location", 1, 5, 1, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10);
-        clinic.setId(1l);
+        clinic.setId(1L);
 
     }
 
     @Test(expected = LimitationExceededException.class)
     public void shouldThrowLimitationExceededExceptionWhenCapacityLimitIsReached() {
-        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1l, ScreeningStatus.ACTIVE)).thenReturn(2l);
-        when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
-        when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(4l);
+        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1L, ScreeningStatus.ACTIVE)).thenReturn(2L);
+        when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1L);
+        when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(4L);
 
-        visitLimitationHelper.checkCapacityForScreening(new LocalDate(2217, 1, 1), clinic, 1l);
+        visitLimitationHelper.checkCapacityForScreening(new LocalDate(2217, 1, 1), clinic, 1L);
     }
 
     @Test
     public void shouldNotThrowLimitationExceededExceptionWhenCapacityLimitIsNotReached() {
-        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1l, ScreeningStatus.ACTIVE)).thenReturn(2l);
-        when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
-        when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1l);
+        when(screeningDataService.countFindByClinicIdDateAndScreeningIdAndStatus(new LocalDate(2217, 1, 1), clinic.getId(), 1L, ScreeningStatus.ACTIVE)).thenReturn(2L);
+        when(unscheduledVisitDataService.countFindByClinicIdAndDateAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1L);
+        when(visitBookingDetailsDataService.countFindByBookingPlannedDateAndClinicIdAndVisitId(new LocalDate(2217, 1, 1), clinic.getId(), null)).thenReturn(1L);
 
-        visitLimitationHelper.checkCapacityForScreening(new LocalDate(2217, 1, 1), clinic, 1l);
+        visitLimitationHelper.checkCapacityForScreening(new LocalDate(2217, 1, 1), clinic, 1L);
     }
 
     @Test
