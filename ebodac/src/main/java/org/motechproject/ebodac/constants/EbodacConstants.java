@@ -114,6 +114,9 @@ public final class EbodacConstants {
     public static final String IVR_AND_SMS_STATISTIC_REPORT_NAME = "NumberOfTimesParticipantsListenedToEachMessageReport";
     public static final String DAY_8_AND_DAY_57_REPORT_NAME = "PrimeVac1stFollow-upAndBoostVacDayReport";
     public static final String SUBJECT_ENROLLMENTS_NAME = "ParticipantEnrollments";
+    public static final String IVR_KPI_NAME = "IvrKpi";
+    public static final String SMS_KPI_NAME = "SmsKpi";
+    public static final String IVR_ENGAGEMENT_NAME = "IvrEngagement";
 
     public static final Map<String, String> DAILY_CLINIC_VISIT_SCHEDULE_REPORT_MAP = new LinkedHashMap<String, String>() {
         {
@@ -268,6 +271,45 @@ public final class EbodacConstants {
             put("Name",                     "subject.name");
             put("Stage ID",                 "subject.stageId");
             put("Status",                   "status");
+        }
+    };
+
+    public static final Map<String, String> IVR_KPI_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Date",                     "date");
+            put("Total Calls",              "totalAmount");
+            put("Total Pending",            "totalPending");
+            put("Total Failed",             "totalFailed");
+            put("Total Succeed",            "totalSucceed");
+            put("Call To Men",              "sendToMen");
+            put("Call To Women",            "sendToWomen");
+            put("Successful call To Men",   "successfulSendToMen");
+            put("Successful call To Women", "successfulSendToWomen");
+        }
+    };
+
+    public static final Map<String, String> SMS_KPI_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Date",                     "date");
+            put("Total SMS Sent",           "totalAmount");
+            put("Total Pending",            "totalPending");
+            put("Total Failed",             "totalFailed");
+            put("Total Succeed",            "totalSucceed");
+            put("SMS To Men",               "sendToMen");
+            put("SMS To Women",             "sendToWomen");
+            put("Successful SMS To Men",    "successfulSendToMen");
+            put("Successful SMS To Women",  "successfulSendToWomen");
+        }
+    };
+
+    public static final Map<String, String> IVR_ENGAGEMENT_MAP = new LinkedHashMap<String, String>() {
+        {
+            put("Participant ID",           "subjectId");
+            put("Calls Expected",           "callsExpected");
+            put("Pushed Successfully",      "pushedSuccessfully");
+            put("Received",                 "received");
+            put("Actively Listened",        "activelyListened");
+            put("Failed",                   "failed");
         }
     };
 

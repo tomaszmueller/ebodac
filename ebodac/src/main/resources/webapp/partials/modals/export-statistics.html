@@ -1,0 +1,35 @@
+<div id="exportEbodacInstanceModal" class="mds modal fade" tabindex="-1" role="dialog" aria-labelledby="exportEbodacInstanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeExportEbodacInstanceModal()">&times;</button>
+                <h4 class="modal-title" id="exportEbodacInstanceModalLabel">{{msg('ebodac.form.exportData')}}</h4>
+            </div>
+            <div class="modal-body">
+                <form id="exportEbodacInstanceForm" name="exportEbodacInstanceForm" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" for="exportFormat">
+                            {{msg('ebodac.form.exportFormat')}}
+                        </label>
+                        <div class="form-inline col-md-4 col-sm-4">
+                            <div class="btn-group" id="exportFormat">
+                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    {{msg('ebodac.form.exportFormat.' + exportFormat)}}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="format in availableExportFormats" ng-click="changeExportFormat(format)"><a>{{ msg('ebodac.form.exportFormat.' + format) }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="exportInstance()">{{msg('ebodac.btn.export')}}</button>
+                <button class="btn btn-default" ng-click="closeExportEbodacInstanceModal()">{{msg('ebodac.btn.cancel')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+

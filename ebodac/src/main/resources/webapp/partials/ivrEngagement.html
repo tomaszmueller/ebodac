@@ -6,10 +6,17 @@
             <i class="fa fa-lg fa-level-up"></i>
             {{msg('ebodac.btn.backToStatistics')}}
         </button>
+
+        <button ng-click="exportEntityInstances()" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-export"></span>
+            {{msg('ebodac.btn.exportData')}}
+        </button>
     </div>
 
     <div id="ivrEngagementStatistic" class="overrideJqgridTable">
         <table id="ivrEngagementStatisticTable" ivr-engagement-statistic-grid="pageIvrEngagementStatisticTable"></table>
         <div id="pageIvrEngagementStatisticTable"></div>
     </div>
+
+    <div ng-include="'../ebodac/resources/partials/modals/export-statistics.html'"></div>
 </div>

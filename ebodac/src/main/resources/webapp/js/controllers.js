@@ -718,6 +718,9 @@
             east__maxSize: 350
         });
 
+        $scope.availableExportFormats = ['csv','pdf','xls'];
+        $scope.exportFormat = 'csv';
+
         $scope.filters = [{
             name: $scope.msg('ebodac.screening.yesterday'),
             dateFilter: "YESTERDAY"
@@ -1241,6 +1244,52 @@
 
             return canvas.toDataURL("image/jpeg", 1.0);
         }
+
+        $scope.exportEntityInstances = function () {
+            $('#exportEbodacInstanceModal').modal('show');
+        };
+
+        $scope.changeExportFormat = function (format) {
+            $scope.exportFormat = format;
+        };
+
+        $scope.closeExportEbodacInstanceModal = function () {
+            $('#exportEbodacInstanceForm').resetForm();
+            $('#exportEbodacInstanceModal').modal('hide');
+        };
+
+        $scope.exportInstance = function() {
+            var url = "../ebodac/statistic/export/";
+
+            if ($scope.tableType === "ivr") {
+                url = url + "IvrKpi";
+            } else if ($scope.tableType === "sms") {
+                url = url + "SmsKpi";
+            } else {
+                url = url + "IvrEngagement";
+            }
+
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&dateFilter=" + $scope.selectedFilter.dateFilter;
+
+            if ($scope.selectedFilter.startDate) {
+                url = url + "&startDate=" + $scope.selectedFilter.startDate;
+            }
+
+            if ($scope.selectedFilter.endDate) {
+                url = url + "&endDate=" + $scope.selectedFilter.endDate;
+            }
+
+            $http.get(url)
+            .success(function () {
+                $('#exportEbodacInstanceForm').resetForm();
+                $('#exportEbodacInstanceModal').modal('hide');
+                window.location.replace(url);
+            })
+            .error(function (response) {
+                handleResponse('mds.error', 'mds.error.exportData', response);
+            });
+        };
 
     });
 
