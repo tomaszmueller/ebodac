@@ -487,6 +487,16 @@
 
         $scope.enrollInProgress = false;
 
+        $scope.availableExportRecords = ['All','10', '25', '50', '100', '250'];
+        $scope.availableExportFormats = ['csv','pdf','xls'];
+        $scope.actualExportRecords = 'All';
+        $scope.actualExportColumns = 'All';
+        $scope.exportFormat = 'csv';
+        $scope.checkboxModel = {
+            exportWithLookup : true,
+            exportWithOrder : false
+        };
+
         innerLayout({
             spacing_closed: 30,
             east__minSize: 200,
@@ -554,6 +564,55 @@
                 async: false
             });
         }
+
+        $scope.exportEntityInstances = function () {
+            $scope.checkboxModel.exportWithLookup = true;
+            $('#exportEbodacInstanceModal').modal('show');
+        };
+
+        $scope.changeExportRecords = function (records) {
+            $scope.actualExportRecords = records;
+        };
+
+        $scope.changeExportFormat = function (format) {
+            $scope.exportFormat = format;
+        };
+
+        $scope.closeExportEbodacInstanceModal = function () {
+            $('#exportEbodacInstanceForm').resetForm();
+            $('#exportEbodacInstanceModal').modal('hide');
+        };
+
+        $scope.exportInstance = function() {
+            var url, rows, page, sortColumn, sortDirection;
+
+            url = "../ebodac/exportSubjectEnrollment";
+            url = url + "?outputFormat=" + $scope.exportFormat;
+            url = url + "&exportRecords=" + $scope.actualExportRecords;
+
+            if ($scope.checkboxModel.exportWithOrder === true) {
+                sortColumn = $('#enrollmentTable').getGridParam('sortname');
+                sortDirection = $('#enrollmentTable').getGridParam('sortorder');
+
+                url = url + "&sortColumn=" + sortColumn;
+                url = url + "&sortDirection=" + sortDirection;
+            }
+
+            if ($scope.selectedLookup !== undefined && $scope.checkboxModel.exportWithLookup === true) {
+                url = url + "&lookup=" + (($scope.selectedLookup) ? $scope.selectedLookup.lookupName : "");
+                url = url + "&fields=" + encodeURIComponent(JSON.stringify($scope.lookupBy));
+            }
+
+            $http.get(url)
+            .success(function () {
+                $('#exportEbodacInstanceForm').resetForm();
+                $('#exportEbodacInstanceModal').modal('hide');
+                window.location.replace(url);
+            })
+            .error(function (response) {
+                handleResponse('mds.error', 'mds.error.exportData', response);
+            });
+        };
     });
 
     /*
