@@ -25,6 +25,9 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final By POPUP_CONTENT = By.id("popup_content");
     static final By DATE_TABLE = By.xpath("//div[3]/div/ng-form/div/input");
     static final By PLANNED_VISITS_DATE = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input");
+    static final By NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[2]/div/ng-form/div/input[@type='text']");
+    static final By HOUSEHOLD_NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input[@type='text']");
+    static final By HEAD_OF_HOUSEHOLD = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[4]/div/ng-form/div/input[@type='text']");
     public ParticipantEditPage(WebDriver driver) {
         super(driver);
     }
@@ -35,6 +38,12 @@ public class ParticipantEditPage extends AbstractBasePage {
     }
 
     public void changePhoneNumber(String number) throws InterruptedException {
+        setPhoneNumber(number);
+        clickOn(SAVE_BUTTON);
+        clickWhenVisible(CONFIRMATION_BUTTON);
+    }
+
+    public boolean setPhoneNumber(String number) throws InterruptedException {
         Long startTime = System.currentTimeMillis();
         while ((System.currentTimeMillis() - startTime) < TIMEOUT_BORDER) {
             findElement(PHONE_NUMBER_FIELD).clear();
@@ -44,11 +53,10 @@ public class ParticipantEditPage extends AbstractBasePage {
             changeFocus();
             Thread.sleep(SMALL_TIMEOUT);
             if (findElement(PHONE_NUMBER_FIELD).getText().equals(number)) {
-                break;
+                return true;
             }
         }
-        clickOn(SAVE_BUTTON);
-        clickWhenVisible(CONFIRMATION_BUTTON);
+        return false;
     }
 
     private void changeFocus() {
@@ -65,9 +73,10 @@ public class ParticipantEditPage extends AbstractBasePage {
         return language;
     }
 
-    private String chooseLanguage(String languagePos) {
+    public String chooseLanguage(String languagePos) {
         try {
             clickOn(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END));
+            Thread.sleep(TIMEOUT_BORDER);
             return findElement(By.xpath(LANGUAGE_PATH + "[" + languagePos + "]" + LANGUAGE_PATH_END + "/input")).getText();
         } catch (Exception e) {
             throw new AssertionError("No language at chosen position");
@@ -123,5 +132,41 @@ public class ParticipantEditPage extends AbstractBasePage {
             clickOn(POPUP_OK);
         }
         while (dateEnroll());
+    }
+
+    public boolean isNameEditable() {
+        WebElement nameElement = findElement(NAME);
+        try {
+            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public boolean isHouseholdNameEditable() {
+        WebElement nameElement = findElement(HOUSEHOLD_NAME);
+        try {
+            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public boolean isHeadOfHouseholdEditable() {
+        WebElement nameElement = findElement(HEAD_OF_HOUSEHOLD);
+        try {
+            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
     }
 }

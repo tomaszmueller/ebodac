@@ -5,12 +5,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 
-public class MEMissedClinicVisitsReportPage extends AbstractBasePage {
+public class FollowupsMissedClinicVisitsReportPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By TABLE = By.xpath("//table[@class='ui-jqgrid-htable']");
 
-    public MEMissedClinicVisitsReportPage(WebDriver driver) {
+    public FollowupsMissedClinicVisitsReportPage(WebDriver driver) {
         super(driver);
     }
 
