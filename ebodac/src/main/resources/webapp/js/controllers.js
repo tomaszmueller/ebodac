@@ -1293,4 +1293,216 @@
 
     });
 
+    /*
+     *
+     * Email Reports
+     *
+     */
+    controllers.controller('EbodacEmailReportsCtrl', function ($scope, $http) {
+
+        $scope.schedulePeriods = ['DAILY', 'WEEKLY', 'MONTHLY'];
+        $scope.scheduleDayOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+
+        $scope.selectPeriod = function(report, value) {
+            report.schedulePeriod = $scope.schedulePeriods[value];
+        };
+
+        $scope.selectDayOfWeek = function(report, value) {
+            report.dayOfWeek = $scope.scheduleDayOfWeek[value];
+        };
+
+        $scope.accordions = [];
+        $scope.recipients = [];
+        $scope.emailReports = [];
+
+        $scope.entities = [];
+        $scope.selectedEntity = [];
+        $scope.oldEntityId = [];
+
+        $scope.newRecipient = {};
+        $scope.addRecipientMsg = null;
+
+        $scope.entityChanged = function(index) {
+            $scope.emailReports[index].entity = angular.copy($scope.selectedEntity[index]);
+            $scope.emailReports[index].entity.fields = [];
+            $('#entityFields' + index).select2('val', $scope.emailReports[index].entity.fields);
+        }
+
+        $scope.setSelectedEntities = function() {
+            var i;
+            for (i = 0; i < $scope.emailReports.length; i = i + 1) {
+                $scope.selectedEntity[i] = $scope.entities[$scope.emailReports[i].entity.className];
+                $scope.oldEntityId[i] = $scope.emailReports[i].entity.id;
+                $('#entityFields' + i).select2('val', $scope.emailReports[i].entity.fields);
+            }
+        }
+
+        function autoExpandSingleAccordion() {
+            if ($scope.accordions.length === 1) {
+                $scope.accordions[0] = true;
+            }
+        }
+
+        function setAccordions(emailReports) {
+            var i;
+            $scope.accordions = [];
+            for (i = 0; i < emailReports.length; i = i + 1) {
+                $scope.accordions.push(false);
+            }
+            autoExpandSingleAccordion();
+        }
+
+        $scope.getEmailReports = function() {
+            $http.get('../ebodac/getEmailReports')
+            .success(function(response) {
+                $scope.emailReports = response;
+                $scope.originalEmailReports = angular.copy($scope.emailReports);
+                $scope.setSelectedEntities();
+                setAccordions($scope.emailReports);
+            })
+            .error(function(response) {
+                motechAlert('ebodac.web.emailReports.getEmailReports.error', 'ebodac.web.emailReports.error', response);
+            });
+        }
+
+        $http.get('../ebodac/getEbodacEntities')
+        .success(function(response) {
+            $scope.entities = response;
+
+            if ($scope.entities === undefined && $scope.entities === null) {
+                motechAlert('ebodac.web.emailReports.getEntities.error', 'ebodac.web.emailReports.error', response);
+            } else {
+                $scope.getEmailReports();
+            }
+        })
+        .error(function(response) {
+            motechAlert('ebodac.web.emailReports.getEntities.error', 'ebodac.web.emailReports.error', response);
+        });
+
+        $http.get('../ebodac/getEmailRecipients')
+        .success(function(response) {
+            $scope.recipients = response;
+        })
+        .error(function(response) {
+            motechAlert('ebodac.web.emailReports.getRecipients.error', 'ebodac.web.emailReports.error', response);
+        });
+
+        $scope.collapseAccordions = function () {
+            var key;
+            for (key in $scope.accordions) {
+                $scope.accordions[key] = false;
+            }
+            autoExpandSingleAccordion();
+        };
+
+        $scope.deleteReport = function(index) {
+            var reportId = $scope.emailReports[index].id;
+            if (reportId === undefined || reportId === null || reportId === '') {
+                $scope.removeReport(index);
+            } else {
+                motechConfirm("ebodac.web.emailReports.deleteReport.ConfirmMsg", "ebodac.web.emailReports.deleteReport.ConfirmTitle",
+                    function (response) {
+                        if (!response) {
+                            return;
+                        } else {
+                            $http.post('../ebodac/deleteReport', reportId)
+                            .success(function (response) {
+                                $scope.removeReport(index);
+                                $scope.$apply();
+                            })
+                            .error (function (response) {
+                                motechAlert('ebodac.web.emailReports.deleteReport.error', 'ebodac.web.emailReports.error', response);
+                            });
+                        }
+                    });
+            }
+        };
+
+        $scope.removeReport = function(index) {
+            $scope.emailReports.splice(index, 1);
+            $scope.originalEmailReports.splice(index, 1);
+            $scope.accordions.splice(index, 1);
+            autoExpandSingleAccordion();
+        };
+
+        $scope.isDirty = function (index) {
+            if ($scope.originalEmailReports[index] === null || $scope.emailReports[index] === null) {
+                return false;
+            }
+
+            return !angular.equals($scope.originalEmailReports[index], $scope.emailReports[index]);
+        };
+
+        $scope.reset = function (index) {
+            $scope.emailReports[index] = angular.copy($scope.originalEmailReports[index]);
+            $scope.selectedEntity[index] = $scope.entities[$scope.emailReports[index].entity.className];
+            $('#entityFields' + index).select2('val', $scope.emailReports[index].entity.fields);
+        };
+
+        $scope.addReport = function () {
+            var newReport = {
+                'name': '',
+                'subject': '',
+                'messageContent': '',
+                'recipients': [],
+                'entity': null,
+                'schedulePeriod': $scope.schedulePeriods[0],
+                'scheduleTime': null,
+                'dayOfWeek': $scope.scheduleDayOfWeek[0]
+            };
+
+            $scope.selectedEntity[$scope.emailReports.length] = null;
+            $scope.oldEntityId[$scope.emailReports.length] = null;
+
+            $scope.emailReports.push(newReport);
+            $scope.originalEmailReports.push(angular.copy(newReport));
+            $scope.accordions.push(true);
+            autoExpandSingleAccordion();
+        };
+
+        $scope.saveReport = function (index) {
+            var report = {
+                'report': $scope.emailReports[index],
+                'oldEntityId': $scope.oldEntityId[index]
+            }
+
+            $http.post('../ebodac/saveReport', report)
+            .success(function (response) {
+                $scope.emailReports[index] = response;
+                $scope.originalEmailReports[index] = angular.copy($scope.emailReports[index]);
+                $scope.selectedEntity[index] = $scope.entities[$scope.emailReports[index].entity.className];
+                $scope.oldEntityId[index] = $scope.emailReports[index].entity.id;
+                $('#entityFields' + index).select2('val', $scope.emailReports[index].entity.fields);
+                motechAlert('ebodac.web.emailReports.saved.successMsg', 'ebodac.web.emailReports.saved.successTitle');
+            })
+            .error (function (response) {
+                motechAlert('ebodac.web.emailReports.saveReports.error', 'ebodac.web.emailReports.error', response);
+            });
+        };
+
+        $scope.addRecipientModalShow = function () {
+            $scope.addRecipientMsg = null;
+            $scope.newRecipient = {};
+            $('#addRecipientModal').modal('show');
+        };
+
+        $scope.closeAddRecipientModal = function () {
+            $('#addRecipientForm').resetForm();
+            $('#addRecipientModal').modal('hide');
+        };
+
+        $scope.saveNewRecipient = function () {
+            $http.post('../ebodac/addRecipient', $scope.newRecipient)
+            .success(function (response) {
+                $scope.newRecipient = response;
+                $scope.recipients.push($scope.newRecipient);
+                $scope.addRecipientMsg = $scope.msg('ebodac.web.emailReports.addRecipient.success');
+            })
+            .error (function (response) {
+                $scope.addRecipientMsg = $scope.msg('ebodac.web.emailReports.addRecipient.error', response);
+            });
+        }
+
+    });
+
 }());

@@ -1,0 +1,38 @@
+<div id="addRecipientModal" class="mds modal fade" tabindex="-1" role="dialog" aria-labelledby="addRecipientLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeAddRecipientModal()">&times;</button>
+                <h4 class="modal-title" id="addRecipientLabel">{{msg('ebodac.web.emailReports.addRecipient.title')}}</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="addRecipientForm" name="addRecipientForm" class="form-horizontal" ng-show="!addRecipientMsg">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="name">{{msg('ebodac.web.emailReports.addRecipient.name')}}</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="name" ng-model="newRecipient.name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error': !newRecipient.emailAddress}">
+                        <label class="col-md-3 control-label" for="emailAddress">{{msg('ebodac.web.emailReports.addRecipient.email')}}</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="emailAddress" ng-model="newRecipient.emailAddress"/>
+                            <span ng-show="!newRecipient.emailAddress" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
+                        </div>
+                    </div>
+                </form>
+                <div ng-hide="!addRecipientMsg">
+                    <label>{{addRecipientMsg}}</label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="saveNewRecipient()" ng-disabled="!newRecipient.emailAddress" ng-show="!addRecipientMsg">{{msg('ebodac.web.emailReports.addRecipient.save')}}</button>
+                <button class="btn btn-default" ng-click="closeAddRecipientModal()" ng-show="!addRecipientMsg">{{msg('ebodac.web.emailReports.addRecipient.cancel')}}</button>
+                <button class="btn btn-success" ng-click="closeAddRecipientModal()" ng-hide="!addRecipientMsg">{{msg('ebodac.web.emailReports.addRecipient.ok')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

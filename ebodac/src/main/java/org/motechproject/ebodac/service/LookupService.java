@@ -18,5 +18,8 @@ public interface LookupService {
     <T> Records<?> getEntities(Class<?> entityDtoType, Class<T> entityType, String lookup,
                                String lookupFields, QueryParams queryParams);
 
+    <T> Records<T> getEntities(String entityClassName, String lookup,
+                               String lookupFields, QueryParams queryParams);
+
     List<LookupDto> getAvailableLookups(String entityName);
 }

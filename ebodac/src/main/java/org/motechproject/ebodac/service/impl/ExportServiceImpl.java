@@ -54,20 +54,22 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
+    public void exportEntityToCSV(Writer writer, String entityClassName, Map<String, String> headerMap,
+                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+        CsvTableWriter tableWriter = new CsvTableWriter(writer);
+        exportEntity(entityClassName, headerMap, tableWriter, lookup, lookupFields, queryParams);
+    }
+
+    @Override
     public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
-        Set<String> keys = headerMap.keySet();
-        String[] fields = keys.toArray(new String[keys.size()]);
-        try {
-            tableWriter.writeHeader(fields);
-            for (T entity : entities) {
-                Map<String, String> row = buildRow(entity, headerMap);
-                tableWriter.writeRow(row, fields);
-            }
-        } catch (IOException e) {
-            throw new IOException("IO Error when writing data", e);
-        } finally {
-            tableWriter.close();
-        }
+        exportEntityList(entities, headerMap, tableWriter);
+    }
+
+    private void exportEntity(String entityClassName, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
+                                  String lookupFields, QueryParams queryParams) throws IOException {
+        Records<?> records = lookupService.getEntities(entityClassName, lookup, lookupFields, queryParams);
+
+        exportEntityList(records.getRows(), headerMap, tableWriter);
     }
 
     private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
@@ -78,7 +80,11 @@ public class ExportServiceImpl implements ExportService {
         } else {
             records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
         }
-        List<T> entities = records.getRows();
+
+        exportEntityList(records.getRows(), headerMap, tableWriter);
+    }
+
+    private <T> void exportEntityList(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
         Set<String> keys = headerMap.keySet();
         String[] fields = keys.toArray(new String[keys.size()]);
         try {

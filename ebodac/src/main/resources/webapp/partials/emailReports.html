@@ -1,0 +1,137 @@
+<div class="row">
+    <h4 class="frame-title">{{ msg('ebodac.web.title')}}&nbsp;-&nbsp;{{ msg('ebodac.web.emailReports.title')}}</h4>
+
+    <div class="alert alert-danger alert-block" ng-show="emailReports.length <= 0">
+        {{msg('ebodac.web.emailReports.noReportsError')}}
+    </div>
+
+    <div class="toolbox">
+        <div class="form-group">
+            <button type="button" class="btn btn-success" ng-click="addReport()"><i class="fa fa-plus"></i>
+                {{msg('ebodac.web.emailReports.addReport')}}
+            </button>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <form name="form" class="form-horizontal" novalidate>
+            <div class="panel-group">
+                <div class="panel panel-default" ng-repeat="report in emailReports">
+                    <div class="panel-heading" ng-click="accordions[$index] = !accordions[$index]">
+                        <i ng-class="{'fa-caret-down': accordions[$index], 'fa-caret-right': !accordions[$index]}" class="fa fa-fw fa-lg pointer"></i>
+                        {{report.name}}
+                    </div>
+                    <div id="panel{{$index}}" class="panel-collapse collapse" ng-class="{true:'in', false:''}[accordions[$index]]">
+                        <ng-form name="reportForm">
+                            <div class="panel-body">
+                                <div class="form-group" ng-class="{'has-error': !report.name}">
+                                    <label class="col-md-3 control-label" for="reportName{{$index}}">{{msg('ebodac.web.emailReports.reportName')}}</label>
+                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.reportName.tooltip')}}">
+                                        <input id="reportName{{$index}}" type="text" class="form-control" ng-model="report.name" required ng-focus="accordions[$index]">
+                                        <span ng-show="!report.name" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{msg('ebodac.web.emailReports.recipients')}}</label>
+                                    <div class="col-md-6" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.recipients.tooltip')}}">
+                                        <select id="recipients{{$index}}" class="form-control" ui-select2 multiple ng-model="report.recipients"
+                                                ng-options="recipient as (recipient.name ? recipient.name : recipient.emailAddress) for recipient in recipients track by recipient.emailAddress">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-success col-md-12" ng-click="addRecipientModalShow()"><i class="fa fa-plus"></i>
+                                            {{msg('ebodac.web.emailReports.addRecipient')}}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="subject{{$index}}">{{msg('ebodac.web.emailReports.subject')}}</label>
+                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.subject.tooltip')}}">
+                                        <input type="text" class="form-control" id="subject{{$index}}" ng-model="report.subject"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="messageContent{{$index}}">{{msg('ebodac.web.emailReports.messageContent')}}</label>
+                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.messageContent.tooltip')}}">
+                                        <textarea spellcheck="false" class="form-control" id="messageContent{{$index}}" type="text" ng-model="report.messageContent" rows="6"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error': !report.entity}">
+                                    <label class="col-md-3 control-label" for="entity{{$index}}">{{msg('ebodac.web.emailReports.entity')}}</label>
+                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.entity.tooltip')}}">
+                                        <select class="form-control" id="entity{{$index}}" ui-select2 ng-model="selectedEntity[$index]" ng-change="entityChanged($index)"
+                                                ng-options="entity as entity.name for (key, entity) in entities">
+                                            <option value=""></option>
+                                        </select>
+                                        <span ng-show="!report.entity" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-hide="!report.entity">
+                                    <label class="col-md-3 control-label" for="entityFields{{$index}}">{{msg('ebodac.web.emailReports.entityFields')}}</label>
+                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.entityFields.tooltip')}}">
+                                        <select class="form-control" id="entityFields{{$index}}" ui-select2 multiple ng-model="report.entity.fields"
+                                                ng-options="field as field.displayName + (field.relationField ? ' -> ' + field.relatedFieldDisplayName : '') for field in selectedEntity[$index].fields track by field.fieldPath">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{msg('ebodac.web.emailReports.schedulePeriod')}}</label>
+                                    <div class="col-md-8 btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" range-setter>
+                                            {{msg('ebodac.web.emailReports.' + report.schedulePeriod)}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-repeat="period in schedulePeriods"><a ng-click="selectPeriod(report, $index)">{{msg('ebodac.web.emailReports.' + period)}}</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error': !report.scheduleTime}">
+                                    <label class="col-md-3 control-label" for="scheduleTime{{$index}}">{{msg('ebodac.web.emailReports.scheduleTime')}}</label>
+                                    <div class="col-md-2" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.scheduleTime.tooltip')}}">
+                                        <input type="text" class="form-control" id="scheduleTime{{$index}}" mds-time-picker ng-model="report.scheduleTime" required/>
+                                        <span ng-hide="report.scheduleTime" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-hide="report.schedulePeriod === 'DAILY'">
+                                    <label class="col-md-3 control-label">{{msg('ebodac.web.emailReports.dayOfWeek')}}</label>
+                                    <div class="col-md-8 btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" range-setter>
+                                            {{msg('ebodac.web.emailReports.' + report.dayOfWeek)}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-repeat="dayOfWeek in scheduleDayOfWeek"><a ng-click="selectDayOfWeek(report, $index)">{{msg('ebodac.web.emailReports.' + dayOfWeek)}}</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <div class="form-inline">
+                                            <button class="btn btn-sm btn-danger" ng-click="deleteReport($index)"> <i class="fa fa-fw fa-trash-o"></i> {{msg('ebodac.web.emailReports.delete')}} </button>
+                                            <button class="btn btn-sm btn-primary" ng-show="isDirty($index)" ng-disabled="!reportForm.$valid" ng-click="saveReport($index)">{{msg('ebodac.web.emailReports.save')}}</button>
+                                            <button class="btn btn-sm btn-default" ng-show="isDirty($index)" ng-click="reset($index)">{{msg('ebodac.web.emailReports.cancel')}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-form>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div ng-include="'../ebodac/resources/partials/modals/add-recipient.html'"></div>
+</div>
