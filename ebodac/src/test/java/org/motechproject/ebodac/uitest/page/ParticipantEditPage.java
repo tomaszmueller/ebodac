@@ -28,6 +28,8 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final By NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[2]/div/ng-form/div/input[@type='text']");
     static final By HOUSEHOLD_NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input[@type='text']");
     static final By HEAD_OF_HOUSEHOLD = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[4]/div/ng-form/div/input[@type='text']");
+    static final By BUTTON = By.xpath("//div[@ng-include='loadEditValueForm(field)']/table/tbody/tr/*/button");
+
     public ParticipantEditPage(WebDriver driver) {
         super(driver);
     }
@@ -162,6 +164,17 @@ public class ParticipantEditPage extends AbstractBasePage {
         WebElement nameElement = findElement(HEAD_OF_HOUSEHOLD);
         try {
             if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public boolean checkButtons() {
+        try {
+            if (findElement(BUTTON) != null) {
                 return false;
             }
             return true;
