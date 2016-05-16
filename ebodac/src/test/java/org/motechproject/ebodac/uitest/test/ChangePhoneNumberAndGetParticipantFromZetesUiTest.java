@@ -14,7 +14,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
 import java.lang.Exception;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase {
 

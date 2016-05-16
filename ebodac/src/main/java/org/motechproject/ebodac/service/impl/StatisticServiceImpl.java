@@ -41,6 +41,7 @@ public class StatisticServiceImpl implements StatisticService {
 
         return ivrAndSmsStatisticReportDataService.executeSQLQuery(new SqlQueryExecution<List<IvrEngagementStatistic>>() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public List<IvrEngagementStatistic> execute(Query query) {
                 query.setResultClass(IvrEngagementStatistic.class);
@@ -62,12 +63,14 @@ public class StatisticServiceImpl implements StatisticService {
         params.put("minDate", dateRange.getMin().toString(DATE_TIME_FORMAT));
         params.put("maxDate", dateRange.getMax().toString(DATE_TIME_FORMAT));
 
+        @SuppressWarnings("unchecked")
         List<IvrAndSmsStatistic> list = (List<IvrAndSmsStatistic>) query.executeWithMap(params);
+
         if (list == null || list.isEmpty()) {
             return null;
         }
-        return list;
 
+        return list;
     }
 
     private List<IvrAndSmsStatistic> getStatisticForQuery(final Range<DateTime> dateRange, final String query) {

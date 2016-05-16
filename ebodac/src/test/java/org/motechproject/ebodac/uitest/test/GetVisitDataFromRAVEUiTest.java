@@ -15,7 +15,8 @@ import org.motechproject.ebodac.uitest.page.AdminPage;
 import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.ebodac.uitest.page.ServerLogPage;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 @Ignore
 public class GetVisitDataFromRAVEUiTest extends TestBase {
     private LoginPage loginPage;

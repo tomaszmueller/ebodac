@@ -51,10 +51,10 @@ public class ExportTemplatesHelper {
     public PdfBasicTemplate createTemplateForPdf(String reportName, Class<?> entityType, GridSettings settings, //NO CHECKSTYLE CyclomaticComplexity
                                                  String exportRecords, String oldLookupFields, OutputStream outputStream) {
         Config config = configService.getConfig();
-        Map<String, String> map = findMinAndMaxDateForReport(reportName, entityType, settings, exportRecords, oldLookupFields);
+        Map map = findMinAndMaxDateForReport(reportName, entityType, settings, exportRecords, oldLookupFields);
 
-        String from = map.get(FROM);
-        String to = map.get(TO);
+        String from = (String) map.get(FROM);
+        String to = (String) map.get(TO);
 
         PdfBasicTemplate template;
         if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
@@ -76,10 +76,10 @@ public class ExportTemplatesHelper {
     public XlsBasicTemplate createTemplateForXls(String reportName, Class<?> entityType, GridSettings settings,
                                                  String exportRecords, String oldLookupFields, OutputStream outputStream) {
         Config config = configService.getConfig();
-        Map<String, String> map = findMinAndMaxDateForReport(reportName, entityType, settings, exportRecords, oldLookupFields);
+        Map map = findMinAndMaxDateForReport(reportName, entityType, settings, exportRecords, oldLookupFields);
 
-        String from = map.get(FROM);
-        String to = map.get(TO);
+        String from = (String) map.get(FROM);
+        String to = (String) map.get(TO);
 
         XlsBasicTemplate template;
         if (entityType.getName().equals(ReportPrimerVaccination.class.getName()) || entityType.getName().equals(ReportBoosterVaccination.class.getName())) {
@@ -96,7 +96,7 @@ public class ExportTemplatesHelper {
         return template;
     }
 
-    private Map<String, String> findMinAndMaxDateForReport(String reportName, Class<?> entityType, GridSettings settings, String exportRecords, String oldLookupFields) {
+    private Map findMinAndMaxDateForReport(String reportName, Class<?> entityType, GridSettings settings, String exportRecords, String oldLookupFields) {
         switch (reportName) {
             case EbodacConstants.PRIMER_VACCINATION_REPORT_NAME:
             case EbodacConstants.BOOSTER_VACCINATION_REPORT_REPORT_NAME:
@@ -112,7 +112,7 @@ public class ExportTemplatesHelper {
         }
     }
 
-    private <T> Map<String, String> findMinAndMaxDate(Class<T> entityType, GridSettings settings, String exportRecords,
+    private <T> Map findMinAndMaxDate(Class<T> entityType, GridSettings settings, String exportRecords,
                                                       String oldLookupFields, String fieldName) {
 
         if (StringUtils.isNotBlank(oldLookupFields)) {
@@ -122,7 +122,7 @@ public class ExportTemplatesHelper {
                 Object o = fieldsMap.get(fieldName);
 
                 if (o instanceof Map) {
-                    return (Map<String, String>) o;
+                    return (Map) o;
                 } else {
                     Map<String, String> map = new HashMap<>();
                     map.put(FROM, (String) o);
@@ -176,7 +176,7 @@ public class ExportTemplatesHelper {
         String[] fieldPath = fieldName.split("\\.");
         String value;
         if (fieldPath.length == 2) {
-            Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
+            Map objectMap = (Map) entityMap.get(fieldPath[0]);
             value = (String) objectMap.get(fieldPath[1]);
         } else {
             value = (String) entityMap.get(fieldName);

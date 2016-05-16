@@ -72,11 +72,11 @@ public class ExportServiceImpl implements ExportService {
         exportEntityList(records.getRows(), headerMap, tableWriter);
     }
 
-    private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
+    private void exportEntity(Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
                                                       String lookupFields, QueryParams queryParams) throws IOException {
-        Records<T> records;
+        Records records;
         if (entityDtoType != null) {
-            records = (Records<T>) lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
+            records = lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
         } else {
             records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
         }
@@ -84,12 +84,12 @@ public class ExportServiceImpl implements ExportService {
         exportEntityList(records.getRows(), headerMap, tableWriter);
     }
 
-    private <T> void exportEntityList(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
+    private void exportEntityList(List entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
         Set<String> keys = headerMap.keySet();
         String[] fields = keys.toArray(new String[keys.size()]);
         try {
             tableWriter.writeHeader(fields);
-            for (T entity : entities) {
+            for (Object entity : entities) {
                 Map<String, String> row = buildRow(entity, headerMap);
                 tableWriter.writeRow(row, fields);
             }
@@ -114,7 +114,7 @@ public class ExportServiceImpl implements ExportService {
             String[] fieldPath = fieldName.split("\\.");
             String value = null;
             if (fieldPath.length == 2) {
-                Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
+                Map objectMap = (Map) entityMap.get(fieldPath[0]);
                 Object fieldValue = objectMap.get(fieldPath[1]);
                 if (fieldValue != null) {
                     value = fieldValue.toString();

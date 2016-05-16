@@ -10,6 +10,7 @@ import org.motechproject.ebodac.domain.EnrollmentStatus;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.impl.EbodacEnrollmentServiceImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@PowerMockIgnore("org.apache.log4j.*")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EbodacEnrollmentServiceImpl.class)
 public class EbodacEnrollmentServiceTest {

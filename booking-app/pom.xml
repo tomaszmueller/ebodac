@@ -46,7 +46,12 @@
                         <Export-Package>
                             org.motechproject.bookingapp.domain;version=${project.version},
                             org.motechproject.bookingapp.repository;version=${project.version},
-                            org.motechproject.bookingapp.web;version=${project.version}
+                            org.motechproject.bookingapp.web;version=${project.version},
+                            org.motechproject.bookingapp.constants;version=${project.version},
+                            org.motechproject.bookingapp.exception;version=${project.version},
+                            org.motechproject.bookingapp.service;version=${project.version},
+                            org.motechproject.bookingapp.util;version=${project.version},
+                            org.motechproject.bookingapp.web.domain;version=${project.version},
                         </Export-Package>
                         <Import-Package>
                             org.motechproject.osgi.web,

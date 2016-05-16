@@ -12,7 +12,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
 
