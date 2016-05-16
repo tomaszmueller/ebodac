@@ -8,7 +8,6 @@ import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicStatusLine;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -38,6 +37,7 @@ import org.motechproject.ivr.repository.CallDetailRecordDataService;
 import org.motechproject.ivr.service.OutboundCallService;
 import org.motechproject.ivr.service.impl.OutboundCallServiceImpl;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -56,6 +56,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@PowerMockIgnore("org.apache.log4j.*")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({IvrCallHelper.class, OutboundCallServiceImpl.class })
 public class IvrCallHelperTest {
@@ -621,6 +622,7 @@ public class IvrCallHelperTest {
         ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void shouldSendProperRequestToVoto() throws Exception {
         String campaignName = "campaign";
@@ -665,8 +667,8 @@ public class IvrCallHelperTest {
         when(ivrConfigService.hasConfig("Voto")).thenReturn(true);
         when(ivrConfigService.getConfig("Voto")).thenReturn(ivrConfig);
 
-        DefaultHttpClient client = mock(DefaultHttpClient.class);
-        PowerMockito.whenNew(DefaultHttpClient.class).withNoArguments().thenReturn(client);
+        org.apache.http.impl.client.DefaultHttpClient client = mock(org.apache.http.impl.client.DefaultHttpClient.class);
+        PowerMockito.whenNew(org.apache.http.impl.client.DefaultHttpClient.class).withNoArguments().thenReturn(client);
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         when(response.getStatusLine()).thenReturn(new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, ""));
 
@@ -706,9 +708,9 @@ public class IvrCallHelperTest {
         assertEquals("15", params.get("retry_delay_short").toString());
         assertEquals("1", params.get("retry_attempts_long").toString());
         assertEquals("1", params.get("send_sms_if_voice_fails").toString());
-        List<Map<String, Object>> subscribers = (List<Map<String, Object>>) params.get("subscribers");
+        List subscribers = (List) params.get("subscribers");
         assertEquals(1, subscribers.size());
-        Map<String, Object> subscriber = subscribers.get(0);
+        Map subscriber = (Map) subscribers.get(0);
         assertEquals(subjectPhoneNumber, subscriber.get("phone").toString());
         assertEquals(votoLanguageId, subscriber.get("language").toString());
     }

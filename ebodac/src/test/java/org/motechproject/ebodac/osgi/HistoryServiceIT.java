@@ -96,7 +96,7 @@ public class HistoryServiceIT extends BasePaxIT {
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
 
-        List<List<Subject>> subjectsHistoryRecords = new ArrayList<List<Subject>>();
+        List<List> subjectsHistoryRecords = new ArrayList<>();
 
         for (Subject s : subjectDataService.retrieveAll()) {
             subjectsHistoryRecords.add(historyService.getHistoryForInstance(s, qp));
@@ -170,7 +170,7 @@ public class HistoryServiceIT extends BasePaxIT {
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
 
         subject = subjectDataService.findBySubjectId("2");
-        List<Subject> subjectHistoryRecords = new ArrayList<Subject>();
+        List subjectHistoryRecords = new ArrayList<Subject>();
         subjectHistoryRecords = historyService.getHistoryForInstance(subject, qp);
 
         assertEquals(5, subjectHistoryRecords.size());
@@ -186,7 +186,7 @@ public class HistoryServiceIT extends BasePaxIT {
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
 
         Subject subject = subjectDataService.findBySubjectId("1");
-        List<Subject> subjectHistoryRecords = new ArrayList<Subject>();
+        List subjectHistoryRecords = new ArrayList<Subject>();
         subjectHistoryRecords = historyService.getHistoryForInstance(subject, qp);
 
         assertEquals(1, subjectHistoryRecords.size());

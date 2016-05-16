@@ -134,12 +134,12 @@ public class StatisticController {
                 maxDate != null ? maxDate.toDateTime(END_OF_DAY_TIME) : null);
     }
 
-    private void exportEntity(String outputFormat, HttpServletResponse response, String fileNameBeginning,
-                              List entities, Map<String, String> headerMap) throws IOException {
+    private <T> void exportEntity(String outputFormat, HttpServletResponse response, String fileNameBeginning,
+                                  List<T> entities, Map<String, String> headerMap) throws IOException {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
         final String fileName = fileNameBeginning + "_" + DateTime.now().toString(dateTimeFormatter);
-        List entityList = new ArrayList();
+        List<T> entityList = new ArrayList<>();
 
         if (EbodacConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");

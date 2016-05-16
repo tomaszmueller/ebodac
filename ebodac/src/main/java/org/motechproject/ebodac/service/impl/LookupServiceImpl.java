@@ -107,19 +107,19 @@ public class LookupServiceImpl implements LookupService {
     }
 
     @Override
-    public <T> Records<?> getEntities(Class<?> entityDtoType, Class<T> entityType, String lookup,
+    public <T> Records<T> getEntities(Class<T> entityDtoType, Class<?> entityType, String lookup,
                                       String lookupFields, QueryParams queryParams) {
-        List<Object> entityDtoList = new ArrayList<>();
-        Records<T> baseRecords = getEntities(entityType, lookup, lookupFields, queryParams);
-        Constructor reportDtoConstructor;
+        List<T> entityDtoList = new ArrayList<>();
+        Records baseRecords = getEntities(entityType, lookup, lookupFields, queryParams);
+        Constructor<T> reportDtoConstructor;
         try {
             reportDtoConstructor = entityDtoType.getConstructor(entityType);
         } catch (NoSuchMethodException e) {
             throw new EbodacLookupException("Invalid reportDtoType parametr", e);
         }
         try {
-            for (T entity : baseRecords.getRows()) {
-                Object entityDto;
+            for (Object entity : baseRecords.getRows()) {
+                T entityDto;
                 entityDto = reportDtoConstructor.newInstance(entity);
                 entityDtoList.add(entityDto);
             }

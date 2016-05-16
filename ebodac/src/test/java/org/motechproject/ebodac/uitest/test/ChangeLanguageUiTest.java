@@ -14,7 +14,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class ChangeLanguageUiTest extends TestBase {
 

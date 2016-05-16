@@ -11,7 +11,7 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class EnrollAndUnenrollParticipantUiTest extends TestBase {
     private LoginPage loginPage;

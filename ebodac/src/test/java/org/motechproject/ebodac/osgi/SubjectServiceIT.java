@@ -26,9 +26,8 @@ import org.ops4j.pax.exam.spi.reactors.PerSuite;
 import javax.inject.Inject;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerSuite.class)
@@ -306,11 +305,11 @@ public class SubjectServiceIT extends BasePaxIT {
         assertEquals(expected.getHeadOfHousehold(), actual.getHeadOfHousehold());
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getLanguageCode(), actual.getLanguageCode());
-        assertEquals(expected.getCommunity(),        actual.getCommunity());
+        assertEquals(expected.getCommunity(), actual.getCommunity());
         assertEquals(expected.getSiteId(), actual.getSiteId());
         assertEquals(expected.getSiteName(), actual.getSiteName());
         assertEquals(expected.getChiefdom(), actual.getChiefdom());
-        assertEquals(expected.getSection(),        actual.getSection());
+        assertEquals(expected.getSection(), actual.getSection());
         assertEquals(expected.getDistrict(), actual.getDistrict());
     }
 
