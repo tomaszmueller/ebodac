@@ -24,6 +24,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final By PICK_DATA = By.cssSelector(".ui-state-active");
     static final By POPUP_CONTENT = By.id("popup_content");
     static final By DATE_TABLE = By.xpath("//div[3]/div/ng-form/div/input");
+    static final By VISIT_TABLE = By.xpath("//div[@ng-include='loadEditValueForm(field)']/table");
     static final By PLANNED_VISITS_DATE = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input");
     static final By NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[2]/div/ng-form/div/input[@type='text']");
     static final By HOUSEHOLD_NAME = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input[@type='text']");
@@ -180,6 +181,18 @@ public class ParticipantEditPage extends AbstractBasePage {
             return true;
         } catch (Exception e) {
             return true;
+        }
+    }
+
+    public boolean isTable() {
+        try {
+            waitForElement(VISIT_TABLE);
+            if (findElement(VISIT_TABLE) != null) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
