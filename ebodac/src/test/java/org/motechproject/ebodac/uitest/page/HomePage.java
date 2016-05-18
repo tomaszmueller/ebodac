@@ -22,7 +22,11 @@ public class HomePage extends AbstractBasePage {
     static final By MODULES = By.linkText("Modules");
     static final By BOOKING_APP = By.linkText("Booking App");
     static final By ADMIN = By.linkText("Admin");
+    static final By USER_LANGUAGE_CONTROL = By.cssSelector("span.ng-binding");
+    static final By LANGUAGE_PL = By.linkText("Polski");
+    static final By POPUP_OK = By.id("popup_ok");
     static final int SLEEP_500 = 500;
+    static final int SLEEP_1000 = 1000;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -160,7 +164,13 @@ public class HomePage extends AbstractBasePage {
 
     public void openIVRModule() throws InterruptedException {
         clickWhenVisible(IVR);
-        Thread.sleep(1000);
+        Thread.sleep(SLEEP_1000);
         clickWhenVisible(IVR);
+    }
+
+    public void changeUserLanguage() throws InterruptedException {
+        clickWhenVisible(USER_LANGUAGE_CONTROL);
+        clickWhenVisible(LANGUAGE_PL);
+        clickWhenVisible(POPUP_OK);
     }
 }
