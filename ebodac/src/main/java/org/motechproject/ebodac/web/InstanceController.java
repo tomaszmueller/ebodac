@@ -289,6 +289,14 @@ public class InstanceController {
         }
     }
 
+    @RequestMapping(value = "/exportSubjectEnrollment", method = RequestMethod.GET)
+    public void exportSubjectEnrollment(GridSettings settings, @RequestParam String exportRecords,
+                                        @RequestParam String outputFormat, HttpServletResponse response) throws IOException {
+
+        exportEntity(settings, exportRecords, outputFormat, response, EbodacConstants.SUBJECT_ENROLLMENTS_NAME,
+                null, SubjectEnrollments.class, EbodacConstants.SUBJECT_ENROLLMENTS_MAP, settings.getFields());
+    }
+
     @RequestMapping(value = "/instances/Participant", method = RequestMethod.POST)
     @ResponseBody
     public String getParticipantInstances(GridSettings settings) throws IOException {

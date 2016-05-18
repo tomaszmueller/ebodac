@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 
 public class BookingAppScreeningPage extends AbstractBasePage {

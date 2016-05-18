@@ -180,6 +180,36 @@
                 </div>
             </div>
 
+            <h5 class="margin-before2">{{msg('ebodac.web.settings.emailReport')}}</h5>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="emailReportHost">{{msg('ebodac.web.settings.emailReport.host')}}</label>
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.emailReport.host.tooltip')}}">
+                    <input class="form-control" id="emailReportHost" type="text" ng-model="config.emailReportHost">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="emailReportPort">{{msg('ebodac.web.settings.emailReport.port')}}</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="emailReportPort" type="number" ng-model="config.emailReportPort">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="emailReportAddress">{{msg('ebodac.web.settings.emailReport.address')}}</label>
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.emailReport.address.tooltip')}}">
+                    <input class="form-control" id="emailReportAddress" type="text" ng-model="config.emailReportAddress">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="emailReportPassword">{{msg('ebodac.web.settings.emailReport.password')}}</label>
+                <div class="col-md-4">
+                    <input class="form-control" id="emailReportPassword" type="password" ng-model="config.emailReportPassword">
+                </div>
+            </div>
+
             <h5 class="margin-before2">{{msg('ebodac.web.settings.enroll')}}</h5>
 
             <div class="form-group">

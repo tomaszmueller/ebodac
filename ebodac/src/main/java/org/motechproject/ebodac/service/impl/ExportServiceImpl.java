@@ -54,36 +54,42 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
-        Set<String> keys = headerMap.keySet();
-        String[] fields = keys.toArray(new String[keys.size()]);
-        try {
-            tableWriter.writeHeader(fields);
-            for (T entity : entities) {
-                Map<String, String> row = buildRow(entity, headerMap);
-                tableWriter.writeRow(row, fields);
-            }
-        } catch (IOException e) {
-            throw new IOException("IO Error when writing data", e);
-        } finally {
-            tableWriter.close();
-        }
+    public void exportEntityToCSV(Writer writer, String entityClassName, Map<String, String> headerMap,
+                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+        CsvTableWriter tableWriter = new CsvTableWriter(writer);
+        exportEntity(entityClassName, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
-    private <T> void exportEntity(Class<?> entityDtoType, Class<T> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
+    @Override
+    public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
+        exportEntityList(entities, headerMap, tableWriter);
+    }
+
+    private void exportEntity(String entityClassName, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
+                                  String lookupFields, QueryParams queryParams) throws IOException {
+        Records<?> records = lookupService.getEntities(entityClassName, lookup, lookupFields, queryParams);
+
+        exportEntityList(records.getRows(), headerMap, tableWriter);
+    }
+
+    private void exportEntity(Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
                                                       String lookupFields, QueryParams queryParams) throws IOException {
-        Records<T> records;
+        Records records;
         if (entityDtoType != null) {
-            records = (Records<T>) lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
+            records = lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
         } else {
             records = lookupService.getEntities(entityType, lookup, lookupFields, queryParams);
         }
-        List<T> entities = records.getRows();
+
+        exportEntityList(records.getRows(), headerMap, tableWriter);
+    }
+
+    private void exportEntityList(List entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
         Set<String> keys = headerMap.keySet();
         String[] fields = keys.toArray(new String[keys.size()]);
         try {
             tableWriter.writeHeader(fields);
-            for (T entity : entities) {
+            for (Object entity : entities) {
                 Map<String, String> row = buildRow(entity, headerMap);
                 tableWriter.writeRow(row, fields);
             }
@@ -108,7 +114,7 @@ public class ExportServiceImpl implements ExportService {
             String[] fieldPath = fieldName.split("\\.");
             String value = null;
             if (fieldPath.length == 2) {
-                Map<String, Object> objectMap = (Map<String, Object>) entityMap.get(fieldPath[0]);
+                Map objectMap = (Map) entityMap.get(fieldPath[0]);
                 Object fieldValue = objectMap.get(fieldPath[1]);
                 if (fieldValue != null) {
                     value = fieldValue.toString();

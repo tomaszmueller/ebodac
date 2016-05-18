@@ -7,6 +7,11 @@
             {{msg('ebodac.btn.backToStatistics')}}
         </button>
 
+        <button ng-click="exportEntityInstances()" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-export"></span>
+            {{msg('ebodac.btn.exportData')}}
+        </button>
+
         <div class="btn-group">
             <button type="button" class="btn btn-default">{{selectedFilter.name}}</button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -42,4 +47,6 @@
         </tr>
         </tbody>
     </table>
+
+    <div ng-include="'../ebodac/resources/partials/modals/export-statistics.html'"></div>
 </div>

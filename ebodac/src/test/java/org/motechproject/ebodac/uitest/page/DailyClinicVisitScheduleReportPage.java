@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 public class DailyClinicVisitScheduleReportPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
-    static final By RECORD = By.xpath("//table[@id='reportTable']/tbody/tr[2]");
+    static final By TABLE = By.xpath("//table[@class='ui-jqgrid-htable']");
 
     public DailyClinicVisitScheduleReportPage(WebDriver driver) {
         super(driver);
@@ -16,7 +16,7 @@ public class DailyClinicVisitScheduleReportPage extends AbstractBasePage {
 
     public boolean isReportEmpty() {
         try {
-            if (findElement(RECORD) != null) {
+            if (findElement(TABLE) != null) {
                 return false;
             }
             return true;

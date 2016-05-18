@@ -9,7 +9,7 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.BookingAppRescheduleVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationRescheduleVisitUiTest extends TestBase {
 

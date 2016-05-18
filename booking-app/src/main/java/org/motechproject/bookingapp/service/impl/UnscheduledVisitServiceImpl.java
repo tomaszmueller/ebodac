@@ -55,10 +55,8 @@ public class UnscheduledVisitServiceImpl implements UnscheduledVisitService {
     public Records<UnscheduledVisitDto> getUnscheduledVisitsRecords(BookingGridSettings settings) throws IOException {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
 
-        Records<UnscheduledVisitDto> unscheduledVisitRecords = (Records<UnscheduledVisitDto>) lookupService.getEntities(UnscheduledVisitDto.class, UnscheduledVisit.class,
+        return lookupService.getEntities(UnscheduledVisitDto.class, UnscheduledVisit.class,
                 settings.getLookup(), settings.getFields(), queryParams);
-
-        return unscheduledVisitRecords;
     }
 
     @Override

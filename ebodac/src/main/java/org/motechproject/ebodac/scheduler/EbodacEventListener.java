@@ -9,6 +9,7 @@ import org.motechproject.ebodac.helper.IvrCallHelper;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacEnrollmentService;
 import org.motechproject.ebodac.service.EbodacService;
+import org.motechproject.ebodac.service.EmailReportService;
 import org.motechproject.ebodac.service.ReportService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
@@ -41,6 +42,9 @@ public class EbodacEventListener {
 
     @Autowired
     private IvrCallHelper ivrCallHelper;
+
+    @Autowired
+    private EmailReportService emailReportService;
 
     @MotechListener(subjects = { EbodacConstants.ZETES_UPDATE_EVENT })
     public void zetesUpdate(MotechEvent event) {
@@ -92,5 +96,13 @@ public class EbodacEventListener {
         } catch (EbodacInitiateCallException e) {
             LOGGER.error(e.getMessage());
         }
+    }
+
+    @MotechListener(subjects = { EbodacConstants.SEND_EMAIL_REPORT_EVENT })
+    public void sendEmailReport(MotechEvent event) {
+        LOGGER.debug("Handling Motech event {}: {}", event.getSubject(), event.getParameters().toString());
+
+        Long reportId = (Long) event.getParameters().get(EbodacConstants.SEND_EMAIL_REPORT_EVENT_REPORT_ID);
+        emailReportService.sendEmailReport(reportId);
     }
 }

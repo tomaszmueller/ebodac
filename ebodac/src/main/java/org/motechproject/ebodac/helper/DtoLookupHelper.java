@@ -385,7 +385,9 @@ public final class DtoLookupHelper {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         LocalDate min = null;
         LocalDate max = null;
-        Map<String, String> rangeMap = (Map < String, String>) getObjectFromLookupFields(lookupFields, dateName);
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> rangeMap = (Map<String, String>) getObjectFromLookupFields(lookupFields, dateName);
         if (StringUtils.isNotBlank(rangeMap.get("min"))) {
             min = formatter.parseLocalDate(rangeMap.get("min"));
         }
@@ -401,12 +403,15 @@ public final class DtoLookupHelper {
     private static String setNewMaxDateInRangeFields(String lookupFields, String dateName, LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         Map<String, Object> fieldsMap;
+
         try {
             fieldsMap = getFields(lookupFields);
         } catch (IOException e) {
             throw new EbodacLookupException("Invalid lookup params", e);
         }
-        Map<String, String> rangeMap = (Map < String, String>) fieldsMap.get(dateName);
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> rangeMap = (Map<String, String>) fieldsMap.get(dateName);
         rangeMap.remove("max");
         rangeMap.put("max", date.toString(formatter));
 
@@ -420,7 +425,9 @@ public final class DtoLookupHelper {
     private static Range<Long> getLongRangeFromLookupFields(String lookupFields, String name) {
         Long min = null;
         Long max = null;
-        Map<String, String> rangeMap = (Map < String, String>) getObjectFromLookupFields(lookupFields, name);
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> rangeMap = (Map<String, String>) getObjectFromLookupFields(lookupFields, name);
 
         try {
             if (StringUtils.isNotBlank(rangeMap.get("min"))) {

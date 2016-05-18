@@ -302,7 +302,7 @@
                         order: 'sortDirection'
                     },
                     colNames: ['rowId', scope.msg('ebodac.web.enrollment.subjectId'), scope.msg('ebodac.web.enrollment.subjectName'),
-                        scope.msg('ebodac.web.enrollment.status'), scope.msg('ebodac.web.enrollment.action')],
+                        scope.msg('ebodac.web.enrollment.stageId'), scope.msg('ebodac.web.enrollment.status'), scope.msg('ebodac.web.enrollment.action')],
                     colModel: [{
                        name: 'rowId',
                        index: 'rowId',
@@ -330,6 +330,18 @@
                                            return '';
                                        }
                                        return cellValue.name;
+                                   }
+                    }, {
+                        name: 'stageId',
+                        jsonmap: 'subject',
+                        index: 'subject.stageId',
+                        classes: 'pointer',
+                        align: 'center',
+                        formatter: function(cellValue, options, rowObject) {
+                                       if (!cellValue || !cellValue.stageId){
+                                           return '';
+                                       }
+                                       return cellValue.stageId;
                                    }
                     }, {
                         name: 'status',

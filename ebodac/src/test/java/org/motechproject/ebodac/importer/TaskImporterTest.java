@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.importer;
 
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,16 +11,19 @@ import org.motechproject.tasks.domain.Task;
 import org.motechproject.tasks.service.TaskService;
 import org.osgi.framework.Bundle;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@PowerMockIgnore("org.apache.log4j.*")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(TaskImporter.class)
 public class TaskImporterTest {
@@ -52,7 +54,7 @@ public class TaskImporterTest {
         Bundle bundle = Mockito.mock(Bundle.class);
         Mockito.when(bundle.findEntries("tasks/", "*.json", false)).thenReturn(urls);
 
-        Mockito.when(taskService.findTasksByName("TEST EBODAC Subject status")).thenReturn(Collections.EMPTY_LIST);
+        Mockito.when(taskService.findTasksByName("TEST EBODAC Subject status")).thenReturn(new ArrayList<Task>());
 
         taskImporter.importTasks(bundle);
 

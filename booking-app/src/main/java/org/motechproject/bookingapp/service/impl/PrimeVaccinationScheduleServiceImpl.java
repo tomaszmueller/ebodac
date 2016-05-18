@@ -58,7 +58,7 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
     @Override
     public Records<PrimeVaccinationScheduleDto> getPrimeVaccinationScheduleRecords(BookingGridSettings settings) throws IOException {
         QueryParams queryParams = QueryParamsBuilder.buildQueryParams(settings, getFields(settings.getFields()));
-        return (Records<PrimeVaccinationScheduleDto>) lookupService.getEntities(PrimeVaccinationScheduleDto.class,
+        return lookupService.getEntities(PrimeVaccinationScheduleDto.class,
                 VisitBookingDetails.class, settings.getLookup(), settings.getFields(), queryParams);
     }
 
