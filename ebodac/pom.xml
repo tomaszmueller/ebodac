@@ -337,6 +337,22 @@
                                             <property>login.password</property>
                                             <message>You must set a login.password property!</message>
                                         </requireProperty>
+                                        <requireProperty>
+                                            <property>admin.login</property>
+                                            <message>You must set a admin.login property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>admin.password</property>
+                                            <message>You must set a admin.password property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>analyst.login</property>
+                                            <message>You must set a analyst.login property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>analyst.password</property>
+                                            <message>You must set a analyst.password property!</message>
+                                        </requireProperty>
                                     </rules>
                                     <fail>true</fail>
                                 </configuration>
@@ -371,6 +387,10 @@
                                 <propertyName>webapp.url</propertyName>
                                 <propertyName>login.username</propertyName>
                                 <propertyName>login.password</propertyName>
+                                <propertyName>admin.login</propertyName>
+                                <propertyName>admin.password</propertyName>
+                                <propertyName>analyst.login</propertyName>
+                                <propertyName>analyst.password</propertyName>
                                 <buildDirectory>${project.build.directory}</buildDirectory>
                             </systemPropertyVariables>
                         </configuration>
@@ -424,6 +444,22 @@
                                             <property>login.password</property>
                                             <message>You must set a login.password property!</message>
                                         </requireProperty>
+                                        <requireProperty>
+                                            <property>admin.login</property>
+                                            <message>You must set a admin.login property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>admin.password</property>
+                                            <message>You must set a admin.password property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>analyst.login</property>
+                                            <message>You must set a analyst.login property!</message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>analyst.password</property>
+                                            <message>You must set a analyst.password property!</message>
+                                        </requireProperty>
                                     </rules>
                                     <fail>true</fail>
                                 </configuration>
@@ -459,6 +495,10 @@
                                 <propertyName>webapp.url</propertyName>
                                 <propertyName>login.username</propertyName>
                                 <propertyName>login.password</propertyName>
+                                <propertyName>admin.login</propertyName>
+                                <propertyName>admin.password</propertyName>
+                                <propertyName>analyst.login</propertyName>
+                                <propertyName>analyst.password</propertyName>
                                 <buildDirectory>${project.build.directory}</buildDirectory>
                             </systemPropertyVariables>
                         </configuration>
