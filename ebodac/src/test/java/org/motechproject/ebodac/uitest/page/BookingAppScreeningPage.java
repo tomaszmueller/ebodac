@@ -2,7 +2,8 @@ package org.motechproject.ebodac.uitest.page;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
-import org.motech.page.AbstractBasePage;
+import org.motechproject.uitest.page.AbstractBasePage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -73,13 +74,13 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
         Thread.sleep(TIMEOUT);
-        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs2.get(1));
-        screeningCardPage = new ScreeningCardPage(driver);
+        ArrayList<String> tabs2 = new ArrayList<String>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tabs2.get(1));
+        screeningCardPage = new ScreeningCardPage(getDriver());
         String screeningBookingId = screeningCardPage.getBookingId();
         assertEquals(screeningBookingId, bookingString);
-        driver.close();
-        driver.switchTo().window(tabs2.get(0));
+        getDriver().close();
+        getDriver().switchTo().window(tabs2.get(0));
         Thread.sleep(TIMEOUT);
         waitForElement(CLOSE_BUTTON);
         clickOn(CLOSE_BUTTON);
@@ -169,9 +170,13 @@ public class BookingAppScreeningPage extends AbstractBasePage {
 
 
 
-
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT + URL_PATH;
+        return getServerURL() + URL_PATH;
+    }
+
+    @Override
+    public void goToPage() {
+
     }
 }

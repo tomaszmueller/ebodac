@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.page;
 
-import org.motech.page.AbstractBasePage;
+import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -85,8 +85,14 @@ public class ReportPage extends AbstractBasePage {
     public void showPrimeFollowAndBoostReport() throws InterruptedException {
         clickWhenVisible(PRIME_FOLLOW_AND_BOOST_REPORT);
     }
+
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT + URL_PATH;
+        return getServerURL() + URL_PATH;
+    }
+
+    @Override
+    public void goToPage() {
+
     }
 }

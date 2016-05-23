@@ -4,8 +4,8 @@ package org.motechproject.ebodac.uitest.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
@@ -75,38 +75,39 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
 
     @Before
     public void setUp() throws Exception {
-        url = properties.getWebAppUrl();
+        url = getServerUrl();
         if (url.contains("localhost")) {
-            createUsersHelper = new CreateUsersHelper(driver);
-            createUsersHelper.createUsersWithLogin(properties);
+            createUsersHelper = new CreateUsersHelper(getDriver());
+            createUsersHelper.createUsersWithLogin(getTestProperties());
+            logout();
         }
         userPropertiesHelper = new UserPropertiesHelper();
         l1adminUser = userPropertiesHelper.getAdminUserName();
         l1adminPassword = userPropertiesHelper.getAdminPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        ebodacPage = new EBODACPage(driver);
-        reportPage = new ReportPage(driver);
-        enrollmentPage = new EnrollmentPage(driver);
-        boosterVaccinationReportPage = new BoosterVaccinationReportPage(driver);
-        callDetailRecordPage = new CallDetailRecordPage(driver);
-        dailyClinicVisitScheduleReportPage = new DailyClinicVisitScheduleReportPage(driver);
-        followupsAfterPrimeInjectionReportPage = new FollowupsAfterPrimeInjectionReportPage(driver);
-        followupsMissedClinicVisitsReportPage = new FollowupsMissedClinicVisitsReportPage(driver);
-        meMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(driver);
-        numberOfTimesListenedReportPage = new NumberOfTimesListenedReportPage(driver);
-        primeFollowAndBoostReportPage = new PrimeFollowAndBoostReportPage(driver);
-        participantsWhoOptOutOfMessagesReportPage = new ParticipantsWhoOptOutOfMessagesReportPage(driver);
-        primerVaccinationReportPage = new PrimerVaccinationReportPage(driver);
-        screeningReportPage = new ScreeningReportPage(driver);
-        smsLogReportPage = new SMSLogReportPage(driver);
-        participantPage = new ParticipantPage(driver);
-        participantEditPage = new ParticipantEditPage(driver);
-        smsPage = new SMSPage(driver);
-        ivrPage = new IVRPage(driver);
-        ivrEditPage = new IVREditPage(driver);
-        visitPage = new VisitPage(driver);
-        visitEditPage = new VisitEditPage(driver);
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        ebodacPage = new EBODACPage(getDriver());
+        reportPage = new ReportPage(getDriver());
+        enrollmentPage = new EnrollmentPage(getDriver());
+        boosterVaccinationReportPage = new BoosterVaccinationReportPage(getDriver());
+        callDetailRecordPage = new CallDetailRecordPage(getDriver());
+        dailyClinicVisitScheduleReportPage = new DailyClinicVisitScheduleReportPage(getDriver());
+        followupsAfterPrimeInjectionReportPage = new FollowupsAfterPrimeInjectionReportPage(getDriver());
+        followupsMissedClinicVisitsReportPage = new FollowupsMissedClinicVisitsReportPage(getDriver());
+        meMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(getDriver());
+        numberOfTimesListenedReportPage = new NumberOfTimesListenedReportPage(getDriver());
+        primeFollowAndBoostReportPage = new PrimeFollowAndBoostReportPage(getDriver());
+        participantsWhoOptOutOfMessagesReportPage = new ParticipantsWhoOptOutOfMessagesReportPage(getDriver());
+        primerVaccinationReportPage = new PrimerVaccinationReportPage(getDriver());
+        screeningReportPage = new ScreeningReportPage(getDriver());
+        smsLogReportPage = new SMSLogReportPage(getDriver());
+        participantPage = new ParticipantPage(getDriver());
+        participantEditPage = new ParticipantEditPage(getDriver());
+        smsPage = new SMSPage(getDriver());
+        ivrPage = new IVRPage(getDriver());
+        ivrEditPage = new IVREditPage(getDriver());
+        visitPage = new VisitPage(getDriver());
+        visitEditPage = new VisitEditPage(getDriver());
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant(), l1adminUser, l1adminPassword);
@@ -187,6 +188,6 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

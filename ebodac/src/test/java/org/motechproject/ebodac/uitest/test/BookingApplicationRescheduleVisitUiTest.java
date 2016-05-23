@@ -3,8 +3,8 @@ package org.motechproject.ebodac.uitest.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.BookingAppRescheduleVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -22,12 +22,12 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        bookingAppPage = new BookingAppPage(driver);
-        bookingAppRescheduleVisitPage = new BookingAppRescheduleVisitPage(driver);
-        user = properties.getUserName();
-        password = properties.getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        bookingAppPage = new BookingAppPage(getDriver());
+        bookingAppRescheduleVisitPage = new BookingAppRescheduleVisitPage(getDriver());
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
@@ -48,6 +48,6 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

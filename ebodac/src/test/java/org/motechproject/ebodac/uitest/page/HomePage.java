@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.page;
 
-import org.motech.page.AbstractBasePage;
+import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import java.lang.Override;
@@ -34,9 +34,13 @@ public class HomePage extends AbstractBasePage {
 
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT + URL_PATH;
+        return getServerURL() + URL_PATH;
     }
 
+    @Override
+    public void goToPage() {
+
+    }
     public void openEBODACModule() throws InterruptedException {
         clickWhenVisible(EBODAC);
     }

@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.page;
 
-import org.motech.page.AbstractBasePage;
+import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -15,7 +15,12 @@ public class SecurityPage extends AbstractBasePage {
 
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT;
+        return getServerURL() + URL_PATH;
+    }
+
+    @Override
+    public void goToPage() {
+
     }
 
     public void openUserManagement() throws InterruptedException {

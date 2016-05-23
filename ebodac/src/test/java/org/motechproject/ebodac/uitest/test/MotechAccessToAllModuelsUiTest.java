@@ -2,8 +2,8 @@ package org.motechproject.ebodac.uitest.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -21,11 +21,11 @@ public class MotechAccessToAllModuelsUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        user = properties.getUserName();
-        password = properties.getPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        url = properties.getWebAppUrl();
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        url = getServerUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant(), user, password);
@@ -48,6 +48,6 @@ public class MotechAccessToAllModuelsUiTest extends TestBase {
     }
 
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

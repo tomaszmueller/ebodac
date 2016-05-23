@@ -3,8 +3,8 @@ package org.motechproject.ebodac.uitest.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.MEMissedClinicVisitsReportPage;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -25,13 +25,13 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        user = properties.getUserName();
-        password = properties.getPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        ebodacPage = new EBODACPage(driver);
-        reportPage = new ReportPage(driver);
-        mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(driver);
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        ebodacPage = new EBODACPage(getDriver());
+        reportPage = new ReportPage(getDriver());
+        mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(getDriver());
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
@@ -47,6 +47,6 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }
