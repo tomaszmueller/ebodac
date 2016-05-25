@@ -337,22 +337,6 @@
                                             <property>login.password</property>
                                             <message>You must set a login.password property!</message>
                                         </requireProperty>
-                                        <requireProperty>
-                                            <property>admin.login</property>
-                                            <message>You must set a admin.login property!</message>
-                                        </requireProperty>
-                                        <requireProperty>
-                                            <property>admin.password</property>
-                                            <message>You must set a admin.password property!</message>
-                                        </requireProperty>
-                                        <requireProperty>
-                                            <property>analyst.login</property>
-                                            <message>You must set a analyst.login property!</message>
-                                        </requireProperty>
-                                        <requireProperty>
-                                            <property>analyst.password</property>
-                                            <message>You must set a analyst.password property!</message>
-                                        </requireProperty>
                                     </rules>
                                     <fail>true</fail>
                                 </configuration>
