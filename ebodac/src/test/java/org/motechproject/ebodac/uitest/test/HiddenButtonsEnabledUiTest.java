@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motech.page.LoginPage;
 import org.motech.test.TestBase;
+import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
@@ -23,8 +24,9 @@ public class HiddenButtonsEnabledUiTest extends TestBase {
 
     @Before
     public void setUp() throws Exception {
-        l1adminUser = "admin";
-        l1adminPassword = System.getProperty("admin_password");
+        UserPropertiesHelper userPropertiesHelper = new UserPropertiesHelper();
+        l1adminUser = userPropertiesHelper.getAdminUserName();
+        l1adminPassword = userPropertiesHelper.getAdminPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         participantPage = new ParticipantPage(driver);

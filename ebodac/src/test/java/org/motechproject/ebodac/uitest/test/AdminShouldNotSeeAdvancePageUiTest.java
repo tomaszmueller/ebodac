@@ -81,8 +81,8 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
             createUsersHelper.createUsersWithLogin(properties);
         }
         userPropertiesHelper = new UserPropertiesHelper();
-        l1adminUser = "admin";
-        l1adminPassword = System.getProperty("admin_password");
+        l1adminUser = userPropertiesHelper.getAdminUserName();
+        l1adminPassword = userPropertiesHelper.getAdminPassword();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
         ebodacPage = new EBODACPage(driver);
