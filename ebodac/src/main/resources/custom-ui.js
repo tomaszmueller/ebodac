@@ -291,6 +291,8 @@ $scope.retrieveAndSetEntityData = function(entityUrl, callback) {
                     .success(function(data) {
                         $scope.entityAdvanced.indexes = data;
                     });
+                } else {
+                    $(".clearfix").children(".btn-primary").html("<i class='fa fa-lg fa-level-up'></i>&nbsp;" + $scope.msg('ebodac.web.reports.btn.backToList'));
                 }
 
                 var filterableFields = $scope.entityAdvanced.browsing.filterableFields,
