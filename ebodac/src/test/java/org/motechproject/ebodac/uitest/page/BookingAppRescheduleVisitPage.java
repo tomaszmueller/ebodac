@@ -185,30 +185,43 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         switch(monthName.toLowerCase()) {
             case "january":
                 number = JANUARY;
+                break;
             case "february":
                 number = FEBRUARY;
+                break;
             case "march":
                 number = MARCH;
+                break;
             case "april":
                 number = APRIL;
+                break;
             case "may":
                 number = MAY;
+                break;
             case "june":
                 number = JUNE;
+                break;
             case "july":
                 number = JULY;
+                break;
             case "august":
                 number = AUGUST;
+                break;
             case "september":
                 number = SEPTEMBER;
+                break;
             case "october":
                 number = OCTOBER;
+                break;
             case "november":
                 number = NOVEMBER;
+                break;
             case "december":
                 number = DECEMBER;
+                break;
             default:
-                number = -1;
+                number = DEFAULT_VALUE;
+                break;
         }
         return number;
     }

@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import static org.junit.Assert.assertTrue;
 
@@ -38,7 +38,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
 
     @Test
     public void bookingApplicationScreeningCreationTest() throws InterruptedException {
-        ArrayList<Date> dates = new ArrayList<>();
+        ArrayList<LocalDate> dates = new ArrayList<>();
         homePage.clickModules();
         homePage.openBookingAppModule();
         bookingAppPage.openScreening();
@@ -46,27 +46,27 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         String bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(". ", "");
         assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
         bookingAppScreeningPage.changeFilterTo("Today");
-        dates.add(new Date());
+        dates.add(LocalDate.now());
         assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         bookingAppScreeningPage.changeFilterTo("Tomorrow");
         dates.remove(0);
-        dates.add(new Date(new Date().getDate() + 1));
+        dates.add(LocalDate.now().plusDays(1));
         assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         bookingAppScreeningPage.changeFilterTo("Day after tomorrow");
         dates.remove(0);
-        dates.add(new Date(new Date().getDate() + 2));
+        dates.add(LocalDate.now().plusDays(2));
         assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         bookingAppScreeningPage.changeFilterTo("Next 3 days");
         dates.remove(0);
-        dates.add(new Date(new Date().getDate()));
-        dates.add(new Date(new Date().getDate() + 1));
-        dates.add(new Date(new Date().getDate() + 2));
+        dates.add(LocalDate.now());
+        dates.add(LocalDate.now().plusDays(1));
+        dates.add(LocalDate.now().plusDays(2));
         assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         bookingAppScreeningPage.changeFilterTo("Next 7 days");
-        dates.add(new Date(new Date().getDate() + 3));
-        dates.add(new Date(new Date().getDate() + 4));
-        dates.add(new Date(new Date().getDate() + 5));
-        dates.add(new Date(new Date().getDate() + 6));
+        dates.add(LocalDate.now().plusDays(3));
+        dates.add(LocalDate.now().plusDays(4));
+        dates.add(LocalDate.now().plusDays(5));
+        dates.add(LocalDate.now().plusDays(6));
         assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         bookingAppScreeningPage.changeFilterTo("Date range");
         bookingAppScreeningPage.setDate();

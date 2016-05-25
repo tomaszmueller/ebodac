@@ -367,7 +367,7 @@
                                    }
                     }],
                     onCellSelect: function (id, iCol, cellContent, e) {
-                        if (iCol !== 4) {
+                        if (iCol !== 5) {
                             var rowValue = elem.jqGrid('getRowData', id);
                             scope.goToAdvanced(rowValue.subject);
                         }

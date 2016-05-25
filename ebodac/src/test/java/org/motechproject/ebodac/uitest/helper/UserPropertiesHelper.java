@@ -18,9 +18,9 @@ public class UserPropertiesHelper {
 
     public static final String DEFAULT_L1ANALYST_PASSWORD = "testanalyst";
 
-    public static final String L1ADMIN_USERNAME_PROPERTY = "admin.username";
+    public static final String L1ADMIN_USERNAME_PROPERTY = "admin.login";
 
-    public static final String L1ANALYST_USERNAME_PROPERTY = "analyst.username";
+    public static final String L1ANALYST_USERNAME_PROPERTY = "analyst.login";
 
     public static final String DEFAULT_L1ADMIN_USERNAME = "admin";
 
