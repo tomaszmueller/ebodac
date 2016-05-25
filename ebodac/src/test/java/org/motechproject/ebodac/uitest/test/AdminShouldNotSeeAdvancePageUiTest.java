@@ -174,6 +174,11 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
         assertFalse(enrollmentPage.enrollmentDetailEnabled());
         enrollmentPage.clickAction();
         enrollmentPage.clickOK();
+        if (enrollmentPage.error()) {
+            enrollmentPage.clickOK();
+            enrollmentPage.nextAction();
+        }
+
         if (enrollmentPage.enrolled()) {
             assertTrue(enrollmentPage.enrolled());
             enrollmentPage.clickOK();

@@ -21,10 +21,11 @@ public class HiddenButtonsEnabledUiTest extends TestBase {
     private String l1adminPassword;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
-
+    private UserPropertiesHelper userPropertiesHelper;
+    
     @Before
     public void setUp() throws Exception {
-        UserPropertiesHelper userPropertiesHelper = new UserPropertiesHelper();
+        userPropertiesHelper = new UserPropertiesHelper();
         l1adminUser = userPropertiesHelper.getAdminUserName();
         l1adminPassword = userPropertiesHelper.getAdminPassword();
         loginPage = new LoginPage(getDriver());
