@@ -1,8 +1,10 @@
 package org.motechproject.ebodac.uitest.page;
-import org.motech.page.AbstractBasePage;
+
+import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 public class EnrollmentPage extends AbstractBasePage {
     public static final String URL_PATH = "home#/ebodac/enrollment";
     static final By ACTION = By.xpath("(//button[@type='button'])[3]");
@@ -18,10 +20,17 @@ public class EnrollmentPage extends AbstractBasePage {
     public EnrollmentPage(WebDriver driver) {
         super(driver);
     }
+
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT + URL_PATH;
+        return getServerURL() + URL_PATH;
     }
+
+    @Override
+    public void goToPage() {
+
+    }
+
     public void clickAction() throws InterruptedException {
         Thread.sleep(SLEEP_500);
         clickOn(ACTION);
@@ -33,21 +42,21 @@ public class EnrollmentPage extends AbstractBasePage {
     }
     public boolean error() {
         try {
-            return driver.findElement(POPUP_CONTENT).getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant with ");
+            return findElement(POPUP_CONTENT).getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant with ");
         } catch (Exception ex) {
             return false;
         }
     }
     public boolean enrolled() {
         try {
-            return driver.findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully");
+            return findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully");
         } catch (Exception ex) {
             return false;
         }
     }
     public boolean unenrolled() {
         try {
-            return driver.findElement(POPUP_CONTENT).getText().contains("Participant was unenrolled successfully.");
+            return findElement(POPUP_CONTENT).getText().contains("Participant was unenrolled successfully.");
         } catch (Exception ex) {
             return false;
         }

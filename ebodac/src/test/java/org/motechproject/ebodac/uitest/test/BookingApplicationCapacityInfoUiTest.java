@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.BookingAppAdvancedSettingsPage;
 import org.motechproject.ebodac.uitest.page.BookingAppCapacityInfoPage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
@@ -24,13 +24,13 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        bookingAppPage = new BookingAppPage(driver);
-        bookingAppCapacityInfoPage = new BookingAppCapacityInfoPage(driver);
-        bookingAppAdvancedSettingsPage = new BookingAppAdvancedSettingsPage(driver);
-        user = properties.getUserName();
-        password = properties.getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        bookingAppPage = new BookingAppPage(getDriver());
+        bookingAppCapacityInfoPage = new BookingAppCapacityInfoPage(getDriver());
+        bookingAppAdvancedSettingsPage = new BookingAppAdvancedSettingsPage(getDriver());
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user, password);
         }
@@ -60,6 +60,6 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

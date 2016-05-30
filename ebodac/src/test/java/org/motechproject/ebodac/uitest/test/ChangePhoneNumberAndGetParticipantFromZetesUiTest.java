@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,14 +31,14 @@ public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase 
     private String url;
     @Before
     public void setUp() {
-        l1AdminUser = properties.getUserName();
-        l1AdminPassword = properties.getPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        ebodacPage = new EBODACPage(driver);
-        participantPage = new ParticipantPage(driver);
-        participantEditPage = new ParticipantEditPage(driver);
-        url = properties.getWebAppUrl();
+        l1AdminUser = getTestProperties().getUserName();
+        l1AdminPassword = getTestProperties().getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        ebodacPage = new EBODACPage(getDriver());
+        participantPage = new ParticipantPage(getDriver());
+        participantEditPage = new ParticipantEditPage(getDriver());
+        url = getServerUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);

@@ -4,8 +4,8 @@ import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.RAVESettingsHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
@@ -33,17 +33,17 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        adminUser = properties.getUserName();
-        adminPassword = properties.getPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        adminPage = new AdminPage(driver);
-        ebodacPage = new EBODACPage(driver);
-        visitPage = new VisitPage(driver);
-        serverLogPage = new ServerLogPage(driver);
-        url = properties.getWebAppUrl();
+        adminUser = getTestProperties().getUserName();
+        adminPassword = getTestProperties().getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        adminPage = new AdminPage(getDriver());
+        ebodacPage = new EBODACPage(getDriver());
+        visitPage = new VisitPage(getDriver());
+        serverLogPage = new ServerLogPage(getDriver());
+        url = getServerUrl();
         httpClientHelper = new UITestHttpClientHelper(url);
-        raveSettingsHelper = new RAVESettingsHelper(driver);
+        raveSettingsHelper = new RAVESettingsHelper(getDriver());
     }
 
     @Test//Test for EBODAC-512
@@ -74,6 +74,6 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

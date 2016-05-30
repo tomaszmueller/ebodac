@@ -1,7 +1,7 @@
 
 package org.motechproject.ebodac.uitest.page;
 
-import org.motech.page.AbstractBasePage;
+import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -62,8 +62,17 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
     @Override
     public String expectedUrlPath() {
-        return URL_ROOT + URL_PATH;
+        return getServerURL() + URL_PATH;
     }
+
+    @Override
+    public void goToPage() {
+
+    }
+
+//    private WebDriver getDriver() {
+//        return super.getDriver();
+//    }
 
     public void sortByPlannedDateColumn() throws InterruptedException {
         clickWhenVisible(PLANNED_DATE_COLUMN);
@@ -92,8 +101,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
 
     public void resizePage() {
-        driver.manage().window().setSize(new Dimension(WIDTH, HEIGHT));
-
+        getDriver().manage().window().setSize(new Dimension(WIDTH, HEIGHT));
     }
 
     public boolean rescheduleVisit() throws InterruptedException {

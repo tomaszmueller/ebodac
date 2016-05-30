@@ -4,8 +4,8 @@ import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -25,12 +25,12 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        bookingAppPage = new BookingAppPage(driver);
-        bookingAppScreeningPage = new BookingAppScreeningPage(driver);
-        user = properties.getUserName();
-        password = properties.getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        bookingAppPage = new BookingAppPage(getDriver());
+        bookingAppScreeningPage = new BookingAppScreeningPage(getDriver());
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.login(user , password);
         }
@@ -76,7 +76,6 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        Thread.sleep(10000);
-        loginPage.logOut();
+        logout();
     }
 }

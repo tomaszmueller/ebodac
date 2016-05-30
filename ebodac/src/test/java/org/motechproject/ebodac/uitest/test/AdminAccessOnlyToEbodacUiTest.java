@@ -5,8 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
@@ -26,16 +26,17 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
 
     @Before
     public void setUp() throws Exception {
-        url = properties.getWebAppUrl();
+        url = getServerUrl();
         if (url.contains("localhost")) {
-            createUsersHelper = new CreateUsersHelper(driver);
-            createUsersHelper.createUsersWithLogin(properties);
+            createUsersHelper = new CreateUsersHelper(getDriver());
+            createUsersHelper.createUsersWithLogin(getTestProperties());
+            logout();
         }
         userPropertiesHelper = new UserPropertiesHelper();
         l1AdminUser = userPropertiesHelper.getAdminUserName();
         l1AdminPassword = userPropertiesHelper.getAdminPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);
@@ -54,6 +55,6 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }

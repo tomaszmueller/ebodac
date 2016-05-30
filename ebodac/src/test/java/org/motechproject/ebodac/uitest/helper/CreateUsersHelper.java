@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.uitest.helper;
 
-import org.motech.page.LoginPage;
-import org.motech.page.TestProperties;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.page.TestProperties;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.SecurityPage;
 import org.motechproject.ebodac.uitest.page.UsersPage;
@@ -45,6 +45,5 @@ public class CreateUsersHelper {
     public void createUsersWithLogin(TestProperties properties) throws InterruptedException {
         loginPage.login(properties.getUserName(), properties.getPassword());
         createUsers();
-        loginPage.logOut();
     }
 }

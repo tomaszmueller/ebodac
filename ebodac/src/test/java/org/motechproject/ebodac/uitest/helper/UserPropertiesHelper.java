@@ -1,5 +1,7 @@
 package org.motechproject.ebodac.uitest.helper;
 
+import org.motechproject.uitest.page.TestProperties;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,7 +10,7 @@ import java.util.Properties;
 
 public class UserPropertiesHelper {
 
-    private static org.motech.page.TestProperties singleton;
+    private static TestProperties singleton;
 
     public static final String L1ADMIN_PASSWORD_PROPERTY = "admin.password";
 
@@ -34,9 +36,9 @@ public class UserPropertiesHelper {
 
     public static final String CLERK_USERNAME_PROPERTY = "clerk.username";
 
-    public static org.motech.page.TestProperties instance() {
+    public static TestProperties instance() {
         if (singleton == null) {
-            singleton = new org.motech.page.TestProperties();
+            singleton = new TestProperties();
         }
         return singleton;
     }

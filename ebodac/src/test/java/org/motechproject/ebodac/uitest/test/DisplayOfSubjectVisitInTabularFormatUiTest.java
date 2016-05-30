@@ -4,8 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motech.page.LoginPage;
-import org.motech.test.TestBase;
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
@@ -23,12 +23,12 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
 
     @Before
     public void setUp() {
-        user = properties.getUserName();
-        password = properties.getPassword();
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        participantPage = new ParticipantPage(driver);
-        participantEditPage = new ParticipantEditPage(driver);
+        user = getTestProperties().getUserName();
+        password = getTestProperties().getPassword();
+        loginPage = new LoginPage(getDriver());
+        homePage = new HomePage(getDriver());
+        participantPage = new ParticipantPage(getDriver());
+        participantEditPage = new ParticipantEditPage(getDriver());
         if (!StringUtils.equals(homePage.expectedUrlPath(), currentPage().urlPath())) {
             loginPage.login(user , password);
         }
@@ -43,6 +43,6 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
 
     @After
     public void tearDown() throws Exception {
-        loginPage.logOut();
+        logout();
     }
 }
