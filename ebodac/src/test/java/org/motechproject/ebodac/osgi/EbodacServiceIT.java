@@ -2,6 +2,8 @@ package org.motechproject.ebodac.osgi;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -241,5 +243,54 @@ public class EbodacServiceIT extends BasePaxIT {
 
         visits = visitDataService.retrieveAll();
         assertTrue(visits.size() > 0);
+    }
+
+    @Test
+    public void shouldNotOverridePrimerAndBoosterVaccinationReportsToUpdate() throws Exception {
+        Subject subject = new Subject();
+        subject.setSubjectId("1000000161");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        subject = new Subject();
+        subject.setSubjectId("1000000646");
+        subject.setSiteName("siteName");
+        subjectDataService.create(subject);
+
+        DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
+        String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
+        InputStream in = getClass().getResourceAsStream("/rave.csv");
+        assertNotNull(in);
+
+        ftpsClient.sendFile(filename, in);
+        in.close();
+
+        Config config = configService.getConfig();
+        config.setPrimerVaccinationReportsToUpdate(null);
+        config.setBoosterVaccinationReportsToUpdate(null);
+        config.setLastCalculationDate(LocalDate.now().minusDays(1).toString(DateTimeFormat.forPattern(EbodacConstants.REPORT_DATE_FORMAT)));
+        config.setFtpsPort(ftpsServer.getPort());
+        config.setFtpsHost(HOST);
+        config.setFtpsUsername(USER);
+        config.setFtpsPassword(USER);
+        config.setFtpsDirectory(CSV_DIR);
+        DateTime afterDate = DateTime.now().plusDays(1);
+        String lastCsvUpdate = afterDate.toString(EbodacConstants.CSV_DATE_FORMAT);
+        config.setLastCsvUpdate(lastCsvUpdate);
+        configService.updateConfig(config);
+
+        ebodacService.fetchCSVUpdates(DateTime.now().plusDays(1));
+
+        List<Visit> visits = visitDataService.retrieveAll();
+        assertEquals(0, visits.size());
+
+        ebodacService.fetchCSVUpdates(DateTime.now().minusDays(1));
+
+        visits = visitDataService.retrieveAll();
+        assertTrue(visits.size() > 0);
+
+        config = configService.getConfig();
+        assertEquals(2, config.getPrimerVaccinationReportsToUpdate().size());
+        assertEquals(1, config.getBoosterVaccinationReportsToUpdate().size());
     }
 }

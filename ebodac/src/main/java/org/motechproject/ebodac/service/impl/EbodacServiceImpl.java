@@ -81,7 +81,7 @@ public class EbodacServiceImpl implements EbodacService {
         fetchCSVUpdates(null);
     }
 
-    @Override
+    @Override //NO CHECKSTYLE CyclomaticComplexity
     public void fetchCSVUpdates(DateTime startDate) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(EbodacConstants.CSV_DATE_FORMAT);
         Config config = configService.getConfig();
@@ -95,6 +95,8 @@ public class EbodacServiceImpl implements EbodacService {
         directory = addFileSeparatorIfNeeded(directory);
 
         Integer port = config.getFtpsPort();
+
+        boolean generateReports = false;
 
         LOGGER.info("Started fetching CSV files modified after {} from {}", afterDate, hostname);
         EbodacFtpsClient ftpsClient = new EbodacFtpsClient();
@@ -125,7 +127,7 @@ public class EbodacServiceImpl implements EbodacService {
                         ftpsClient.fetchFile(directory + filename, outputStream);
                         LOGGER.info("Parsing CSV file {}", filename);
                         raveImportService.importCsv(new StringReader(outputStream.toString()), filename);
-                        config.setGenerateReports(true);
+                        generateReports = true;
                         LOGGER.info("Finished parsing CSV file {}", filename);
                         if (date.isAfter(lastUpdated)) {
                             lastUpdated = date;
@@ -140,6 +142,13 @@ public class EbodacServiceImpl implements EbodacService {
                 }
             }
         }
+
+        config = configService.getConfig();
+
+        if (generateReports) {
+            config.setGenerateReports(true);
+        }
+
         config.setLastCsvUpdate(lastUpdated.toString(dateTimeFormatter));
         configService.updateConfig(config);
         LOGGER.info("Finished fetching CSV files from {}", hostname);
