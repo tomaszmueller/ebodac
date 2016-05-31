@@ -32,6 +32,7 @@ public class HiddenButtonsEnabledUiTest extends TestBase {
         participantPage = new ParticipantPage(getDriver());
         participantEditPage = new ParticipantEditPage(getDriver());
         if (!StringUtils.equals(homePage.expectedUrlPath(), currentPage().urlPath())) {
+            loginPage.goToPage();
             loginPage.login(l1adminUser , l1adminPassword);
         }
     }

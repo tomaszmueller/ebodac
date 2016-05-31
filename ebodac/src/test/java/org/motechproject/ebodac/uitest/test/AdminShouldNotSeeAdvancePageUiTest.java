@@ -111,8 +111,11 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
             httpClientHelper.addParticipant(new TestParticipant(), l1adminUser, l1adminPassword);
+            loginPage.goToPage();
+            loginPage.login(l1adminUser, l1adminPassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(l1adminUser, l1adminPassword);
         }
     }

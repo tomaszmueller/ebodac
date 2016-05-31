@@ -29,6 +29,7 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
         user = getTestProperties().getUserName();
         password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(user, password);
         }
     }

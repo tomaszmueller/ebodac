@@ -38,6 +38,7 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
             httpClientHelper.addParticipant(new TestParticipant(), l1AdminUser, l1AdminPassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(l1AdminUser, l1AdminPassword);
         }
     }

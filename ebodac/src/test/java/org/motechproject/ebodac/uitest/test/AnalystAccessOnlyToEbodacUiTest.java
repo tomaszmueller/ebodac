@@ -42,6 +42,7 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
             httpClientHelper.addParticipant(new TestParticipant(), l1analystUser, l1analystpassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(l1analystUser, l1analystpassword);
         }
     }

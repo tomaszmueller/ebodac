@@ -44,6 +44,7 @@ public class FollowUpsAfterPrimeInjectionReportUiTest extends TestBase {
     public void followUpsAfterPrimeInjectionReportTest() throws InterruptedException {
         httpClientHelper = new UITestHttpClientHelper(url);
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(l1AdminUser, l1AdminPassword);
             homePage.openEBODACModule();
             ebodacPage.gotoReports();

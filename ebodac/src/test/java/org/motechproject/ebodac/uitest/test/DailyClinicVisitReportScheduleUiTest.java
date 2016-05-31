@@ -33,6 +33,7 @@ public class DailyClinicVisitReportScheduleUiTest extends TestBase {
         reportPage = new ReportPage(getDriver());
         dailyClinicVisitScheduleReportPage = new DailyClinicVisitScheduleReportPage(getDriver());
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(user, password);
         }
     }

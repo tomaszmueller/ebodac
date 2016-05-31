@@ -1,8 +1,8 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
 import org.motechproject.uitest.TestBase;
@@ -49,6 +49,7 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
     @Test//Test for EBODAC-512
     public void getVisitDataFromRAVETest() throws Exception {
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(adminUser , adminPassword);
         }
         if (url.contains("localhost")) {
