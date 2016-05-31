@@ -33,6 +33,7 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
         reportPage = new ReportPage(getDriver());
         mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(getDriver());
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(user, password);
         }
     }

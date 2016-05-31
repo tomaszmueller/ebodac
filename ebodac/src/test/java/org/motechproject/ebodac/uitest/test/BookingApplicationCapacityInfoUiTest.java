@@ -11,7 +11,6 @@ import org.motechproject.ebodac.uitest.page.BookingAppCapacityInfoPage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
-
 public class BookingApplicationCapacityInfoUiTest extends TestBase {
 
     private LoginPage loginPage;
@@ -32,6 +31,7 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
         user = getTestProperties().getUserName();
         password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(user, password);
         }
     }

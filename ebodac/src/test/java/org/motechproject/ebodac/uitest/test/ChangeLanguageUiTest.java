@@ -45,6 +45,7 @@ public class ChangeLanguageUiTest extends TestBase {
             httpClientHelper.addParticipant(new TestParticipant() , user , password);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            loginPage.goToPage();
             loginPage.login(user , password);
         }
     }
