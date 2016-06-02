@@ -12,7 +12,9 @@ import org.motechproject.mds.util.SecurityMode;
 import java.util.ArrayList;
 import java.util.List;
 
-@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
+import static org.motechproject.ebodac.constants.EbodacConstants.EMAIL_REPORTS_TAB_PERMISSION;
+
+@Access(value = SecurityMode.PERMISSIONS, members = { EMAIL_REPORTS_TAB_PERMISSION })
 @Entity
 public class EmailReport {
 

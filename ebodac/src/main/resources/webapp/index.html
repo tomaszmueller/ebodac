@@ -3,8 +3,8 @@
         <ul class="breadcrumb" role="navigation">
             <li><a role="menu" href=".">{{msg('server.home')}}</a></li>
             <li><a role="menu" href="#/ebodac/">{{msg('ebodac')}}</a></li>
-            <li ng-show="active('#/ebodac/subjects')" ng-class="active('#/ebodac/subjects')">{{msg('ebodac.subjects')}}</li>
-            <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.visits')}}</li>
+            <li ng-show="active('#/ebodac/subjects')" ng-class="active('#/ebodac/subjects')">{{msg('ebodac.web.subjects.title')}}</li>
+            <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.web.visits.title')}}</li>
             <li ng-show="active('#/ebodac/reports')" ng-class="active('#/ebodac/reports')">{{msg('ebodac.web.reports.title')}}</li>
             <li ng-show="active('#/ebodac/enrollment')" ng-class="active('#/ebodac/enrollment')">{{msg('ebodac.web.enrollment.title')}}</li>
             <li ng-show="active('#/ebodac/statistics')" ng-class="active('#/ebodac/statistics')">{{msg('ebodac.web.statistics.title')}}</li>
@@ -14,13 +14,11 @@
     </div>
     <div class="header-footer">
         <ul id="content-tabs" class="nav nav-tabs">
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/subjects')"><a href="#/ebodac/subjects">{{msg('ebodac.subjects')}}</a></li>
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/visits')"><a href="#/ebodac/visits">{{msg('ebodac.visits')}}</a></li>
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/reports')"><a ng-href="#/ebodac/reports" >{{msg('ebodac.web.reports.title')}}</a></li>
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/enrollment')"><a href="#/ebodac/enrollment" >{{msg('ebodac.web.enrollment.title')}}</a></li>
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/statistics')"><a ng-href="#/ebodac/statistics" >{{msg('ebodac.web.statistics.title')}}</a></li>
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/emailReports')"><a ng-href="#/ebodac/emailReports" >{{msg('ebodac.web.emailReports.title')}}</a></li>
             <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')"><a href="#/ebodac/settings">{{msg('ebodac.web.settings.title')}}</a></li>
+
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/' + tab)" ng-repeat="tab in EBODAC_AVAILABLE_TABS">
+                <a href="#/ebodac/{{tab}}">{{msg('ebodac.web.' + tab + '.title')}}</a>
+            </li>
         </ul>
     </div>
     <div ng-controller="MdsEmbeddableCtrl" class="ui-layout-content">

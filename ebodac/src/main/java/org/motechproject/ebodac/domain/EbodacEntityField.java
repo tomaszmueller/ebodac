@@ -5,7 +5,9 @@ import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.Field;
 import org.motechproject.mds.util.SecurityMode;
 
-@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
+import static org.motechproject.ebodac.constants.EbodacConstants.EMAIL_REPORTS_TAB_PERMISSION;
+
+@Access(value = SecurityMode.PERMISSIONS, members = { EMAIL_REPORTS_TAB_PERMISSION })
 @Entity
 public class EbodacEntityField {
 
