@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.web;
 
+import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.EmailRecipient;
 import org.motechproject.ebodac.domain.EmailReport;
 import org.motechproject.ebodac.domain.EmailReportDto;
@@ -24,6 +25,7 @@ import javax.jdo.JDODataStoreException;
 import java.util.List;
 
 @Controller
+@PreAuthorize(EbodacConstants.HAS_EMAIL_REPORTS_TAB_ROLE)
 public class EmailReportController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailReportController.class);
 
@@ -33,7 +35,6 @@ public class EmailReportController {
     @Autowired
     private EmailRecipientDataService emailRecipientDataService;
 
-    @PreAuthorize("hasAnyRole('mdsDataAccess', 'manageEbodac')")
     @RequestMapping(value = "/sendEmailReport", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> sendEmailReport(@RequestBody String reportId) {
@@ -50,21 +51,18 @@ public class EmailReportController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getEmailReports", method = RequestMethod.GET)
     @ResponseBody
     public List<EmailReport> getEmailReports() {
         return emailReportService.getEmailReports();
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/saveReport", method = RequestMethod.POST)
     @ResponseBody
     public EmailReport saveReport(@RequestBody EmailReportDto report) {
         return emailReportService.saveReport(report);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/deleteReport", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteReport(@RequestBody String reportId) {
@@ -81,14 +79,12 @@ public class EmailReportController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getEmailRecipients", method = RequestMethod.GET)
     @ResponseBody
     public List<EmailRecipient> getEmailRecipients() {
         return emailRecipientDataService.retrieveAll();
     }
 
-    @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/addRecipient", method = RequestMethod.POST)
     @ResponseBody
     public EmailRecipient addRecipient(@RequestBody EmailRecipient recipient) {

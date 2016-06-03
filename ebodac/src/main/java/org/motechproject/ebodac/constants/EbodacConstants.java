@@ -326,6 +326,11 @@ public final class EbodacConstants {
         }
     };
 
+    public static final String MANAGE_EBODAC_PERMISSION = "manageEbodac";
+    public static final String EMAIL_REPORTS_TAB_PERMISSION = "emailReports";
+
+    public static final String HAS_EMAIL_REPORTS_TAB_ROLE = "hasRole('" + EMAIL_REPORTS_TAB_PERMISSION + "')";
+
     private EbodacConstants() {
     }
 }

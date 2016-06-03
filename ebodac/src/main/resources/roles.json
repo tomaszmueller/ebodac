@@ -10,5 +10,9 @@
   {
     "roleName": "EBODAC Site-Analyst",
     "permissionNames": ["manageEbodac", "viewUI", "viewIVRLogs", "viewSMSLogs"]
+  },
+  {
+    "roleName": "EBODAC Email Reports user",
+    "permissionNames": ["emailReports"]
   }
 ]
