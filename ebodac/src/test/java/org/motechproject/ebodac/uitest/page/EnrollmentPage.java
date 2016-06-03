@@ -91,4 +91,15 @@ public class EnrollmentPage extends AbstractBasePage {
             return false;
         }
     }
+
+    public boolean checkEnroll() throws InterruptedException {
+        Thread.sleep(1000);
+        findElement(By.xpath("//tr[@id='1']/td[2]")).click();
+        try {
+            findElement(By.cssSelector("td[title=\"Boost Vaccination Third Follow-up visit\"]")).click();
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
