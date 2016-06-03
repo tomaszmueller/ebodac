@@ -425,15 +425,15 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
     public void shouldEnrollWhenDataAreComingInTwoParts() throws IOException {
         Subject subject = createSubjectWithRequireData("1020000111");
 
-        InputStream inputStream = getClass().getResourceAsStream("/motech_20151002_154600.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/motech_20151002_154600.csv");
+        InputStream inputStream = getClass().getResourceAsStream("/enrollWhenDataCommingInTwoParts_part1.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollWhenDataCommingInTwoParts_part1.csv");
         inputStream.close();
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNull(subjectEnrollments);
 
-        inputStream = getClass().getResourceAsStream("/motech_20151002_160010.csv");
-        raveImportService.importCsv(new InputStreamReader(inputStream), "/motech_20151002_160010.csv");
+        inputStream = getClass().getResourceAsStream("/enrollWhenDataCommingInTwoParts_part2.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollWhenDataCommingInTwoParts_part2.csv");
         inputStream.close();
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
