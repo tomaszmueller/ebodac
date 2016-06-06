@@ -90,8 +90,8 @@ public class HistoryServiceIT extends BasePaxIT {
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
 
-        InputStream in = getClass().getResourceAsStream("/history.csv");
-        raveImportService.importCsv(new InputStreamReader(in), "/history.csv");
+        InputStream in = getClass().getResourceAsStream("/subjectHistoryTestPart1.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/subjectHistoryTestPart1.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
@@ -104,8 +104,8 @@ public class HistoryServiceIT extends BasePaxIT {
         assertEquals(4, subjectsHistoryRecords.get(0).size());
         assertEquals(2, subjectsHistoryRecords.get(1).size());
 
-        in = getClass().getResourceAsStream("/history2.csv");
-        raveImportService.importCsv(new InputStreamReader(in), "/history2.csv");
+        in = getClass().getResourceAsStream("/subjectHistoryTestPart2.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/subjectHistoryTestPart2.csv");
         in.close();
 
         subjectsHistoryRecords.clear();
@@ -129,8 +129,8 @@ public class HistoryServiceIT extends BasePaxIT {
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
 
-        InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
+        InputStream in = getClass().getResourceAsStream("/visitHistoryTest.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/visitHistoryTest.csv");
         in.close();
 
         List<Visit> visitList = visitDataService.findByActualDate(new LocalDate(2015, 7, 13));
@@ -163,8 +163,8 @@ public class HistoryServiceIT extends BasePaxIT {
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
 
-        InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
+        InputStream in = getClass().getResourceAsStream("/visitHistoryTest.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/visitHistoryTest.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
@@ -179,8 +179,8 @@ public class HistoryServiceIT extends BasePaxIT {
     @Ignore
     @Test
     public void shouldNotCreateNewRecordsForSubjectWhenUpdatingVisit() throws IOException {
-        InputStream in = getClass().getResourceAsStream("/history3.csv");
-        raveImportService.importCsv(new InputStreamReader(in), "/history3.csv");
+        InputStream in = getClass().getResourceAsStream("/visitHistoryTest.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/visitHistoryTest.csv");
         in.close();
 
         QueryParams qp = new QueryParams(new Order("subjectId", Order.Direction.ASC));
