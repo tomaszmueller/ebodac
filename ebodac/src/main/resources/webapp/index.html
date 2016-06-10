@@ -3,8 +3,7 @@
         <ul class="breadcrumb" role="navigation">
             <li><a role="menu" href=".">{{msg('server.home')}}</a></li>
             <li><a role="menu" href="#/ebodac/">{{msg('ebodac')}}</a></li>
-            <li ng-show="active('#/ebodac/subjects')" ng-class="active('#/ebodac/subjects')">{{msg('ebodac.web.subjects.title')}}</li>
-            <li ng-show="active('#/ebodac/admin')" ng-class="active('#/ebodac/visits')">{{msg('ebodac.web.visits.title')}}</li>
+            <li ng-show="active('#/mds/dataBrowser')" ng-class="active('#/mds/dataBrowser')">{{msg('ebodac.web.' + selectedTab + '.title')}}</li>
             <li ng-show="active('#/ebodac/reports')" ng-class="active('#/ebodac/reports')">{{msg('ebodac.web.reports.title')}}</li>
             <li ng-show="active('#/ebodac/enrollment')" ng-class="active('#/ebodac/enrollment')">{{msg('ebodac.web.enrollment.title')}}</li>
             <li ng-show="active('#/ebodac/statistics')" ng-class="active('#/ebodac/statistics')">{{msg('ebodac.web.statistics.title')}}</li>
@@ -16,7 +15,7 @@
         <ul id="content-tabs" class="nav nav-tabs">
             <li ng-show="active('#/ebodac/settings')" ng-class="active('#/ebodac/settings')"><a href="#/ebodac/settings">{{msg('ebodac.web.settings.title')}}</a></li>
 
-            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/' + tab)" ng-repeat="tab in EBODAC_AVAILABLE_TABS">
+            <li ng-hide="active('#/ebodac/settings')" ng-class="active('#/ebodac/' + tab) || active(tab === selectedTab ? '#/mds/dataBrowser' : ('#/ebodac/' + tab))" ng-repeat="tab in EBODAC_AVAILABLE_TABS">
                 <a href="#/ebodac/{{tab}}">{{msg('ebodac.web.' + tab + '.title')}}</a>
             </li>
         </ul>
