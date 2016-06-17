@@ -2,6 +2,7 @@ package org.motechproject.ebodac.uitest.page;
 
 import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import java.lang.Override;
 import java.lang.String;
@@ -27,6 +28,8 @@ public class HomePage extends AbstractBasePage {
     static final By POPUP_OK = By.id("popup_ok");
     static final int SLEEP_500 = 500;
     static final int SLEEP_1000 = 1000;
+    static final int WIDTH = 1920;
+    static final int HEIGHT = 1080;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -176,5 +179,9 @@ public class HomePage extends AbstractBasePage {
         clickWhenVisible(USER_LANGUAGE_CONTROL);
         clickWhenVisible(LANGUAGE_PL);
         clickWhenVisible(POPUP_OK);
+    }
+
+    public void resizePage() {
+        getDriver().manage().window().setSize(new Dimension(WIDTH, HEIGHT));
     }
 }
