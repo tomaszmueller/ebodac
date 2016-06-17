@@ -11,12 +11,8 @@ public final class EbodacConstants {
 
     public static final int LOGIN_WAIT_TIME = 1000;
 
-    public static final String UI_CONFIG = "custom-ui.js";
-
     public static final String SUBJECT_ID_FIELD_NAME = "subjectId";
     public static final String SUBJECT_ID_FIELD_DISPLAY_NAME = "Participant Id";
-
-    public static final String SITE_ID_FOR_STAGE_I = "B05-SL10001";
 
     public static final String ZETES_UPDATE_EVENT = "zetes_update";
     public static final String EMAIL_CHECK_EVENT = "email_check";
@@ -24,7 +20,6 @@ public final class EbodacConstants {
     public static final String ZETES_URL = "zetes_url";
     public static final String ZETES_USERNAME = "zetes_username";
     public static final String ZETES_PASSWORD = "zetes_password";
-    public static final String START_TIME = "start_time";
 
     public static final String FTP_FILE_SEPARATOR = "/";
 
@@ -33,12 +28,7 @@ public final class EbodacConstants {
 
     public static final String FETCH_CSV_START_DATE_FORMAT = "yyyy-MM-dd";
 
-    public static final String FETCHED_EMAIL_FLAG = "fetched";
-    public static final String JOB_SUCCESS_STATUS = "COMPLETION";
-    public static final String JOB_FAILURE_STATUS = "FAILURE";
-
     public static final String REPORT_DATE_FORMAT = "yyyy-MM-dd";
-    public static final String REPORT_START_DATE_FORMAT = "yyyy-MM-ddHH:mm";
     public static final String DAILY_REPORT_EVENT = "daily_report_event";
     public static final String DAILY_REPORT_EVENT_START_DATE = "daily_report_event_start_date";
     public static final String DAILY_REPORT_EVENT_START_HOUR = "00:01";
@@ -49,12 +39,7 @@ public final class EbodacConstants {
     public static final String CSV_EXPORT_FORMAT = "csv";
     public static final String XLS_EXPORT_FORMAT = "xls";
 
-    public static final String EBODAC_MODULE = "EBODAC Module";
-
     public static final String DATE_PICKER_DATE_FORMAT = "yyyy-MM-dd";
-
-    public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
-    public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
 
     public static final String API_KEY = "api_key";
     public static final String MESSAGE_ID = "message_id";
@@ -71,8 +56,6 @@ public final class EbodacConstants {
     public static final String SUBJECT_IDS = "subject_ids";
     public static final String SUBJECT_PHONE_NUMBER = "subscriber_phone";
 
-    public static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
-
     public static final List<String> AVAILABLE_CAMPAIGNS = new ArrayList<>(Arrays.asList("Screening", "Prime Vaccination Day",
             "Booster related messages", "Prime Vaccination First Follow-up visit", "Boost Vaccination Day", "Boost Vaccination First Follow-up visit",
             "Boost Vaccination Second Follow-up visit", "Boost Vaccination Third Follow-up visit", "First Long-term Follow-up visit",
@@ -80,8 +63,6 @@ public final class EbodacConstants {
             "Booster related messages - stage 2", "Prime Vaccination First Follow-up visit - stage 2", "Prime Vaccination Second Follow-up visit - stage 2",
             "Boost Vaccination Day - stage 2", "Boost Vaccination First Follow-up visit - stage 2", "Boost Vaccination Second Follow-up visit - stage 2",
             "Boost Vaccination Third Follow-up visit - stage 2", "First Long-term Follow-up visit - stage 2", "Second Long-term Follow-up visit - stage 2"));
-
-    public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
     public static final String STAGE = " - stage ";
 

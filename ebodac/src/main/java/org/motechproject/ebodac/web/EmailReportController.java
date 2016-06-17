@@ -3,7 +3,7 @@ package org.motechproject.ebodac.web;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.EmailRecipient;
 import org.motechproject.ebodac.domain.EmailReport;
-import org.motechproject.ebodac.domain.EmailReportDto;
+import org.motechproject.ebodac.dto.EmailReportDto;
 import org.motechproject.ebodac.repository.EmailRecipientDataService;
 import org.motechproject.ebodac.service.EmailReportService;
 import org.motechproject.scheduler.exception.MotechSchedulerException;

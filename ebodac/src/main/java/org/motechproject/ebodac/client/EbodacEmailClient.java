@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.client;
 
 import org.apache.commons.lang.StringUtils;
-import org.motechproject.ebodac.constants.EbodacConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,6 +31,10 @@ import java.util.Properties;
 public class EbodacEmailClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEmailClient.class);
 
+    private static final String FETCHED_EMAIL_FLAG = "fetched";
+    private static final String JOB_SUCCESS_STATUS = "COMPLETION";
+    private static final String JOB_FAILURE_STATUS = "FAILURE";
+
     public Boolean hasNewJobCompletionMessage(String host, String user, String password) {
         LOGGER.info("Started checking for job completion emails");
         Properties properties = new Properties();
@@ -47,19 +50,19 @@ public class EbodacEmailClient {
             Folder emailFolder = store.getFolder("INBOX");
             emailFolder.open(Folder.READ_WRITE);
 
-            Flags fetched = new Flags(EbodacConstants.FETCHED_EMAIL_FLAG);
+            Flags fetched = new Flags(FETCHED_EMAIL_FLAG);
             FlagTerm notFetched = new FlagTerm(fetched, false);
             Message[] messages = emailFolder.search(notFetched);
 
             for (Message message : messages) {
                 String subject = message.getSubject();
-                if (subject.contains(EbodacConstants.JOB_FAILURE_STATUS)) {
+                if (subject.contains(JOB_FAILURE_STATUS)) {
                     try {
                         LOGGER.error("Job failure, message content:\n" + message.getContent());
                     } catch (IOException e) {
                         LOGGER.error("Job failure, could not get the message content: " + subject);
                     }
-                } else if (subject.contains(EbodacConstants.JOB_SUCCESS_STATUS)) {
+                } else if (subject.contains(JOB_SUCCESS_STATUS)) {
                     LOGGER.info("New job completion message: " + subject);
                     jobCompletion = true;
                 } else {

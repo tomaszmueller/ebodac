@@ -11,17 +11,26 @@ import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public final class DtoLookupHelper {
 
     private static final String NOT_BLANK_REGEX = ".";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final Set<VisitType> AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN = new HashSet<>(Arrays.asList(VisitType.BOOST_VACCINATION_DAY,
+            VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.PRIME_VACCINATION_SECOND_FOLLOW_UP_VISIT,
+            VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT,
+            VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT,
+            VisitType.SECOND_LONG_TERM_FOLLOW_UP_VISIT, VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT));
 
     private DtoLookupHelper() {
     }
@@ -95,19 +104,19 @@ public final class DtoLookupHelper {
 
         if (StringUtils.isBlank(settings.getLookup())) {
             settings.setLookup("Find By Visit Type Set And Planned Date");
-            fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+            fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
         } else {
             fieldsMap = getFields(settings.getFields());
             switch (settings.getLookup()) {
                 case "Find By Visit Type":
                     String type = (String) fieldsMap.get(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME);
-                    if (StringUtils.isBlank(type) || !BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN.contains(VisitType.valueOf(type))) {
+                    if (StringUtils.isBlank(type) || !AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN.contains(VisitType.valueOf(type))) {
                         fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, null);
                     }
                     settings.setLookup(settings.getLookup() + " And Planned Date");
                     break;
                 default:
-                    fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, BookingAppConstants.AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
+                    fieldsMap.put(VisitBookingDetails.VISIT_TYPE_PROPERTY_NAME, AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN);
                     settings.setLookup(settings.getLookup() + " And Visit Type Set And Planned Date");
                     break;
             }

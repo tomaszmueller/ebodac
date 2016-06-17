@@ -62,6 +62,8 @@
                             org.motechproject.ebodac.service.impl.csv;version=${project.version},
                             org.motechproject.ebodac.repository;version=${project.version},
                             org.motechproject.ebodac.domain;version=${project.version},
+                            org.motechproject.ebodac.domain.enums;version=${project.version},
+                            org.motechproject.ebodac.dto;version=${project.version},
                             org.motechproject.ebodac.importer;version=${project.version},
                             org.motechproject.ebodac.constants;version=${project.version},
                             org.motechproject.ebodac.validation;version=${project.version},
@@ -69,6 +71,8 @@
                             org.motechproject.ebodac.client;version=${project.version},
                             org.motechproject.ebodac.exception;version=${project.version},
                             org.motechproject.ebodac.util;version=${project.version},
+                            org.motechproject.ebodac.util.json;version=${project.version},
+                            org.motechproject.ebodac.util.json.serializer;version=${project.version},
                             org.motechproject.ebodac.template;version=${project.version},
                             org.motechproject.ebodac.web.domain;version=${project.version}
                         </Export-Package>

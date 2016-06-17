@@ -1,6 +1,6 @@
 package org.motechproject.bookingapp.service;
 
-import org.motechproject.bookingapp.domain.VisitRescheduleDto;
+import org.motechproject.bookingapp.dto.VisitRescheduleDto;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 

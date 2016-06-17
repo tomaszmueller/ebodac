@@ -21,7 +21,7 @@ import org.motechproject.admin.service.StatusMessageService;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.VotoLanguage;
 import org.motechproject.ebodac.domain.VotoMessage;

@@ -3,7 +3,7 @@ package org.motechproject.bookingapp.service.impl;
 import org.motechproject.bookingapp.domain.VisitScheduleOffset;
 import org.motechproject.bookingapp.repository.VisitScheduleOffsetDataService;
 import org.motechproject.bookingapp.service.VisitScheduleOffsetService;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

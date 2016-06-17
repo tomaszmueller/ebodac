@@ -8,13 +8,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
-import org.motechproject.bookingapp.domain.CapacityReportDto;
-import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
+import org.motechproject.bookingapp.dto.CapacityReportDto;
+import org.motechproject.bookingapp.dto.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.Screening;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
-import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
+import org.motechproject.bookingapp.dto.UnscheduledVisitDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
-import org.motechproject.bookingapp.domain.VisitRescheduleDto;
+import org.motechproject.bookingapp.dto.VisitRescheduleDto;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.service.ReportService;
 import org.motechproject.bookingapp.template.PdfExportTemplate;
@@ -54,6 +54,10 @@ import static org.apache.commons.lang.CharEncoding.UTF_8;
 public class ExportController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExportController.class);
+
+    private static final String PDF_EXPORT_FORMAT = "pdf";
+    private static final String CSV_EXPORT_FORMAT = "csv";
+    private static final String XLS_EXPORT_FORMAT = "xls";
 
     @Autowired
     private ExportService exportService;
@@ -134,15 +138,15 @@ public class ExportController {
                 QueryParamsBuilder.buildOrderList(settings, getFields(settings)));
 
         try {
-            if (BookingAppConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
+            if (PDF_EXPORT_FORMAT.equals(outputFormat)) {
                 PdfBasicTemplate template = new PdfExportTemplate(response.getOutputStream());
 
                 exportService.exportEntityToPDF(template, entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 exportService.exportEntityToCSV(response.getWriter(), entityDtoType, entityType, headerMap,
                         settings.getLookup(), settings.getFields(), queryParams);
-            } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (XLS_EXPORT_FORMAT.equals(outputFormat)) {
                 XlsBasicTemplate template = new XlsExportTemplate(response.getOutputStream());
 
                 exportService.exportEntityToExcel(template, entityDtoType, entityType, headerMap,
@@ -168,15 +172,15 @@ public class ExportController {
         setResponseData(response, outputFormat, fileNameBeginning);
 
         try {
-            if (BookingAppConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
+            if (PDF_EXPORT_FORMAT.equals(outputFormat)) {
                 PdfTableWriter tableWriter = new PdfTableWriter(new PdfExportTemplate(response.getOutputStream()));
 
                 exportService.exportEntity(entities, headerMap, tableWriter);
-            } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (CSV_EXPORT_FORMAT.equals(outputFormat)) {
                 CsvTableWriter tableWriter = new CsvTableWriter(response.getWriter());
 
                 exportService.exportEntity(entities, headerMap, tableWriter);
-            } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+            } else if (XLS_EXPORT_FORMAT.equals(outputFormat)) {
                 ExcelTableWriter tableWriter = new ExcelTableWriter(new XlsExportTemplate(response.getOutputStream()));
 
                 exportService.exportEntity(entities, headerMap, tableWriter);
@@ -191,11 +195,11 @@ public class ExportController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
         final String fileName = fileNameBeginning + "_" + DateTime.now().toString(dateTimeFormatter);
 
-        if (BookingAppConstants.PDF_EXPORT_FORMAT.equals(outputFormat)) {
+        if (PDF_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/pdf");
-        } else if (BookingAppConstants.CSV_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (CSV_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("text/csv");
-        } else if (BookingAppConstants.XLS_EXPORT_FORMAT.equals(outputFormat)) {
+        } else if (XLS_EXPORT_FORMAT.equals(outputFormat)) {
             response.setContentType("application/vnd.ms-excel");
         } else {
             throw new IllegalArgumentException("Invalid export format: " + outputFormat);

@@ -2,7 +2,6 @@ package org.motechproject.bookingapp.web;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.SubjectBookingDetails;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
@@ -28,6 +27,8 @@ import java.util.List;
 @Controller
 public class BookingAppController {
 
+    private static final String UI_CONFIG = "custom-ui.js";
+
     @Autowired
     @Qualifier("bookingAppSettings")
     private SettingsFacade settingsFacade;
@@ -48,7 +49,7 @@ public class BookingAppController {
     @RequestMapping(value = "/mds-databrowser-config", method = RequestMethod.GET)
     @ResponseBody
     public String getCustomUISettings() throws IOException {
-        return IOUtils.toString(settingsFacade.getRawConfig(BookingAppConstants.UI_CONFIG));
+        return IOUtils.toString(settingsFacade.getRawConfig(UI_CONFIG));
     }
 
     @ResponseStatus(HttpStatus.OK)

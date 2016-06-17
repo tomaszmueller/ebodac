@@ -1,6 +1,6 @@
 package org.motechproject.bookingapp.service;
 
-import org.motechproject.bookingapp.domain.PrimeVaccinationScheduleDto;
+import org.motechproject.bookingapp.dto.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 

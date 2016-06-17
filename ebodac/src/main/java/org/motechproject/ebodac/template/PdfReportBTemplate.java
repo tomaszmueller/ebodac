@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 public class PdfReportBTemplate extends PdfBasicTemplate {
 
-    private static final String TEMPLATE_PATH = "/report_templateB.pdf";
+    private static final String TEMPLATE_PATH = "/templates/report_templateB.pdf";
     private static final Rectangle FIRST_PAGE_RECTANGLE = new Rectangle(20, 36, 580, 475);
 
     private static final String PDF_TEMPLATE_TITLE = "#titleReport";

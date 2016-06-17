@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
@@ -59,6 +59,8 @@ import static org.junit.Assert.fail;
 @ExamReactorStrategy(PerSuite.class)
 @ExamFactory(MotechNativeTestContainerFactory.class)
 public class EbodacEnrollmentServiceIT extends BasePaxIT {
+
+    private static final List<String> DAYS_OF_WEEK = new ArrayList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
 
     @Inject
     private BundleContext bundleContext;
@@ -897,7 +899,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
             assertEquals(1, subjectEnrollments.getEnrollments().size());
             Enrollment enrollment = subjectEnrollments.getEnrollments().iterator().next();
-            assertEquals(VisitType.BOOST_VACCINATION_DAY.getValue() + " " + EbodacConstants.DAYS_OF_WEEK.get(i) + stageString, enrollment.getCampaignName());
+            assertEquals(VisitType.BOOST_VACCINATION_DAY.getValue() + " " + DAYS_OF_WEEK.get(i) + stageString, enrollment.getCampaignName());
             assertEquals(new LocalDate(2115, 9, 22 + i), subjectEnrollments.getEnrollments().iterator().next().getReferenceDate());
             i++;
         }

@@ -1,7 +1,7 @@
 package org.motechproject.bookingapp.web;
 
 import org.motechproject.bookingapp.constants.BookingAppConstants;
-import org.motechproject.bookingapp.domain.CapacityReportDto;
+import org.motechproject.bookingapp.dto.CapacityReportDto;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.service.ReportService;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;

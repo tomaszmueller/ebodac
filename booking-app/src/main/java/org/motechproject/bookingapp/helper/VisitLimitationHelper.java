@@ -7,7 +7,7 @@ import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.repository.ScreeningDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;
 import org.motechproject.bookingapp.repository.VisitBookingDetailsDataService;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

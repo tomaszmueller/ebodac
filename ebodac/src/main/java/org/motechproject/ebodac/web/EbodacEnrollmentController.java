@@ -8,7 +8,7 @@ import org.motechproject.ebodac.domain.Enrollment;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.exception.EbodacException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
@@ -44,6 +44,8 @@ import java.util.List;
 public class EbodacEnrollmentController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEnrollmentController.class);
+
+    public static final String ENROLLMENT_DATE_FORMAT = "yyyy-MM-dd";
 
     @Autowired
     private EbodacEnrollmentService ebodacEnrollmentService;
@@ -286,7 +288,7 @@ public class EbodacEnrollmentController {
         }
 
         try {
-            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
+            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(ENROLLMENT_DATE_FORMAT));
             ebodacEnrollmentService.enrollSubjectToCampaignWithNewDate(subjectId, campaignName, referenceDate);
             updateVisit(subjectId, campaignNameWithoutStage, referenceDate);
         } catch (IllegalArgumentException e) {
@@ -320,7 +322,7 @@ public class EbodacEnrollmentController {
         }
 
         try {
-            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(EbodacConstants.ENROLLMENT_DATE_FORMAT));
+            LocalDate referenceDate = LocalDate.parse(date, DateTimeFormat.forPattern(ENROLLMENT_DATE_FORMAT));
             ebodacEnrollmentService.reenrollSubjectWithNewDate(subjectId, campaignName, referenceDate);
             updateVisit(subjectId, campaignNameWithoutStage, referenceDate);
         } catch (IllegalArgumentException e) {

@@ -4,7 +4,7 @@ import java.io.OutputStream;
 
 public class XlsReportCTemplate extends XlsBasicTemplate {
 
-    private static final String XLS_TEMPLATE_PATH = "/report_templateC.xls";
+    private static final String XLS_TEMPLATE_PATH = "/templates/report_templateC.xls";
     private static final int INDEX_OF_HEADER_ROW = 1;
 
     public XlsReportCTemplate(OutputStream outputStream) {

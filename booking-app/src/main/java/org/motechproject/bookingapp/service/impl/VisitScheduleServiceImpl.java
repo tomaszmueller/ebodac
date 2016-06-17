@@ -10,7 +10,7 @@ import org.motechproject.bookingapp.service.VisitScheduleOffsetService;
 import org.motechproject.bookingapp.service.VisitScheduleService;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;

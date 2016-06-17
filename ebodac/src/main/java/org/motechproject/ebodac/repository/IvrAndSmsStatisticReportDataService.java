@@ -3,7 +3,7 @@ package org.motechproject.ebodac.repository;
 import org.joda.time.DateTime;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
-import org.motechproject.ebodac.domain.SmsStatus;
+import org.motechproject.ebodac.domain.enums.SmsStatus;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;

@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.repository.EnrollmentDataService;

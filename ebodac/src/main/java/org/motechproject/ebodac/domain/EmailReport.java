@@ -2,7 +2,9 @@ package org.motechproject.ebodac.domain;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.motechproject.commons.date.model.Time;
-import org.motechproject.ebodac.util.CustomTimeSerializer;
+import org.motechproject.ebodac.domain.enums.DayOfWeek;
+import org.motechproject.ebodac.domain.enums.EmailSchedulePeriod;
+import org.motechproject.ebodac.util.json.serializer.CustomTimeSerializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;

@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service;
 
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 
 /**
  * Service interface for CRUD on Visit

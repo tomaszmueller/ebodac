@@ -48,20 +48,6 @@ public class Screening {
         status = ScreeningStatus.ACTIVE;
     }
 
-    public ScreeningDto toDto() {
-        ScreeningDto dto = new ScreeningDto();
-        dto.setId(getId().toString());
-        dto.setClinicId(getClinic().getId().toString());
-        dto.setVolunteerId(volunteer.getId().toString());
-        dto.setDate(date.toString());
-        if (startTime != null) {
-            dto.setStartTime(startTime.toString());
-        } else {
-            dto.setStartTime(null);
-        }
-        return dto;
-    }
-
     public Long getId() {
         return id;
     }

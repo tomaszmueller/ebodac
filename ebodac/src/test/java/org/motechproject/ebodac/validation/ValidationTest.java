@@ -3,7 +3,7 @@ package org.motechproject.ebodac.validation;
 import com.google.common.base.Predicate;
 import org.junit.Assert;
 import org.junit.Test;
-import org.motechproject.ebodac.web.SubmitSubjectRequest;
+import org.motechproject.ebodac.web.domain.SubmitSubjectRequest;
 
 import java.util.List;
 

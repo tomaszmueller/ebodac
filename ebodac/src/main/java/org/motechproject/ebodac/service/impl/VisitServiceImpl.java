@@ -2,7 +2,7 @@ package org.motechproject.ebodac.service.impl;
 
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.ConfigService;

@@ -1,7 +1,7 @@
 package org.motechproject.ebodac.service;
 
 import org.motechproject.ebodac.domain.EmailReport;
-import org.motechproject.ebodac.domain.EmailReportDto;
+import org.motechproject.ebodac.dto.EmailReportDto;
 
 import java.util.List;
 

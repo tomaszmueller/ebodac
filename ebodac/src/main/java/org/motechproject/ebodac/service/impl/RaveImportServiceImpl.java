@@ -2,10 +2,10 @@ package org.motechproject.ebodac.service.impl;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.motechproject.ebodac.domain.Gender;
+import org.motechproject.ebodac.domain.enums.Gender;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.service.RaveImportService;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.service.VisitService;
