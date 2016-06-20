@@ -9,7 +9,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
-public class git guiBookingApplicationAdvanceSettingsTestUiTest extends TestBase {
+public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;
