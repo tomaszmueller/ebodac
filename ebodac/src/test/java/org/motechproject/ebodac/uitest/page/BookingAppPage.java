@@ -37,6 +37,14 @@ public class BookingAppPage extends AbstractBasePage {
         clickWhenVisible(RESCHEDULE_VISIT);
     }
 
+    public void openPrimeVaccination() throws InterruptedException {
+        clickWhenVisible(PRIME_VACCINATION);
+    }
+
+    public void openClinicVisitSchedule() throws InterruptedException {
+        clickWhenVisible(CLINIC_VISIT_SCHEDULE);
+    }
+
     public void openUnscheduledVisit() throws InterruptedException {
         clickWhenVisible(UNSCHEDULED_VISIT);
     }
