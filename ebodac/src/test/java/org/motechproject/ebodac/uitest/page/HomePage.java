@@ -44,8 +44,9 @@ public class HomePage extends AbstractBasePage {
     public void goToPage() {
 
     }
-    public void openEBODACModule() throws InterruptedException {
+    public EBODACPage openEBODACModule() throws InterruptedException {
         clickWhenVisible(EBODAC);
+        return new EBODACPage(getDriver());
     }
 
     public void openBookingAppModule() throws  InterruptedException {

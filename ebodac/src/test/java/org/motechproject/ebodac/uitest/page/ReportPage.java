@@ -32,6 +32,84 @@ public class ReportPage extends AbstractBasePage {
     static final By SCREENING_REPORT = By.linkText("Screening Report");
 
     static final By PRIME_FOLLOW_AND_BOOST_REPORT = By.linkText("Prime Vac 1st Follow-up and Boost Vac Day Report");
+    //TABLES
+    static final By CALL_DETAIL_REPORT_TABLE_ID = By.id("jqgh_instancesTable_id");
+
+    static final By CALL_DETAIL_REPORT_TABLE_CONFIG_NAME = By.id("instancesTable_configName");
+
+    static final By CALL_DETAIL_REPORT_TABLE_FROM = By.id("instancesTable_configName");
+
+    static final By CALL_DETAIL_REPORT_TABLE_TO = By.id("instancesTable_to");
+
+    static final By CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION = By.id("instancesTable_callDirection");
+
+    static final By CALL_DETAIL_REPORT_TABLE_CALL_STATUS = By.id("instancesTable_callStatus");
+
+    static final By CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME = By.id("instancesTable_templateName");
+
+    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA = By.id("instancesTable_providerExtraData");
+
+    static final By CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID = By.id("instancesTable_motechCallId");
+
+    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID = By.id("instancesTable_providerCallId");
+
+    static final By CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP = By.id("instancesTable_motechTimestamp");
+
+    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP = By.id("instancesTable_providerTimestamp");
+
+    static final By CALL_DETAIL_REPORT_TABLE_CALL_DURATION = By.id("instancesTable_callDuration");
+
+    static final By CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED = By.id("instancesTable_messagePercentListened");
+
+    public static final int DEFAULT_VALUE_OF_FAILUIRE_SEARCH = 0;
+
+
+    public boolean checkIfTableOfCallDetailRecordInstancesIsVisible() throws InterruptedException { //NO CHECKSTYLE CyclomaticComplexity
+        int result = DEFAULT_VALUE_OF_FAILUIRE_SEARCH;
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_ID).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CONFIG_NAME).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_FROM).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_TO).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_STATUS).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_DURATION).getText()))) {
+            result++;
+        }
+        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED).getText()))) {
+            result++;
+        }
+        return (result > DEFAULT_VALUE_OF_FAILUIRE_SEARCH);
+    }
 
 
     public ReportPage(WebDriver driver) {
@@ -58,7 +136,7 @@ public class ReportPage extends AbstractBasePage {
         clickWhenVisible(FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT);
     }
 
-    public void showCallDetailRecord() throws InterruptedException  {
+    public void showCallDetailRecord() throws InterruptedException {
         clickWhenVisible(CALL_DETAIL_RECORD);
     }
 
