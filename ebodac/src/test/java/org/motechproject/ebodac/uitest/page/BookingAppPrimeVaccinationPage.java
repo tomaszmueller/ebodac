@@ -64,7 +64,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void clickOnIngoreLatesEarliestDate() throws InterruptedException {
-        clickWhenVisible(IGNORE_LATES_EARLEST_DATE_CHECKBOX);
+        findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).click();
     }
 
     public void clickSaveInUpdateVisitBookingDetails() throws InterruptedException {
