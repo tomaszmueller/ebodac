@@ -17,6 +17,7 @@ public class EnrollmentPage extends AbstractBasePage {
     private int lastEnroll;
     static final int SMALL_TIMEOUT = 500;
     static final int BIG_TIMEOUT = 2000;
+    static final By POPUP_MESSAGE = By.id("popup_message");
     public EnrollmentPage(WebDriver driver) {
         super(driver);
     }
@@ -30,6 +31,11 @@ public class EnrollmentPage extends AbstractBasePage {
     public void goToPage() {
 
     }
+    public String getPopupMessage() {
+        WebElement popupElement = findElement(POPUP_MESSAGE);
+        String popupMessage = popupElement.getText();
+        return popupMessage;
+    }
 
     public void clickAction() throws InterruptedException {
         Thread.sleep(SLEEP_500);
@@ -42,14 +48,19 @@ public class EnrollmentPage extends AbstractBasePage {
     }
     public boolean error() {
         try {
-            return findElement(POPUP_CONTENT).getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant with ");
+            WebElement popUpContent = findElement(POPUP_CONTENT);
+            if (popUpContent.getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant")
+                    || popUpContent.getText().contains("Error occurred during unenrolling Participant: Cannot unenroll Participant")) {
+                return true;
+            }
+            return false;
         } catch (Exception ex) {
             return false;
         }
     }
     public boolean enrolled() {
         try {
-            return findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully");
+            return findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully.");
         } catch (Exception ex) {
             return false;
         }
