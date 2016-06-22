@@ -49,14 +49,6 @@ public class BookingAppPage extends AbstractBasePage {
         clickWhenVisible(UNSCHEDULED_VISIT);
     }
 
-    public void openPrimeVaccination() throws InterruptedException {
-        clickWhenVisible(PRIME_VACCINATION);
-    }
-
-    public void openClinicVisitSchedule() throws InterruptedException {
-        clickWhenVisible(CLINIC_VISIT_SCHEDULE);
-    }
-
 
     @Override
     public String expectedUrlPath() {
