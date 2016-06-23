@@ -30,6 +30,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By NEXT_MONTH_BUTTON = By.cssSelector("#ui-datepicker-div > div.ui-datepicker-header.ui-widget-header.ui-helper-clearfix.ui-corner-all > a.ui-datepicker-next.ui-corner-all > span");
     static final By TODAY_BUTTON_DATE_PICKER = By.xpath("//*[@id=\"ui-datepicker-div\"]/div[2]/button[1]");
     static final By SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS = By.xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
+    static final By SAVE_BUTTON = By.xpath("//button[@ng-click='savePrimeVaccinationSchedule(false)']");
     static final By CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON = By.cssSelector("#popup_ok");
     static final By PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON = By.xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
     static final By SCREENING_DATE_PICKER = By.xpath("//input[@ng-model='form.dto.bookingScreeningActualDate']");
@@ -39,6 +40,19 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE = By.xpath("//*[@id=\"main-content\"]/div/div/div[1]/div/ul/li[6]/a");
     static final By SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON = By.xpath("//*[text()[contains(.,'Confirm visit booking details update')]]");
     static final By PRIME_VACCINATION_DATE_RANGE_FROM = By.xpath("//input[@ng-model='selectedFilter.startDate']");
+    static final By DATE_RANGE_DROPDOWN = By.xpath("//button[@ng-click='hideLookupDialog()']");
+    static final By SET_DATE_RANGE_FROM_DROP_DOWN = By.xpath("//a[contains(text(),'Date range')]");
+    static final By PRIME_VAC_DATE_COLUMN_NAME = By.id("jqgh_primeVaccinationSchedule_date");
+    static final By PRIME_VAC_DATE_FIELD_BY_NG_MODEL = By.xpath("//input[@ng-model='form.dto.date]");
+    static final By FIRST_DAY_OF_THE_MONTH = By.linkText("1");
+    static final By CLOSE_BUTTON_AFTER_SUCCESSFULLY_UPDATED = By.xpath("//button[contains(text(),'Close')]");
+    static final By FIST_PARTICIPANT_ID = By.xpath("//*[@id=\"1\"]/td[2]");
+    static final By FIRST_PARTICIPANT_PRIME_VAC_DATE= By.xpath("//*[@id=\"1\"]/td[6]");
+    static final By FILTER_BUTTON = By.id("lookupDialogButton");
+    static final By FILTER_DROPDOWN_BUTTON = By.xpath("//button[contains(text(),'Select')]");
+    static final By FIND_BY_PARTICIPANT_ID = By.xpath("//a[contains(text(),'Find By Participant Id')]");
+    static final By FIND_BY_PARTICIPANT_ID_FIELD = By.xpath("//input[@ng-model='lookupBy[buildLookupFieldName(field)]']");
+    static final By FIND_BY_PARTICIPANT_ID_BUTTON = By.xpath("//button[@ng-click='filterInstancesByLookup()']");
     static final int SLEEP_500 = 500;
     static final int SLEEP_2000 = 2000;
 
@@ -56,6 +70,14 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_ID_INPUT);
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
+    }
+
+    public String firstParticipantId() {
+        return findElement(FIST_PARTICIPANT_ID).getText();
+    }
+
+    public String firstParticipantPrimeVacDay() {
+        return findElement(FIRST_PARTICIPANT_PRIME_VAC_DATE).getText();
     }
 
     public void clickOnFirstRowInTheGridUI() throws InterruptedException {
@@ -142,6 +164,48 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(SCREENING_DATE_PICKER_DONE_BUTTON);
     }
 
+    public void changeDateRangeFromToday() throws InterruptedException {
+        sleep(SLEEP_500);
+        clickWhenVisible(DATE_RANGE_DROPDOWN);
+        sleep(SLEEP_500);
+        clickWhenVisible(SET_DATE_RANGE_FROM_DROP_DOWN);
+        sleep(SLEEP_500);
+    }
+
+    public void sortTableByPrimeVacDate() throws InterruptedException {
+        clickWhenVisible(PRIME_VAC_DATE_COLUMN_NAME);
+    }
+
+    public void changeDates() throws InterruptedException {
+        sleep(SLEEP_2000);
+        if(!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
+            clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
+            /**clickWhenVisible(PRIME_VAC_DATE_FIELD_BY_NG_MODEL);*/
+            clickWhenVisible(PRIME_VAC_DATE_FIELD);
+            clickWhenVisible(NEXT_MONTH_BUTTON);
+            clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+        } else {
+            clickWhenVisible(PRIME_VAC_DATE_FIELD);
+            clickWhenVisible(NEXT_MONTH_BUTTON);
+            clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+        }
+    }
+
+    public void saveAndConfirmChanges() throws InterruptedException {
+        clickWhenVisible(SAVE_BUTTON);
+        clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+        clickWhenVisible(CLOSE_BUTTON_AFTER_SUCCESSFULLY_UPDATED);
+    }
+
+    public void findParticipantInLookup(String participantId) throws InterruptedException {
+        clickWhenVisible(FILTER_BUTTON);
+        clickWhenVisible(FILTER_DROPDOWN_BUTTON);
+        clickWhenVisible(FIND_BY_PARTICIPANT_ID);
+        sleep(SLEEP_2000);
+        findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
+        clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
+        sleep(SLEEP_2000);
+    }
 
     //Asserts
     public boolean checkVisibleUpdatedVisitBookingDetails() {
@@ -166,7 +230,6 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         WebElement element = findElement(PRIME_VAC_DATE_FIELD_NAME);
         String name = element.getText();
         return "Prime Vac. Date".equals(name);
-
     }
 
     @Override
