@@ -13,11 +13,14 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     static final By PRIME_VAC_FIRST_FOLLOW_UP_VALUE = By.cssSelector("#main-content > div > div > table > tbody > tr > td:nth-child(4)");
     static final By PARTICIPANT_ID_DROPDOWN = By.id("s2id_subjectId");
     static final By FIRST_PARTICIPANT_IN_DROPDOWN = By.cssSelector("#select2-result-label-3");
+    static final String PARTICIPANT_CSS_SELECTOR = ("#select2-result-label-");
     static final By CLEAN_DATE_BUTTON = By.xpath("//*[@id=\"main-content\"]/div/div/button[3]");
     static final By PRIME_VAC_DAY_DATE = By.cssSelector("#primeVacDateInput");
+    static final By PRINT_BUTTON = By.xpath("//button[@ng-click='print()']");
     static final By SET_FIRST_DAY = By.linkText("1");
     public static final int SLEEP_1000 = 1000;
     public static final int SLEEP_3000 = 3000;
+    public static final int START_INTER = 3;
 
     public BookingAppClinicVisitSchedulePage(WebDriver driver) {
         super(driver);
@@ -28,6 +31,24 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
         clickWhenVisible(PARTICIPANT_ID_DROPDOWN);
         sleep(SLEEP_1000);
         findElement(FIRST_PARTICIPANT_IN_DROPDOWN).click();
+    }
+
+    public void findParticipantWithoutPrimeVacDay() throws InterruptedException {
+        sleep(SLEEP_3000);
+        clickWhenVisible(PARTICIPANT_ID_DROPDOWN);
+        sleep(SLEEP_1000);
+        findElement(FIRST_PARTICIPANT_IN_DROPDOWN).click();
+        WebElement element = findElement(PRIME_VAC_FIRST_FOLLOW_UP_VALUE);
+        String textt = element.getText();
+        if (!"".equals(textt)) {
+            int temp = START_INTER;
+            while (!"".equals(textt)) {
+                temp++;
+                String intToString = Integer.toString(temp);
+                findElement(By.cssSelector(PARTICIPANT_CSS_SELECTOR + intToString));
+                textt = element.getText();
+            }
+        }
     }
 
     public void clickButtonCleanDate() throws InterruptedException {
@@ -53,6 +74,9 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
         return textt;
     }
 
+    public void clickOnButtonToPrint() throws InterruptedException {
+        clickWhenVisible(PRINT_BUTTON);
+    }
 
     @Override
     public String expectedUrlPath() {
