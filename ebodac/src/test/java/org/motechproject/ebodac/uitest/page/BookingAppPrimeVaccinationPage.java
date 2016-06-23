@@ -41,6 +41,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By PRIME_VACCINATION_DATE_RANGE_FROM = By.xpath("//input[@ng-model='selectedFilter.startDate']");
     static final int SLEEP_500 = 500;
     static final int SLEEP_2000 = 2000;
+    static final By CLINIC_LOCATION = By.id("jqgh_primeVaccinationSchedule_location");
+    static final By PARTICIPANT_ID = By.id("jqgh_primeVaccinationSchedule_participantId");
+    static final By PARTICIPANT_NAME = By.id("jqgh_primeVaccinationSchedule_participantName");
+    static final By FEMALE_CHILD_BEARING_AGE = By.id("jqgh_primeVaccinationSchedule_femaleChildBearingAge");
+    static final By ACTUAL_SCREENING_DATE = By.id("jqgh_primeVaccinationSchedule_bookingScreeningActualDate");
+    static final By PRIME_VAC_DATE = By.id("jqgh_primeVaccinationSchedule_date");
+    static final By PRIME_VAC_TIME = By.id("jqgh_primeVaccinationSchedule_startTime");
 
 
     public BookingAppPrimeVaccinationPage(WebDriver driver) {
@@ -169,6 +176,34 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     }
 
+    public boolean checkTable() {
+        try {
+            if (findElement(CLINIC_LOCATION) == null) {
+                return false;
+            }
+            if (findElement(PARTICIPANT_ID) == null) {
+                return false;
+            }
+            if (findElement(PARTICIPANT_NAME) == null) {
+                return false;
+            }
+            if (findElement(FEMALE_CHILD_BEARING_AGE) == null) {
+                return false;
+            }
+            if (findElement(ACTUAL_SCREENING_DATE) == null) {
+                return false;
+            }
+            if (findElement(PRIME_VAC_DATE) == null) {
+                return false;
+            }
+            if (findElement(PRIME_VAC_TIME) == null) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     @Override
     public String expectedUrlPath() {
         return getServerURL() + URL_PATH;
