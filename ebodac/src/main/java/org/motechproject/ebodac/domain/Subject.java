@@ -465,9 +465,6 @@ public class Subject {
         if (!equalsForRave(subject)) {
             return false;
         }
-        if (visits != null ? !visits.equals(subject.visits) : subject.visits != null) {
-            return false;
-        }
 
         return true;
     }
@@ -558,7 +555,6 @@ public class Subject {
         result = 31 * result + (boosterVaccinationDate != null ? boosterVaccinationDate.hashCode() : 0);
         result = 31 * result + (dateOfDisconVac != null ? dateOfDisconVac.hashCode() : 0);
         result = 31 * result + (dateOfDisconStd != null ? dateOfDisconStd.hashCode() : 0);
-        result = 31 * result + (visits != null ? visits.hashCode() : 0);
         result = 31 * result + (chiefdom != null ? chiefdom.hashCode() : 0);
         result = 31 * result + (section != null ? section.hashCode() : 0);
         result = 31 * result + (district != null ? district.hashCode() : 0);
