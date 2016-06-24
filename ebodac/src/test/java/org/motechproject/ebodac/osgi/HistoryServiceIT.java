@@ -139,15 +139,15 @@ public class HistoryServiceIT extends BasePaxIT {
 
         visitList = visitDataService.findByActualDate(new LocalDate(2015, 6, 10));
         assertEquals(1, visitList.size());
-        assertEquals(3, historyService.countHistoryRecords(visitList.get(0)));
+        assertEquals(0, historyService.countHistoryRecords(visitList.get(0)));
 
         visitList = visitDataService.findByActualDate(new LocalDate(2015, 6, 11));
         assertEquals(1, visitList.size());
-        assertEquals(2, historyService.countHistoryRecords(visitList.get(0)));
+        assertEquals(0, historyService.countHistoryRecords(visitList.get(0)));
 
         visitList = visitDataService.findByActualDate(new LocalDate(2015, 6, 12));
         assertEquals(1, visitList.size());
-        assertEquals(1, historyService.countHistoryRecords(visitList.get(0)));
+        assertEquals(0, historyService.countHistoryRecords(visitList.get(0)));
 
     }
 
