@@ -6,6 +6,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
+
 import static java.lang.Thread.sleep;
 
 
@@ -14,6 +16,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final By ADD_PRIME_VACCINATION_BUTTON = By.xpath("//*[text()[contains(.,'Add Prime Vaccination')]]");
     static final By FIRST_ROW_IN_THE_GRID_UI = By.id("1");
+    static final By PARTICIPANT_SELECT = By.id("s2id_subjectIdSelect");
     static final By PARTICIPANT_ID_INPUT = By.xpath("//*[@id=\"s2id_subjectIdSelect\"]/a");
     static final By SCHEDULER_DAY_OF_MONTH = By.linkText("28");
     static final By SAVE_BUTTON_UPDATE_VISIT_BOOKING_DAY = By.xpath("//*[text()[contains(.,'Save')]]");
@@ -48,7 +51,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By ACTUAL_SCREENING_DATE = By.id("jqgh_primeVaccinationSchedule_bookingScreeningActualDate");
     static final By PRIME_VAC_DATE = By.id("jqgh_primeVaccinationSchedule_date");
     static final By PRIME_VAC_TIME = By.id("jqgh_primeVaccinationSchedule_startTime");
-
+    static final By CLOSE_BUTTON = By.xpath("//button[text()='Close']");
 
     public BookingAppPrimeVaccinationPage(WebDriver driver) {
         super(driver);
@@ -60,8 +63,12 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void clickFirstParticipantId() throws InterruptedException {
-        sleep(SLEEP_2000);
+        clickWhenVisible(PARTICIPANT_SELECT);
+        System.out.println("klikniete raz");
+        sleep(5000);
+        sleep(SLEEP_500);
         clickWhenVisible(PARTICIPANT_ID_INPUT);
+        System.out.println("klikniete dwa");
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
     }
 
@@ -141,6 +148,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         }
         sleep(SLEEP_500);
         clickWhenVisible(PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON);
+        clickWhenVisible(CLOSE_BUTTON);
+        ArrayList<String> tabs2 = new ArrayList<String>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tabs2.get(1));
+        getDriver().close();
+        getDriver().switchTo().window(tabs2.get(0));
+        sleep(SLEEP_500);
+        clickWhenVisible(By.linkText("EBODAC"));
     }
 
     public void setDateOfScreeningDate() throws InterruptedException {
