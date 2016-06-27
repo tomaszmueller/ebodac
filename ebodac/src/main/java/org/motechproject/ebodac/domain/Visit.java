@@ -37,7 +37,7 @@ public class Visit {
     private Long id;
 
     @NonEditable
-    @Field(displayName = "Participant", required = true)
+    @Field(displayName = "Participant")
     private Subject subject;
 
     @NonEditable
@@ -170,26 +170,28 @@ public class Visit {
 
         Visit visit = (Visit) o;
 
-        if (subject != null && visit.getSubject() != null) {
-            if (!subject.getSubjectId().equals(visit.getSubject().getSubjectId())) {
-                return false;
-            }
-        } else if (subject != null || visit.getSubject() != null) {
+        if (type != null ? !type.equals(visit.type) : visit.type != null) {
             return false;
         }
-        if (getType() != null && getType().equals(VisitType.UNSCHEDULED_VISIT)
-                && visit.getType() != null && visit.getType().equals(getType())) {
-            return (getDate() != null && visit.getDate() != null
-                    && getDate().equals(visit.getDate()))
-                    || (getDate() == null && visit.getDate() == null);
+        if (date != null ? !date.equals(visit.date) : visit.date != null) {
+            return false;
         }
-        return getType() != null && getType().equals(visit.getType());
+        if (dateProjected != null ? !dateProjected.equals(visit.dateProjected) : visit.dateProjected != null) {
+            return false;
+        }
+        if (motechProjectedDate != null ? !motechProjectedDate.equals(visit.motechProjectedDate) : visit.motechProjectedDate != null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = subject != null ? subject.getSubjectId().hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        int result = (type != null ? type.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (dateProjected != null ? dateProjected.hashCode() : 0);
+        result = 31 * result + (motechProjectedDate != null ? motechProjectedDate.hashCode() : 0);
         return result;
     }
 

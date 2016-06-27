@@ -53,9 +53,8 @@ public class VisitServiceImpl implements VisitService {
                 if (visit.getSubject().getPrimerVaccinationDate() != null) {
                     visit.setMotechProjectedDate(visit.getDateProjected());
                 }
-                List<Visit> visits = visit.getSubject().getVisits();
-                if (visits.contains(visit)) {
-                    Visit existingVisit = visits.get(visits.indexOf(visit));
+                Visit existingVisit = findExistingVisit(visit.getSubject().getVisits(), visit);
+                if (existingVisit != null) {
                     if (existingVisit.visitDatesChanged(visit)) {
                         checkAndSetMotechProjectedDate(visit, existingVisit);
                         if (visit.getDate() == null && existingVisit.getDate() != null) {
@@ -135,5 +134,24 @@ public class VisitServiceImpl implements VisitService {
             return true;
         }
         return false;
+    }
+
+    private Visit findExistingVisit(List<Visit> visits, Visit visit) {
+
+        if (VisitType.UNSCHEDULED_VISIT.equals(visit.getType())) {
+            for (Visit v : visits) {
+                if (VisitType.UNSCHEDULED_VISIT.equals(v.getType()) && (visit.getDate() != null ? visit.getDate().equals(v.getDate()) : v.getDate() == null)) {
+                    return v;
+                }
+            }
+        } else if (visit.getType() != null) {
+            for (Visit v : visits) {
+                if (visit.getType().equals(v.getType())) {
+                    return v;
+                }
+            }
+        }
+
+        return null;
     }
 }
