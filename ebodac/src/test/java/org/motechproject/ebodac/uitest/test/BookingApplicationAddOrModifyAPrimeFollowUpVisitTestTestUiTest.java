@@ -8,7 +8,7 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
 public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest extends TestBase {
@@ -19,6 +19,7 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
     private BookingAppClinicVisitSchedulePage bookingAppClinicVisitSchedulePage;
     private String user;
     private String password;
+    public static final int SLEEP_1000 = 1000;
 
     @Before
     public void setUp() {
@@ -41,6 +42,7 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
         homePage.openBookingAppModule();
         bookingAppPage.openClinicVisitSchedule();
         bookingAppClinicVisitSchedulePage.clickOnDropDownParticipantId();
+        sleep(SLEEP_1000);
         String dayBeforeClean = bookingAppClinicVisitSchedulePage.getPrimeVacDateInput();
         bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
         bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();

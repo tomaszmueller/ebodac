@@ -15,6 +15,7 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     static final By FIRST_PARTICIPANT_IN_DROPDOWN = By.cssSelector("#select2-result-label-3");
     static final String PARTICIPANT_CSS_SELECTOR = ("#select2-result-label-");
     static final By CLEAN_DATE_BUTTON = By.xpath("//*[@id=\"main-content\"]/div/div/button[3]");
+    static final By PROME_VAC_FIRST_FOLLOW_UP = By.xpath("//*[@id=\"main-content\"]/div/div/table/tbody/tr/td[4]");
     static final By PRIME_VAC_DAY_DATE = By.cssSelector("#primeVacDateInput");
     static final By PRINT_BUTTON = By.xpath("//button[@ng-click='print()']");
     static final By SET_FIRST_DAY = By.linkText("1");
@@ -61,7 +62,7 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     }
 
     public String getPrimeVacDateInput() {
-        return findElement(PRIME_VAC_DAY_DATE).getText();
+        return findElement(PROME_VAC_FIRST_FOLLOW_UP).getText();
     }
 
     public void clickOnFirstDayInCalendar() throws InterruptedException {
