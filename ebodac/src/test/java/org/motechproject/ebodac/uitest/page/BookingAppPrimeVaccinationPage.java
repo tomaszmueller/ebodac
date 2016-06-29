@@ -50,7 +50,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By FIRST_DAY_OF_THE_MONTH = By.linkText("1");
     static final By CLOSE_BUTTON_AFTER_SUCCESSFULLY_UPDATED = By.xpath("//button[contains(text(),'Close')]");
     static final By FIST_PARTICIPANT_ID = By.xpath("//*[@id=\"1\"]/td[2]");
-    static final By FIRST_PARTICIPANT_PRIME_VAC_DATE= By.xpath("//*[@id=\"1\"]/td[6]");
+    static final By FIRST_PARTICIPANT_PRIME_VAC_DATE = By.xpath("//*[@id=\"1\"]/td[6]");
     static final By FILTER_BUTTON = By.id("lookupDialogButton");
     static final By FILTER_DROPDOWN_BUTTON = By.xpath("//button[contains(text(),'Select')]");
     static final By FIND_BY_PARTICIPANT_ID = By.xpath("//a[contains(text(),'Find By Participant Id')]");
@@ -81,9 +81,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void clickFirstParticipantId() throws InterruptedException {
+        sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
-        clickWhenVisible(PARTICIPANT_ID_INPUT);
-        sleep(SLEEP_5000);
         sleep(SLEEP_500);
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
     }
@@ -102,7 +101,9 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void clickOnIngoreLatesEarliestDate() throws InterruptedException {
-        findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).click();
+        if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
+            clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
+        }
     }
 
     public void clickSaveInUpdateVisitBookingDetails() throws InterruptedException {
@@ -111,10 +112,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     public void setDateOfPrimeVacDateFields() throws InterruptedException {
         sleep(SLEEP_500);
-        clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
         findElement(PRIME_VAC_DATE_FIELD).click();
         clickWhenVisible(NEXT_MONTH_BUTTON);
-        clickWhenVisible(TODAY_BUTTON_DATE_PICKER);
         clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
 
     }
@@ -179,6 +178,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         getDriver().switchTo().window(tabs2.get(TAB_GET_0));
         sleep(SLEEP_500);
         clickWhenVisible(By.linkText("EBODAC"));
+
     }
 
     public void setDateOfScreeningDate() throws InterruptedException {
@@ -201,7 +201,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     public void changeDates() throws InterruptedException {
         sleep(SLEEP_2000);
-        if(!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
+        if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
             clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
             /**clickWhenVisible(PRIME_VAC_DATE_FIELD_BY_NG_MODEL);*/
             clickWhenVisible(PRIME_VAC_DATE_FIELD);

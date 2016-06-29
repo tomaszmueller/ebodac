@@ -44,6 +44,7 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
         bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
         bookingAppPrimeVaccinationPage.clickFirstParticipantId();
+        bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         bookingAppPrimeVaccinationPage.setDateOfScreeningDate();
         bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
         bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
