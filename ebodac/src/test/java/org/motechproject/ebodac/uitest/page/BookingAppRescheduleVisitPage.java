@@ -24,7 +24,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     static final By TIME_DONE = By.xpath("//button[@data-handler='hide']");
     static final By SAVE_BUTTON = By.xpath("//button[@ng-click='saveVisitReschedule(false)']");
     static final By POPUP_OK = By.id("popup_ok");
-    static final By PRINT_CARD = By.className("btn btn-primary ng-binding");
+    static final By PRINT_CARD = By.xpath("//button[@ng-click='print()']");
     static final By CLOSE_BUTTON = By.xpath("//button[@data-dismiss='modal']");
     static final By IGNORE_EARLIEST_LATEST_DATE = By.xpath("//div[@id='visitRescheduleModal']/div[2]/div/div[2]/div/div[4]/input[@type='checkbox']");
     static final By YEAR_FIELD = By.xpath("//div[@id='ui-datepicker-div']/div/div/select/option[@selected='selected']");
