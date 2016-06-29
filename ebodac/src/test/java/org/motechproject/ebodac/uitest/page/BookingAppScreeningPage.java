@@ -59,6 +59,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     static final By CLINIC_LOCACATION_KAMBIA_I = By.xpath("//div[contains(text(), 'Kambia I')]");
     static final By SAVE_BUTTON_NG_CLICK = By.xpath("//button[@ng-click='saveScreening(false)']");
     static final By CONFIRM_BUTTON = By.id("popup_ok");
+    static final int SLEEP_4000 = 4000;
     static final int SLEEP_1000 = 1000;
     static final int SLEEP_500 = 500;
 
@@ -128,6 +129,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     public void clickOnButtonToCloseScheduleScreening() throws InterruptedException {
         sleep(SLEEP_1000);
         clickWhenVisible(CLOSE_BUTTON_TEXT);
+        sleep(SLEEP_4000);
     }
 
     public void changeFilterTo(String filter) throws InterruptedException  {
