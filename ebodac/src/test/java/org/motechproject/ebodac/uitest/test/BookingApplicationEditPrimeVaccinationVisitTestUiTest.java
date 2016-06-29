@@ -22,6 +22,7 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
     private String user;
     private String password;
     static final int SLEEP_500 = 500;
+    static final int SLEEP_2000 = 2000;
 
     @Before
     public void setUp() {
@@ -45,11 +46,11 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
         bookingAppPage.openPrimeVaccination();
         assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
         bookingAppPrimeVaccinationPage.changeDateRangeFromToday();
-        sleep(SLEEP_500);
+        sleep(SLEEP_2000);
         bookingAppPrimeVaccinationPage.sortTableByPrimeVacDate();
-        sleep(SLEEP_500);
+        sleep(SLEEP_2000);
         bookingAppPrimeVaccinationPage.sortTableByPrimeVacDate();
-        sleep(SLEEP_500);
+        sleep(SLEEP_2000);
         String participantId = bookingAppPrimeVaccinationPage.firstParticipantId();
         String participantVacDate = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
         bookingAppPrimeVaccinationPage.clickOnFirstRowInTheGridUI();
