@@ -203,14 +203,20 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         sleep(SLEEP_2000);
         if(!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
             clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
-            /**clickWhenVisible(PRIME_VAC_DATE_FIELD_BY_NG_MODEL);*/
+            sleep(SLEEP_500);
             clickWhenVisible(PRIME_VAC_DATE_FIELD);
+            sleep(SLEEP_500);
             clickWhenVisible(NEXT_MONTH_BUTTON);
+            sleep(SLEEP_500);
             clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+            sleep(SLEEP_500);
         } else {
             clickWhenVisible(PRIME_VAC_DATE_FIELD);
+            sleep(SLEEP_500);
             clickWhenVisible(NEXT_MONTH_BUTTON);
+            sleep(SLEEP_500);
             clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+            sleep(SLEEP_500);
         }
     }
 
