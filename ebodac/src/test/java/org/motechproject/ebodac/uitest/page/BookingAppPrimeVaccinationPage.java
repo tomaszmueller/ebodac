@@ -173,12 +173,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON);
         clickWhenVisible(CLOSE_BUTTON);
         ArrayList<String> tabs2 = new ArrayList<String>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(tabs2.get(TAB_GET_1));
-        getDriver().close();
-        getDriver().switchTo().window(tabs2.get(TAB_GET_0));
-        sleep(SLEEP_500);
-        clickWhenVisible(By.linkText("EBODAC"));
-
+        if (tabs2.get(TAB_GET_1) != null ) {
+            getDriver().switchTo().window(tabs2.get(TAB_GET_1));
+            getDriver().close();
+            getDriver().switchTo().window(tabs2.get(TAB_GET_0));
+            sleep(SLEEP_500);
+            clickWhenVisible(By.linkText("EBODAC"));
+        }
     }
 
     public void setDateOfScreeningDate() throws InterruptedException {
