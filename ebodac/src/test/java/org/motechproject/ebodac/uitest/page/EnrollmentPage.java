@@ -96,7 +96,7 @@ public class EnrollmentPage extends AbstractBasePage {
         while (error());
     }
     public void actionSecond() {
-        WebElement action = findElement(By.xpath("//table[@id='enrollmentTable']/tbody/tr[" + lastEnroll + "]/td[6]/button"));
+        WebElement action = findElement(By.xpath("//table[@id='enrollmentTable']/tbody/tr[" + LAST_ENROLL + "]/td[6]/button"));
         action.click();
     }
 

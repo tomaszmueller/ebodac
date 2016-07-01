@@ -45,6 +45,7 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
     }
     @Test
     public void confirmationBeforeUnenrollmentEnrollmentTest() throws Exception {
+        homePage.resizePage();
         homePage.openEBODACModule();
         Thread.sleep(2000);
         ebodacPage.goToEnrollment();
