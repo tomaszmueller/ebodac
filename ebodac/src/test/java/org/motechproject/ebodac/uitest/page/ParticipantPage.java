@@ -34,7 +34,7 @@ public class ParticipantPage extends AbstractBasePage {
 
     public void openFirstParticipant() throws InterruptedException {
         try {
-            Thread.sleep(SMALL_TIMEOUT);
+            Thread.sleep(BIG_TIMEOUT);
             findElement(PARTICIPANT);
         } catch (Exception e) {
             throw new AssertionError("No participants present");
