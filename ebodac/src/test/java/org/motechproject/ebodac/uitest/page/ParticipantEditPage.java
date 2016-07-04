@@ -10,6 +10,7 @@ public class ParticipantEditPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final int SMALL_TIMEOUT = 500;
+    static final int SLEEP_2000 = 2000;
     static final int TIMEOUT_BORDER = 10000;
     static final By PHONE_NUMBER_FIELD = By.id("phoneNumberForm");
     static final By SAVE_BUTTON = By.xpath("//button[@ng-click='addEntityInstance()']");
@@ -46,18 +47,20 @@ public class ParticipantEditPage extends AbstractBasePage {
     }
 
     public void changePhoneNumber(String number) throws InterruptedException {
+        Thread.sleep(SLEEP_2000);
         setPhoneNumber(number);
+        Thread.sleep(SLEEP_2000);
         clickOn(SAVE_BUTTON);
+        Thread.sleep(SLEEP_2000);
         clickWhenVisible(CONFIRMATION_BUTTON);
+        Thread.sleep(SLEEP_2000);
     }
 
     public boolean setPhoneNumber(String number) throws InterruptedException {
             findElement(PHONE_NUMBER_FIELD).clear();
-            changeFocus();
-            Thread.sleep(SMALL_TIMEOUT);
+            Thread.sleep(SLEEP_2000);
             findElement(PHONE_NUMBER_FIELD).sendKeys(number);
-            changeFocus();
-            Thread.sleep(SMALL_TIMEOUT);
+            Thread.sleep(SLEEP_2000);
             if (findElement(PHONE_NUMBER_FIELD).getText().equals(number)) {
                 return true;
             }

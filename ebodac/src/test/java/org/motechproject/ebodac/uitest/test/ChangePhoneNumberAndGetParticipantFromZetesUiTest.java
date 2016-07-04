@@ -14,6 +14,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 
 import java.lang.Exception;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
 public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase {
@@ -29,6 +30,7 @@ public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase 
     private String changedNumber;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
+    static final int SLEEP_2000 = 2000;
     @Before
     public void setUp() {
         l1AdminUser = getTestProperties().getUserName();
@@ -51,12 +53,15 @@ public class ChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase 
 
     @Test //Test for EBODAC-508/EBODAC-509
     public void changePhoneNumberTest() throws Exception {
+        homePage.resizePage();
         homePage.openEBODACModule();
+        sleep(SLEEP_2000);
         ebodacPage.showParticipants();
+        sleep(SLEEP_2000);
         participantPage.openFirstParticipant();
         participantEditPage.changePhoneNumber(testNumber);
         changedNumber = participantPage.getFirstParticipantNumber();
-        assertEquals(changedNumber, testNumber);
+        assertEquals(testNumber, changedNumber);
     }
 
     @After
