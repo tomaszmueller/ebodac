@@ -65,6 +65,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By PRIME_VAC_DATE = By.id("jqgh_primeVaccinationSchedule_date");
     static final By PRIME_VAC_TIME = By.id("jqgh_primeVaccinationSchedule_startTime");
     static final By CLOSE_BUTTON = By.xpath("//button[text()='Close']");
+    static final String SEARCH = "primeVaccinationCard";
     static final int TAB_GET_1 = 1;
     static final int TAB_GET_0 = 0;
 
@@ -158,6 +159,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         sleep(SLEEP_2000);
         boolean exists;
         clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+        sleep(SLEEP_2000);
         try {
             exists = null != findElement(SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
         } catch (Exception e) {
@@ -225,6 +227,17 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
         clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
         sleep(SLEEP_2000);
+    }
+
+    public void closePdfIfIsOpen() throws InterruptedException {
+        String originalHandle = getDriver().getWindowHandle();
+        for(String handle : getDriver().getWindowHandles()) {
+            if (!handle.equals(originalHandle)) {
+                getDriver().switchTo().window(handle);
+                getDriver().close();
+            }
+        }
+        getDriver().switchTo().window(originalHandle);
     }
 
     //Asserts

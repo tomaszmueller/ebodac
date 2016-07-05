@@ -47,10 +47,12 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
         assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
         bookingAppPrimeVaccinationPage.setMaxDateRangeOfPrimeVaccination();
         bookingAppPrimeVaccinationPage.clickOnFirstRowInTheGridUI();
+        bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
         bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
         bookingAppPrimeVaccinationPage.clickSaveInUpdateVisitBookingDetails();
         bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();
+        bookingAppPrimeVaccinationPage.closePdfIfIsOpen();
     }
 
     @After

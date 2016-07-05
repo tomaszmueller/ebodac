@@ -80,7 +80,7 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
         logout();
     }
 
-    public void checkPopUp(String popUpMessage1, String popUpMessage2) {
+    public void checkPopUp(String popUpMessage1, String popUpMessage2) throws  InterruptedException {
         if (!(popUpMessage1).equals(enrollmentPage.getPopupMessage()) &&
                 !(popUpMessage2).equals(enrollmentPage.getPopupMessage())) {
             assertTrue(false);

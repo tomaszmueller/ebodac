@@ -41,10 +41,9 @@ public class EnrollmentPage extends AbstractBasePage {
     public void goToPage() {
 
     }
-    public String getPopupMessage() {
-        WebElement popupElement = findElement(POPUP_MESSAGE);
-        String popupMessage = popupElement.getText();
-        return popupMessage;
+    public String getPopupMessage() throws InterruptedException {
+        sleep(BIG_TIMEOUT);
+        return findElement(POPUP_MESSAGE).getText();
     }
 
     public void clickAction() throws InterruptedException {

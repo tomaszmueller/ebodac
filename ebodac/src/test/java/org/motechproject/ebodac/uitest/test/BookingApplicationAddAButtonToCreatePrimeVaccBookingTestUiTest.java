@@ -51,6 +51,8 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
         bookingAppPrimeVaccinationPage.saveCreatedPrimeVaccination();
         bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();
+        bookingAppPrimeVaccinationPage.closePdfIfIsOpen();
+
     }
 
     @After
