@@ -17,7 +17,7 @@
         <form name="form" class="form-horizontal" novalidate>
             <div class="panel-group">
                 <div class="panel panel-default" ng-repeat="report in emailReports">
-                    <div class="panel-heading" ng-click="accordions[$index] = !accordions[$index]">
+                    <div class="panel-heading" ng-class="{true:'', false:'report-disabled'}[report.status === 'ENABLED']" ng-click="accordions[$index] = !accordions[$index]">
                         <i ng-class="{'fa-caret-down': accordions[$index], 'fa-caret-right': !accordions[$index]}" class="fa fa-fw fa-lg pointer"></i>
                         {{report.name}}
                     </div>
@@ -119,6 +119,8 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-3 col-md-9">
                                         <div class="form-inline">
+                                            <button class="btn btn-sm btn-success" ng-show="report.status !== 'ENABLED'" ng-click="enableReport($index)">{{msg('ebodac.web.emailReports.enable')}}</button>
+                                            <button class="btn btn-sm btn-danger" ng-show="report.status === 'ENABLED'" ng-click="disableReport($index)">{{msg('ebodac.web.emailReports.disable')}}</button>
                                             <button class="btn btn-sm btn-danger" ng-click="deleteReport($index)"> <i class="fa fa-fw fa-trash-o"></i> {{msg('ebodac.web.emailReports.delete')}} </button>
                                             <button class="btn btn-sm btn-primary" ng-show="isDirty($index)" ng-disabled="!reportForm.$valid" ng-click="saveReport($index)">{{msg('ebodac.web.emailReports.save')}}</button>
                                             <button class="btn btn-sm btn-default" ng-show="isDirty($index)" ng-click="reset($index)">{{msg('ebodac.web.emailReports.cancel')}}</button>

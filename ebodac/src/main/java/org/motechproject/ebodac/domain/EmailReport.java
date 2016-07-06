@@ -3,6 +3,7 @@ package org.motechproject.ebodac.domain;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.domain.enums.DayOfWeek;
+import org.motechproject.ebodac.domain.enums.EmailReportStatus;
 import org.motechproject.ebodac.domain.enums.EmailSchedulePeriod;
 import org.motechproject.ebodac.util.json.serializer.CustomTimeSerializer;
 import org.motechproject.mds.annotations.Access;
@@ -47,6 +48,9 @@ public class EmailReport {
 
     @Field
     private DayOfWeek dayOfWeek;
+
+    @Field
+    private EmailReportStatus status;
 
     public EmailReport() {
     }
@@ -125,5 +129,13 @@ public class EmailReport {
 
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public EmailReportStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EmailReportStatus status) {
+        this.status = status;
     }
 }

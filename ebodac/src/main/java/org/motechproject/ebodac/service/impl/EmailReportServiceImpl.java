@@ -5,14 +5,17 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.commons.date.model.Time;
 import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.EbodacEntity;
 import org.motechproject.ebodac.domain.EbodacEntityField;
 import org.motechproject.ebodac.domain.EmailRecipient;
 import org.motechproject.ebodac.domain.EmailReport;
-import org.motechproject.ebodac.dto.EmailReportDto;
+import org.motechproject.ebodac.domain.enums.DayOfWeek;
+import org.motechproject.ebodac.domain.enums.EmailReportStatus;
 import org.motechproject.ebodac.domain.enums.EmailSchedulePeriod;
+import org.motechproject.ebodac.dto.EmailReportDto;
 import org.motechproject.ebodac.repository.EbodacEntityDataService;
 import org.motechproject.ebodac.repository.EbodacEntityFieldDataService;
 import org.motechproject.ebodac.repository.EmailRecipientDataService;
@@ -72,22 +75,9 @@ public class EmailReportServiceImpl implements EmailReportService {
 
     @Override
     public EmailReport saveReport(EmailReportDto reportDto) {
-        DateTime startDate = null;
         EmailReport report = reportDto.getReport();
         EmailSchedulePeriod period = report.getSchedulePeriod();
-
-        if (EmailSchedulePeriod.DAILY.equals(period)) {
-            startDate = report.getScheduleTime().toDateTime(LocalDate.now());
-        } else if (EmailSchedulePeriod.WEEKLY.equals(period)) {
-            LocalDate date = LocalDate.now().withDayOfWeek(report.getDayOfWeek().getValue());
-            startDate = report.getScheduleTime().toDateTime(date);
-        } else {
-            startDate = report.getScheduleTime().toDateTime(calculateDate(report.getDayOfWeek().getValue()));
-        }
-
-        if (startDate.isBeforeNow()) {
-            startDate = startDate.plus(period.getPeriod());
-        }
+        DateTime startDate = calculateStartDate(period, report.getScheduleTime(), report.getDayOfWeek());
 
         List<EmailRecipient> recipients = new ArrayList<>();
 
@@ -108,14 +98,18 @@ public class EmailReportServiceImpl implements EmailReportService {
         if (report.getId() == null) {
             emailReportDataService.create(report);
 
-            try {
-                ebodacScheduler.scheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
-            } catch (RuntimeException e) {
-                emailReportDataService.delete(report);
-                throw new MotechSchedulerException(e);
+            if (EmailReportStatus.ENABLED.equals(report.getStatus())) {
+                try {
+                    ebodacScheduler.scheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
+                } catch (RuntimeException e) {
+                    deleteReport(report);
+                    throw new MotechSchedulerException(e);
+                }
             }
         } else {
-            ebodacScheduler.rescheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
+            if (EmailReportStatus.ENABLED.equals(report.getStatus())) {
+                ebodacScheduler.rescheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
+            }
             emailReportDataService.update(report);
         }
 
@@ -131,10 +125,12 @@ public class EmailReportServiceImpl implements EmailReportService {
         if (report == null) {
             throw new IllegalArgumentException("Cannot find report with id: " + reportId);
         } else {
+            if (EmailReportStatus.ENABLED.equals(report.getStatus())) {
+                ebodacScheduler.unscheduleEmailReportJob(reportId);
+            }
             Long entityId = report.getEntity().getId();
             List<EbodacEntityField> fields = report.getEntity().getFields();
 
-            ebodacScheduler.unscheduleEmailReportJob(reportId);
             emailReportDataService.delete(report);
 
             deleteEntityAndEntityFields(entityId, fields);
@@ -185,6 +181,50 @@ public class EmailReportServiceImpl implements EmailReportService {
         }
     }
 
+    @Override
+    public EmailReportStatus enableReport(Long reportId) {
+        EmailReport report = emailReportDataService.findById(reportId);
+
+        if (report == null) {
+            throw new IllegalArgumentException("Cannot find report with id: " + reportId);
+        } else if (report.getStatus() == null || EmailReportStatus.DISABLED.equals(report.getStatus())) {
+            EmailSchedulePeriod period = report.getSchedulePeriod();
+            DateTime startDate = calculateStartDate(period, report.getScheduleTime(), report.getDayOfWeek());
+
+            ebodacScheduler.scheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
+
+            report.setStatus(EmailReportStatus.ENABLED);
+            emailReportDataService.update(report);
+        }
+
+        return report.getStatus();
+    }
+
+    @Override
+    public EmailReportStatus disableReport(Long reportId) {
+        EmailReport report = emailReportDataService.findById(reportId);
+
+        if (report == null) {
+            throw new IllegalArgumentException("Cannot find report with id: " + reportId);
+        } else if (EmailReportStatus.ENABLED.equals(report.getStatus())) {
+            ebodacScheduler.unscheduleEmailReportJob(reportId);
+
+            report.setStatus(EmailReportStatus.DISABLED);
+            emailReportDataService.update(report);
+        }
+
+        return report.getStatus();
+    }
+
+    private void deleteReport(EmailReport report) {
+        Long entityId = report.getEntity().getId();
+        List<EbodacEntityField> fields = report.getEntity().getFields();
+
+        emailReportDataService.delete(report);
+
+        deleteEntityAndEntityFields(entityId, fields);
+    }
+
     private void deleteEntity(Long id) {
         if (id != null) {
             EbodacEntity entity = ebodacEntityDataService.findById(id);
@@ -197,6 +237,7 @@ public class EmailReportServiceImpl implements EmailReportService {
                 if (fields != null) {
                     for (EbodacEntityField field : fields) {
                         EbodacEntityField entityField = ebodacEntityFieldDataService.findById(field.getId());
+
                         if (entityField != null) {
                             ebodacEntityFieldDataService.delete(entityField);
                         }
@@ -217,13 +258,34 @@ public class EmailReportServiceImpl implements EmailReportService {
 
         if (fields != null) {
             for (EbodacEntityField field : fields) {
-                EbodacEntityField entityField = ebodacEntityFieldDataService.findById(field.getId());
+                if (field != null) {
+                    EbodacEntityField entityField = ebodacEntityFieldDataService.findById(field.getId());
 
-                if (entityField != null) {
-                    ebodacEntityFieldDataService.delete(entityField);
+                    if (entityField != null) {
+                        ebodacEntityFieldDataService.delete(entityField);
+                    }
                 }
             }
         }
+    }
+
+    private DateTime calculateStartDate(EmailSchedulePeriod period, Time scheduleTime, DayOfWeek dayOfWeek) {
+        DateTime startDate = null;
+
+        if (EmailSchedulePeriod.DAILY.equals(period)) {
+            startDate = scheduleTime.toDateTime(LocalDate.now());
+        } else if (EmailSchedulePeriod.WEEKLY.equals(period)) {
+            LocalDate date = LocalDate.now().withDayOfWeek(dayOfWeek.getValue());
+            startDate = scheduleTime.toDateTime(date);
+        } else {
+            startDate = scheduleTime.toDateTime(calculateDate(dayOfWeek.getValue()));
+        }
+
+        if (startDate.isBeforeNow()) {
+            startDate = startDate.plus(period.getPeriod());
+        }
+
+        return startDate;
     }
 
     private LocalDate calculateDate(int dayOfWeek) {

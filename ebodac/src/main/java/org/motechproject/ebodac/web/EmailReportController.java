@@ -91,6 +91,32 @@ public class EmailReportController {
         return emailRecipientDataService.create(recipient);
     }
 
+    @RequestMapping(value = "/enableReport", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> enableReport(@RequestBody String reportId) {
+        try {
+            emailReportService.enableReport(Long.valueOf(reportId));
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Report id is not a number", e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/disableReport", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> disableReport(@RequestBody String reportId) {
+        try {
+            emailReportService.disableReport(Long.valueOf(reportId));
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Report id is not a number", e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ExceptionHandler(MotechSchedulerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
