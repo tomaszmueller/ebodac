@@ -6,7 +6,9 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +28,30 @@ public class EbodacHttpClient {
     }
 
     public HttpResponse sendJson(String url, String jsonString, String username, String password) {
+        try {
+            StringRequestEntity entity = new StringRequestEntity(jsonString, "application/json", "UTF-8");
+
+            return sendRequestEntity(url, username, password, entity);
+        } catch (Exception e) {
+            LOGGER.error("Fatal exception occurred while sending request: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
+
+    public HttpResponse sendCsvFile(String url, String username, String password, InputStream file) {
+        try {
+            ByteArrayRequestEntity entity = new ByteArrayRequestEntity(IOUtils.toByteArray(file));
+
+            return sendRequestEntity(url, username, password, entity);
+        } catch (Exception e) {
+            LOGGER.error("Fatal exception occurred while sending request: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
+
+    private HttpResponse sendRequestEntity(String url, String username, String password, RequestEntity entity) {
         HttpClient client = new HttpClient();
         PostMethod method = new PostMethod(url);
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
@@ -33,8 +59,7 @@ public class EbodacHttpClient {
             client.getState().setCredentials(AuthScope.ANY, creds);
         }
         try {
-            StringRequestEntity input = new StringRequestEntity(jsonString, "application/json", "UTF-8");
-            method.setRequestEntity(input);
+            method.setRequestEntity(entity);
 
             HttpResponse httpResponse = new HttpResponse();
             int status = client.executeMethod(method);
@@ -62,5 +87,4 @@ public class EbodacHttpClient {
 
         return null;
     }
-
 }
