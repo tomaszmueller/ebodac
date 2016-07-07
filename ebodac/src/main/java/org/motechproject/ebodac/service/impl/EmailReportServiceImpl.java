@@ -36,7 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -150,7 +150,7 @@ public class EmailReportServiceImpl implements EmailReportService {
                 DataSource source = null;
 
                 if (!emailReport.getEntity().getFields().isEmpty()) {
-                    Map<String, String> headerMap = new HashMap<>();
+                    Map<String, String> headerMap = new LinkedHashMap<>();
 
                     for (EbodacEntityField field : emailReport.getEntity().getFields()) {
                         headerMap.put(field.isRelationField() ? field.getRelatedFieldDisplayName() : field.getDisplayName(), field.getFieldPath());
