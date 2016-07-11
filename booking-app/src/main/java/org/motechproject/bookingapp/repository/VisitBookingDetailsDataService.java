@@ -3,7 +3,7 @@ package org.motechproject.bookingapp.repository;
 import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
 import org.motechproject.commons.api.Range;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.service.MotechDataService;

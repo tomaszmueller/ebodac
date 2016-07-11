@@ -1,7 +1,7 @@
 package org.motechproject.bookingapp.util;
 
 import org.apache.commons.lang.Validate;
-import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.dto.ScreeningDto;
 
 public final class ScreeningValidator {
 

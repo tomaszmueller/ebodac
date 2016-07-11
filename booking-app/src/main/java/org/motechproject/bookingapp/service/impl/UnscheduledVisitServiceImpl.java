@@ -7,7 +7,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
-import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
+import org.motechproject.bookingapp.dto.UnscheduledVisitDto;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
 import org.motechproject.bookingapp.repository.UnscheduledVisitDataService;

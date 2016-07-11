@@ -39,3 +39,5 @@ END//
 DELIMITER ;
 
 CALL removeNotNullConstraint();
+
+DROP PROCEDURE IF EXISTS removeNotNullConstraint;

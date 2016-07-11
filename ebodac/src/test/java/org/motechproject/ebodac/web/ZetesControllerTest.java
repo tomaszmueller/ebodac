@@ -3,9 +3,10 @@ package org.motechproject.ebodac.web;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
+import org.motechproject.ebodac.web.domain.SubmitSubjectRequest;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;

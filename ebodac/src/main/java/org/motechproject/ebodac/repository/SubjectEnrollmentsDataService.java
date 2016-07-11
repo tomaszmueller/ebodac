@@ -2,8 +2,8 @@ package org.motechproject.ebodac.repository;
 
 import org.joda.time.LocalDate;
 import org.motechproject.commons.api.Range;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
-import org.motechproject.ebodac.domain.Gender;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.Gender;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;

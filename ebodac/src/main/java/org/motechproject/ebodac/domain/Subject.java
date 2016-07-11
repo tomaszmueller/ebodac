@@ -6,11 +6,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
-import org.motechproject.ebodac.util.CustomDateDeserializer;
-import org.motechproject.ebodac.util.CustomDateSerializer;
-import org.motechproject.ebodac.util.CustomDateTimeDeserializer;
-import org.motechproject.ebodac.util.CustomDateTimeSerializer;
-import org.motechproject.ebodac.util.CustomVisitListDeserializer;
+import org.motechproject.ebodac.domain.enums.Gender;
+import org.motechproject.ebodac.domain.enums.Language;
+import org.motechproject.ebodac.util.json.serializer.CustomDateDeserializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateSerializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateTimeDeserializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateTimeSerializer;
+import org.motechproject.ebodac.util.json.serializer.CustomVisitListDeserializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
@@ -463,9 +465,6 @@ public class Subject {
         if (!equalsForRave(subject)) {
             return false;
         }
-        if (visits != null ? !visits.equals(subject.visits) : subject.visits != null) {
-            return false;
-        }
 
         return true;
     }
@@ -556,7 +555,6 @@ public class Subject {
         result = 31 * result + (boosterVaccinationDate != null ? boosterVaccinationDate.hashCode() : 0);
         result = 31 * result + (dateOfDisconVac != null ? dateOfDisconVac.hashCode() : 0);
         result = 31 * result + (dateOfDisconStd != null ? dateOfDisconStd.hashCode() : 0);
-        result = 31 * result + (visits != null ? visits.hashCode() : 0);
         result = 31 * result + (chiefdom != null ? chiefdom.hashCode() : 0);
         result = 31 * result + (section != null ? section.hashCode() : 0);
         result = 31 * result + (district != null ? district.hashCode() : 0);

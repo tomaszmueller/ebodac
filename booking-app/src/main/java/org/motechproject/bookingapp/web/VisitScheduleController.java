@@ -7,7 +7,7 @@ import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.exception.VisitScheduleException;
 import org.motechproject.bookingapp.service.VisitScheduleService;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

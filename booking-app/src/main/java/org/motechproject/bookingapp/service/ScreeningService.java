@@ -1,7 +1,7 @@
 package org.motechproject.bookingapp.service;
 
 import org.motechproject.bookingapp.domain.Screening;
-import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.dto.ScreeningDto;
 import org.motechproject.bookingapp.web.domain.BookingGridSettings;
 import org.motechproject.ebodac.web.domain.Records;
 

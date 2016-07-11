@@ -8,10 +8,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.api.Range;
 import org.motechproject.ebodac.constants.EbodacConstants;
-import org.motechproject.ebodac.domain.DateFilter;
-import org.motechproject.ebodac.domain.IvrAndSmsStatisticGraphsDto;
-import org.motechproject.ebodac.domain.IvrAndSmsStatisticTablesDto;
-import org.motechproject.ebodac.domain.IvrEngagementStatistic;
+import org.motechproject.ebodac.domain.enums.DateFilter;
+import org.motechproject.ebodac.dto.IvrAndSmsStatisticGraphsDto;
+import org.motechproject.ebodac.dto.IvrAndSmsStatisticTablesDto;
+import org.motechproject.ebodac.dto.IvrEngagementStatisticDto;
 import org.motechproject.ebodac.exception.EbodacExportException;
 import org.motechproject.ebodac.exception.EbodacLookupException;
 import org.motechproject.ebodac.service.ExportService;
@@ -84,7 +84,7 @@ public class StatisticController {
     @PreAuthorize("hasRole('manageEbodac')")
     @RequestMapping(value = "/getIvrEngagementStatistic", method = RequestMethod.POST)
     @ResponseBody
-    public List<IvrEngagementStatistic> getIvrEngagementStatistic() throws IOException {
+    public List<IvrEngagementStatisticDto> getIvrEngagementStatistic() throws IOException {
         return statisticService.getIvrEngagementStatistic();
     }
 

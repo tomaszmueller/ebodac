@@ -16,7 +16,7 @@ import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.repository.VisitDataService;
 import org.motechproject.ebodac.service.VisitService;
-import org.motechproject.ebodac.web.SubmitSubjectRequest;
+import org.motechproject.ebodac.web.domain.SubmitSubjectRequest;
 import org.motechproject.testing.osgi.BasePaxIT;
 import org.motechproject.testing.osgi.container.MotechNativeTestContainerFactory;
 import org.motechproject.testing.utils.TestContext;

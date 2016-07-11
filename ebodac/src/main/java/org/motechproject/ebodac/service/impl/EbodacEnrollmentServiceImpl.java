@@ -6,11 +6,11 @@ import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
@@ -35,6 +35,9 @@ import java.util.regex.Pattern;
 public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EbodacEnrollmentServiceImpl.class);
+
+    public static final String LONG_TERM_FOLLOW_UP_CAMPAIGN = ".* Long-term Follow-up visit";
+    public static final String FOLLOW_UP_CAMPAIGN = ".* Vaccination.*Follow-up visit";
 
     private SubjectEnrollmentsDataService subjectEnrollmentsDataService;
 
@@ -827,10 +830,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     private String changeCampaignNameForDuplicatedEnrollmentsPattern(String campaignName, String stage) {
         String newCampaignName = campaignName;
 
-        if (Pattern.compile(EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
-            newCampaignName = EbodacConstants.LONG_TERM_FOLLOW_UP_CAMPAIGN;
-        } else if (Pattern.compile(EbodacConstants.FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
-            newCampaignName = EbodacConstants.FOLLOW_UP_CAMPAIGN;
+        if (Pattern.compile(LONG_TERM_FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            newCampaignName = LONG_TERM_FOLLOW_UP_CAMPAIGN;
+        } else if (Pattern.compile(FOLLOW_UP_CAMPAIGN).matcher(campaignName).matches()) {
+            newCampaignName = FOLLOW_UP_CAMPAIGN;
         }
 
         if (stage != null) {

@@ -4,13 +4,14 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.motechproject.ebodac.util.CustomDateDeserializer;
-import org.motechproject.ebodac.util.CustomDateSerializer;
-import org.motechproject.ebodac.util.CustomDateTimeDeserializer;
-import org.motechproject.ebodac.util.CustomDateTimeSerializer;
-import org.motechproject.ebodac.util.CustomSubjectSerializer;
-import org.motechproject.ebodac.util.CustomVisitTypeDeserializer;
-import org.motechproject.ebodac.util.CustomVisitTypeSerializer;
+import org.motechproject.ebodac.domain.enums.VisitType;
+import org.motechproject.ebodac.util.json.serializer.CustomDateDeserializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateSerializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateTimeDeserializer;
+import org.motechproject.ebodac.util.json.serializer.CustomDateTimeSerializer;
+import org.motechproject.ebodac.util.json.serializer.CustomSubjectSerializer;
+import org.motechproject.ebodac.util.json.serializer.CustomVisitTypeDeserializer;
+import org.motechproject.ebodac.util.json.serializer.CustomVisitTypeSerializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Entity;
 import org.motechproject.mds.annotations.EnumDisplayName;
@@ -36,7 +37,7 @@ public class Visit {
     private Long id;
 
     @NonEditable
-    @Field(displayName = "Participant", required = true)
+    @Field(displayName = "Participant")
     private Subject subject;
 
     @NonEditable
@@ -169,26 +170,28 @@ public class Visit {
 
         Visit visit = (Visit) o;
 
-        if (subject != null && visit.getSubject() != null) {
-            if (!subject.getSubjectId().equals(visit.getSubject().getSubjectId())) {
-                return false;
-            }
-        } else if (subject != null || visit.getSubject() != null) {
+        if (type != null ? !type.equals(visit.type) : visit.type != null) {
             return false;
         }
-        if (getType() != null && getType().equals(VisitType.UNSCHEDULED_VISIT)
-                && visit.getType() != null && visit.getType().equals(getType())) {
-            return (getDate() != null && visit.getDate() != null
-                    && getDate().equals(visit.getDate()))
-                    || (getDate() == null && visit.getDate() == null);
+        if (date != null ? !date.equals(visit.date) : visit.date != null) {
+            return false;
         }
-        return getType() != null && getType().equals(visit.getType());
+        if (dateProjected != null ? !dateProjected.equals(visit.dateProjected) : visit.dateProjected != null) {
+            return false;
+        }
+        if (motechProjectedDate != null ? !motechProjectedDate.equals(visit.motechProjectedDate) : visit.motechProjectedDate != null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = subject != null ? subject.getSubjectId().hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        int result = (type != null ? type.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (dateProjected != null ? dateProjected.hashCode() : 0);
+        result = 31 * result + (motechProjectedDate != null ? motechProjectedDate.hashCode() : 0);
         return result;
     }
 

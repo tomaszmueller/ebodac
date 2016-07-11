@@ -2,7 +2,7 @@ package org.motechproject.ebodac.repository;
 
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;
 import org.motechproject.mds.query.QueryParams;

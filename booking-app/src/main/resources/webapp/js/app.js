@@ -42,7 +42,7 @@
                             templateUrl: '../booking-app/resources/partials/{0}.html'.format(tab)
                         }
                     )
-                    .when('/bookingApp/capacityReport',
+                    .when('/bookingApp/reports/capacityReport',
                         {
                             templateUrl: '../booking-app/resources/partials/capacityReport.html',
                             controller: 'BookingApp{0}Ctrl'.format(tab.capitalize())

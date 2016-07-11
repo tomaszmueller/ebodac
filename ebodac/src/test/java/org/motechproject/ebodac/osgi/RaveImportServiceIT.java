@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.ebodac.constants.EbodacConstants;
-import org.motechproject.ebodac.domain.Gender;
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Gender;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.repository.IvrAndSmsStatisticReportDataService;
 import org.motechproject.ebodac.repository.SubjectDataService;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
@@ -118,10 +118,10 @@ public class RaveImportServiceIT extends BasePaxIT {
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
 
-        InputStream in = getClass().getResourceAsStream("/sample.csv");
+        InputStream in = getClass().getResourceAsStream("/sampleRaveFile.csv");
         assertNotNull(in);
 
-        raveImportService.importCsv(new InputStreamReader(in), "/sample.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/sampleRaveFile.csv");
         in.close();
 
         subjects = subjectDataService.retrieveAll();
@@ -147,9 +147,9 @@ public class RaveImportServiceIT extends BasePaxIT {
         subject.setSiteName("siteName");
         subjectDataService.create(subject);
 
-        InputStream in = getClass().getResourceAsStream("/rave.csv");
+        InputStream in = getClass().getResourceAsStream("/raveFileWithBrokenData.csv");
         assertNotNull(in);
-        raveImportService.importCsv(new InputStreamReader(in), "/rave.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/raveFileWithBrokenData.csv");
         in.close();
 
         checkSubjectData();
@@ -174,9 +174,9 @@ public class RaveImportServiceIT extends BasePaxIT {
 
         assertEquals(2, subjectDataService.retrieveAll().size());
 
-        InputStream in = getClass().getResourceAsStream("/rave.csv");
+        InputStream in = getClass().getResourceAsStream("/raveFileWithBrokenData.csv");
         assertNotNull(in);
-        raveImportService.importCsv(new InputStreamReader(in), "/rave.csv");
+        raveImportService.importCsv(new InputStreamReader(in), "/raveFileWithBrokenData.csv");
         in.close();
 
         List<Subject> subjects = subjectDataService.retrieveAll();

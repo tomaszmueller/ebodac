@@ -191,7 +191,7 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="emailReportPort">{{msg('ebodac.web.settings.emailReport.port')}}</label>
-                <div class="col-md-2">
+                <div class="col-md-2" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.emailReport.port.tooltip')}}">
                     <input class="form-control" id="emailReportPort" type="number" ng-model="config.emailReportPort">
                 </div>
             </div>
@@ -205,7 +205,7 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="emailReportPassword">{{msg('ebodac.web.settings.emailReport.password')}}</label>
-                <div class="col-md-4">
+                <div class="col-md-4" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.settings.emailReport.password.tooltip')}}">
                     <input class="form-control" id="emailReportPassword" type="password" ng-model="config.emailReportPassword">
                 </div>
             </div>

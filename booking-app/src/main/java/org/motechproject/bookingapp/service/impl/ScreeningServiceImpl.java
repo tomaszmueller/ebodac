@@ -8,7 +8,7 @@ import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
-import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.dto.ScreeningDto;
 import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
@@ -95,7 +95,7 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     @Override
     public ScreeningDto getScreeningById(Long id) {
-        return screeningDataService.findById(id).toDto();
+        return new ScreeningDto(screeningDataService.findById(id));
     }
 
     @Override

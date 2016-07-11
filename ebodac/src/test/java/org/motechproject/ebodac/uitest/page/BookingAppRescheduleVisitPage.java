@@ -70,9 +70,6 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
     }
 
-//    private WebDriver getDriver() {
-//        return super.getDriver();
-//    }
 
     public void sortByPlannedDateColumn() throws InterruptedException {
         clickWhenVisible(PLANNED_DATE_COLUMN);
@@ -138,9 +135,12 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         clickWhenVisible(SAVE_BUTTON);
         waitForElement(POPUP_OK);
         clickWhenVisible(POPUP_OK);
+        Thread.sleep(BIG_TIMEOUT);
         clickWhenVisible(POPUP_OK);
         String text = findElement(DIALOG_TEXT).getText();
+        Thread.sleep(BIG_TIMEOUT);
         waitForElement(CLOSE_BUTTON);
+        Thread.sleep(BIG_TIMEOUT);
         clickWhenVisible(CLOSE_BUTTON);
         if (text.contains("Visit Planned Date updated successfully.")) {
             return true;
@@ -149,7 +149,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     }
 
     public void printCard() throws InterruptedException {
-        Thread.sleep(TIMEOUT);
+        Thread.sleep(BIG_TIMEOUT);
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
     }

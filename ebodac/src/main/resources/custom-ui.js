@@ -41,6 +41,14 @@ if ($scope.selectedEntity.name === "ReportPrimerVaccination" || $scope.selectedE
     };
 }
 
+if ($scope.selectedEntity.name === "Participant") {
+    $rootScope.selectedTab = "subjects";
+} else if ($scope.selectedEntity.name === "Visit") {
+    $rootScope.selectedTab = "visits";
+} else {
+    $rootScope.selectedTab = "reports";
+}
+
 $scope.showAddInstanceButton = false;
 $scope.showDeleteInstanceButton = false;
 var importCsvModal = '../ebodac/resources/partials/modals/import-csv.html';

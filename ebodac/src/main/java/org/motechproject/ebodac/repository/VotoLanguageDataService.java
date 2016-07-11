@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.repository;
 
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.VotoLanguage;
 import org.motechproject.mds.annotations.Lookup;
 import org.motechproject.mds.annotations.LookupField;

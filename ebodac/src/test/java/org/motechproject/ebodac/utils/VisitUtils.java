@@ -4,7 +4,7 @@ package org.motechproject.ebodac.utils;
 import org.joda.time.LocalDate;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.Visit;
-import org.motechproject.ebodac.domain.VisitType;
+import org.motechproject.ebodac.domain.enums.VisitType;
 
 import static org.junit.Assert.assertEquals;
 

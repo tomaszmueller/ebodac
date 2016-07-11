@@ -3,7 +3,7 @@ package org.motechproject.bookingapp.web;
 
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Screening;
-import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.dto.ScreeningDto;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.service.ScreeningService;

@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.validation;
 
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Language;
 
 public class ValidationError {
 

@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.Screening;
-import org.motechproject.bookingapp.domain.ScreeningDto;
+import org.motechproject.bookingapp.dto.ScreeningDto;
 import org.motechproject.bookingapp.domain.ScreeningStatus;
 import org.motechproject.bookingapp.domain.Volunteer;
 import org.motechproject.bookingapp.exception.LimitationExceededException;

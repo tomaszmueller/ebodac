@@ -10,10 +10,11 @@ public class ParticipantEditPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final int SMALL_TIMEOUT = 500;
+    static final int SLEEP_2000 = 2000;
     static final int TIMEOUT_BORDER = 10000;
     static final By PHONE_NUMBER_FIELD = By.id("phoneNumberForm");
-    static final By SAVE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div[2]/div/button");
-    static final By CONFIRMATION_BUTTON = By.xpath("//div[@id='editSubjectModal']/div[2]/div/div[3]/button");
+    static final By SAVE_BUTTON = By.xpath("//button[@ng-click='addEntityInstance()']");
+    static final By CONFIRMATION_BUTTON = By.xpath("//button[@ng-click='addEntityInstanceDefault()']");
     static final By LANGUAGE_FIELD = By.xpath("(//button[@type='button'])[2]");
     static final String LANGUAGE_PATH = "//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[8]/div/ng-form/div/div/ul/li";
     static final String LANGUAGE_PATH_END = "/a/label";
@@ -46,24 +47,23 @@ public class ParticipantEditPage extends AbstractBasePage {
     }
 
     public void changePhoneNumber(String number) throws InterruptedException {
+        Thread.sleep(SLEEP_2000);
         setPhoneNumber(number);
+        Thread.sleep(SLEEP_2000);
         clickOn(SAVE_BUTTON);
+        Thread.sleep(SLEEP_2000);
         clickWhenVisible(CONFIRMATION_BUTTON);
+        Thread.sleep(SLEEP_2000);
     }
 
     public boolean setPhoneNumber(String number) throws InterruptedException {
-        Long startTime = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - startTime) < TIMEOUT_BORDER) {
             findElement(PHONE_NUMBER_FIELD).clear();
-            changeFocus();
-            Thread.sleep(SMALL_TIMEOUT);
+            Thread.sleep(SLEEP_2000);
             findElement(PHONE_NUMBER_FIELD).sendKeys(number);
-            changeFocus();
-            Thread.sleep(SMALL_TIMEOUT);
+            Thread.sleep(SLEEP_2000);
             if (findElement(PHONE_NUMBER_FIELD).getText().equals(number)) {
                 return true;
             }
-        }
         return false;
     }
 

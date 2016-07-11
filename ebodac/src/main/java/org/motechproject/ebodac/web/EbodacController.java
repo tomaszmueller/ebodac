@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.web;
 
 import org.apache.commons.io.IOUtils;
-import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
@@ -27,6 +26,7 @@ import java.io.IOException;
 public class EbodacController {
 
     private static final String OK = "OK";
+    private static final String UI_CONFIG = "custom-ui.js";
 
     @Autowired
     private EbodacService ebodacService;
@@ -62,6 +62,6 @@ public class EbodacController {
     @RequestMapping(value = "/mds-databrowser-config", method = RequestMethod.GET)
     @ResponseBody
     public String getCustomUISettings() throws IOException {
-        return IOUtils.toString(settingsFacade.getRawConfig(EbodacConstants.UI_CONFIG));
+        return IOUtils.toString(settingsFacade.getRawConfig(UI_CONFIG));
     }
 }

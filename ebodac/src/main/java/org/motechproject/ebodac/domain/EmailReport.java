@@ -2,7 +2,10 @@ package org.motechproject.ebodac.domain;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.motechproject.commons.date.model.Time;
-import org.motechproject.ebodac.util.CustomTimeSerializer;
+import org.motechproject.ebodac.domain.enums.DayOfWeek;
+import org.motechproject.ebodac.domain.enums.EmailReportStatus;
+import org.motechproject.ebodac.domain.enums.EmailSchedulePeriod;
+import org.motechproject.ebodac.util.json.serializer.CustomTimeSerializer;
 import org.motechproject.mds.annotations.Access;
 import org.motechproject.mds.annotations.Cascade;
 import org.motechproject.mds.annotations.Entity;
@@ -12,7 +15,9 @@ import org.motechproject.mds.util.SecurityMode;
 import java.util.ArrayList;
 import java.util.List;
 
-@Access(value = SecurityMode.PERMISSIONS, members = { "manageEbodac" })
+import static org.motechproject.ebodac.constants.EbodacConstants.EMAIL_REPORTS_TAB_PERMISSION;
+
+@Access(value = SecurityMode.PERMISSIONS, members = { EMAIL_REPORTS_TAB_PERMISSION })
 @Entity
 public class EmailReport {
 
@@ -43,6 +48,9 @@ public class EmailReport {
 
     @Field
     private DayOfWeek dayOfWeek;
+
+    @Field
+    private EmailReportStatus status;
 
     public EmailReport() {
     }
@@ -121,5 +129,13 @@ public class EmailReport {
 
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public EmailReportStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EmailReportStatus status) {
+        this.status = status;
     }
 }

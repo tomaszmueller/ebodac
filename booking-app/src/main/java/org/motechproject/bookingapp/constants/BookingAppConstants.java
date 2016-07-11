@@ -1,25 +1,15 @@
 package org.motechproject.bookingapp.constants;
 
-import org.motechproject.ebodac.domain.VisitType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public final class BookingAppConstants {
 
-    public static final String UI_CONFIG = "custom-ui.js";
-
     public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
-
-    public static final String PDF_EXPORT_FORMAT = "pdf";
-    public static final String CSV_EXPORT_FORMAT = "csv";
-    public static final String XLS_EXPORT_FORMAT = "xls";
 
     public static final int MAX_TIME_HOUR = 24;
     public static final int TIME_OF_THE_VISIT = 1;
@@ -27,18 +17,6 @@ public final class BookingAppConstants {
     public static final int EARLIEST_DATE = 1;
     public static final int EARLIEST_DATE_IF_FEMALE_CHILD_BEARING_AGE = 14;
     public static final int LATEST_DATE = 28;
-
-    public static final String SCREENING_NAME = "Screening";
-    public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";
-    public static final String UNSCHEDULED_VISITS_NAME = "Unscheduled_Visits";
-    public static final String VISIT_RESCHEDULE_NAME = "VisitReschedule";
-    public static final String CAPACITY_REPORT_NAME = "CapacityReport";
-
-    public static final Set<VisitType> AVAILABLE_VISIT_TYPES_FOR_RESCHEDULE_SCREEN = new HashSet<>(Arrays.asList(VisitType.BOOST_VACCINATION_DAY,
-            VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.PRIME_VACCINATION_SECOND_FOLLOW_UP_VISIT,
-            VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT,
-            VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT, VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT,
-            VisitType.SECOND_LONG_TERM_FOLLOW_UP_VISIT, VisitType.THIRD_LONG_TERM_FOLLOW_UP_VISIT));
 
     public static final String SCREENING_TAB_PERMISSION = "screeningBookingTab";
     public static final String PRIME_VAC_TAB_PERMISSION = "primeVaccinationBookingTab";
@@ -57,6 +35,12 @@ public final class BookingAppConstants {
     public static final String HAS_UNSCHEDULED_VISITS_TAB_ROLE = "hasRole('" + UNSCHEDULED_VISITS_TAB_PERMISSION + "')";
     public static final String HAS_CAPACITY_INFO_TAB_ROLE = "hasRole('" + CAPACITY_INFO_TAB_PERMISSION + "')";
     public static final String HAS_REPORTS_TAB_ROLE = "hasRole('" + REPORTS_TAB_PERMISSION + "')";
+
+    public static final String SCREENING_NAME = "Screening";
+    public static final String PRIME_VACCINATION_SCHEDULE_NAME = "PrimeVaccinationSchedule";
+    public static final String UNSCHEDULED_VISITS_NAME = "Unscheduled_Visits";
+    public static final String VISIT_RESCHEDULE_NAME = "VisitReschedule";
+    public static final String CAPACITY_REPORT_NAME = "CapacityReport";
 
     public static final Map<String, String> SCREENING_FIELDS_MAP = new LinkedHashMap<String, String>() {
         {
@@ -128,12 +112,6 @@ public final class BookingAppConstants {
 
     public static final List<String> AVAILABLE_LOOKUPS_FOR_CAPACITY_REPORT = new ArrayList<>(Collections.singletonList(
             "Find By Location"));
-
-    public static final List<String> CLINIC_FIELDS = new ArrayList<>(Arrays.asList("Site Id", "Location", "Max Capacity By Day",
-            "Max Screening Visits", "Max Prime Visits", "Max Booster Visits", "Amount of Rooms", "Max Prime First Follow Up Visits",
-            "Max Prime Second Follow Up Visits", "Max Booster First Follow Up Visits", "Max Booster Second Follow Up Visits",
-            "Max Booster Third Follow Up Visits", "Max First Long Term Follow Up Visits", "Max Second Long Term Follow Up Visits",
-            "Max Third Long Term Follow Up Visits"));
 
     private BookingAppConstants() {
     }

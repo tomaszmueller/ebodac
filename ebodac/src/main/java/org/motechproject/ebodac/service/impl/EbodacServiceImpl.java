@@ -20,7 +20,7 @@ import org.motechproject.ebodac.service.ConfigService;
 import org.motechproject.ebodac.service.EbodacService;
 import org.motechproject.ebodac.service.RaveImportService;
 import org.motechproject.ebodac.service.SubjectService;
-import org.motechproject.ebodac.util.JsonUtils;
+import org.motechproject.ebodac.util.json.JsonUtils;
 import org.motechproject.mds.ex.csv.CsvImportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

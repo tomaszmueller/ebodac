@@ -24,8 +24,9 @@ public class EBODACPage extends AbstractBasePage {
 
     }
 
-    public void gotoReports() throws InterruptedException {
+    public ReportPage gotoReports() throws InterruptedException {
         clickWhenVisible(REPORTS);
+        return new ReportPage(getDriver());
     }
 
     public void showVisits() throws InterruptedException {

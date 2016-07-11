@@ -2,7 +2,7 @@ package org.motechproject.bookingapp.web;
 
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.UnscheduledVisit;
-import org.motechproject.bookingapp.domain.UnscheduledVisitDto;
+import org.motechproject.bookingapp.dto.UnscheduledVisitDto;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.DtoLookupHelper;
 import org.motechproject.bookingapp.service.UnscheduledVisitService;

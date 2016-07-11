@@ -8,7 +8,7 @@ import static com.itextpdf.text.PageSize.A4;
 
 public class PdfReportCLandscapeTemplate extends PdfBasicTemplate {
 
-    private static final String TEMPLATE_PATH = "/report_templateC_landscape.pdf";
+    private static final String TEMPLATE_PATH = "/templates/report_templateC_landscape.pdf";
     private static final float MARGIN = 5;
     private static final Rectangle PAGE_RECTANGLE = new Rectangle(MARGIN, MARGIN, A4.getHeight() - MARGIN, A4.getWidth() - MARGIN);
 

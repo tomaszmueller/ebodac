@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.repository.SubjectEnrollmentsDataService;
 import org.motechproject.ebodac.service.impl.EbodacEnrollmentServiceImpl;

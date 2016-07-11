@@ -140,7 +140,7 @@ public class EbodacServiceIT extends BasePaxIT {
 
         DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
         String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
-        InputStream in = getClass().getResourceAsStream("/sample.csv");
+        InputStream in = getClass().getResourceAsStream("/sampleRaveFile.csv");
         assertNotNull(in);
 
         ftpsClient.sendFile(filename, in);
@@ -217,7 +217,7 @@ public class EbodacServiceIT extends BasePaxIT {
 
         DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
         String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
-        InputStream in = getClass().getResourceAsStream("/sample.csv");
+        InputStream in = getClass().getResourceAsStream("/sampleRaveFile.csv");
         assertNotNull(in);
 
         ftpsClient.sendFile(filename, in);
@@ -259,7 +259,7 @@ public class EbodacServiceIT extends BasePaxIT {
 
         DateFormat df = new SimpleDateFormat(EbodacConstants.CSV_DATE_FORMAT);
         String filename = CSV_DIR + "motech_" + df.format(new Date()) + ".csv";
-        InputStream in = getClass().getResourceAsStream("/rave.csv");
+        InputStream in = getClass().getResourceAsStream("/raveFileWithBrokenData.csv");
         assertNotNull(in);
 
         ftpsClient.sendFile(filename, in);

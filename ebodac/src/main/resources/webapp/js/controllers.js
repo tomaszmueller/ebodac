@@ -1408,7 +1408,6 @@
                             $http.post('../ebodac/deleteReport', reportId)
                             .success(function (response) {
                                 $scope.removeReport(index);
-                                $scope.$apply();
                             })
                             .error (function (response) {
                                 motechAlert('ebodac.web.emailReports.deleteReport.error', 'ebodac.web.emailReports.error', response);
@@ -1448,7 +1447,8 @@
                 'entity': null,
                 'schedulePeriod': $scope.schedulePeriods[0],
                 'scheduleTime': null,
-                'dayOfWeek': $scope.scheduleDayOfWeek[0]
+                'dayOfWeek': $scope.scheduleDayOfWeek[0],
+                'status': 'ENABLED'
             };
 
             $scope.selectedEntity[$scope.emailReports.length] = null;
@@ -1478,6 +1478,42 @@
             .error (function (response) {
                 motechAlert('ebodac.web.emailReports.saveReports.error', 'ebodac.web.emailReports.error', response);
             });
+        };
+
+        $scope.enableReport = function(index) {
+            var reportId = $scope.emailReports[index].id;
+            if (reportId === undefined || reportId === null || reportId === '') {
+                $scope.emailReports[index].status = 'ENABLED';
+                $scope.originalEmailReports[index].status = 'ENABLED';
+            } else {
+                $http.post('../ebodac/enableReport', reportId)
+                .success(function (response) {
+                    $scope.emailReports[index].status = 'ENABLED';
+                    $scope.originalEmailReports[index].status = 'ENABLED';
+                    motechAlert('ebodac.web.emailReports.enabled.successMsg', 'ebodac.web.emailReports.enabled.successTitle');
+                })
+                .error (function (response) {
+                    motechAlert('ebodac.web.emailReports.enableReport.error', 'ebodac.web.emailReports.error', response);
+                });
+            }
+        };
+
+        $scope.disableReport = function(index) {
+            var reportId = $scope.emailReports[index].id;
+            if (reportId === undefined || reportId === null || reportId === '') {
+                $scope.emailReports[index].status = 'DISABLED';
+                $scope.originalEmailReports[index].status = 'DISABLED';
+            } else {
+                $http.post('../ebodac/disableReport', reportId)
+                .success(function (response) {
+                    $scope.emailReports[index].status = 'DISABLED';
+                    $scope.originalEmailReports[index].status = 'DISABLED';
+                    motechAlert('ebodac.web.emailReports.disabled.successMsg', 'ebodac.web.emailReports.disabled.successTitle');
+                })
+                .error (function (response) {
+                    motechAlert('ebodac.web.emailReports.disableReport.error', 'ebodac.web.emailReports.error', response);
+                });
+            }
         };
 
         $scope.addRecipientModalShow = function () {

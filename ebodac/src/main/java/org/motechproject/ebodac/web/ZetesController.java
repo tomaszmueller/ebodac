@@ -1,9 +1,10 @@
 package org.motechproject.ebodac.web;
 
-import org.motechproject.ebodac.domain.Language;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.service.SubjectService;
 import org.motechproject.ebodac.validation.ValidationError;
+import org.motechproject.ebodac.web.domain.SubmitSubjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
-import org.motechproject.ebodac.domain.Gender;
+import org.motechproject.ebodac.domain.enums.Gender;
 import org.motechproject.ebodac.domain.IvrAndSmsStatisticReport;
 import org.motechproject.ebodac.domain.ReportBoosterVaccination;
 import org.motechproject.ebodac.domain.ReportPrimerVaccination;
