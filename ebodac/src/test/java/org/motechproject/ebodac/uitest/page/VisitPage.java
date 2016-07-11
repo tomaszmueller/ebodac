@@ -9,8 +9,11 @@ public class VisitPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
+    static final By VISIT_DATE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[2]");
     static final int SLEEP_500 = 500;
     static final int SLEEP_1000 = 1000;
+    public static final By PLANNED_VISIT_DATE_HEAD = By.id("jqgh_instancesTable_motechProjectedDate");
+    public static final By PLANNED_VISIT_DATE_SORT = By.xpath("//div[@id='jqgh_instancesTable_motechProjectedDate']/span/span[2]");
 
 
     public VisitPage(WebDriver driver) {
@@ -41,5 +44,13 @@ public class VisitPage extends AbstractBasePage {
         Thread.sleep(SLEEP_500);
         waitForElement(VISIT);
         clickOn(VISIT);
+    }
+
+
+    public void sortByPlannedDateColumn() throws InterruptedException {
+        clickWhenVisible(PLANNED_VISIT_DATE_HEAD);
+        Thread.sleep(SLEEP_1000);
+        clickWhenVisible(PLANNED_VISIT_DATE_SORT);
+        Thread.sleep(SLEEP_1000);
     }
 }
