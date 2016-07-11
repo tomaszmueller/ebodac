@@ -1,7 +1,9 @@
 package org.motechproject.ebodac.uitest.page;
 
+
 import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -14,6 +16,7 @@ public class VisitEditPage extends AbstractBasePage {
     static final int BIG_TIMEOUT = 2000;
     static final By SAVE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div[2]/div/button");
     static final By POPUP_OK = By.id("popup_ok");
+    static final By POPUP_MESSAGE = By.id("popup_message");
     public VisitEditPage(WebDriver driver) {
         super(driver);
     }
@@ -28,11 +31,16 @@ public class VisitEditPage extends AbstractBasePage {
 
     }
 
-    public void changeVisit() throws InterruptedException {
+    public boolean changeVisit() throws InterruptedException {
         Thread.sleep(BIG_TIMEOUT);
-        clickOn(SAVE_BUTTON);
+        clickWhenVisible(SAVE_BUTTON);
         clickWhenVisible(POPUP_OK);
+        String text = findElement(POPUP_MESSAGE).getText();
         clickWhenVisible(POPUP_OK);
+        if (text.contains("Planned Visit date has been changed successfully")) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isPlannedVisitDateEditable() {
@@ -69,6 +77,13 @@ public class VisitEditPage extends AbstractBasePage {
         } catch (Exception e) {
             return true;
         }
+    }
+
+    public void changePlannedDate(String date) throws InterruptedException {
+        Thread.sleep(BIG_TIMEOUT);
+        findElement(PLANNED_VISIT_DATE).clear();
+        findElement(PLANNED_VISIT_DATE).sendKeys(date);
+        findElement(PLANNED_VISIT_DATE).sendKeys(Keys.ENTER);
     }
 
 }
