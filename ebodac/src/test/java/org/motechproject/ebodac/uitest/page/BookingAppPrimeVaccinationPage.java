@@ -82,6 +82,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public void clickFirstParticipantId() throws InterruptedException {
         sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
+        sleep(SLEEP_5000);
+        clickWhenVisible(PARTICIPANT_SELECT);
         sleep(SLEEP_500);
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
     }
