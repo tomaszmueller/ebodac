@@ -11,7 +11,6 @@ import org.motechproject.uitest.page.LoginPage;
 
 
 public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest extends TestBase {
-
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
