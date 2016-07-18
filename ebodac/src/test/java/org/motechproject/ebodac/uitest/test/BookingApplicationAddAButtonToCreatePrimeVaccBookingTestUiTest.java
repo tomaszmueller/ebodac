@@ -9,10 +9,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
-import static org.junit.Assert.assertEquals;
-
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
-
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -35,18 +32,17 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         }
     }
 
-    @Test //EBODAC-781
+    @Test // EBODAC-781
     public void bookingApplicationCapacityInfoTest() throws InterruptedException {
         homePage.resizePage();
         homePage.clickModules();
         homePage.openBookingAppModule();
         bookingAppPage.openPrimeVaccination();
-        assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
         bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
         bookingAppPrimeVaccinationPage.clickFirstParticipantId();
-        bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         bookingAppPrimeVaccinationPage.setDateOfScreeningDate();
         bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
+        bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
         bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
         bookingAppPrimeVaccinationPage.saveCreatedPrimeVaccination();
@@ -59,4 +55,5 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
     public void tearDown() throws Exception {
         logout();
     }
+
 }

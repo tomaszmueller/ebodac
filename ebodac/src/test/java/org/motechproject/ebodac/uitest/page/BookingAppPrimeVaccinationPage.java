@@ -8,9 +8,7 @@ import org.openqa.selenium.WebElement;
 
 import static java.lang.Thread.sleep;
 
-
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
-
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final By ADD_PRIME_VACCINATION_BUTTON = By.xpath("//*[text()[contains(.,'Add Prime Vaccination')]]");
     static final By FIRST_ROW_IN_THE_GRID_UI = By.id("1");
@@ -20,26 +18,36 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By SAVE_BUTTON_UPDATE_VISIT_BOOKING_DAY = By.xpath("//*[text()[contains(.,'Save')]]");
     static final By PRIME_VAC_DATE_FIELD_NAME = By.xpath("//*[text()[contains(.,'Prime Vac. Date')]]");
     static final By CONFIRM_UPDATE_VISIT_BOOKING_DETAILS = By.id("popup_ok");
-    static final By CHECK_IS_VISIBLE_PRINT_CARD_WINDOW = By.xpath("//*[text()[contains(.,'Visit Booking Details updated successfully.')]]");
-    static final By IGNORE_LATES_EARLEST_DATE_CHECKBOX = By.xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[1]/div[7]/input");
-    static final By IGNOTE_LATES_EARLIEST_DATE_CHECKBOX = By.xpath("//input[@ng-model='form.dto.ignoreDateLimitation']");
+    static final By CHECK_IS_VISIBLE_PRINT_CARD_WINDOW = By
+            .xpath("//*[text()[contains(.,'Visit Booking Details updated successfully.')]]");
+    static final By IGNORE_LATES_EARLEST_DATE_CHECKBOX = By
+            .xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[1]/div[7]/input");
+    static final By IGNOTE_LATES_EARLIEST_DATE_CHECKBOX = By
+            .xpath("//input[@ng-model='form.dto.ignoreDateLimitation']");
     static final By PRIME_VAC_DATE_FIELD = By.xpath("//input[@booking-app-date-picker='']");
     static final By PRIME_VAC_TIME_FIELD = By.xpath("//input[@mds-time-picker='']");
     static final By PRIME_VAC_TIME_CLOSE_BUTTON = By.xpath("//*[@id=\"ui-datepicker-div\"]/div[3]/button[2]");
     static final By FEMALE_CHILD_BEARING_AGE_DROPDOWN = By.cssSelector("#select2-chosen-4");
     static final By FEMALE_CHILD_BEARING_AGE_YES_OPTION = By.id("s2id_autogen4_search");
-    static final By NEXT_MONTH_BUTTON = By.cssSelector("#ui-datepicker-div > div.ui-datepicker-header.ui-widget-header.ui-helper-clearfix.ui-corner-all > a.ui-datepicker-next.ui-corner-all > span");
+    static final By NEXT_MONTH_BUTTON = By.cssSelector(
+            "#ui-datepicker-div > div.ui-datepicker-header.ui-widget-header.ui-helper-clearfix.ui-corner-all > a.ui-datepicker-next.ui-corner-all > span");
     static final By TODAY_BUTTON_DATE_PICKER = By.xpath("//*[@id=\"ui-datepicker-div\"]/div[2]/button[1]");
-    static final By SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS = By.xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
+    static final By SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS = By
+            .xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
     static final By SAVE_BUTTON = By.xpath("//button[@ng-click='savePrimeVaccinationSchedule(false)']");
     static final By CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON = By.cssSelector("#popup_ok");
-    static final By PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON = By.xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
+    static final By PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON = By
+            .xpath("//*[@id=\"primeVaccinationScheduleModal\"]/div[2]/div/div[2]/div[2]/div/button[1]");
     static final By SCREENING_DATE_PICKER = By.xpath("//input[@ng-model='form.dto.bookingScreeningActualDate']");
     static final By SCREENING_DATE_PICKER_DONE_BUTTON = By.xpath("//*[@id=\"ui-datepicker-div\"]/div[2]/button[2]");
-    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN = By.xpath("//*[@id=\"main-content\"]/div/div/div[1]/div/button[2]");
-    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_NEXT_7_DAYS_CHOOSE = By.xpath("//*[@id=\"main-content\"]/div/div/div[1]/div[1]/ul/li[5]/a");
-    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE = By.xpath("//*[@id=\"main-content\"]/div/div/div[1]/div/ul/li[6]/a");
-    static final By SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON = By.xpath("//*[text()[contains(.,'Confirm visit booking details update')]]");
+    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN = By
+            .xpath("//*[@id=\"main-content\"]/div/div/div[1]/div/button[2]");
+    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_NEXT_7_DAYS_CHOOSE = By
+            .xpath("//*[@id=\"main-content\"]/div/div/div[1]/div[1]/ul/li[5]/a");
+    static final By PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE = By
+            .xpath("//*[@id=\"main-content\"]/div/div/div[1]/div/ul/li[6]/a");
+    static final By SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON = By
+            .xpath("//*[text()[contains(.,'Confirm visit booking details update')]]");
     static final By PRIME_VACCINATION_DATE_RANGE_FROM = By.xpath("//input[@ng-model='selectedFilter.startDate']");
     static final By DATE_RANGE_DROPDOWN = By.xpath("//button[@ng-click='hideLookupDialog()']");
     static final By SET_DATE_RANGE_FROM_DROP_DOWN = By.xpath("//a[contains(text(),'Date range')]");
@@ -52,7 +60,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By FILTER_BUTTON = By.id("lookupDialogButton");
     static final By FILTER_DROPDOWN_BUTTON = By.xpath("//button[contains(text(),'Select')]");
     static final By FIND_BY_PARTICIPANT_ID = By.xpath("//a[contains(text(),'Find By Participant Id')]");
-    static final By FIND_BY_PARTICIPANT_ID_FIELD = By.xpath("//input[@ng-model='lookupBy[buildLookupFieldName(field)]']");
+    static final By FIND_BY_PARTICIPANT_ID_FIELD = By
+            .xpath("//input[@ng-model='lookupBy[buildLookupFieldName(field)]']");
     static final By FIND_BY_PARTICIPANT_ID_BUTTON = By.xpath("//button[@ng-click='filterInstancesByLookup()']");
     static final int SLEEP_500 = 500;
     static final int SLEEP_2000 = 2000;
@@ -69,7 +78,6 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final int TAB_GET_1 = 1;
     static final int TAB_GET_0 = 0;
 
-
     public BookingAppPrimeVaccinationPage(WebDriver driver) {
         super(driver);
     }
@@ -82,10 +90,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public void clickFirstParticipantId() throws InterruptedException {
         sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
-        sleep(SLEEP_5000);
+        sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
         sleep(SLEEP_500);
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
+        sleep(SLEEP_2000);
     }
 
     public String firstParticipantId() {
@@ -97,7 +106,6 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void clickOnFirstRowInTheGridUI() throws InterruptedException {
-        sleep(SLEEP_2000);
         clickWhenVisible(FIRST_ROW_IN_THE_GRID_UI);
     }
 
@@ -105,6 +113,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
             clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
         }
+
     }
 
     public void clickSaveInUpdateVisitBookingDetails() throws InterruptedException {
@@ -120,6 +129,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void setTimeOfPrimeVacDateFields() throws InterruptedException {
+        sleep(SLEEP_500);
         findElement(PRIME_VAC_TIME_FIELD).sendKeys("10:29");
         findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
         clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
@@ -139,7 +149,6 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     public void setFemaleChildBearingAge() throws InterruptedException {
         boolean exists;
-
         try {
             exists = null != findElement(FEMALE_CHILD_BEARING_AGE_DROPDOWN);
         } catch (Exception e) {
@@ -151,9 +160,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys("Yes");
             findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys(Keys.ENTER);
         }
+
     }
 
     public void saveCreatedPrimeVaccination() throws InterruptedException {
+        sleep(SLEEP_2000);
         clickWhenVisible(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS);
     }
 
@@ -177,9 +188,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void setDateOfScreeningDate() throws InterruptedException {
+        sleep(SLEEP_2000);
         clickWhenVisible(SCREENING_DATE_PICKER);
         clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
         clickWhenVisible(SCREENING_DATE_PICKER_DONE_BUTTON);
+
     }
 
     public void changeDateRangeFromToday() throws InterruptedException {
@@ -233,7 +246,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     public void closePdfIfIsOpen() throws InterruptedException {
         String originalHandle = getDriver().getWindowHandle();
-        for(String handle : getDriver().getWindowHandles()) {
+        for (String handle : getDriver().getWindowHandles()) {
             if (!handle.equals(originalHandle)) {
                 getDriver().switchTo().window(handle);
                 getDriver().close();
@@ -242,7 +255,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         getDriver().switchTo().window(originalHandle);
     }
 
-    //Asserts
+    // Asserts
     public boolean checkVisibleUpdatedVisitBookingDetails() {
         WebElement element = findElement(CHECK_IS_VISIBLE_PRINT_CARD_WINDOW);
         String name = element.getText();
@@ -295,6 +308,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             return false;
         }
     }
+
     @Override
     public String expectedUrlPath() {
         return getServerURL() + URL_PATH;
