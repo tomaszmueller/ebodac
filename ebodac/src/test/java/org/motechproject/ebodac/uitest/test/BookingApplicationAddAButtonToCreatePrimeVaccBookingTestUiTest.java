@@ -10,6 +10,8 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
+    private static final int SLEEP_5000 = 5000;
+    private static final int SLEEP_2000 = 2000;
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -39,8 +41,11 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         homePage.openBookingAppModule();
         bookingAppPage.openPrimeVaccination();
         bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
+        bookingAppPrimeVaccinationPage.sleepForMilisec(SLEEP_5000);
         bookingAppPrimeVaccinationPage.clickFirstParticipantId();
+        bookingAppPrimeVaccinationPage.sleepForMilisec(SLEEP_2000);
         bookingAppPrimeVaccinationPage.setDateOfScreeningDate();
+        bookingAppPrimeVaccinationPage.sleepForMilisec(SLEEP_2000);
         bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
         bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();

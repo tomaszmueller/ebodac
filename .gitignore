@@ -5,3 +5,6 @@ target/
 felix-cache/
 velocity.log
 *.orig
+bin/
+.classpath
+.project

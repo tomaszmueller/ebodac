@@ -5,11 +5,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import static java.lang.Thread.sleep;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
+     private static Logger LOGGER =
+     LoggerFactory.getLogger(BookingAppPrimeVaccinationPage.class);
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
+    static final String PRIMEVAC_COMBO_CLASS_DISABLED = "select2-container select2-container-disabled form-control ng-valid ng-dirty";
+    static final String PRIMEVAC_COMBO_CLASS_ENABLED = "select2-container form-control ng-valid ng-dirty";
+    static final By PRIMEVAC_COMBO_FIELD = By.id("select2-chosen-2");
+    static final By PRIMEVAC_COMBO_FIELD_ALERT = By
+            .xpath("//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[1]/span[2]");
     static final By ADD_PRIME_VACCINATION_BUTTON = By.xpath("//*[text()[contains(.,'Add Prime Vaccination')]]");
     static final By FIRST_ROW_IN_THE_GRID_UI = By.id("1");
     static final By PARTICIPANT_SELECT = By.id("s2id_subjectIdSelect");
@@ -87,14 +96,25 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
     }
 
+    public void sleepForMilisec(int intval) throws InterruptedException{
+        sleep(intval);
+    }
+    
+    /**
+     * Method: We use this method to find the participant. We use a loop of 5 to
+     * check that combo. If we have it we jump from the method.
+     * 
+     * @throws InterruptedException
+     */
     public void clickFirstParticipantId() throws InterruptedException {
         sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
         sleep(SLEEP_2000);
         clickWhenVisible(PARTICIPANT_SELECT);
-        sleep(SLEEP_500);
+        sleep(SLEEP_2000);
         findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
         sleep(SLEEP_2000);
+
     }
 
     public String firstParticipantId() {

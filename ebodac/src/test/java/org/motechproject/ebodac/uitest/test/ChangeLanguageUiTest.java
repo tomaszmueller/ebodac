@@ -1,10 +1,10 @@
 package org.motechproject.ebodac.uitest.test;
 
+import org.motechproject.uitest.page.LoginPage;
+import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.uitest.page.LoginPage;
-import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -41,9 +41,11 @@ public class ChangeLanguageUiTest extends TestBase {
             loginPage.login(user, password);
         }
     }
+
     /**
-     * Method : changeLanguageTest
-     * Description: This method changes the Language of the participant and test if it is different.
+     * Method : changeLanguageTest Description: This method changes the Language
+     * of the participant and test if it is different.
+     * 
      * @throws Exception
      */
     @Test
