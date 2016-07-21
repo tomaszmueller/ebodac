@@ -41,6 +41,7 @@ public class LanguageDisappearUiTest extends TestBase {
         homePage.openEBODACModule();
         participantPage.openFirstParticipant();
         participantEditPage.changeLanguage("1");
+        participantEditPage.closeEditPage();
     }
 
     @After
