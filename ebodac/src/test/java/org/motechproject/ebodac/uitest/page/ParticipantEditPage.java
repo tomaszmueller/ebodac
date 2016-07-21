@@ -67,18 +67,26 @@ public class ParticipantEditPage extends AbstractBasePage {
         return false;
     }
 
+    /**
     private void changeFocus() {
         findElement(By.className("form-control")).click();
         findElement(By.className("form-control")).sendKeys("");
     }
-
+    **/
+   
     public String changeLanguage(String languagePos) throws InterruptedException {
         clickWhenVisible(LANGUAGE_FIELD);
         String language = chooseLanguage(languagePos);
         Thread.sleep(SMALL_TIMEOUT);
+        return language;
+    }
+    
+    public boolean closeEditPage() throws InterruptedException {
+        boolean status = true;
+        Thread.sleep(SMALL_TIMEOUT);
         clickOn(SAVE_BUTTON);
         clickWhenVisible(CONFIRMATION_BUTTON);
-        return language;
+        return status;
     }
 
     public String chooseLanguage(String languagePos) {

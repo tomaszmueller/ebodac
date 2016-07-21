@@ -5,11 +5,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import static java.lang.Thread.sleep;
 
+//import org.apache.log4j.Logger;
+
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
+    // Object initialization for log
+    //private static Logger log = Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
+    static final String PRIMEVAC_COMBO_CLASS_DISABLED = "input-group-addon validator alert-danger";
+    static final String PRIMEVAC_COMBO_CLASS_ENABLED = "input-group-addon validator alert-success";
+    static final By PRIMEVAC_COMBO_FIELD = By.id("select2-chosen-2");
+    static final By PRIMEVAC_COMBO_FIELD_ALERT = By
+            .xpath("//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[1]/span[2]");
     static final By ADD_PRIME_VACCINATION_BUTTON = By.xpath("//*[text()[contains(.,'Add Prime Vaccination')]]");
     static final By FIRST_ROW_IN_THE_GRID_UI = By.id("1");
     static final By PARTICIPANT_SELECT = By.id("s2id_subjectIdSelect");
@@ -87,14 +95,30 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
     }
 
+    public boolean isPartincipantIdEnabled() throws InterruptedException {
+        return findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
+                .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_ENABLED);
+    }
+
+    /**
+     * Method: We use this method to find the participant. We use a loop of 5 to
+     * check that combo. If we have it we jump from the method.
+     * 
+     * @throws InterruptedException
+     */
     public void clickFirstParticipantId() throws InterruptedException {
-        sleep(SLEEP_2000);
-        clickWhenVisible(PARTICIPANT_SELECT);
-        sleep(SLEEP_2000);
-        clickWhenVisible(PARTICIPANT_SELECT);
-        sleep(SLEEP_500);
-        findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
-        sleep(SLEEP_2000);
+        // We add a counter to avoid an infinite loop.
+        int counter = 10;
+        while (findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
+                .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED) && counter > 0) {
+            clickWhenVisible(PARTICIPANT_SELECT);
+            findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
+            if (!findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
+                    .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED)) {
+                counter = 0;
+            }
+            counter--;
+        }
     }
 
     public String firstParticipantId() {
@@ -109,10 +133,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(FIRST_ROW_IN_THE_GRID_UI);
     }
 
-    public void clickOnIngoreLatesEarliestDate() throws InterruptedException {
+    public boolean clickOnIngoreLatesEarliestDate() throws InterruptedException {
+        boolean checked = false;
         if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
             clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
+            checked = true;
         }
+        return checked;
 
     }
 
@@ -120,19 +147,21 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(SAVE_BUTTON_UPDATE_VISIT_BOOKING_DAY);
     }
 
-    public void setDateOfPrimeVacDateFields() throws InterruptedException {
+    public boolean setDateOfPrimeVacDateFields() throws InterruptedException {
         sleep(SLEEP_500);
         findElement(PRIME_VAC_DATE_FIELD).click();
         clickWhenVisible(NEXT_MONTH_BUTTON);
         clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
+        return true;
 
     }
 
-    public void setTimeOfPrimeVacDateFields() throws InterruptedException {
+    public boolean setTimeOfPrimeVacDateFields() throws InterruptedException {
         sleep(SLEEP_500);
         findElement(PRIME_VAC_TIME_FIELD).sendKeys("10:29");
         findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
         clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
+        return true;
     }
 
     public void setMaxDateRangeOfPrimeVaccination() throws InterruptedException {
@@ -164,8 +193,12 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void saveCreatedPrimeVaccination() throws InterruptedException {
-        sleep(SLEEP_2000);
+        // sleep(SLEEP_2000);
         clickWhenVisible(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS);
+    }
+
+    public boolean isEnabledSaveButton() throws InterruptedException {
+        return findElement(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS).isEnabled();
     }
 
     public void confirmAddVisitBookingDetailsAndPrintCard() throws InterruptedException {
@@ -188,7 +221,6 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public void setDateOfScreeningDate() throws InterruptedException {
-        sleep(SLEEP_2000);
         clickWhenVisible(SCREENING_DATE_PICKER);
         clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
         clickWhenVisible(SCREENING_DATE_PICKER_DONE_BUTTON);
