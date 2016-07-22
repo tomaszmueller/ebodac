@@ -39,7 +39,7 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
         homePage = new HomePage(getDriver());
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant() , l1AdminUser , l1AdminPassword);
+            httpClientHelper.addParticipant(new TestParticipant(), l1AdminUser, l1AdminPassword);
         }
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.goToPage();
@@ -48,10 +48,10 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
     }
 
     @Ignore
-    @Test //Test for EBODAC-531
+    @Test // Test for EBODAC-531
     public void adminAccessOnlyToEbodacUiTest() throws Exception {
         homePage.clickModules();
-        Assert.assertFalse(homePage.isElementPresent(homePage.DATA_SERVICES));
+        Assert.assertFalse(homePage.isElementPresent(HomePage.STATIC_ACCCESS_DATA_SERVICES));
     }
 
     @After

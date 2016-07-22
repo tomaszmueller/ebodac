@@ -17,6 +17,10 @@ import org.apache.log4j.Logger;
 
 public class ChangeLanguageUiTest extends TestBase {
 
+    private static final int COUNTER_ZERO = 0;
+
+    private static final int MAX_COUNT = 10;
+
     // Object initialization for log
     private static Logger log = Logger.getLogger(ChangeLanguageUiTest.class.getName());
 
@@ -62,13 +66,19 @@ public class ChangeLanguageUiTest extends TestBase {
         // log.error("Set changedPosition : " + changedPosition);
         String changedLanguage = participantEditPage.changeLanguage(changedPosition);
         // log.error("Set changedLanguage : " + changedLanguage);
-
+        int counter = MAX_COUNT;
         // We make sure that we do not have the same value for the language
-        while (!changedLanguage.equalsIgnoreCase(originalLanguage) && ((new Integer(changedPosition)).intValue() < 2)) {
+        while (changedLanguage.equalsIgnoreCase(originalLanguage) 
+                && ((new Integer(changedPosition)).intValue() < 2)
+                && counter > COUNTER_ZERO ) {
             changedPosition = new Integer(2 + (new Random()).nextInt(3)).toString();
             // log.error("while changedPosition : " + changedPosition);
             changedLanguage = participantEditPage.changeLanguage(changedPosition);
             // log.error("while changedLanguage : " + changedLanguage);
+            if(!changedLanguage.equalsIgnoreCase(originalLanguage) ){
+                counter = COUNTER_ZERO;
+            }
+            counter--;
         }
         // We Validate it.
         assertNotEquals(changedLanguage.replace(" ", ""), originalLanguage.replace(" ", ""));

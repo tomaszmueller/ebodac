@@ -48,7 +48,7 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
     }
 
     @Ignore
-    @Test //Test fo EBODAC-528
+    @Test //Test for EBODAC-528
     public void analystAccessOnlyToEbodacUITest() throws Exception {
         homePage.clickModules();
         Assert.assertFalse(homePage.isElementPresent(homePage.DATA_SERVICES));

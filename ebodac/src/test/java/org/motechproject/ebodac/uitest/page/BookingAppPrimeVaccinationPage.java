@@ -11,10 +11,14 @@ import static java.lang.Thread.sleep;
 
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     // Object initialization for log
-    //private static Logger log = Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
+    private static final int MAX_COUNTER_VALUE = 10;
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
+    static final String PRIMEVAC_MODAL_CLASS_ENABLED = "modal fade ng-scope in";
     static final String PRIMEVAC_COMBO_CLASS_DISABLED = "input-group-addon validator alert-danger";
     static final String PRIMEVAC_COMBO_CLASS_ENABLED = "input-group-addon validator alert-success";
+    static final By PRIMEVAC_MODAL_COMBO = By.xpath("//*[@id='primeVaccinationScheduleModal']");
     static final By PRIMEVAC_COMBO_FIELD = By.id("select2-chosen-2");
     static final By PRIMEVAC_COMBO_FIELD_ALERT = By
             .xpath("//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[1]/span[2]");
@@ -95,6 +99,16 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
     }
 
+    public boolean isModalVisible() throws InterruptedException {
+        return findElement(PRIMEVAC_MODAL_COMBO).getAttribute("class").equalsIgnoreCase(PRIMEVAC_MODAL_CLASS_ENABLED);
+    }
+
+    /**
+     * Description : Check if the participant id field.
+     * 
+     * @return
+     * @throws InterruptedException
+     */
     public boolean isPartincipantIdEnabled() throws InterruptedException {
         return findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
                 .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_ENABLED);
@@ -108,7 +122,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
      */
     public void clickFirstParticipantId() throws InterruptedException {
         // We add a counter to avoid an infinite loop.
-        int counter = 10;
+        int counter = MAX_COUNTER_VALUE;
         while (findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
                 .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED) && counter > 0) {
             clickWhenVisible(PARTICIPANT_SELECT);
@@ -131,6 +145,10 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
     public void clickOnFirstRowInTheGridUI() throws InterruptedException {
         clickWhenVisible(FIRST_ROW_IN_THE_GRID_UI);
+    }
+
+    public boolean isVisibleFirstRow() throws InterruptedException {
+        return findElement(FIRST_ROW_IN_THE_GRID_UI).isDisplayed();
     }
 
     public boolean clickOnIngoreLatesEarliestDate() throws InterruptedException {
