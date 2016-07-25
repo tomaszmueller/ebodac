@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 //import org.apache.log4j.Logger;
 
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
+    private static final int MAX_COUNTER_VALUE = 10;
     // private static Logger log = Logger
     // .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
     private LoginPage loginPage;
@@ -58,7 +59,7 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
         // We click this option to make sure we can select dates for the
         // prime.vaccination
-        counter = 10; // reset counter;
+        counter = MAX_COUNTER_VALUE; // reset counter;
         // Check the ignore earliest date.
         boolean clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         // log.error("clickOnIngoreLatesEarliestDate = " +
