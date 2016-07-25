@@ -13,8 +13,7 @@ public class HomePage extends AbstractBasePage {
     public static final String URL_PATH = "/home";
     static final By EBODAC = By.linkText("EBODAC");
     static final By SECURITY = By.linkText("Security");
-    public final static By STATIC_ACCCESS_DATA_SERVICES = By.linkText("Data Services");
-    public final By DATA_SERVICES = By.linkText("Data Services");
+    public static final By DATA_SERVICES = By.linkText("Data Services");
     static final By EMAIL = By.linkText("Email");
     static final By MESSAGE_CAMPAIGN = By.linkText("Message Campaign");
     static final By IVR = By.linkText("IVR");

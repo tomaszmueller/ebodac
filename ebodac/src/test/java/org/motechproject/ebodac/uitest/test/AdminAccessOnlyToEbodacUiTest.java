@@ -51,7 +51,7 @@ public class AdminAccessOnlyToEbodacUiTest extends TestBase {
     @Test // Test for EBODAC-531
     public void adminAccessOnlyToEbodacUiTest() throws Exception {
         homePage.clickModules();
-        Assert.assertFalse(homePage.isElementPresent(HomePage.STATIC_ACCCESS_DATA_SERVICES));
+        Assert.assertFalse(homePage.isElementPresent(HomePage.DATA_SERVICES));
     }
 
     @After
