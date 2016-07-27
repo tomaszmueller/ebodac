@@ -7,19 +7,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static java.lang.Thread.sleep;
+import org.apache.log4j.Logger;
 
 public class EnrollmentPage extends AbstractBasePage {
+    private static final String CLASS_ENROLMENT_HIGHLIGHT = "ui-state-highlight";
+    // ui-widget-content jqgrow ui-row-ltr ui-state-hover ui-state-highlight"
+    // private static final int SLEEP_5SEC = 5000;
+    private static Logger log = Logger.getLogger(EnrollmentPage.class.getName());
     public static final String URL_PATH = "home#/ebodac/enrollment";
     static final By ACTION = By.xpath("//table[@id='enrollmentTable']/tbody/tr[2]/td[6]/button");
     static final By POPUP_OK = By.id("popup_ok");
     static final By POPUP_CONTENT = By.id("popup_content");
-    static final int SLEEP_500 = 500;
     static final By ENROLLMENT_RECORD = By.xpath("//table[@id='enrollmentTable']/tbody/tr[2]");
     static final By ENROLLMENT_ADVANCED = By.id("enrollmentAdvanced");
     static final int LAST_ENROLL = 2;
-    private int lastEnroll;
-    static final int SMALL_TIMEOUT = 500;
-    static final int BIG_TIMEOUT = 2000;
+    static final int TIMEOUT_500MLSEC = 500;
+    static final int TIMEOUT_2SEC = 2000;
     static final By AMMOUNT_OF_PAGES = By.id("sp_1_pageEnrollmentTable");
     static final By NUBMER_OF_ACTUAL_PAGE = By.className("ui-paging-info");
     static final By POPUP_MESSAGE = By.id("popup_message");
@@ -41,25 +44,29 @@ public class EnrollmentPage extends AbstractBasePage {
     public void goToPage() {
 
     }
+
     public String getPopupMessage() throws InterruptedException {
-        sleep(BIG_TIMEOUT);
+        sleep(TIMEOUT_2SEC);
         return findElement(POPUP_MESSAGE).getText();
     }
 
     public void clickAction() throws InterruptedException {
-        sleep(SLEEP_500);
+        sleep(TIMEOUT_500MLSEC);
         clickWhenVisible(ACTION);
     }
 
     public void clickOK() throws InterruptedException {
-        sleep(SMALL_TIMEOUT);
+        sleep(TIMEOUT_500MLSEC);
         clickWhenVisible(POPUP_OK);
     }
+
     public boolean error() {
         try {
             WebElement popUpContent = findElement(POPUP_CONTENT);
-            if (popUpContent.getText().contains("Error occurred during enrolling Participant: Cannot enroll Participant")
-                    || popUpContent.getText().contains("Error occurred during unenrolling Participant: Cannot unenroll Participant")) {
+            if (popUpContent.getText()
+                    .contains("Error occurred during enrolling Participant: Cannot enroll Participant")
+                    || popUpContent.getText()
+                            .contains("Error occurred during unenrolling Participant: Cannot unenroll Participant")) {
                 return true;
             }
             return false;
@@ -67,6 +74,7 @@ public class EnrollmentPage extends AbstractBasePage {
             return false;
         }
     }
+
     public boolean enrolled() {
         try {
             return findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully.");
@@ -74,6 +82,7 @@ public class EnrollmentPage extends AbstractBasePage {
             return false;
         }
     }
+
     public boolean unenrolled() {
         try {
             return findElement(POPUP_CONTENT).getText().contains("Participant was unenrolled successfully.");
@@ -81,39 +90,58 @@ public class EnrollmentPage extends AbstractBasePage {
             return false;
         }
     }
+
     public void nextAction() throws InterruptedException {
-        lastEnroll = LAST_ENROLL;
         do {
-            lastEnroll++;
+
             try {
                 actionSecond();
                 clickOn(POPUP_OK);
             } catch (Exception e) {
                 clickOn(POPUP_OK);
             }
-        }
-        while (error());
+        } while (error());
     }
+
     public void actionSecond() {
-        WebElement action = findElement(By.xpath("//table[@id='enrollmentTable']/tbody/tr[" + LAST_ENROLL + "]/td[6]/button"));
+        WebElement action = findElement(
+                By.xpath("//table[@id='enrollmentTable']/tbody/tr[" + LAST_ENROLL + "]/td[6]/button"));
         action.click();
     }
 
     public boolean enrollmentDetailEnabled() throws InterruptedException {
-        clickWhenVisible(ENROLLMENT_RECORD);
-        sleep(BIG_TIMEOUT);
+        boolean status = false;
         try {
-            if (findElement(ENROLLMENT_ADVANCED) != null) {
-                return true;
+            clickWhenVisible(ENROLLMENT_RECORD);
+            sleep(TIMEOUT_2SEC);
+            // If the ENROLLMENT_RECORD is visible we check that we cannot
+            // access to the next screen
+            if (findElement(ENROLLMENT_RECORD).isDisplayed()
+                    && findElement(ENROLLMENT_RECORD).getAttribute("class").contains(CLASS_ENROLMENT_HIGHLIGHT)) {
+                status = false;
+            } else if (findElement(ENROLLMENT_ADVANCED) != null) {
+                // If we are not in the ENROLLMENT_RECORD then we are in the
+                // next page.
+                status = true;
+            } else {
+                status = false;
             }
-            return false;
-        } catch (Exception e) {
-            return false;
+        } catch (NullPointerException e) {
+            status = false;
+            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage());
+            e.printStackTrace();
+
+        } catch (InterruptedException e) {
+            status = false;
+            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage());
+            e.printStackTrace();
+
         }
+        return status;
     }
 
     public boolean checkEnroll() throws InterruptedException {
-        sleep(BIG_TIMEOUT);
+        sleep(TIMEOUT_2SEC);
         findElement(By.xpath("//tr[@id='1']/td[2]")).click();
         try {
             findElement(By.cssSelector("td[title=\"Boost Vaccination Third Follow-up visit\"]")).click();

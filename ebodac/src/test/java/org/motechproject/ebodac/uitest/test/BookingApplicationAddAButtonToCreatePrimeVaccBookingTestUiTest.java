@@ -9,14 +9,15 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
-import static org.junit.Assert.assertTrue;
+import com.mchange.util.AssertException;
 
-//import org.apache.log4j.Logger;
+import static org.junit.Assert.assertTrue;
+import org.apache.log4j.Logger;
 
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
     private static final int MAX_COUNTER_VALUE = 10;
-    // private static Logger log = Logger
-    // .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
+    private static Logger log = Logger
+            .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -64,29 +65,29 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         boolean clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
         // log.error("clickOnIngoreLatesEarliestDate = " +
         // clickOnIngoreLatesEarliestDate);
-        while (counter > 0) {
+        while (!bookingAppPrimeVaccinationPage.isEnabledSaveButton() && counter > 0) {
             // After checking the check-box to ignore the EarliestDate we select
             // the dates.
             if (clickOnIngoreLatesEarliestDate) {
                 bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
-                // log.error("while setDateOfPrimeVacDateField = "
-                // +
-                // bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields());
                 bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
-                // log.error("while setTimeOfPrimeVacDateFields = "
-                // +
-                // bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields());
+
             }
             // We make sure that the Save Button is enabled.
             if (bookingAppPrimeVaccinationPage.isEnabledSaveButton()) {
                 counter = -1;
-                // log.error("while isEnabledSaveButton = " +
-                // bookingAppPrimeVaccinationPage.isEnabledSaveButton());
+            } else {
+                counter--;
             }
-            counter--;
         }
         // We Validate that the Button is Enabled.
-        assertTrue(bookingAppPrimeVaccinationPage.isEnabledSaveButton());
+        try {
+            assertTrue(bookingAppPrimeVaccinationPage.isEnabledSaveButton());
+        } catch (AssertException e) {
+            log.error("bookingApplicationCapacityInfoTest - Assert Exception :" + e.getLocalizedMessage());
+            e.printStackTrace();
+
+        }
         bookingAppPrimeVaccinationPage.saveCreatedPrimeVaccination();
         bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();
         bookingAppPrimeVaccinationPage.closePdfIfIsOpen();

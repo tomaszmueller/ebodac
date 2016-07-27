@@ -9,8 +9,15 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
-public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
+import com.mchange.util.AssertException;
 
+import static org.junit.Assert.assertTrue;
+
+import org.apache.log4j.Logger;
+
+public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(BookingApplicationAdvanceSettingsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -32,15 +39,24 @@ public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
         }
     }
 
-    @Test//EBODAC-802
+    @Test // EBODAC-802
     public void bookingAppAdvanceSettingsTest() throws InterruptedException {
-        homePage.resizePage();
-        homePage.clickModules();
-        homePage.openBookingAppModule();
-        bookingAppPage.openAdvancedSettings();
-        bookingAppAdvancedSettingsPage.clickKambiaIRowAndShowMore();
-        bookingAppAdvancedSettingsPage.removeTextFromInputMaxPrimeVisitsPasteOtherValue();
-        bookingAppAdvancedSettingsPage.clickSaveAfterEditKambiaI();
+        try {
+            homePage.resizePage();
+            homePage.clickModules();
+            homePage.openBookingAppModule();
+            bookingAppPage.openAdvancedSettings();
+            bookingAppAdvancedSettingsPage.clickKambiaIRowAndShowMore();
+            bookingAppAdvancedSettingsPage.removeTextFromInputMaxPrimeVisitsPasteOtherValue();
+            assertTrue(bookingAppAdvancedSettingsPage.clickSaveAfterEditKambiaI());
+
+        } catch (AssertException e) {
+            log.error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
 
     @After

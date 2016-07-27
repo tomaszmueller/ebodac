@@ -8,18 +8,23 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
+
+import com.mchange.util.AssertException;
+
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
+import org.apache.log4j.Logger;
 
 public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest extends TestBase {
-
+    private static Logger log = Logger
+            .getLogger(BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
     private BookingAppClinicVisitSchedulePage bookingAppClinicVisitSchedulePage;
     private String user;
     private String password;
-    public static final int SLEEP_1000 = 1000;
+    public static final int SLEEP_1SEC = 1000;
 
     @Before
     public void setUp() {
@@ -35,20 +40,30 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
         }
     }
 
-    @Test//EBODAC-800
+    @Test // EBODAC-800
     public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws InterruptedException {
-        homePage.resizePage();
-        homePage.clickModules();
-        homePage.openBookingAppModule();
-        bookingAppPage.openClinicVisitSchedule();
-        bookingAppClinicVisitSchedulePage.clickOnDropDownParticipantId();
-        sleep(SLEEP_1000);
-        String dayBeforeClean = bookingAppClinicVisitSchedulePage.getPrimeVacDateInput();
-        bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
-        bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();
-        bookingAppClinicVisitSchedulePage.clickButtonCleanDate();
-        assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
-
+        try {
+            homePage.resizePage();
+            homePage.clickModules();
+            homePage.openBookingAppModule();
+            bookingAppPage.openClinicVisitSchedule();
+            bookingAppClinicVisitSchedulePage.clickOnDropDownParticipantId();
+            sleep(SLEEP_1SEC);
+            String dayBeforeClean = bookingAppClinicVisitSchedulePage.getPrimeVacDateInput();
+            bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
+            bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();
+            bookingAppClinicVisitSchedulePage.clickButtonCleanDate();
+            // Assert to validate the changes.
+            assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
+        } catch (AssertException e) {
+            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
+                    + e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception . Reason :"
+                    + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
 
     @After

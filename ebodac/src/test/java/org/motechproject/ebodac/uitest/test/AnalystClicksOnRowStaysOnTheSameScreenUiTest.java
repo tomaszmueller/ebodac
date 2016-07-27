@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.uitest.test;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
@@ -16,6 +15,7 @@ import static org.junit.Assert.assertFalse;
 
 public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
 
+    private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -23,17 +23,17 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     private String l1analystUser;
     private String l1analystpassword;
     private UserPropertiesHelper userPropertiesHelper;
-    private UITestHttpClientHelper httpClientHelper;
+    // private UITestHttpClientHelper httpClientHelper;
     private CreateUsersHelper createUsersHelper;
     private String url;
 
     @Before
-    public void setUp() throws  Exception {
+    public void setUp() throws Exception {
         url = getServerUrl();
-        if (url.contains("localhost")) {
-            createUsersHelper = new CreateUsersHelper(getDriver());
-            createUsersHelper.createUsersWithLogin(getTestProperties());
-        }
+        // if (url.contains(LOCAL_TEST_MACHINE)) {
+        // createUsersHelper = new CreateUsersHelper(getDriver());
+        // createUsersHelper.createUsersWithLogin(getTestProperties());
+        // }
         ebodacPage = new EBODACPage(getDriver());
         enrollmentsPage = new EnrollmentPage(getDriver());
         userPropertiesHelper = new UserPropertiesHelper();
@@ -41,10 +41,11 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
         l1analystpassword = userPropertiesHelper.getAnalystPassword();
         loginPage = new LoginPage(getDriver());
         homePage = new HomePage(getDriver());
-        if (url.contains("localhost")) {
-            httpClientHelper = new UITestHttpClientHelper(url);
-        }
-        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+        if (url.contains(LOCAL_TEST_MACHINE)) {
+            UITestHttpClientHelper httpClientHelper = new UITestHttpClientHelper(url);
+            loginPage.goToPage();
+            loginPage.login(l1analystUser, l1analystpassword);
+        } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.goToPage();
             loginPage.login(l1analystUser, l1analystpassword);
         }
@@ -57,6 +58,3 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
         assertFalse(enrollmentsPage.checkEnroll());
     }
 }
-
-
-

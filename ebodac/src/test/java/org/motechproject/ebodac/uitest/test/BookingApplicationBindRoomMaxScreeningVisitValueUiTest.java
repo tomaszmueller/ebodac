@@ -9,9 +9,16 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
+import com.mchange.util.AssertException;
+
+import static org.junit.Assert.assertTrue;
+
+import org.apache.log4j.Logger;
 
 public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends TestBase {
-
+    // Object initialization for log
+    private static Logger log = Logger
+            .getLogger(BookingApplicationBindRoomMaxScreeningVisitValueUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -31,21 +38,31 @@ public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends Test
         password = getTestProperties().getPassword();
         if (homePage.expectedUrlPath() != currentPage().urlPath()) {
             loginPage.goToPage();
-            loginPage.login(user , password);
+            loginPage.login(user, password);
         }
     }
 
-    @Test //EBODAC-718
+    @Test // EBODAC-718
     public void bindRoomMaxScreeningVisitValue() throws InterruptedException {
-        homePage.resizePage();
-        homePage.clickModules();
-        homePage.openBookingAppModule();
-        bookingAppPage.openScreening();
-        for (int i = START_LOOP; i < END_LOOP; i++) {
-            bookingAppScreeningPage.bookVisitForScreening();
-            bookingAppScreeningPage.confirmBookVistiForScreening();
-            bookingAppScreeningPage.clickOnButtonToAddAnotherScreening();
-            bookingAppScreeningPage.clickOnButtonToCloseScheduleScreening();
+        try {
+            homePage.resizePage();
+            homePage.clickModules();
+            homePage.openBookingAppModule();
+            bookingAppPage.openScreening();
+            for (int i = START_LOOP; i < END_LOOP; i++) {
+                bookingAppScreeningPage.bookVisitForScreening();
+                bookingAppScreeningPage.confirmBookVistiForScreening();
+                bookingAppScreeningPage.clickOnButtonToAddAnotherScreening();
+                bookingAppScreeningPage.confirmBookVistiForScreening();
+                assertTrue(bookingAppScreeningPage.clickOnButtonToCloseScheduleScreening());
+            }
+
+        } catch (AssertException e) {
+            log.error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("bindRoomMaxScreeningVisitValue - Exception . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 

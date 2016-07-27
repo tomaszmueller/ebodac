@@ -1,6 +1,9 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.motechproject.uitest.page.LoginPage;
+
+import com.mchange.util.AssertException;
+
 import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -59,24 +62,39 @@ public class ChangeLanguageUiTest extends TestBase {
      */
     @Test
     public void changeLanguageTest() throws Exception {
-        // We access to the edit page of the participant
-        homePage.openEBODACModule();
-        participantPage.openFirstParticipant();
-        originalLanguage = participantEditPage.getLanguage();
-        // We get the list of positions languages
-        participantEditPage.setListLanguagePosition();
-        // We use the map to set up the right new language.
-        map = participantEditPage.getMapLangPos();
-        // We change the language to choose a different one of the original one.
-        String changedLanguage = participantEditPage.changeLanguageFromOriginal(originalLanguage);
-        // We change the particiapant language.
-        int intPosition = new Integer(map.get(changedLanguage)).intValue();
-        Integer htmlposition = new Integer(intPosition + OFFSET_HTML);
-        // Change the language
-        if (!participantEditPage.changeLanguage(htmlposition.toString())) {
-            log.error("Cannot setup language :" + htmlposition);
-        } else {
-            assertNotEquals(changedLanguage.replace(" ", ""), originalLanguage.replace(" ", ""));
+        try {
+            // We access to the edit page of the participant
+            homePage.openEBODACModule();
+            participantPage.openFirstParticipant();
+            originalLanguage = participantEditPage.getLanguage();
+            // We get the list of positions languages
+            participantEditPage.setListLanguagePosition();
+            // We use the map to set up the right new language.
+            map = participantEditPage.getMapLangPos();
+            // We change the language to choose a different one of the original
+            // one.
+            String changedLanguage = participantEditPage.changeLanguageFromOriginal(originalLanguage);
+            // We change the particiapant language.
+            int intPosition = new Integer(map.get(changedLanguage)).intValue();
+            Integer htmlposition = new Integer(intPosition + OFFSET_HTML);
+            // Change the language
+            if (!participantEditPage.changeLanguage(htmlposition.toString())) {
+                log.error("Cannot setup language :" + htmlposition);
+            } else if (originalLanguage != null && changedLanguage != null) {
+                assertNotEquals(changedLanguage.replace(" ", ""), originalLanguage.replace(" ", ""));
+            } else if (originalLanguage == null || changedLanguage == null) {
+                log.error("Cannot compate languages: originalLanguage: " + originalLanguage + " and changedLanguage: "
+                        + changedLanguage);
+            }
+        } catch (AssertException e) {
+            log.error("AssertException . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("Exception . Reason : " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
     }
