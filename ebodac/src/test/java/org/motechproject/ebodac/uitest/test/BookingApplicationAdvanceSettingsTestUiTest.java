@@ -51,11 +51,9 @@ public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
             assertTrue(bookingAppAdvancedSettingsPage.clickSaveAfterEditKambiaI());
 
         } catch (AssertException e) {
-            log.error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

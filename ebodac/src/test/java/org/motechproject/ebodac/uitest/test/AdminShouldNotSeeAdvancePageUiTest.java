@@ -74,11 +74,9 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
             assertFalse(enrollmentPage.enrollmentDetailEnabled());
         } catch (NullPointerException e) {
             log.error("adminhouldNotSeeAdvancePageTest - AssertNull : NullPointerException . Reason : "
-                    + e.getLocalizedMessage());
-            e.printStackTrace();
+                    + e.getLocalizedMessage(), e);
         } catch (AssertException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - AssertException . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("adminhouldNotSeeAdvancePageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         }
         // It should be allowed to enrol unenroll participants.
         try {
@@ -91,7 +89,6 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
             }
         } catch (NullPointerException e) {
             log.error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
-            e.printStackTrace();
         }
         try {
             if (enrollmentPage.enrolled()) {
@@ -100,8 +97,8 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                     assertTrue(enrollmentPage.enrolled());
                 } catch (AssertException e) {
                     log.error(
-                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage());
-                    e.printStackTrace();
+                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage(),
+                            e);
                 }
 
                 enrollmentPage.clickOK();
@@ -111,8 +108,8 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                 enrollmentPage.clickOK();
             }
         } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
+                    e);
         }
 
     }

@@ -139,12 +139,10 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             status = true;
         } catch (InterruptedException e) {
             log.error("clickOnButtonToCloseScheduleScreening - InterruptedException . Reason : "
-                    + e.getLocalizedMessage());
-            e.printStackTrace();
+                    + e.getLocalizedMessage(), e);
             status = false;
         } catch (Exception e) {
-            log.error("clickOnButtonToCloseScheduleScreening - Exception . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("clickOnButtonToCloseScheduleScreening - Exception . Reason : " + e.getLocalizedMessage(), e);
             status = false;
         }
         return status;

@@ -84,9 +84,7 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         try {
             assertTrue(bookingAppPrimeVaccinationPage.isEnabledSaveButton());
         } catch (AssertException e) {
-            log.error("bookingApplicationCapacityInfoTest - Assert Exception :" + e.getLocalizedMessage());
-            e.printStackTrace();
-
+            log.error("bookingApplicationCapacityInfoTest - Assert Exception :" + e.getLocalizedMessage(), e);
         }
         bookingAppPrimeVaccinationPage.saveCreatedPrimeVaccination();
         bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();

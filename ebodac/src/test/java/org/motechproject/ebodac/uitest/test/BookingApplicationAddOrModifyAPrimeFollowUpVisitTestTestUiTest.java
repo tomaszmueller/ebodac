@@ -57,12 +57,10 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
             assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
         } catch (AssertException e) {
             log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
-                    + e.getLocalizedMessage());
-            e.printStackTrace();
+                    + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception . Reason :"
-                    + e.getLocalizedMessage());
-            e.printStackTrace();
+                    + e.getLocalizedMessage(), e);
         }
     }
 

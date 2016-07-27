@@ -87,14 +87,11 @@ public class ChangeLanguageUiTest extends TestBase {
                         + changedLanguage);
             }
         } catch (AssertException e) {
-            log.error("AssertException . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("Exception . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

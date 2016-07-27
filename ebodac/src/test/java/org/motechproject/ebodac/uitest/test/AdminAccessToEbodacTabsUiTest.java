@@ -45,11 +45,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Logger;
 
-public class AdminAccessToEbodacTabsTest extends TestBase {
+public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     // Object initialization for log
-    private static Logger log = Logger.getLogger(AdminAccessToEbodacTabsTest.class.getName());
+    private static Logger log = Logger.getLogger(AdminAccessToEbodacTabsUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private String user;
     private String password;
     private UITestHttpClientHelper httpClientHelper;
@@ -84,8 +85,6 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
     @Before
     public void setUp() throws Exception {
         url = getServerUrl();
-        log.error("uri : " + url);
-
         // We close the session with admin user to try to log in with admin
         // user.
         try {
@@ -94,16 +93,13 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
             password = userPropertiesHelper.getAdminPassword();
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
-            log.error("Admin User : " + user + "   /// Password : " + password);
         } catch (Exception e) {
-            log.error("Error in Test : " + e.getMessage());
-            e.printStackTrace();
+            log.error("Error in Test : " + e.getMessage(), e);
         }
 
         try {
 
             // We try to log in Ebodac.
-            log.error("Try to log in Local Machine ");
             if (url.contains(LOCAL_TEST_MACHINE)) {
                 httpClientHelper = new UITestHttpClientHelper(url);
                 httpClientHelper.addParticipant(new TestParticipant(), user, password);
@@ -115,24 +111,38 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
             }
 
         } catch (Exception e) {
-            log.error("Error Trying to log in : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("Error Trying to log in : " + e.getLocalizedMessage(), e);
         }
 
         // Load Ebodac Tabs. Setting up the pages.
         try {
             loadEbodacPages();
         } catch (Exception e) {
-            log.error("Cannot load tabs . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("Cannot load tabs . Reason : " + e.getLocalizedMessage(), e);
         }
 
         // Load the rest of the pages
 
     }
 
+    public void testAdminEbodacHome() throws InterruptedException {
+        try {
+            homePage.clickOnEbodac();
+            ebodacPage = new EBODACPage(getDriver());
+            ebodacPage.showParticipants();
+            participantPage.openFirstParticipant();
+            assertTrue(participantEditPage.isNameEditable());
+            assertTrue(participantEditPage.isHouseholdNameEditable());
+            assertTrue(participantEditPage.isHeadOfHouseholdEditable());
+        } catch (AssertionError e) {
+            log.error("AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("Exception Error . Reason :  " + e.getLocalizedMessage(), e);
+        }
+    }
+
     /**
-     * We use this method to load all the pages neeeded for the test.
+     * We use this method to load all the pages needed for the test.
      * 
      * @return the list of pages loaded for the test
      */
@@ -170,61 +180,47 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
             // Ebodac Asserts.
             try {
                 testAdminEbodacHome();
+            } catch (NullPointerException e) {
+                log.error("testAdminEbodacHome - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
             } catch (Exception e) {
-                log.error("testAdminEbodacHome - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("testAdminEbodacHome - Error . Reason = " + e.getLocalizedMessage(), e);
             }
             // Visits Asserts
             try {
                 testAdminVisitsTab();
             } catch (Exception e) {
-                log.error("testAdminVisits - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("testAdminVisits - Error . Reason = " + e.getLocalizedMessage(), e);
             }
             // Report Asserts
             try {
                 testAdminWithReports();
             } catch (Exception e) {
-                log.error("testAdminWithReports - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("testAdminWithReports - Error . Reason = " + e.getLocalizedMessage(), e);
             }
 
             // Enrolment Tab
             try {
                 testAdminEnrolmentTab();
             } catch (Exception e) {
-                log.error("  testAdminEnrolmentTab - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("  testAdminEnrolmentTab - Error . Reason = " + e.getLocalizedMessage(), e);
             }
 
             // IVR Module
             try {
                 testAdminIVRModule();
             } catch (Exception e) {
-                log.error("testAdminIVRModule - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("testAdminIVRModule - Error . Reason = " + e.getLocalizedMessage(), e);
             }
 
             // SMS Module
             try {
                 testAdminSMSModule();
             } catch (Exception e) {
-                log.error("testAdminSMSModule - Error . Reason = " + e.getLocalizedMessage());
-                e.printStackTrace();
+                log.error("testAdminSMSModule - Error . Reason = " + e.getLocalizedMessage(), e);
             }
         } catch (AssertionError e) {
-            log.error("Assertion Error " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("Assertion Error " + e.getLocalizedMessage(), e);
         }
-    }
-
-    public void testAdminEbodacHome() throws InterruptedException {
-        homePage.clickOnEbodac();
-        ebodacPage.showParticipants();
-        participantPage.openFirstParticipant();
-        assertTrue(participantEditPage.isNameEditable());
-        assertTrue(participantEditPage.isHouseholdNameEditable());
-        assertTrue(participantEditPage.isHeadOfHouseholdEditable());
     }
 
     public void testAdminSMSModule() {
@@ -233,6 +229,7 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
     }
 
     public void testAdminIVRModule() throws InterruptedException {
+        ebodacPage.sleep(SLEEP_2SEC);
         homePage.openIVRModule();
         ivrPage.openLog();
         ivrPage.openFirstRecord();
@@ -240,6 +237,7 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
     }
 
     public void testAdminVisitsTab() throws InterruptedException {
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.showVisits();
         visitPage.clickVisit();
         // DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
@@ -250,23 +248,20 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
     }
 
     public void testAdminEnrolmentTab() throws InterruptedException {
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.goToEnrollment();
         // enrollmentPage.goToPage();
         // It should be allowed to enrol unenroll participants.
         try {
             enrollmentPage.clickAction();
-            log.error("After click action ");
             enrollmentPage.clickOK();
-            log.error("After click ok ");
             if (enrollmentPage.error()) {
                 enrollmentPage.clickOK();
-                log.error("adminhouldNotSeeAdvancePageTest - After enrollmentPage click ok ");
                 enrollmentPage.nextAction();
-                log.error("adminhouldNotSeeAdvancePageTest - After enrollmentPage nextAction ");
             }
         } catch (NullPointerException e) {
             log.error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
-            e.printStackTrace();
+
         }
         try {
             if (enrollmentPage.enrolled()) {
@@ -275,8 +270,9 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
                     assertTrue(enrollmentPage.enrolled());
                 } catch (AssertException e) {
                     log.error(
-                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage());
-                    e.printStackTrace();
+                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage(),
+                            e);
+
                 }
 
                 enrollmentPage.clickOK();
@@ -286,44 +282,69 @@ public class AdminAccessToEbodacTabsTest extends TestBase {
                 enrollmentPage.clickOK();
             }
         } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
+                    e);
+
         }
     }
 
     public void testAdminWithReports() throws InterruptedException {
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showPrimeVaccinationReport();
         assertFalse(primerVaccinationReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showBoostVaccinationReport();
         assertFalse(boosterVaccinationReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showDailyClinicVisitReportSchedule();
         assertFalse(dailyClinicVisitScheduleReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showFollowUpsAfterPrimeInjectionReport();
         assertFalse(followupsAfterPrimeInjectionReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showFollowUpsMissedClinicReport();
-        assertFalse(followupsMissedClinicVisitsReportPage.isReportEmpty());
+        assertFalse(followupsMissedClinicVisitsReportPage.existTable());
+
+        ebodacPage.sleep(SLEEP_2SEC);
+        ebodacPage.gotoReports();
         reportPage.showMEMissedClinicVisitsReport();
-        assertFalse(meMissedClinicVisitsReportPage.isReportEmpty());
+        assertFalse(meMissedClinicVisitsReportPage.existTable());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showParticipantsWhoOptOutOfMessages();
         assertFalse(participantsWhoOptOutOfMessagesReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showNumberOfTimesReport();
         assertFalse(numberOfTimesListenedReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showScreeningReport();
         assertFalse(screeningReportPage.isReportEmpty());
-        ebodacPage.gotoReports();
-        reportPage.showCallDetailRecord();
-        assertFalse(callDetailRecordPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showPrimeFollowAndBoostReport();
         assertFalse(primeFollowAndBoostReportPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
+        ebodacPage.gotoReports();
+        reportPage.showCallDetailRecord();
+        assertFalse(callDetailRecordPage.isReportEmpty());
+
+        ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showSMSLog();
         assertFalse(smsLogReportPage.isReportEmpty());

@@ -51,4 +51,9 @@ public class EBODACPage extends AbstractBasePage {
     public void goToPage() {
 
     }
+
+    public void sleep(long sleep) throws InterruptedException {
+        Thread.sleep(sleep);
+        
+    }
 }

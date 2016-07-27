@@ -45,8 +45,7 @@ public class BookingAppAdvancedSettingsPage extends AbstractBasePage {
             clickWhenVisible(SAVE_BUTTON_EDIT_ADVANCED_SETTINGS);
             status = true;
         } catch (Exception e) {
-            log.error("clickSaveAfterEditKambiaI - Exception . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("clickSaveAfterEditKambiaI - Exception . Reason : " + e.getLocalizedMessage(), e);
             status = false;
         }
         return status;

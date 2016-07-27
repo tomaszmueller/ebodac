@@ -128,13 +128,11 @@ public class EnrollmentPage extends AbstractBasePage {
             }
         } catch (NullPointerException e) {
             status = false;
-            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
             status = false;
-            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage(), e);
 
         }
         return status;

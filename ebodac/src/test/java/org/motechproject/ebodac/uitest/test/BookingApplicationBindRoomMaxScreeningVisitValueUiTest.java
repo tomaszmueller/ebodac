@@ -58,11 +58,9 @@ public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends Test
             }
 
         } catch (AssertException e) {
-            log.error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bindRoomMaxScreeningVisitValue - Exception . Reason : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error("bindRoomMaxScreeningVisitValue - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
