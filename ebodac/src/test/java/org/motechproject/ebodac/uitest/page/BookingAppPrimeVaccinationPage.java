@@ -6,13 +6,11 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import static java.lang.Thread.sleep;
-
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
+    private static Logger log = Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
     private static final int MAX_COUNTER_VALUE = 10;
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final String PRIMEVAC_MODAL_CLASS_ENABLED = "modal fade ng-scope in";
@@ -294,15 +292,32 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         sleep(SLEEP_2000);
     }
 
-    public void closePdfIfIsOpen() throws InterruptedException {
-        String originalHandle = getDriver().getWindowHandle();
-        for (String handle : getDriver().getWindowHandles()) {
-            if (!handle.equals(originalHandle)) {
-                getDriver().switchTo().window(handle);
-                getDriver().close();
+    public boolean closePdfIfIsOpen() throws InterruptedException {
+        boolean status = false;
+        try {
+            String originalHandle = getDriver().getWindowHandle();
+            for (String handle : getDriver().getWindowHandles()) {
+                if (!handle.equals(originalHandle)) {
+                    getDriver().switchTo().window(handle);
+                    getDriver().close();
+                }
             }
+            getDriver().switchTo().window(originalHandle);
+            status = true;
+
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            log.error("closePdfIfIsOpen - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            status = false;
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            log.error("closePdfIfIsOpen - Exception - Reason : " + e.getLocalizedMessage(), e);
+            status = false;
         }
-        getDriver().switchTo().window(originalHandle);
+        return status;
     }
 
     // Asserts

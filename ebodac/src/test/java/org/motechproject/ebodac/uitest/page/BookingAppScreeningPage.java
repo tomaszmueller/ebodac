@@ -12,13 +12,12 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-
+import org.apache.log4j.Logger;
 
 public class BookingAppScreeningPage extends AbstractBasePage {
 
-    public BookingAppScreeningPage(WebDriver driver) {
-        super(driver);
-    }
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(BookingAppScreeningPage.class.getName());
 
     public static final String URL_PATH = "/#/bookingApp/screening";
 
@@ -59,11 +58,15 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     static final By CLINIC_LOCACATION_KAMBIA_I = By.xpath("//div[contains(text(), 'Kambia I')]");
     static final By SAVE_BUTTON_NG_CLICK = By.xpath("//button[@ng-click='saveScreening(false)']");
     static final By CONFIRM_BUTTON = By.id("popup_ok");
-    static final int SLEEP_4000 = 4000;
-    static final int SLEEP_1000 = 1000;
+    static final int SLEEP_4SEC = 4000;
+    static final int SLEEP_1SEC = 1000;
     static final int SLEEP_500 = 500;
 
     private ScreeningCardPage screeningCardPage;
+
+    public BookingAppScreeningPage(WebDriver driver) {
+        super(driver);
+    }
 
     public String bookScreeningVisit() throws InterruptedException {
         waitForElement(SCREENING_BUTTON);
@@ -85,7 +88,8 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(POPUP_OK);
         sleep(TIMEOUT);
         waitForElement(BOOKING_STRING);
-        String bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace("." , "").replace(" " , "");
+        String bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace(".", "").replace(" ",
+                "");
         waitForElement(PRINT_CARD);
         clickWhenVisible(PRINT_CARD);
         sleep(TIMEOUT);
@@ -104,7 +108,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     }
 
     public void bookVisitForScreening() throws InterruptedException {
-        sleep(SLEEP_1000);
+        sleep(SLEEP_1SEC);
         clickWhenVisible(SCREENING_BUTTON_NG_CLICK);
         clickWhenVisible(DATE_FIELD_INPUT);
         clickWhenVisible(TODAY_BUTTON);
@@ -113,7 +117,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(NOW_BUTTON);
         clickWhenVisible(DONE_BUTTON);
         clickWhenVisible(CLINIC_LOCATION_DROP_DOWN);
-        sleep(SLEEP_1000);
+        sleep(SLEEP_1SEC);
         clickWhenVisible(CLINIC_LOCACATION_KAMBIA_I);
         clickWhenVisible(SAVE_BUTTON_NG_CLICK);
     }
@@ -126,13 +130,26 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(SCREENING_BUTTON_NG_CLICK);
     }
 
-    public void clickOnButtonToCloseScheduleScreening() throws InterruptedException {
-        sleep(SLEEP_1000);
-        clickWhenVisible(CLOSE_BUTTON_TEXT);
-        sleep(SLEEP_4000);
+    public boolean clickOnButtonToCloseScheduleScreening() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_1SEC);
+            clickWhenVisible(CLOSE_BUTTON_TEXT);
+            sleep(SLEEP_4SEC);
+            status = true;
+        } catch (InterruptedException e) {
+            log.error("clickOnButtonToCloseScheduleScreening - InterruptedException . Reason : "
+                    + e.getLocalizedMessage(), e);
+            status = false;
+        } catch (Exception e) {
+            log.error("clickOnButtonToCloseScheduleScreening - Exception . Reason : " + e.getLocalizedMessage(), e);
+            status = false;
+        }
+        return status;
+
     }
 
-    public void changeFilterTo(String filter) throws InterruptedException  {
+    public void changeFilterTo(String filter) throws InterruptedException {
         waitForElement(FILTER);
         clickOn(FILTER);
         clickWhenVisible(FILTER);
@@ -146,7 +163,6 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(CONFIRM_EXPORT);
     }
 
-
     public void exportToXLS() throws InterruptedException {
         clickWhenVisible(EXPORT_BUTTON);
         clickWhenVisible(FORMAT);
@@ -154,7 +170,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         clickWhenVisible(CONFIRM_EXPORT);
     }
 
-    public void setDate() throws InterruptedException  {
+    public void setDate() throws InterruptedException {
         clickWhenVisible(START_DATE);
         clickWhenVisible(FIRST_DAY);
         clickWhenVisible(END_DATE);
@@ -201,18 +217,17 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             if (firstVisitElement == null) {
                 return true;
             } else {
-                LocalDate date = LocalDate.parse((firstVisitElement.getAttribute("title")).toString(), DateTimeFormat.forPattern("yyyy-MM-dd"));
+                LocalDate date = LocalDate.parse((firstVisitElement.getAttribute("title")).toString(),
+                        DateTimeFormat.forPattern("yyyy-MM-dd"));
                 if (dates.contains(date)) {
                     return true;
                 }
-                    return false;
+                return false;
             }
         } catch (Exception e) {
             return true;
         }
     }
-
-
 
     @Override
     public String expectedUrlPath() {

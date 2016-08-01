@@ -4,17 +4,23 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
+
+import com.mchange.util.AssertException;
+
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.MEMissedClinicVisitsReportPage;
+import org.motechproject.ebodac.uitest.helper.TestParticipant;
+import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.assertFalse;
-
+import org.apache.log4j.Logger;
 
 public class MEMissedClinicVisitsReportUiTest extends TestBase {
-
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(MEMissedClinicVisitsReportUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -22,28 +28,56 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
     private MEMissedClinicVisitsReportPage mEMissedClinicVisitsReportPage;
     private String user;
     private String password;
+    private static final String TEST_LOCAL_MACHINE = "localhost";
+    private UITestHttpClientHelper httpClientHelper;
+    private String url;
 
     @Before
-    public void setUp() {
-        user = getTestProperties().getUserName();
-        password = getTestProperties().getPassword();
-        loginPage = new LoginPage(getDriver());
-        homePage = new HomePage(getDriver());
-        ebodacPage = new EBODACPage(getDriver());
-        reportPage = new ReportPage(getDriver());
-        mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(getDriver());
-        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.goToPage();
-            loginPage.login(user, password);
+    public void setUp() throws Exception {
+        try {
+            user = getTestProperties().getUserName();
+            password = getTestProperties().getPassword();
+            loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
+            ebodacPage = new EBODACPage(getDriver());
+            reportPage = new ReportPage(getDriver());
+            mEMissedClinicVisitsReportPage = new MEMissedClinicVisitsReportPage(getDriver());
+            url = getServerUrl();
+            if (url.contains(TEST_LOCAL_MACHINE)) {
+                httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+        } catch (NullPointerException e) {
+            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test
-    public void mEMissedClinicVisitsReportTest() throws InterruptedException {
-        homePage.openEBODACModule();
-        ebodacPage.gotoReports();
-        reportPage.showMEMissedClinicVisitsReport();
-        assertFalse(mEMissedClinicVisitsReportPage.isReportEmpty());
+    public void mEMissedClinicVisitsReportTest() throws Exception {
+        try {
+            homePage.openEBODACModule();
+            ebodacPage.gotoReports();
+            reportPage.showMEMissedClinicVisitsReport();
+            assertTrue(mEMissedClinicVisitsReportPage.existTable());
+        } catch (AssertException e) {
+            log.error("mEMissedClinicVisitsReportTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (NullPointerException e) {
+            log.error("mEMissedClinicVisitsReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (InterruptedException e) {
+            log.error("mEMissedClinicVisitsReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("mEMissedClinicVisitsReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
     }
 
     @After

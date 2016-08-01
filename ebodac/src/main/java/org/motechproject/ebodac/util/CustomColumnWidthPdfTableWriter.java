@@ -5,8 +5,11 @@ import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.template.PdfBasicTemplate;
 
 import java.io.IOException;
+import org.apache.log4j.Logger;
 
 public class CustomColumnWidthPdfTableWriter extends PdfTableWriter {
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(CustomColumnWidthPdfTableWriter.class.getName());
 
     private static final float MARGIN = 5f;
 
@@ -24,7 +27,7 @@ public class CustomColumnWidthPdfTableWriter extends PdfTableWriter {
         try {
             dataTable.setWidths(calculateColumnWidths(headers));
         } catch (DocumentException e) {
-            e.printStackTrace();
+            log.error("writeHeader - DocumentException - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -38,7 +41,8 @@ public class CustomColumnWidthPdfTableWriter extends PdfTableWriter {
             }
         }
 
-        float relativeWidth = spaceForTheRestOfColumns / (dataTable.getNumberOfColumns() - numberOfColumnsWithFixedWidth);
+        float relativeWidth = spaceForTheRestOfColumns
+                / (dataTable.getNumberOfColumns() - numberOfColumnsWithFixedWidth);
         float[] allWidths = new float[dataTable.getNumberOfColumns()];
         for (int i = 0; i < dataTable.getNumberOfColumns(); i++) {
             if (EbodacConstants.REPORT_COLUMN_WIDTHS.containsKey(headers[i])) {
