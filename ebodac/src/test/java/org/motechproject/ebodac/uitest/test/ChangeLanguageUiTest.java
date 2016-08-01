@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 public class ChangeLanguageUiTest extends TestBase {
 
     private static final int OFFSET_HTML = 2;
-    private static final String LOCALHOST = "localhost";
+    private static final String LOCAL_TEST_MACHINE = "localhost";
 
     // Map for the languages
     private Map<String, String> map = new HashMap<String, String>();
@@ -34,23 +34,31 @@ public class ChangeLanguageUiTest extends TestBase {
     // private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
+    private Integer htmlposition;
 
     @Before
-    public void setUp() {
-        String user = getTestProperties().getUserName();
-        String password = getTestProperties().getPassword();
-        loginPage = new LoginPage(getDriver());
-        homePage = new HomePage(getDriver());
-        participantPage = new ParticipantPage(getDriver());
-        participantEditPage = new ParticipantEditPage(getDriver());
-        String url = getServerUrl();
-        if (url.contains(LOCALHOST)) {
-            UITestHttpClientHelper httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(), user, password);
-        }
-        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.goToPage();
-            loginPage.login(user, password);
+    public void setUp() throws Exception {
+        try {
+            String user = getTestProperties().getUserName();
+            String password = getTestProperties().getPassword();
+            loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
+            participantPage = new ParticipantPage(getDriver());
+            participantEditPage = new ParticipantEditPage(getDriver());
+            String url = getServerUrl();
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                UITestHttpClientHelper httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+        } catch (NullPointerException e) {
+            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -66,6 +74,7 @@ public class ChangeLanguageUiTest extends TestBase {
             // We access to the edit page of the participant
             homePage.openEBODACModule();
             participantPage.openFirstParticipant();
+            // We store the language.
             originalLanguage = participantEditPage.getLanguage();
             // We get the list of positions languages
             participantEditPage.setListLanguagePosition();
@@ -76,7 +85,7 @@ public class ChangeLanguageUiTest extends TestBase {
             String changedLanguage = participantEditPage.changeLanguageFromOriginal(originalLanguage);
             // We change the particiapant language.
             int intPosition = new Integer(map.get(changedLanguage)).intValue();
-            Integer htmlposition = new Integer(intPosition + OFFSET_HTML);
+            htmlposition = new Integer(intPosition + OFFSET_HTML);
             // Change the language
             if (!participantEditPage.changeLanguage(htmlposition.toString())) {
                 log.error("Cannot setup language :" + htmlposition);
@@ -87,11 +96,11 @@ public class ChangeLanguageUiTest extends TestBase {
                         + changedLanguage);
             }
         } catch (AssertException e) {
-            log.error("AssertException . Reason : " + e.getLocalizedMessage(), e);
+            log.error("changeLanguageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            log.error("changeLanguageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
+            log.error("changeLanguageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -99,17 +108,36 @@ public class ChangeLanguageUiTest extends TestBase {
     @After
     public void tearDown() throws Exception {
         // We restore the language to the original one.
-        int intPosition = new Integer(map.get(originalLanguage)).intValue();
-        Integer htmlposition = new Integer(intPosition + OFFSET_HTML);
+        try {
+            int intPosition = new Integer(map.get(originalLanguage)).intValue();
+            htmlposition = new Integer(intPosition + OFFSET_HTML);
 
-        if (!participantEditPage.changeLanguage(htmlposition.toString())) {
-            log.error("Cannot setup the original language : " + htmlposition);
+            if (!participantEditPage.changeLanguage(htmlposition.toString())) {
+                log.error("Cannot setup the original language : " + htmlposition);
+            } else {
+                // We canot setup the orignal position , we force to have one
+                // right.
+                participantEditPage.changeLanguage(new Integer(2).toString());
+            }
+
+        } catch (InterruptedException e) {
+            log.error("InterruptedException . Reason : " + e.getLocalizedMessage(), e);
+            // We force to have 1st language if there is an error.
+            participantEditPage.changeLanguage(new Integer(2).toString());
+        } catch (NumberFormatException e) {
+            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            // We force to have 1st language if there is an error.
+            participantEditPage.changeLanguage(new Integer(2).toString());
+        } catch (Exception e) {
+            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
+            // We force to have 1st language if there is an error.
+            participantEditPage.changeLanguage(new Integer(2).toString());
         }
-
         // We close the page and the motech.
         if (!participantEditPage.closeEditPage()) {
             log.error("Cannot close EditPageParticipant");
         }
+        // We make a log out.
         logout();
     }
 }

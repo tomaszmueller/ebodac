@@ -35,28 +35,35 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
 
     @Before
     public void setUp() throws Exception {
-        url = getServerUrl();
-        // We log in the EBODAC
-        userPropertiesHelper = new UserPropertiesHelper();
-        user = userPropertiesHelper.getAdminUserName();
-        password = userPropertiesHelper.getAdminPassword();
-        loginPage = new LoginPage(getDriver());
-        // We load homepage and the rest of pages.
-        homePage = new HomePage(getDriver());
-        // The ebodac page and the rest pages we load.
-        ebodacPage = new EBODACPage(getDriver());
-        // Start enrolment page
-        enrollmentPage = new EnrollmentPage(getDriver());
+        try {
+            url = getServerUrl();
+            // We log in the EBODAC
+            userPropertiesHelper = new UserPropertiesHelper();
+            user = userPropertiesHelper.getAdminUserName();
+            password = userPropertiesHelper.getAdminPassword();
+            loginPage = new LoginPage(getDriver());
+            // We load homepage and the rest of pages.
+            homePage = new HomePage(getDriver());
+            // The ebodac page and the rest pages we load.
+            ebodacPage = new EBODACPage(getDriver());
+            // Start enrolment page
+            enrollmentPage = new EnrollmentPage(getDriver());
 
-        // We try to log in Ebodac.
-        if (url.contains(LOCAL_TEST_MACHINE)) {
-            httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(), user, password);
-            loginPage.goToPage();
-            loginPage.login(user, password);
-        } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.goToPage();
-            loginPage.login(user, password);
+            // We try to log in Ebodac.
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+        } catch (NullPointerException e) {
+            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

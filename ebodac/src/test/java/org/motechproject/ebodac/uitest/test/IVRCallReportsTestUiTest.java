@@ -1,56 +1,77 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
-import org.motechproject.ebodac.uitest.page.DailyClinicVisitScheduleReportPage;
+import org.motechproject.ebodac.uitest.helper.TestParticipant;
+import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
-import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
-import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
+import com.mchange.util.AssertException;
 import static org.junit.Assert.assertEquals;
 
-
 public class IVRCallReportsTestUiTest extends TestBase {
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(IVRCallReportsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
     private ReportPage reportPage;
-    private DailyClinicVisitScheduleReportPage dailyClinicVisitScheduleReportPage;
+    private String url;
+    private static final String LOCAL_TEST_MACHINE = "localhost";
+    private UITestHttpClientHelper httpClientHelper;
     private String user;
     private String password;
-    private ParticipantPage participantPage;
-    private ParticipantEditPage participantEditPage;
-    private UserPropertiesHelper userPropertiesHelper;
 
     @Before
-    public void setUp() {
-        user = getTestProperties().getUserName();
-        password = getTestProperties().getPassword();
-        loginPage = new LoginPage(getDriver());
-        homePage = new HomePage(getDriver());
-        participantPage = new ParticipantPage(getDriver());
-        participantEditPage = new ParticipantEditPage(getDriver());
-        if (!StringUtils.equals(homePage.expectedUrlPath(), currentPage().urlPath())) {
-            loginPage.goToPage();
-            loginPage.login(user , password);
+    public void setUp() throws Exception {
+
+        try {
+            user = getTestProperties().getUserName();
+            password = getTestProperties().getPassword();
+            loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
+            homePage.resizePage();
+            ebodacPage = homePage.openEBODACModule();
+
+            url = getServerUrl();
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+        } catch (NullPointerException e) {
+            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
-    @Test//EBODAC-811
-    public void iVRCallReportsTestUiTest() throws InterruptedException {
-        homePage.resizePage();
-        ebodacPage = homePage.openEBODACModule();
-        reportPage = ebodacPage.gotoReports();
-        reportPage.showCallDetailRecord();
-        reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible();
-        assertEquals(true, reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible());
+    @Test // EBODAC-811
+    public void iVRCallReportsTestUiTest() throws Exception {
+        try {
+
+            reportPage = ebodacPage.gotoReports();
+            reportPage.showCallDetailRecord();
+            reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible();
+            assertEquals(true, reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible());
+        } catch (AssertException e) {
+            log.error("iVRCallReportsTestUiTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (InterruptedException e) {
+            log.error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (NullPointerException e) {
+            log.error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("iVRCallReportsTestUiTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
     }
 
     @After

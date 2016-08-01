@@ -9,71 +9,94 @@ import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
-import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import static org.junit.Assert.assertTrue;
+import org.apache.log4j.Logger;
 
 public class EnrollAndUnenrollParticipantUiTest extends TestBase {
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(EnrollAndUnenrollParticipantUiTest.class.getName());
+    private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
     private EnrollmentPage enrollmentPage;
     private EBODACPage ebodacPage;
-    private ParticipantEditPage participantEditPage;
-    private String l1AdminUser;
-    private String l1AdminPassword;
+    private String user;
+    private String password;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
+
     @Before
-    public void setUp() {
-        l1AdminUser = getTestProperties().getUserName();
-        l1AdminPassword = getTestProperties().getPassword();
-        loginPage = new LoginPage(getDriver());
-        homePage = new HomePage(getDriver());
-        ebodacPage = new EBODACPage(getDriver());
-        enrollmentPage = new EnrollmentPage(getDriver());
-        participantEditPage = new ParticipantEditPage(getDriver());
-        url = getServerUrl();
-        if (url.contains("localhost")) {
-            httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant(), l1AdminUser, l1AdminPassword);
-        }
-        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.goToPage();
-            loginPage.login(l1AdminUser, l1AdminPassword);
+    public void setUp() throws Exception {
+        try {
+            user = getTestProperties().getUserName();
+            password = getTestProperties().getPassword();
+            loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
+            ebodacPage = new EBODACPage(getDriver());
+            enrollmentPage = new EnrollmentPage(getDriver());
+            url = getServerUrl();
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+
+        } catch (NullPointerException e) {
+            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
-    @Test  //Test for EBODAC-524, EBODAC-525
+
+    @Test // Test for EBODAC-524, EBODAC-525
     public void enrollAndUnenrollParticipantTest() throws Exception {
-        homePage.openEBODACModule();
-        ebodacPage.goToEnrollment();
-        enrollmentPage.clickAction();
-        enrollmentPage.clickOK();
-        if (enrollmentPage.error()) {
+        try {
+            homePage.openEBODACModule();
+            ebodacPage.goToEnrollment();
+            enrollmentPage.clickAction();
             enrollmentPage.clickOK();
-            enrollmentPage.nextAction();
-        }
-        if (enrollmentPage.enrolled()) {
-            assertTrue(enrollmentPage.enrolled());
+            if (enrollmentPage.error()) {
+                enrollmentPage.clickOK();
+                enrollmentPage.nextAction();
+            }
+            if (enrollmentPage.enrolled()) {
+                assertTrue(enrollmentPage.enrolled());
+                enrollmentPage.clickOK();
+            }
+            if (enrollmentPage.unenrolled()) {
+                assertTrue(enrollmentPage.unenrolled());
+                enrollmentPage.clickOK();
+            }
+            enrollmentPage.actionSecond();
             enrollmentPage.clickOK();
-        }
-        if (enrollmentPage.unenrolled()) {
-            assertTrue(enrollmentPage.unenrolled());
             enrollmentPage.clickOK();
-        }
-        enrollmentPage.actionSecond();
-        enrollmentPage.clickOK();
-        enrollmentPage.clickOK();
-        if (enrollmentPage.enrolled()) {
-            assertTrue(enrollmentPage.enrolled());
-            enrollmentPage.clickOK();
-        }
-        if (enrollmentPage.unenrolled()) {
-            assertTrue(enrollmentPage.unenrolled());
-            enrollmentPage.clickOK();
+            if (enrollmentPage.enrolled()) {
+                assertTrue(enrollmentPage.enrolled());
+                enrollmentPage.clickOK();
+            }
+            if (enrollmentPage.unenrolled()) {
+                assertTrue(enrollmentPage.unenrolled());
+                enrollmentPage.clickOK();
+            }
+
+        } catch (NullPointerException e) {
+            log.error("enrollAndUnenrollParticipantTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            log.error("enrollAndUnenrollParticipantTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
+
     @After
     public void tearDown() throws Exception {
+        // We close the page
         logout();
     }
 }

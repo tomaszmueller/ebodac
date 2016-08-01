@@ -36,6 +36,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final String LANGUAGE_PATH_END = "]/a/label";
     static final By SELECTED_LANGUAGE = By
             .xpath("//*[@id='dataBrowser']/div[1]/div/div/ng-form/div[1]/form/div[8]/div/ng-form/div[1]/div/button");
+    private static final By SELECTED_PHONE_NUMBER = By.xpath(".//*[@id='phoneNumberForm']");
     static final By DELETE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/div/button[2]");
     static final By DELETE_CONFIRMATION_BUTTON = By.xpath("//div[@id='deleteInstanceModal']/div[2]/div/div[3]/button");
     static final By DATE = By.linkText("1");
@@ -97,14 +98,24 @@ public class ParticipantEditPage extends AbstractBasePage {
 
     public boolean changeLanguage(String languagePos) throws InterruptedException {
         boolean status = false;
-        clickWhenVisible(LANGUAGE_FIELD);
-
-        int intPos = new Integer(languagePos).intValue();
-        if (intPos <= LAST_POSITION_LANGUAGE) {
-            if (chooseLanguage(languagePos)) {
-                Thread.sleep(SMALL_TIMEOUT);
-                status = true;
+        try {
+            clickWhenVisible(LANGUAGE_FIELD);
+            log.error("languagePos :" + languagePos);
+            int intPos = new Integer(languagePos).intValue();
+            if (intPos <= LAST_POSITION_LANGUAGE) {
+                if (chooseLanguage(languagePos)) {
+                    Thread.sleep(SMALL_TIMEOUT);
+                    status = true;
+                }
             }
+
+        } catch (NullPointerException e) {
+            log.error("changeLanguage - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            status = false;
+
+        } catch (Exception e) {
+            log.error("changeLanguage - Exception - Reason : " + e.getLocalizedMessage(), e);
+            status = false;
         }
 
         return status;
@@ -149,9 +160,9 @@ public class ParticipantEditPage extends AbstractBasePage {
             status = true;
 
         } catch (Exception e) {
-            log.error("routelanguage : " + routelanguage + " Error cause : " + e.getMessage());
+            log.error(" Language path used : " + routelanguage);
+            log.error("chooseLanguage - Exception cause : " + e.getLocalizedMessage(), e);
             status = false;
-            throw new AssertionError("No language at chosen position");
         }
         return status;
     }
@@ -276,6 +287,15 @@ public class ParticipantEditPage extends AbstractBasePage {
      */
     public String getLanguage() {
         return findElement(SELECTED_LANGUAGE).getText();
+    }
+    
+    /**
+     * We provide the Phone Number
+     * 
+     * @return
+     */
+    public String getPhoneNumber() {
+        return findElement(SELECTED_PHONE_NUMBER).getText();
     }
 
     /**

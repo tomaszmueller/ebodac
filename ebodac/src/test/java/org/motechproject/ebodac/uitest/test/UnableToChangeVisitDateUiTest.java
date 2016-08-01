@@ -13,9 +13,12 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
+import org.apache.log4j.Logger;
 
 public class UnableToChangeVisitDateUiTest extends TestBase {
-
+    private static final String LOCAL_TEST_MACHINE = "localhost";
+    // Object initialization for log
+    private static Logger log = Logger.getLogger(UnableToChangeVisitDateUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -25,39 +28,60 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
     private String password;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
+
     @Before
-    public void setUp() {
-        user = getTestProperties().getUserName();
-        password = getTestProperties().getPassword();
-        loginPage = new LoginPage(getDriver());
-        homePage = new HomePage(getDriver());
-        ebodacPage = new EBODACPage(getDriver());
-        visitEditPage = new VisitEditPage(getDriver());
-        visitPage = new VisitPage(getDriver());
-        url = getServerUrl();
-        if (url.contains("localhost")) {
-            httpClientHelper = new UITestHttpClientHelper(url);
-            httpClientHelper.addParticipant(new TestParticipant() , user , password);
+    public void setUp() throws Exception {
+        try {
+            user = getTestProperties().getUserName();
+            password = getTestProperties().getPassword();
+            loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
+            ebodacPage = new EBODACPage(getDriver());
+            visitEditPage = new VisitEditPage(getDriver());
+            visitPage = new VisitPage(getDriver());
+            url = getServerUrl();
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            }
+        } catch (NullPointerException e) {
+            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
-        if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-            loginPage.goToPage();
-            loginPage.login(user , password);
-        }
+
     }
 
     @Test
     public void unableToChangVisitDateTest() throws Exception {
-        homePage.openEBODACModule();
-        ebodacPage.goToVisit();
-        visitPage.sortByPlannedDateColumn();
-        visitPage.clickVisit();
-        String date = LocalDate.now().toString("yyyy-MM-dd");
-        visitEditPage.changePlannedDate(date);
-        assertTrue(visitEditPage.changeVisit());
+        try {
+            homePage.openEBODACModule();
+            ebodacPage.goToVisit();
+            visitPage.sortByPlannedDateColumn();
+            visitPage.clickVisit();
+            String date = LocalDate.now().toString("yyyy-MM-dd");
+            visitEditPage.changePlannedDate(date);
+            assertTrue(visitEditPage.changeVisit());
+        } catch (AssertionError e) {
+            log.error("unableToChangVisitDateTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (NullPointerException e) {
+            log.error("unableToChangVisitDateTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            log.error("unableToChangVisitDateTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+
     }
 
     @After
-    public void tearDown() {
-
+    public void tearDown() throws Exception {
+        logout();
     }
 }

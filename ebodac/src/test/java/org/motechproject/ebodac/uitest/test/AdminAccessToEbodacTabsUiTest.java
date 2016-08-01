@@ -25,9 +25,6 @@ import org.motechproject.ebodac.uitest.page.SMSLogReportPage;
 import org.motechproject.ebodac.uitest.page.SMSPage;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 //import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
@@ -93,38 +90,31 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             password = userPropertiesHelper.getAdminPassword();
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
-        } catch (Exception e) {
-            log.error("Error in Test : " + e.getMessage(), e);
-        }
-
-        try {
-
-            // We try to log in Ebodac.
+            url = getServerUrl();
             if (url.contains(LOCAL_TEST_MACHINE)) {
                 httpClientHelper = new UITestHttpClientHelper(url);
                 httpClientHelper.addParticipant(new TestParticipant(), user, password);
                 loginPage.goToPage();
                 loginPage.login(user, password);
+                // Load the rest of the pages
+                loadEbodacPages();
             } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
                 loginPage.goToPage();
                 loginPage.login(user, password);
+                // Load the rest of the pages
+                loadEbodacPages();
             }
-
+        } catch (NullPointerException e) {
+            log.error("setUp - NullPointerException Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("Error Trying to log in : " + e.getLocalizedMessage(), e);
+            log.error("setUp - Exception Reason : " + e.getLocalizedMessage(), e);
         }
-
-        // Load Ebodac Tabs. Setting up the pages.
-        try {
-            loadEbodacPages();
-        } catch (Exception e) {
-            log.error("Cannot load tabs . Reason : " + e.getLocalizedMessage(), e);
-        }
-
-        // Load the rest of the pages
 
     }
-
+     /**
+      * This method check if the EBODAC page opens and if it is possible if there are name, house hold and head of household .   
+      * @throws InterruptedException
+      */
     public void testAdminEbodacHome() throws InterruptedException {
         try {
             homePage.clickOnEbodac();
@@ -135,9 +125,11 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             assertTrue(participantEditPage.isHouseholdNameEditable());
             assertTrue(participantEditPage.isHeadOfHouseholdEditable());
         } catch (AssertionError e) {
-            log.error("AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
+            log.error("testAdminEbodacHome - AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
+        } catch (NullPointerException e) {
+            log.error("testAdminEbodacHome - NullPointerException - Reason :  " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("Exception Error . Reason :  " + e.getLocalizedMessage(), e);
+            log.error("testAdminEbodacHome - Exception - Reason :  " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -174,53 +166,34 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     @Test // Test for EBODAC-531
     public void adminAccessOnlyToEbodacUiTest() throws Exception {
-        // We try to access to the Ebodac
-        homePage.clickModules();
         try {
+            // We try to access to the Ebodac
+            homePage.clickModules();
             // Ebodac Asserts.
-            try {
-                testAdminEbodacHome();
-            } catch (NullPointerException e) {
-                log.error("testAdminEbodacHome - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
-            } catch (Exception e) {
-                log.error("testAdminEbodacHome - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminEbodacHome();
             // Visits Asserts
-            try {
-                testAdminVisitsTab();
-            } catch (Exception e) {
-                log.error("testAdminVisits - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminVisitsTab();
+
             // Report Asserts
-            try {
-                testAdminWithReports();
-            } catch (Exception e) {
-                log.error("testAdminWithReports - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminWithReports();
 
             // Enrolment Tab
-            try {
-                testAdminEnrolmentTab();
-            } catch (Exception e) {
-                log.error("  testAdminEnrolmentTab - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminEnrolmentTab();
 
             // IVR Module
-            try {
-                testAdminIVRModule();
-            } catch (Exception e) {
-                log.error("testAdminIVRModule - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminIVRModule();
 
             // SMS Module
-            try {
-                testAdminSMSModule();
-            } catch (Exception e) {
-                log.error("testAdminSMSModule - Error . Reason = " + e.getLocalizedMessage(), e);
-            }
+            testAdminSMSModule();
         } catch (AssertionError e) {
-            log.error("Assertion Error " + e.getLocalizedMessage(), e);
+            log.error("adminAccessOnlyToEbodacUiTest - Assertion Error " + e.getLocalizedMessage(), e);
+
+        } catch (NullPointerException e) {
+            log.error("adminAccessOnlyToEbodacUiTest - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            log.error("adminAccessOnlyToEbodacUiTest - Error . Reason = " + e.getLocalizedMessage(), e);
         }
+
     }
 
     public void testAdminSMSModule() {
@@ -252,40 +225,21 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         ebodacPage.goToEnrollment();
         // enrollmentPage.goToPage();
         // It should be allowed to enrol unenroll participants.
-        try {
-            enrollmentPage.clickAction();
+        enrollmentPage.clickAction();
+        enrollmentPage.clickOK();
+        if (enrollmentPage.error()) {
             enrollmentPage.clickOK();
-            if (enrollmentPage.error()) {
-                enrollmentPage.clickOK();
-                enrollmentPage.nextAction();
-            }
-        } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
-
+            enrollmentPage.nextAction();
         }
-        try {
-            if (enrollmentPage.enrolled()) {
-                log.error("adminhouldNotSeeAdvancePageTest - After enrollmentPage enrolled True");
-                try {
-                    assertTrue(enrollmentPage.enrolled());
-                } catch (AssertException e) {
-                    log.error(
-                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage(),
-                            e);
-
-                }
-
-                enrollmentPage.clickOK();
-            }
-            if (enrollmentPage.unenrolled()) {
-                assertTrue(enrollmentPage.unenrolled());
-                enrollmentPage.clickOK();
-            }
-        } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
-                    e);
-
+        if (enrollmentPage.enrolled()) {
+            assertTrue(enrollmentPage.enrolled());
+            enrollmentPage.clickOK();
         }
+        if (enrollmentPage.unenrolled()) {
+            assertTrue(enrollmentPage.unenrolled());
+            enrollmentPage.clickOK();
+        }
+
     }
 
     public void testAdminWithReports() throws InterruptedException {
