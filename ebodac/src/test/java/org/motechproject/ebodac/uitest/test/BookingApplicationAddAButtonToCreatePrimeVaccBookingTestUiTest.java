@@ -11,12 +11,12 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
     private static final int MAX_COUNTER_VALUE = 10;
-    private static Logger log = Logger
-            .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
+    // private static Logger log = Logger
+    // .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -48,10 +48,10 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -81,7 +81,7 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
             counter = MAX_COUNTER_VALUE; // reset counter;
             // Check the ignore earliest date.
             boolean clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
-            // log.error("clickOnIngoreLatesEarliestDate = " +
+            // getLogger().error("clickOnIngoreLatesEarliestDate = " +
             // clickOnIngoreLatesEarliestDate);
             while (!bookingAppPrimeVaccinationPage.isEnabledSaveButton() && counter > 0) {
                 // After checking the check-box to ignore the EarliestDate we
@@ -105,14 +105,17 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
             assertTrue(bookingAppPrimeVaccinationPage.closePdfIfIsOpen());
 
         } catch (AssertionError e) {
-            log.error("bookingApplicationCapacityInfoTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "bookingApplicationCapacityInfoTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error("bookingApplicationCapacityInfoTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
+            getLogger().error(
+                    "bookingApplicationCapacityInfoTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
                     e);
 
         } catch (Exception e) {
-            log.error("bookingApplicationCapacityInfoTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingApplicationCapacityInfoTest - Exception - Reason : " + e.getLocalizedMessage(),
+                    e);
         }
 
     }

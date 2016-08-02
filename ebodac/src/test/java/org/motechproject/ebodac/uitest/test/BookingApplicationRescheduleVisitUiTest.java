@@ -16,11 +16,11 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationRescheduleVisitUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingApplicationRescheduleVisitUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(BookingApplicationRescheduleVisitUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -51,9 +51,9 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -70,16 +70,16 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
             assertTrue(bookingAppRescheduleVisitPage.rescheduleVisit());
             bookingAppRescheduleVisitPage.printCard();
         } catch (AssertException e) {
-            log.error("bookingApplicationRescheduleVisitTest - AssertException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("bookingApplicationRescheduleVisitTest - AssertException . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (InterruptedException e) {
-            log.error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bookingApplicationRescheduleVisitTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingApplicationRescheduleVisitTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

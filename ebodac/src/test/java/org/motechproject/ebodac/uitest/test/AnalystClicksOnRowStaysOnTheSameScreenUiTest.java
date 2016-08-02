@@ -61,7 +61,7 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     }
 
     @Test
-    public void analystClicksOnRowStaysOnTheSameScreenTest() throws InterruptedException {
+    public void analystClicksOnRowStaysOnTheSameScreenTest() throws Exception {
         try {
             homePage.openEBODACModule();
             ebodacPage.goToEnrollment();
@@ -69,7 +69,11 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
         } catch (AssertionError e) {
             log.error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
                     + e.getLocalizedMessage(), e);
-        } catch (NullPointerException e) {
+        } catch (InterruptedException e) {
+            log.error("analystClicksOnRowStaysOnTheSameScreenTest - InterruptedException - Reason : "
+                    + e.getLocalizedMessage(), e);
+
+        }  catch (NullPointerException e) {
             log.error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
                     + e.getLocalizedMessage(), e);
 

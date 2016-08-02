@@ -49,7 +49,7 @@ public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest exte
     }
 
     @Test // EBODAC-710
-    public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws InterruptedException {
+    public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws Exception {
         try {
             homePage.resizePage();
             homePage.clickModules();

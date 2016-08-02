@@ -11,11 +11,12 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class EnrollAndUnenrollParticipantUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(EnrollAndUnenrollParticipantUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(EnrollAndUnenrollParticipantUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -47,10 +48,10 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
             }
 
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -86,11 +87,11 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
             }
 
         } catch (NullPointerException e) {
-            log.error("enrollAndUnenrollParticipantTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error(
+                    "enrollAndUnenrollParticipantTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("enrollAndUnenrollParticipantTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("enrollAndUnenrollParticipantTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

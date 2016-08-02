@@ -13,7 +13,7 @@ import org.motechproject.uitest.page.LoginPage;
 
 import com.mchange.util.AssertException;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +22,8 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
     private static final int COUNTER_ZERO = 0;
     private static final int MAX_COUNTER_VALUE = 50;
     // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingApplicationModifyaPrimeFollowUpVisitTestUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(BookingApplicationModifyaPrimeFollowUpVisitTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -54,9 +55,9 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -90,19 +91,19 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
                 bookingAppPrimeVaccinationPage.clickSaveInUpdateVisitBookingDetails();
 
                 bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();
-                
+
                 bookingAppPrimeVaccinationPage.closePdfIfIsOpen();
             } else {
-                log.error("No visit possible to click");
+                getLogger().error("No visit possible to click");
             }
         } catch (AssertException e) {
-            log.error("modifyAPrimeFollowUpVisit - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("modifyAPrimeFollowUpVisit - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

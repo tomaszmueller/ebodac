@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,8 @@ import static org.junit.Assert.assertTrue;
 
 public class AdminHiddenButtonsEnabledUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(AdminHiddenButtonsEnabledUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(AdminHiddenButtonsEnabledUiTest.class.getName());
 
     private LoginPage loginPage;
     private HomePage homePage;
@@ -51,9 +52,9 @@ public class AdminHiddenButtonsEnabledUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

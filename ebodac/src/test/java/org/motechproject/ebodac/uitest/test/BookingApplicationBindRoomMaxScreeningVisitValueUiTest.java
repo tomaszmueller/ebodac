@@ -10,17 +10,14 @@ import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import static org.junit.Assert.assertTrue;
-
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger
-            .getLogger(BookingApplicationBindRoomMaxScreeningVisitValueUiTest.class.getName());
+    // private static Logger log = Logger
+    // .getLogger(BookingApplicationBindRoomMaxScreeningVisitValueUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -53,14 +50,14 @@ public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends Test
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test // EBODAC-718
-    public void bindRoomMaxScreeningVisitValue() throws InterruptedException {
+    public void bindRoomMaxScreeningVisitValue() throws Exception {
         try {
             homePage.resizePage();
             homePage.clickModules();
@@ -75,11 +72,16 @@ public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends Test
             }
 
         } catch (AssertException e) {
-            log.error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage(),
+                    e);
+        } catch (InterruptedException e) {
+            getLogger().error(
+                    "bindRoomMaxScreeningVisitValue - InterruptedException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("bindRoomMaxScreeningVisitValue - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "bindRoomMaxScreeningVisitValue - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bindRoomMaxScreeningVisitValue - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bindRoomMaxScreeningVisitValue - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

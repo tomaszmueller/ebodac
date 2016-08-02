@@ -10,19 +10,16 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.ebodac.uitest.page.PrimeFollowAndBoostReportPage;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class PrimeFollowAndBoostReportUiTest extends TestBase {
     private static final CharSequence TEST_LOCAL_MACHINE = "localhost";
     // Object initialization for log
-    private static Logger log = Logger.getLogger(PrimeFollowAndBoostReportUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(PrimeFollowAndBoostReportUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -55,23 +52,25 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test
-    public void primeFollowAndBoostReportTest() throws InterruptedException {
+    public void primeFollowAndBoostReportTest() throws Exception {
         try {
             homePage.openEBODACModule();
+
             ebodacPage.gotoReports();
             reportPage.showPrimeFollowAndBoostReport();
             assertFalse(primeFollowAndBoostReportPage.isReportEmpty());
             assertTrue(primeFollowAndBoostReportPage.isLookupVisible());
             primeFollowAndBoostReportPage.openLookup();
             primeFollowAndBoostReportPage.openDropdown();
+
             assertTrue(primeFollowAndBoostReportPage.areLookupsPresent());
             primeFollowAndBoostReportPage.openByVisittypeAndActualVisitDateLookup();
             assertTrue(primeFollowAndBoostReportPage.islookupOpen());
@@ -79,13 +78,16 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
             assertTrue(primeFollowAndBoostReportPage.areAllVisitsAvailable());
 
         } catch (AssertException e) {
-            log.error("primeFollowAndBoostReportTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("primeFollowAndBoostReportTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (InterruptedException e) {
+            getLogger().error("primeFollowAndBoostReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error("primeFollowAndBoostReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("primeFollowAndBoostReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("primeFollowAndBoostReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("primeFollowAndBoostReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

@@ -11,11 +11,12 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(DisplayOfSubjectVisitInTabularFormatUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(DisplayOfSubjectVisitInTabularFormatUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private ParticipantPage participantPage;
@@ -37,9 +38,9 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -50,19 +51,20 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
             participantPage.openFirstParticipant();
             assertTrue(participantEditPage.isTable());
         } catch (AssertException e) {
-            log.error(
+            getLogger().error(
                     "displayOfSubjectVisitInTabularFormatTest - AssertException - Reason : " + e.getLocalizedMessage(),
                     e);
 
         } catch (NullPointerException e) {
-            log.error("displayOfSubjectVisitInTabularFormatTest - NullPointerException - Reason : "
+            getLogger().error("displayOfSubjectVisitInTabularFormatTest - NullPointerException - Reason : "
                     + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
-            log.error("displayOfSubjectVisitInTabularFormatTest - InterruptedException - Reason : "
+            getLogger().error("displayOfSubjectVisitInTabularFormatTest - InterruptedException - Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("displayOfSubjectVisitInTabularFormatTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "displayOfSubjectVisitInTabularFormatTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

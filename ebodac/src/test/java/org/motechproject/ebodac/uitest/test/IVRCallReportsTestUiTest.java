@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,8 @@ import static org.junit.Assert.assertEquals;
 
 public class IVRCallReportsTestUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(IVRCallReportsTestUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(IVRCallReportsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -49,9 +50,9 @@ public class IVRCallReportsTestUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -64,13 +65,15 @@ public class IVRCallReportsTestUiTest extends TestBase {
             reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible();
             assertEquals(true, reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible());
         } catch (AssertException e) {
-            log.error("iVRCallReportsTestUiTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("iVRCallReportsTestUiTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (NullPointerException e) {
-            log.error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (Exception e) {
-            log.error("iVRCallReportsTestUiTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("iVRCallReportsTestUiTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

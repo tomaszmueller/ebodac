@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingApplicationScreeningCreationUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(BookingApplicationScreeningCreationUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -53,9 +54,9 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -98,16 +99,16 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             bookingAppScreeningPage.exportToXLS();
 
         } catch (AssertException e) {
-            log.error("bookingApplicationScreeningCreationTest - AssertException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("bookingApplicationScreeningCreationTest - AssertException . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (InterruptedException e) {
-            log.error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bookingApplicationScreeningCreationTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingApplicationScreeningCreationTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

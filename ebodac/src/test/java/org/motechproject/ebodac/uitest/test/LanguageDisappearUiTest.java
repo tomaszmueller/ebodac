@@ -14,11 +14,12 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class LanguageDisappearUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(LanguageDisappearUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(LanguageDisappearUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private String user;
@@ -41,6 +42,7 @@ public class LanguageDisappearUiTest extends TestBase {
             user = getTestProperties().getUserName();
             password = getTestProperties().getPassword();
             loginPage = new LoginPage(getDriver());
+            homePage = new HomePage(getDriver());
 
             url = getServerUrl();
             if (url.contains(TEST_LOCAL_MACHINE)) {
@@ -53,19 +55,16 @@ public class LanguageDisappearUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test
     public void languagedisappearTest() throws Exception {
         try {
-            // Setup the pages
-            homePage = new HomePage(getDriver());
-
             // Access to the page
             homePage.openEBODACModule();
             participantPage = new ParticipantPage(getDriver());
@@ -73,20 +72,19 @@ public class LanguageDisappearUiTest extends TestBase {
             participantEditPage = new ParticipantEditPage(getDriver());
             // We store the language.
             originalLanguage = participantEditPage.getLanguage();
-
             assertFalse(participantEditPage.changeLanguage("1"));
 
         } catch (AssertionError e) {
-            log.error("languagedisappearTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("languagedisappearTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
-            log.error("languagedisappearTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("languagedisappearTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error("languagedisappearTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("languagedisappearTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("languagedisappearTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("languagedisappearTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -103,7 +101,8 @@ public class LanguageDisappearUiTest extends TestBase {
                 intPosition = new Integer(map.get(originalLanguage)).intValue();
                 Integer htmlposition = new Integer(intPosition + OFFSET_HTML);
                 if (!participantEditPage.changeLanguage(htmlposition.toString())) {
-                    log.error("Cannot setup the original language : " + htmlposition);
+                    getLogger().error("tearDown - Cannot setup the original language back position : " + htmlposition
+                            + " - Participant Language : " + participantEditPage.getLanguage());
                 }
             } else {
                 // We cannot setup the original position , we force to have one
@@ -113,21 +112,21 @@ public class LanguageDisappearUiTest extends TestBase {
             // we restore the original language
 
         } catch (InterruptedException e) {
-            log.error("InterruptedException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("InterruptedException . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         } catch (NumberFormatException e) {
-            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         } catch (Exception e) {
-            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("Exception . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         }
         // We close the page and the motech.
         if (!participantEditPage.closeEditPage()) {
-            log.error("Cannot close EditPageParticipant");
+            getLogger().error("Cannot close EditPageParticipant");
         }
         // We make a log out.
 

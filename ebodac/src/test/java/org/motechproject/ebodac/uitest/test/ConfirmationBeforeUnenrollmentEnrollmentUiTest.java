@@ -10,15 +10,13 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(ConfirmationBeforeUnenrollmentEnrollmentUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(ConfirmationBeforeUnenrollmentEnrollmentUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -49,9 +47,9 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -91,11 +89,11 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
             checkPopUp("Participant was enrolled successfully.", "Participant was unenrolled successfully.");
             enrollmentPage.clickOK();
         } catch (AssertException e) {
-            log.error("confirmationBeforeUnenrollmentEnrollmentTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            log.error("confirmationBeforeUnenrollmentEnrollmentTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("confirmationBeforeUnenrollmentEnrollmentTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -105,7 +103,7 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
         logout();
     }
 
-    public void checkPopUp(String popUpMessage1, String popUpMessage2) throws InterruptedException {
+    public void checkPopUp(String popUpMessage1, String popUpMessage2) throws Exception {
         if (!(popUpMessage1).equals(enrollmentPage.getPopupMessage())
                 && !(popUpMessage2).equals(enrollmentPage.getPopupMessage())) {
             assertTrue(false);
