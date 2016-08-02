@@ -18,10 +18,10 @@ import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import static org.junit.Assert.assertFalse;
 //import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
-    private static Logger log = Logger.getLogger(AdminShouldNotSeeAdvancePageUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(AdminShouldNotSeeAdvancePageUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -60,10 +60,10 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -80,10 +80,10 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
         try {
             assertFalse(enrollmentPage.enrollmentDetailEnabled());
         } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - AssertNull : NullPointerException . Reason : "
+            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertNull : NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (AssertException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         }
         // It should be allowed to enrol unenroll participants.
         try {
@@ -95,15 +95,15 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                 enrollmentPage.nextAction();
             }
         } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
+            getLogger().error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
         }
         try {
             if (enrollmentPage.enrolled()) {
-                log.error("adminhouldNotSeeAdvancePageTest - After enrollmentPage enrolled True");
+                getLogger().error("adminhouldNotSeeAdvancePageTest - After enrollmentPage enrolled True");
                 try {
                     assertTrue(enrollmentPage.enrolled());
                 } catch (AssertException e) {
-                    log.error(
+                    getLogger().error(
                             "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage(),
                             e);
                 }
@@ -115,7 +115,7 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                 enrollmentPage.clickOK();
             }
         } catch (NullPointerException e) {
-            log.error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
                     e);
         }
 

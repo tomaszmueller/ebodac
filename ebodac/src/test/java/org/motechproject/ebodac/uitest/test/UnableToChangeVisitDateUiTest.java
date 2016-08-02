@@ -13,12 +13,13 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class UnableToChangeVisitDateUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     // Object initialization for log
-    private static Logger log = Logger.getLogger(UnableToChangeVisitDateUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(UnableToChangeVisitDateUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -50,10 +51,10 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -69,13 +70,14 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
             visitEditPage.changePlannedDate(date);
             assertTrue(visitEditPage.changeVisit());
         } catch (AssertionError e) {
-            log.error("unableToChangVisitDateTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("unableToChangVisitDateTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error("unableToChangVisitDateTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("unableToChangVisitDateTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
 
         } catch (Exception e) {
-            log.error("unableToChangVisitDateTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("unableToChangVisitDateTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

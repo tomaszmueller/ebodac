@@ -33,7 +33,7 @@ public class AdminChangePhoneNumberAndGetParticipantFromZetesUiTest extends Test
     private UserPropertiesHelper userPropertiesHelper;
     private String user;
     private String password;
-    private String testNumber = "232000000117";
+    private String testNumber = "232000000000117";
     private String changedNumber;
     private UITestHttpClientHelper httpClientHelper;
     private String url;

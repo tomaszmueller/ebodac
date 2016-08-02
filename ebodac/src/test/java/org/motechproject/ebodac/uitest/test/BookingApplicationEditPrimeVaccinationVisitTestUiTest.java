@@ -10,16 +10,14 @@ import org.motechproject.ebodac.uitest.page.BookingAppPrimeVaccinationPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestBase {
-    private static Logger log = Logger.getLogger(BookingApplicationEditPrimeVaccinationVisitTestUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(BookingApplicationEditPrimeVaccinationVisitTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -53,9 +51,9 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -84,16 +82,16 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
             String participantVadDateAfterChange = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
             assertEquals(false, participantVacDate.equals(participantVadDateAfterChange));
         } catch (AssertException e) {
-            log.error("bookingApplicationEditPrimeVaccinationVisitTest - AssertException . Reason : "
+            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - AssertException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
+            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error(
+            getLogger().error(
                     "bookingApplicationEditPrimeVaccinationVisitTest - Exception . Reason : " + e.getLocalizedMessage(),
                     e);
         }

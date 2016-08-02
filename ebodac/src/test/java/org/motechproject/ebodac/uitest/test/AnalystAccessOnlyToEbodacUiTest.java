@@ -10,10 +10,11 @@ import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
-    private static Logger log = Logger.getLogger(AnalystAccessOnlyToEbodacUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(AnalystAccessOnlyToEbodacUiTest.class.getName());
     private static final String LOCAL_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -42,10 +43,10 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -55,12 +56,14 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
             homePage.clickModules();
             Assert.assertFalse(homePage.isElementPresent(HomePage.DATA_SERVICES));
         } catch (AssertionError e) {
-            log.error("analystAccessOnlyToEbodacUITest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "analystAccessOnlyToEbodacUITest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("analystAccessOnlyToEbodacUITest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "analystAccessOnlyToEbodacUITest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("analystAccessOnlyToEbodacUITest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("analystAccessOnlyToEbodacUITest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

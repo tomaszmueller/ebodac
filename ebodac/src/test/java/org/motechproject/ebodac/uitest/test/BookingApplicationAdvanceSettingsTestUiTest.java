@@ -10,16 +10,14 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import static org.junit.Assert.assertTrue;
-
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingApplicationAdvanceSettingsTestUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(BookingApplicationAdvanceSettingsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -50,9 +48,9 @@ public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -68,13 +66,13 @@ public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
             assertTrue(bookingAppAdvancedSettingsPage.clickSaveAfterEditKambiaI());
 
         } catch (AssertException e) {
-            log.error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("bookingAppAdvanceSettingsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAdvanceSettingsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("bookingAppAdvanceSettingsTest - InterruptedException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAdvanceSettingsTest - InterruptedException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

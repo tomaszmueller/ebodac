@@ -16,11 +16,12 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class MEMissedClinicVisitsReportUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(MEMissedClinicVisitsReportUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(MEMissedClinicVisitsReportUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -53,10 +54,10 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -68,15 +69,18 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
             reportPage.showMEMissedClinicVisitsReport();
             assertTrue(mEMissedClinicVisitsReportPage.existTable());
         } catch (AssertException e) {
-            log.error("mEMissedClinicVisitsReportTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("mEMissedClinicVisitsReportTest - AssertException - Reason : " + e.getLocalizedMessage(),
+                    e);
 
         } catch (NullPointerException e) {
-            log.error("mEMissedClinicVisitsReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "mEMissedClinicVisitsReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
-            log.error("mEMissedClinicVisitsReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "mEMissedClinicVisitsReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("mEMissedClinicVisitsReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("mEMissedClinicVisitsReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

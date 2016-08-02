@@ -20,13 +20,14 @@ import org.motechproject.ebodac.uitest.page.ServerLogPage;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 @Ignore
 public class GetVisitDataFromRAVEUiTest extends TestBase {
     private static final int WAIT_500MLSEC = 500;
     // Object initialization for log
-    private static Logger log = Logger.getLogger(GetVisitDataFromRAVEUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(GetVisitDataFromRAVEUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private AdminPage adminPage;
@@ -55,9 +56,9 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
             httpClientHelper = new UITestHttpClientHelper(url);
             raveSettingsHelper = new RAVESettingsHelper(getDriver());
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -88,13 +89,15 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
                 assertTrue(logContent.contains("Started fetching CSV files"));
             }
         } catch (AssertException e) {
-            log.error("getVisitDataFromRAVETest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (NullPointerException e) {
-            log.error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (Exception e) {
-            log.error("getVisitDataFromRAVETest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

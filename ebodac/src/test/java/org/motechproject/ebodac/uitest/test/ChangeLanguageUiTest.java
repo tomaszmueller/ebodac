@@ -1,9 +1,7 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +14,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import java.util.HashMap;
 import static org.junit.Assert.assertNotEquals;
 import java.util.Map;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class ChangeLanguageUiTest extends TestBase {
 
@@ -28,7 +26,7 @@ public class ChangeLanguageUiTest extends TestBase {
     // Original language
     private String originalLanguage;
     // Object initialization for log
-    private static Logger log = Logger.getLogger(ChangeLanguageUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(ChangeLanguageUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     // private EBODACPage ebodacPage;
@@ -56,9 +54,9 @@ public class ChangeLanguageUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -88,19 +86,19 @@ public class ChangeLanguageUiTest extends TestBase {
             htmlposition = new Integer(intPosition + OFFSET_HTML);
             // Change the language
             if (!participantEditPage.changeLanguage(htmlposition.toString())) {
-                log.error("Cannot setup language :" + htmlposition);
+                getLogger().error("Cannot setup language :" + htmlposition);
             } else if (originalLanguage != null && changedLanguage != null) {
                 assertNotEquals(changedLanguage.replace(" ", ""), originalLanguage.replace(" ", ""));
             } else if (originalLanguage == null || changedLanguage == null) {
-                log.error("Cannot compate languages: originalLanguage: " + originalLanguage + " and changedLanguage: "
+                getLogger().error("Cannot compate languages: originalLanguage: " + originalLanguage + " and changedLanguage: "
                         + changedLanguage);
             }
         } catch (AssertException e) {
-            log.error("changeLanguageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changeLanguageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            log.error("changeLanguageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changeLanguageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("changeLanguageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changeLanguageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -113,7 +111,7 @@ public class ChangeLanguageUiTest extends TestBase {
             htmlposition = new Integer(intPosition + OFFSET_HTML);
 
             if (!participantEditPage.changeLanguage(htmlposition.toString())) {
-                log.error("Cannot setup the original language : " + htmlposition);
+                getLogger().error("Cannot setup the original language : " + htmlposition);
             } else {
                 // We canot setup the orignal position , we force to have one
                 // right.
@@ -121,21 +119,21 @@ public class ChangeLanguageUiTest extends TestBase {
             }
 
         } catch (InterruptedException e) {
-            log.error("InterruptedException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("InterruptedException . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         } catch (NumberFormatException e) {
-            log.error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         } catch (Exception e) {
-            log.error("Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("Exception . Reason : " + e.getLocalizedMessage(), e);
             // We force to have 1st language if there is an error.
             participantEditPage.changeLanguage(new Integer(2).toString());
         }
         // We close the page and the motech.
         if (!participantEditPage.closeEditPage()) {
-            log.error("Cannot close EditPageParticipant");
+            getLogger().error("Cannot close EditPageParticipant");
         }
         // We make a log out.
         logout();

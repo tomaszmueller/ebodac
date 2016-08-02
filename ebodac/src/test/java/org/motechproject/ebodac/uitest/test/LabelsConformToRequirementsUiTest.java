@@ -10,16 +10,14 @@ import org.motechproject.ebodac.uitest.page.BookingAppPrimeVaccinationPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
 import com.mchange.util.AssertException;
-
 import static org.junit.Assert.assertTrue;
-
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class LabelsConformToRequirementsUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(LabelsConformToRequirementsUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(LabelsConformToRequirementsUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -50,9 +48,9 @@ public class LabelsConformToRequirementsUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -64,15 +62,16 @@ public class LabelsConformToRequirementsUiTest extends TestBase {
             bookingAppPage.openPrimeVaccination();
             assertTrue(bookingAppPrimeVaccinationPage.checkTable());
         } catch (AssertException e) {
-            log.error("labelsConformToRequirementsTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("labelsConformToRequirementsTest - AssertException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (InterruptedException e) {
-            log.error("labelsConformToRequirementsTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error(
+                    "labelsConformToRequirementsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("labelsConformToRequirementsTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error(
+                    "labelsConformToRequirementsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("labelsConformToRequirementsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("labelsConformToRequirementsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

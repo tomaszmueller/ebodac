@@ -40,12 +40,12 @@ import static org.junit.Assert.assertTrue;
 //import java.text.DateFormat;
 //import java.text.SimpleDateFormat;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     // Object initialization for log
-    private static Logger log = Logger.getLogger(AdminAccessToEbodacTabsUiTest.class.getName());
+    //private static Logger log = Logger.getLogger(AdminAccessToEbodacTabsUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private static final long SLEEP_2SEC = 2000;
     private String user;
@@ -105,17 +105,17 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
                 loadEbodacPages();
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setUp - Exception Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
      /**
       * This method check if the EBODAC page opens and if it is possible if there are name, house hold and head of household .   
-      * @throws InterruptedException
+      * @throws Exception
       */
-    public void testAdminEbodacHome() throws InterruptedException {
+    public void testAdminEbodacHome() throws Exception {
         try {
             homePage.clickOnEbodac();
             ebodacPage = new EBODACPage(getDriver());
@@ -125,11 +125,13 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             assertTrue(participantEditPage.isHouseholdNameEditable());
             assertTrue(participantEditPage.isHeadOfHouseholdEditable());
         } catch (AssertionError e) {
-            log.error("testAdminEbodacHome - AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("testAdminEbodacHome - NullPointerException - Reason :  " + e.getLocalizedMessage(), e);
-        } catch (Exception e) {
-            log.error("testAdminEbodacHome - Exception - Reason :  " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - NullPointerException - Reason :  " + e.getLocalizedMessage(), e);
+        } catch (InterruptedException e) {
+            getLogger().error("testAdminEbodacHome - InterruptedException - Reason :  " + e.getLocalizedMessage(), e);
+        }catch (Exception e) {
+            getLogger().error("testAdminEbodacHome - Exception - Reason :  " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -186,12 +188,12 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             // SMS Module
             testAdminSMSModule();
         } catch (AssertionError e) {
-            log.error("adminAccessOnlyToEbodacUiTest - Assertion Error " + e.getLocalizedMessage(), e);
+            getLogger().error("adminAccessOnlyToEbodacUiTest - Assertion Error " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error("adminAccessOnlyToEbodacUiTest - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
+            getLogger().error("adminAccessOnlyToEbodacUiTest - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("adminAccessOnlyToEbodacUiTest - Error . Reason = " + e.getLocalizedMessage(), e);
+            getLogger().error("adminAccessOnlyToEbodacUiTest - Error . Reason = " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -201,7 +203,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         assertTrue(smsPage.logExists());
     }
 
-    public void testAdminIVRModule() throws InterruptedException {
+    public void testAdminIVRModule() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
         homePage.openIVRModule();
         ivrPage.openLog();
@@ -209,7 +211,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         assertFalse(ivrEditPage.isFromEditable());
     }
 
-    public void testAdminVisitsTab() throws InterruptedException {
+    public void testAdminVisitsTab() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.showVisits();
         visitPage.clickVisit();
@@ -220,7 +222,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         visitEditPage.changeVisit();
     }
 
-    public void testAdminEnrolmentTab() throws InterruptedException {
+    public void testAdminEnrolmentTab() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.goToEnrollment();
         // enrollmentPage.goToPage();
@@ -242,7 +244,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     }
 
-    public void testAdminWithReports() throws InterruptedException {
+    public void testAdminWithReports() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showPrimeVaccinationReport();

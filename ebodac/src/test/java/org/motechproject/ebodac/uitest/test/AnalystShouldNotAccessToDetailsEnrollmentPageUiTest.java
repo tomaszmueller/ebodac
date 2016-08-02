@@ -17,11 +17,12 @@ import com.mchange.util.AssertException;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBase {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(AnalystShouldNotAccessToDetailsEnrollmentPageUiTest.class.getName());
+    // private static Logger log =
+    // Logger.getLogger(AnalystShouldNotAccessToDetailsEnrollmentPageUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -59,9 +60,9 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -94,17 +95,16 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
             }
             assertEquals(pagingInfo, enrollmentPage.getNumberOfActualPage());
         } catch (AssertException e) {
-            log.error("shouldnothaveAccessDetailsEnrolmentPageTest - AssertException . Reason : "
+            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - AssertException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
+            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            log.error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
+            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error(
-                    "shouldnothaveAccessDetailsEnrolmentPageTest - Exception . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - Exception . Reason : " + e.getLocalizedMessage(),
                     e);
         }
     }

@@ -15,11 +15,11 @@ import com.mchange.util.AssertException;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest extends TestBase {
-    private static Logger log = Logger
-            .getLogger(BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest.class.getName());
+    // private static Logger log = Logger
+    // .getLogger(BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -51,15 +51,15 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test // EBODAC-800
-    public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws InterruptedException {
+    public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws Exception {
         try {
             homePage.resizePage();
             homePage.clickModules();
@@ -74,14 +74,20 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
             // Assert to validate the changes.
             assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
         } catch (AssertException e) {
-            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
+            getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
                     + e.getLocalizedMessage(), e);
+        } catch (InterruptedException e) {
+            getLogger()
+                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - InterruptedException . Reason :"
+                            + e.getLocalizedMessage(), e);
+
         } catch (NullPointerException e) {
-            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - NullPointerException . Reason :"
-                    + e.getLocalizedMessage(), e);
+            getLogger()
+                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - NullPointerException . Reason :"
+                            + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception . Reason :"
+            getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception . Reason :"
                     + e.getLocalizedMessage(), e);
         }
     }

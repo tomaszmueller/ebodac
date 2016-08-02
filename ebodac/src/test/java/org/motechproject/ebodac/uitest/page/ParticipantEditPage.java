@@ -9,9 +9,11 @@ import org.openqa.selenium.WebElement;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class ParticipantEditPage extends AbstractBasePage {
+
+    private static final int MIN_LANGUAGE_POS = 1;
 
     private static final int LAST_POSITION_LANGUAGE = 6;
 
@@ -20,7 +22,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     private Map<String, String> mapLangPos = new HashMap<String, String>();
 
     // Object initialization for log
-    private static Logger log = Logger.getLogger(ParticipantEditPage.class.getName());
+    //private static Logger log = Logger.getLogger(ParticipantEditPage.class.getName());
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
     static final int SMALL_TIMEOUT = 500;
@@ -99,22 +101,28 @@ public class ParticipantEditPage extends AbstractBasePage {
     public boolean changeLanguage(String languagePos) throws InterruptedException {
         boolean status = false;
         try {
-            clickWhenVisible(LANGUAGE_FIELD);
-            log.error("languagePos :" + languagePos);
+
+            clickWhenVisible(SELECTED_LANGUAGE);
             int intPos = new Integer(languagePos).intValue();
-            if (intPos <= LAST_POSITION_LANGUAGE) {
+            if (intPos <= LAST_POSITION_LANGUAGE && intPos > MIN_LANGUAGE_POS) {
                 if (chooseLanguage(languagePos)) {
                     Thread.sleep(SMALL_TIMEOUT);
                     status = true;
+                } else {
+                    status = false;
                 }
+            } else {
+                status = false;
             }
 
         } catch (NullPointerException e) {
-            log.error("changeLanguage - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changeLanguage - NullPointerException - languagePos :" + languagePos + " - Reason : "
+                    + e.getLocalizedMessage(), e);
             status = false;
 
         } catch (Exception e) {
-            log.error("changeLanguage - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changeLanguage - Exception  - languagePos :" + languagePos + " - Reason : "
+                    + e.getLocalizedMessage(), e);
             status = false;
         }
 
@@ -155,14 +163,19 @@ public class ParticipantEditPage extends AbstractBasePage {
         By xpathlanguage = null;
         try {
             xpathlanguage = By.xpath(routelanguage);
+            if (!findElement(xpathlanguage).isDisplayed()) {
+                clickOn(SELECTED_LANGUAGE);
+            }
             clickOn(xpathlanguage);
             Thread.sleep(TIMEOUT_BORDER);
             status = true;
 
         } catch (Exception e) {
-            log.error(" Language path used : " + routelanguage);
-            log.error("chooseLanguage - Exception cause : " + e.getLocalizedMessage(), e);
             status = false;
+            getLogger().error(
+                    "chooseLanguage - Exception - RouteLanguage : ##" + routelanguage + "##" + e.getLocalizedMessage(),
+                    e);
+
         }
         return status;
     }
@@ -288,7 +301,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     public String getLanguage() {
         return findElement(SELECTED_LANGUAGE).getText();
     }
-    
+
     /**
      * We provide the Phone Number
      * 
@@ -332,7 +345,7 @@ public class ParticipantEditPage extends AbstractBasePage {
                 }
 
             } catch (Exception e) {
-                log.error("Error in the try xpath " + languageText);
+                getLogger().error("Error in the try xpath " + languageText);
                 throw new AssertionError("No language value found  at chosen position");
             }
 
