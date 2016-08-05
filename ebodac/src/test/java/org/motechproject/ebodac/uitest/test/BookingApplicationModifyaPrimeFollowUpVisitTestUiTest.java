@@ -11,19 +11,19 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
-import com.mchange.util.AssertException;
-
-//import org.apache.log4j.Logger;
-
+/**
+ * Class created to test the Booking app in the modification of the Prime Vac. Follow up visit.
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestBase {
     private static final int COUNTER_ZERO = 0;
     private static final int MAX_COUNTER_VALUE = 50;
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationModifyaPrimeFollowUpVisitTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -96,12 +96,14 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
             } else {
                 getLogger().error("No visit possible to click");
             }
-        } catch (AssertException e) {
-            getLogger().error("modifyAPrimeFollowUpVisit - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("modifyAPrimeFollowUpVisit - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (NullPointerException e) {
-            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisit - NullPointerException . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (Exception e) {
             getLogger().error("modifyAPrimeFollowUpVisit - Exception . Reason : " + e.getLocalizedMessage(), e);
         }

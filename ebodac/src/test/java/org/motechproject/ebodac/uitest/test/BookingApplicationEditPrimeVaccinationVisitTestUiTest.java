@@ -10,14 +10,17 @@ import org.motechproject.ebodac.uitest.page.BookingAppPrimeVaccinationPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the Booking app in the Edit of the Prime Vac. Test
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestBase {
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationEditPrimeVaccinationVisitTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -64,6 +67,7 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
             homePage.clickModules();
             homePage.openBookingAppModule();
             bookingAppPage.openPrimeVaccination();
+            
             assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
             bookingAppPrimeVaccinationPage.changeDateRangeFromToday();
             sleep(SLEEP_2000);
@@ -71,18 +75,24 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
             sleep(SLEEP_2000);
             bookingAppPrimeVaccinationPage.sortTableByPrimeVacDate();
             sleep(SLEEP_2000);
-            String participantId = bookingAppPrimeVaccinationPage.firstParticipantId();
-            String participantVacDate = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
-            bookingAppPrimeVaccinationPage.clickOnFirstRowInTheGridUI();
-            sleep(SLEEP_500);
-            bookingAppPrimeVaccinationPage.changeDates();
-            sleep(SLEEP_500);
-            bookingAppPrimeVaccinationPage.saveAndConfirmChanges();
-            bookingAppPrimeVaccinationPage.findParticipantInLookup(participantId);
-            String participantVadDateAfterChange = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
-            assertEquals(false, participantVacDate.equals(participantVadDateAfterChange));
-        } catch (AssertException e) {
-            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - AssertException . Reason : "
+            // We run the next code if we have visits
+            if (bookingAppPrimeVaccinationPage.hasVisitsVisible()) {
+                String participantId = bookingAppPrimeVaccinationPage.firstParticipantId();
+                String participantVacDate = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
+                bookingAppPrimeVaccinationPage.clickOnFirstRowInTheGridUI();
+                sleep(SLEEP_500);
+                bookingAppPrimeVaccinationPage.changeDates();
+                sleep(SLEEP_500);
+                bookingAppPrimeVaccinationPage.saveAndConfirmChanges();
+                if (!participantId.equals("") && participantId != null && !participantVacDate.equals("")
+                        && participantVacDate != null) {
+                    bookingAppPrimeVaccinationPage.findParticipantInLookup(participantId);
+                    String participantVadDateAfterChange = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
+                    assertEquals(false, participantVacDate.equals(participantVadDateAfterChange));
+                }
+            }
+        } catch (AssertionError e) {
+            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - AsserionError . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "

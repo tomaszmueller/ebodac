@@ -10,14 +10,16 @@ import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the Booking app in the advance settings and Room max visits.F 
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log = Logger
-    // .getLogger(BookingApplicationBindRoomMaxScreeningVisitValueUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -71,8 +73,8 @@ public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends Test
                 assertTrue(bookingAppScreeningPage.clickOnButtonToCloseScheduleScreening());
             }
 
-        } catch (AssertException e) {
-            getLogger().error("bindRoomMaxScreeningVisitValue - AssertException . Reason : " + e.getLocalizedMessage(),
+        } catch (AssertionError e) {
+            getLogger().error("bindRoomMaxScreeningVisitValue - AssertionError . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (InterruptedException e) {
             getLogger().error(

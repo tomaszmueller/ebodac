@@ -10,13 +10,16 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the confirmation Before the Un-enrollment/ Enrollment
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
-    // Object initialization for log
-    //private static Logger log = Logger.getLogger(ConfirmationBeforeUnenrollmentEnrollmentUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -88,12 +91,16 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
             Thread.sleep(2000);
             checkPopUp("Participant was enrolled successfully.", "Participant was unenrolled successfully.");
             enrollmentPage.clickOK();
-        } catch (AssertException e) {
-            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - AssertionError . Reason : "
+                    + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - NumberFormatException . Reason : "
+                    + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("confirmationBeforeUnenrollmentEnrollmentTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "confirmationBeforeUnenrollmentEnrollmentTest - Exception . Reason : " + e.getLocalizedMessage(),
+                    e);
         }
 
     }

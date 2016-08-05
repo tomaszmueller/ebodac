@@ -11,18 +11,17 @@ import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
-//import org.apache.log4j.Logger;
-
+/**
+ * Class created to test the access of the Analyst
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(AnalystShouldNotAccessToDetailsEnrollmentPageUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -94,8 +93,8 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
                 enrollmentPage.clickOK();
             }
             assertEquals(pagingInfo, enrollmentPage.getNumberOfActualPage());
-        } catch (AssertException e) {
-            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - AssertException . Reason : "
+        } catch (AssertionError e) {
+            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - AssertionError . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
@@ -104,8 +103,8 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
             getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - Exception . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error(
+                    "shouldnothaveAccessDetailsEnrolmentPageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

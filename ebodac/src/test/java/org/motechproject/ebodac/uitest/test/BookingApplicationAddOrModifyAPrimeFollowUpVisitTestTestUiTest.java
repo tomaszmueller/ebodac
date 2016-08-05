@@ -10,16 +10,17 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the Booking app in the Prime follow up.
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest extends TestBase {
-    // private static Logger log = Logger
-    // .getLogger(BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -73,7 +74,7 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
             bookingAppClinicVisitSchedulePage.clickButtonCleanDate();
             // Assert to validate the changes.
             assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
-        } catch (AssertException e) {
+        } catch (AssertionError e) {
             getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {

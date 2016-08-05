@@ -1,12 +1,10 @@
 package org.motechproject.ebodac.uitest.test;
 
-//import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
@@ -15,10 +13,15 @@ import org.motechproject.ebodac.uitest.page.BookingAppCapacityInfoPage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
+/**
+ * Class created to test the Booking app in the advance settings for the
+ * Capacity info
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationCapacityInfoUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationCapacityInfoUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -78,16 +81,20 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (7 * maxCapacity));
             bookingAppCapacityInfoPage.filterDateRange();
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (28 * maxCapacity));
-        } catch (AssertException e) {
-            getLogger().error("bookingApplicationCapacityInfoTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error(
+                    "bookingApplicationCapacityInfoTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error(
+                    "bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (NullPointerException e) {
-            getLogger().error("bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error(
+                    "bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (Exception e) {
-            getLogger().error("bookingApplicationCapacityInfoTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingApplicationCapacityInfoTest - Exception . Reason : " + e.getLocalizedMessage(),
+                    e);
         }
 
     }

@@ -11,12 +11,15 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test Enrollment / Un-Enrollment
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class EnrollAndUnenrollParticipantUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(EnrollAndUnenrollParticipantUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;

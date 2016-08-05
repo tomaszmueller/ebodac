@@ -11,12 +11,16 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the Booking app in the Prime Vac.
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
     private static final int MAX_COUNTER_VALUE = 10;
-    // private static Logger log = Logger
-    // .getLogger(BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -106,7 +110,7 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
 
         } catch (AssertionError e) {
             getLogger().error(
-                    "bookingApplicationCapacityInfoTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+                    "bookingApplicationCapacityInfoTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
             getLogger().error(

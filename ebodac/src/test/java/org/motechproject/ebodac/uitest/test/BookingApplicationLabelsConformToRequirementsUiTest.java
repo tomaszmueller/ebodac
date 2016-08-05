@@ -10,14 +10,16 @@ import org.motechproject.ebodac.uitest.page.BookingAppPrimeVaccinationPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
-public class LabelsConformToRequirementsUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(LabelsConformToRequirementsUiTest.class.getName());
+/**
+ * Class created to test the labels confirmation for Booking app.
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
+public class BookingApplicationLabelsConformToRequirementsUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -61,8 +63,8 @@ public class LabelsConformToRequirementsUiTest extends TestBase {
             assertTrue(bookingAppPage.checkBookingAppModules());
             bookingAppPage.openPrimeVaccination();
             assertTrue(bookingAppPrimeVaccinationPage.checkTable());
-        } catch (AssertException e) {
-            getLogger().error("labelsConformToRequirementsTest - AssertException . Reason : " + e.getLocalizedMessage(),
+        } catch (AssertionError e) {
+            getLogger().error("labelsConformToRequirementsTest - AssertionError . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (InterruptedException e) {
             getLogger().error(

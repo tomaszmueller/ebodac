@@ -10,14 +10,16 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test Booking app in the advance settings
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationAdvanceSettingsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -65,12 +67,15 @@ public class BookingApplicationAdvanceSettingsTestUiTest extends TestBase {
             bookingAppAdvancedSettingsPage.removeTextFromInputMaxPrimeVisitsPasteOtherValue();
             assertTrue(bookingAppAdvancedSettingsPage.clickSaveAfterEditKambiaI());
 
-        } catch (AssertException e) {
-            getLogger().error("bookingAppAdvanceSettingsTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("bookingAppAdvanceSettingsTest - AssertionError . Reason : " + e.getLocalizedMessage(),
+                    e);
         } catch (NullPointerException e) {
-            getLogger().error("bookingAppAdvanceSettingsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "bookingAppAdvanceSettingsTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("bookingAppAdvanceSettingsTest - InterruptedException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "bookingAppAdvanceSettingsTest - InterruptedException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             getLogger().error("bookingAppAdvanceSettingsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }

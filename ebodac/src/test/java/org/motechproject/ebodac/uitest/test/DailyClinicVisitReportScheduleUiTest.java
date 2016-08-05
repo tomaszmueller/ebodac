@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
@@ -13,18 +12,20 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import static org.junit.Assert.assertFalse;
-//import org.apache.log4j.Logger;
 
+/**
+ * Class created to test the DailyClinicVistReport
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class DailyClinicVisitReportScheduleUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(DailyClinicVisitReportScheduleUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
     private String user;
     private String password;
-
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -66,9 +67,9 @@ public class DailyClinicVisitReportScheduleUiTest extends TestBase {
             reportPage.showDailyClinicVisitReportSchedule();
             assertFalse(dailyClinicVisitScheduleReportPage.isReportEmpty());
 
-        } catch (AssertException e) {
+        } catch (AssertionError e) {
             getLogger().error(
-                    "dailyClinicVisitReportScheduleTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+                    "dailyClinicVisitReportScheduleTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error(
                     "dailyClinicVisitReportScheduleTest - NullPointerException . Reason : " + e.getLocalizedMessage(),

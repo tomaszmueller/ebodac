@@ -3,22 +3,24 @@ package org.motechproject.ebodac.uitest.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.motechproject.ebodac.uitest.helper.TestParticipant;
+import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.BookingAppClinicVisitSchedulePage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.Logger;
-
+/**
+ * Class created to test the Booking app in finding a visit for the prime vac.
+ * 
+ * @author tmueller
+ * @modified rmartin
+ *
+ */
 public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest extends TestBase {
-    // Object initialization for log
-    private static Logger log = Logger
-            .getLogger(BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest.class.getName());
+    private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -35,15 +37,21 @@ public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest exte
             bookingAppClinicVisitSchedulePage = new BookingAppClinicVisitSchedulePage(getDriver());
             user = getTestProperties().getUserName();
             password = getTestProperties().getPassword();
-            if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+            String url = getServerUrl();
+            if (url.contains(LOCAL_TEST_MACHINE)) {
+                UITestHttpClientHelper httpClientHelper = new UITestHttpClientHelper(url);
+                httpClientHelper.addParticipant(new TestParticipant(), user, password);
+                loginPage.goToPage();
+                loginPage.login(user, password);
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
                 loginPage.goToPage();
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
@@ -60,23 +68,22 @@ public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest exte
             // We assert that this step works
             assertTrue(bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar());
             assertTrue(bookingAppClinicVisitSchedulePage.clickOnButtonToPrint());
-        } catch (AssertException e) {
-            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - AssertException - Reason : "
-                    + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger()
+                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - AssertionError - Reason : "
+                            + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            log.error(
-                    "bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - NullPointerException - Reason : "
-                            + e.getLocalizedMessage(),
-                    e);
+            getLogger()
+                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - NullPointerException - Reason : "
+                            + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
-            log.error(
-                    "bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - InterruptedException - Reason : "
-                            + e.getLocalizedMessage(),
-                    e);
+            getLogger()
+                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - InterruptedException - Reason : "
+                            + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception - Reason : "
+            getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception - Reason : "
                     + e.getLocalizedMessage(), e);
         }
 
