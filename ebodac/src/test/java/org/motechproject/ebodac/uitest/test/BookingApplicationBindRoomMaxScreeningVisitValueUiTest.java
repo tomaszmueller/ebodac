@@ -12,13 +12,6 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the Booking app in the advance settings and Room max visits.F 
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class BookingApplicationBindRoomMaxScreeningVisitValueUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;

@@ -53,7 +53,8 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     static final By NEXT_PAGE = By.xpath("//td[@id='next_pager']/span");
     static final By DIALOG_TEXT = By.xpath("//div[@class='modal-dialog']/div/div[2]/div");
     static final By TITLE_MODAL_SCREEN = By.xpath("//*[@id='visitRescheduleModal']/div[2]/div/div[1]/h4");
-    static final By CLOSE_ERROR_RESCHEDULE_BUTTON = By.xpath("//*[@id='visitRescheduleModal']/div[2]/div/div[2]/div[2]/div/button");
+    static final By CLOSE_ERROR_RESCHEDULE_BUTTON = By
+            .xpath("//*[@id='visitRescheduleModal']/div[2]/div/div[2]/div[2]/div/button");
     static final int BIG_TIMEOUT = 2000;
     static final int TIMEOUT = 1000;
     static final int WIDTH = 1920;
@@ -147,12 +148,12 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
     public String getTitleReschedule() {
         return findElement(TITLE_MODAL_SCREEN).getAttribute("innerHTML").trim();
-        
+
     }
 
     public String getModalText() {
         return findElement(DIALOG_TEXT).getAttribute("innerHTML").trim();
-       
+
     }
 
     public boolean checkVisit() throws InterruptedException {
@@ -172,14 +173,10 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
             int month = cal1.get(Calendar.MONTH);
             int day = cal1.get(Calendar.DAY_OF_MONTH);
             int selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
-            // int selectedMonth =
-            // getMonthNumber(findElement(MONTH_FIELD).getText());
             int selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
             getLogger().error("selectedMonth :" + selectedMonth);
             while (year != selectedYear || month != selectedMonth) {
                 selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
-                // selectedMonth =
-                // getMonthNumber(findElement(MONTH_FIELD).getText());
                 selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
                 if (year < selectedYear || (year == selectedYear && month < selectedMonth)) {
                     waitForElement(PREV);
@@ -271,16 +268,16 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
                 && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
     }
 
-    public boolean clickCose() throws InterruptedException{
+    public boolean clickCose() throws InterruptedException {
         boolean status = false;
         try {
             Thread.sleep(TIMEOUT);
             clickOn(CLOSE_ERROR_RESCHEDULE_BUTTON);
             status = true;
-        }catch(InvalidSelectorException e){   
+        } catch (InvalidSelectorException e) {
             status = false;
             getLogger().error("clickCose - InvalidSelectorException . Reason : " + e.getLocalizedMessage(), e);
-       
+
         } catch (NullPointerException e) {
             status = false;
             getLogger().error("clickCose - NullPointerException . Reason : " + e.getLocalizedMessage(), e);

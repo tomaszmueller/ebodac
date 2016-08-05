@@ -34,13 +34,6 @@ import org.motechproject.ebodac.uitest.page.IVRPage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class used to test the access to To Ebodac options by Admin
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     private static final String LOCAL_TEST_MACHINE = "localhost";

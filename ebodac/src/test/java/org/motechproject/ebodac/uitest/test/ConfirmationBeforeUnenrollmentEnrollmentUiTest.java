@@ -12,13 +12,6 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the confirmation Before the Un-enrollment/ Enrollment
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;

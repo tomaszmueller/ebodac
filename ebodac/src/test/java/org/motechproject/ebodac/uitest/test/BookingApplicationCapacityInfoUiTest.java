@@ -13,14 +13,6 @@ import org.motechproject.ebodac.uitest.page.BookingAppCapacityInfoPage;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 
-/**
- * Class created to test the Booking app in the advance settings for the
- * Capacity info
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class BookingApplicationCapacityInfoUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";

@@ -13,13 +13,6 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import static org.junit.Assert.assertFalse;
 
-/**
- * Class created to test the DailyClinicVistReport
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class DailyClinicVisitReportScheduleUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";

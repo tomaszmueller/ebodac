@@ -14,13 +14,6 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test Enable to change visits.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class UnableToChangeVisitDateUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;

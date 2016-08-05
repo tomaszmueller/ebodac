@@ -14,13 +14,6 @@ import org.motechproject.uitest.TestBase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test Prime Follow up with Boost Report.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class PrimeFollowAndBoostReportUiTest extends TestBase {
     private static final CharSequence TEST_LOCAL_MACHINE = "localhost";
     private LoginPage loginPage;

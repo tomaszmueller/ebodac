@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.uitest.test;
 
-import static org.junit.Assert.assertFalse;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
@@ -13,14 +12,8 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
+import static org.junit.Assert.assertFalse;
 
-/**
- * Class created to test the disappearance of the Language.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class LanguageDisappearUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;

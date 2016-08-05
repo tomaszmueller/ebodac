@@ -12,13 +12,6 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Class created to test the IVR Call reports.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class IVRCallReportsTestUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;

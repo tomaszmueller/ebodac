@@ -12,13 +12,7 @@ import org.motechproject.ebodac.uitest.page.BookingAppRescheduleVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the Booking app and the Reschedule Visit.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
+
 public class BookingApplicationRescheduleVisitUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";

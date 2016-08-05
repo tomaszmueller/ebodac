@@ -1,6 +1,6 @@
 package org.motechproject.ebodac.uitest.helper;
 
-public enum enumBookingAppFilters {
+public enum BookingAppFilters {
 
     DATE_RANGE("Date range"), 
     TODAY("Today"), 
@@ -11,7 +11,7 @@ public enum enumBookingAppFilters {
 
     private String value;
 
-    enumBookingAppFilters(String value) {
+    BookingAppFilters(String value) {
         this.value = value;
     }
 

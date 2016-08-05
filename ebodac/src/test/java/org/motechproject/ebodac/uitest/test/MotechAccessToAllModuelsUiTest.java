@@ -9,13 +9,6 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test Motech Access to All modules
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class MotechAccessToAllModuelsUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;
@@ -62,13 +55,16 @@ public class MotechAccessToAllModuelsUiTest extends TestBase {
             assertTrue(homePage.isSchedulerModulePresent());
             assertTrue(homePage.isTasksModulePresent());
         } catch (AssertionError e) {
-            getLogger().error("motechAccessToAllModulesUiTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("motechAccessToAllModulesUiTest - AssertionError - Reason : " + e.getLocalizedMessage(),
+                    e);
 
         } catch (NullPointerException e) {
-            getLogger().error("motechAccessToAllModulesUiTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "motechAccessToAllModulesUiTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (InterruptedException e) {
-            getLogger().error("motechAccessToAllModulesUiTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "motechAccessToAllModulesUiTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             getLogger().error("motechAccessToAllModulesUiTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }

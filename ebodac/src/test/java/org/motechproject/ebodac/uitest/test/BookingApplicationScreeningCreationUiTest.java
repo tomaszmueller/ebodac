@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
 import org.motechproject.uitest.TestBase;
-import org.motechproject.ebodac.uitest.helper.enumBookingAppFilters;
+import org.motechproject.ebodac.uitest.helper.BookingAppFilters;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
@@ -15,13 +15,6 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import java.util.ArrayList;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the Booking app on Screening tab.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
     private static final int SIX = 6;
     private static final int FIVE = 5;
@@ -78,48 +71,48 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             if (!"".equalsIgnoreCase(bookingId)) {
                 assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
             }
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.TODAY.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TODAY.getValue());
 
             dates.add(LocalDate.now());
-       
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-           
+
             // We start from tomorrow.
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.TOMORROW.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TOMORROW.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now().plusDays(ONE));
-            
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
 
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.DAY_AFTER_TOMORROW.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DAY_AFTER_TOMORROW.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now().plusDays(TWO));
             status = bookingAppScreeningPage.isFirstBookingOK(dates);
-            
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
 
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.NEXT_3_DAYS.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_3_DAYS.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now());
             dates.add(LocalDate.now().plusDays(ONE));
             dates.add(LocalDate.now().plusDays(TWO));
-             
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
 
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.NEXT_7_DAYS.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_7_DAYS.getValue());
 
             dates.add(LocalDate.now().plusDays(THREE));
             dates.add(LocalDate.now().plusDays(FOUR));
             dates.add(LocalDate.now().plusDays(FIVE));
             dates.add(LocalDate.now().plusDays(SIX));
             status = bookingAppScreeningPage.isFirstBookingOK(dates);
-             
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
 
-            bookingAppScreeningPage.changeFilterTo(enumBookingAppFilters.DATE_RANGE.getValue());
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DATE_RANGE.getValue());
 
             bookingAppScreeningPage.setDate();
             bookingAppScreeningPage.exportToPDF();

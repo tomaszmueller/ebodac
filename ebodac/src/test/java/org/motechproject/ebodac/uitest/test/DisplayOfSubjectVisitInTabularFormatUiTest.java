@@ -11,13 +11,6 @@ import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test Subjects and Visits
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;

@@ -13,14 +13,6 @@ import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test some hidden buttons enabled for Admin L1 if they are
- * enabled then we have an error.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class AdminHiddenButtonsEnabledUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;

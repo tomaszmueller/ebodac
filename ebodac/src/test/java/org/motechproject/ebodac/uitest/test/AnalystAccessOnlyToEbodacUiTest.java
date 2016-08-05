@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.uitest.test;
 
-import static org.junit.Assert.assertFalse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,14 +9,8 @@ import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
+import static org.junit.Assert.assertFalse;
 
-/**
- * Class created to test the Access to the different tabs in ebodac by Analyst.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
     private static final String LOCAL_MACHINE = "localhost";
     private LoginPage loginPage;

@@ -14,16 +14,8 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.AdminPage;
 import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.ebodac.uitest.page.ServerLogPage;
-
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the Visits from RAVE
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 @Ignore
 public class GetVisitDataFromRAVEUiTest extends TestBase {
     private static final int WAIT_500MLSEC = 500;

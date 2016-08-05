@@ -11,14 +11,6 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import static org.junit.Assert.assertFalse;
 
-/**
- * Class created to test if the Analyst stay in the same screen after checking
- * the enrollment button.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";

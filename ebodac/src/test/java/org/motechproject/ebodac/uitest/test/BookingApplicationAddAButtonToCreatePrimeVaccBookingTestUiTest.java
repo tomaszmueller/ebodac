@@ -12,13 +12,6 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test the Booking app in the Prime Vac.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
     private static final int MAX_COUNTER_VALUE = 10;
     private String url;

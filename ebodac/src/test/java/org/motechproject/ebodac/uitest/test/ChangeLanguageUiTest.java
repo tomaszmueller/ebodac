@@ -11,16 +11,9 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import java.util.HashMap;
-import static org.junit.Assert.assertNotEquals;
 import java.util.Map;
+import static org.junit.Assert.assertNotEquals;
 
-/**
- * Class created to test the Language settings.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class ChangeLanguageUiTest extends TestBase {
 
     private static final int OFFSET_HTML = 2;

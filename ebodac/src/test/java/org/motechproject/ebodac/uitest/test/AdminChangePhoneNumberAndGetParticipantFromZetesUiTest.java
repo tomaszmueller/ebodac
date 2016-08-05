@@ -16,14 +16,6 @@ import java.lang.Exception;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Class created to test the access by admin to change phone and get participant
- * from Zetes
- * 
- * @author rmueller
- * @modified rmartin
- *
- */
 public class AdminChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;

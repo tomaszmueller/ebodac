@@ -13,13 +13,6 @@ import org.motechproject.uitest.page.LoginPage;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Class created to test the Booking app in the Edit of the Prime Vac. Test
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
@@ -67,7 +60,7 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
             homePage.clickModules();
             homePage.openBookingAppModule();
             bookingAppPage.openPrimeVaccination();
-            
+
             assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
             bookingAppPrimeVaccinationPage.changeDateRangeFromToday();
             sleep(SLEEP_2000);

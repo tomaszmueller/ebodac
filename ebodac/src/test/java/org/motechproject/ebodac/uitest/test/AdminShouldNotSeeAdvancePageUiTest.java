@@ -14,13 +14,6 @@ import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to check if hte Admin could see the advance page for enrolment.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;

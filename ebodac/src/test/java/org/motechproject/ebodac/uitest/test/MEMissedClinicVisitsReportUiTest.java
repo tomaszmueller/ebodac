@@ -13,13 +13,6 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Class created to test Missed Clinic Visit Report.
- * 
- * @author tmueller
- * @modified rmartin
- *
- */
 public class MEMissedClinicVisitsReportUiTest extends TestBase {
     private LoginPage loginPage;
     private HomePage homePage;
