@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
@@ -10,11 +9,9 @@ import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
-//import org.apache.log4j.Logger;
+import static org.junit.Assert.assertFalse;
 
 public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
-    // private static Logger log =
-    // Logger.getLogger(AnalystAccessOnlyToEbodacUiTest.class.getName());
     private static final String LOCAL_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -54,7 +51,7 @@ public class AnalystAccessOnlyToEbodacUiTest extends TestBase {
     public void analystAccessOnlyToEbodacUITest() throws Exception {
         try {
             homePage.clickModules();
-            Assert.assertFalse(homePage.isElementPresent(HomePage.DATA_SERVICES));
+            assertFalse(homePage.isElementPresent(HomePage.DATA_SERVICES));
         } catch (AssertionError e) {
             getLogger().error(
                     "analystAccessOnlyToEbodacUITest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);

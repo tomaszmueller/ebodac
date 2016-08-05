@@ -10,14 +10,9 @@ import org.motechproject.ebodac.uitest.page.BookingAppUnscheduledVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertEquals;
-//import org.apache.log4j.Logger;
 
 public class BookingApplicationBookUnscheduledVisit extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationBookUnscheduledVisit.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -71,9 +66,9 @@ public class BookingApplicationBookUnscheduledVisit extends TestBase {
             bookingAppRescheduleVisitPage.clickOnButtonToConfirmBookUnscheduledVisit();
             assertEquals(CORRECTLY_UPDATED_MESSAGE, bookingAppRescheduleVisitPage.checkifVisitIsCorrectlySaved());
             bookingAppRescheduleVisitPage.clickOnButtonToCloseModal();
-        } catch (AssertException e) {
-            getLogger().error("bookingApplicationRescheduleVisitTest - AssertException . Reason : " + e.getLocalizedMessage(),
-                    e);
+        } catch (AssertionError e) {
+            getLogger().error(
+                    "bookingApplicationRescheduleVisitTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
@@ -81,7 +76,8 @@ public class BookingApplicationBookUnscheduledVisit extends TestBase {
             getLogger().error("bookingApplicationRescheduleVisitTest - NullPointerException . Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("bookingApplicationRescheduleVisitTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingApplicationRescheduleVisitTest - Exception . Reason : " + e.getLocalizedMessage(),
+                    e);
         }
     }
 

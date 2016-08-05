@@ -2,7 +2,6 @@ package org.motechproject.ebodac.uitest.test;
 
 import org.junit.After;
 import org.junit.Before;
-//import org.junit.Ignore;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
@@ -26,26 +25,17 @@ import org.motechproject.ebodac.uitest.page.SMSPage;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
 import org.motechproject.uitest.TestBase;
-//import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.IVREditPage;
 import org.motechproject.ebodac.uitest.page.IVRPage;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-//import java.text.DateFormat;
-//import java.text.SimpleDateFormat;
-
-//import org.apache.log4j.Logger;
-
 public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
-    // Object initialization for log
-    //private static Logger log = Logger.getLogger(AdminAccessToEbodacTabsUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private static final long SLEEP_2SEC = 2000;
     private String user;
@@ -111,10 +101,13 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         }
 
     }
-     /**
-      * This method check if the EBODAC page opens and if it is possible if there are name, house hold and head of household .   
-      * @throws Exception
-      */
+
+    /**
+     * This method check if the EBODAC page opens and if it is possible if there
+     * are name, house hold and head of household .
+     * 
+     * @throws Exception
+     */
     public void testAdminEbodacHome() throws Exception {
         try {
             homePage.clickOnEbodac();
@@ -130,7 +123,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             getLogger().error("testAdminEbodacHome - NullPointerException - Reason :  " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("testAdminEbodacHome - InterruptedException - Reason :  " + e.getLocalizedMessage(), e);
-        }catch (Exception e) {
+        } catch (Exception e) {
             getLogger().error("testAdminEbodacHome - Exception - Reason :  " + e.getLocalizedMessage(), e);
         }
     }
@@ -191,7 +184,8 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             getLogger().error("adminAccessOnlyToEbodacUiTest - Assertion Error " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            getLogger().error("adminAccessOnlyToEbodacUiTest - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "adminAccessOnlyToEbodacUiTest - NullPointerException . Reason = " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             getLogger().error("adminAccessOnlyToEbodacUiTest - Error . Reason = " + e.getLocalizedMessage(), e);
         }

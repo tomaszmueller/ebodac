@@ -4,9 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.MEMissedClinicVisitsReportPage;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
@@ -16,12 +13,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import static org.junit.Assert.assertTrue;
 
-//import org.apache.log4j.Logger;
-
 public class MEMissedClinicVisitsReportUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(MEMissedClinicVisitsReportUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -68,8 +60,8 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
             ebodacPage.gotoReports();
             reportPage.showMEMissedClinicVisitsReport();
             assertTrue(mEMissedClinicVisitsReportPage.existTable());
-        } catch (AssertException e) {
-            getLogger().error("mEMissedClinicVisitsReportTest - AssertException - Reason : " + e.getLocalizedMessage(),
+        } catch (AssertionError e) {
+            getLogger().error("mEMissedClinicVisitsReportTest - AssertionError - Reason : " + e.getLocalizedMessage(),
                     e);
 
         } catch (NullPointerException e) {

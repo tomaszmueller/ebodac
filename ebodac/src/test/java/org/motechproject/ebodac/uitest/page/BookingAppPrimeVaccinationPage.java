@@ -378,4 +378,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public String expectedUrlPath() {
         return getServerURL() + URL_PATH;
     }
+
+    public boolean hasVisitsVisible() {
+        return findElement(By.className("ui-jqgrid-bdiv")).getAttribute("innerHTML").contains("printCardFrom");
+    }
 }

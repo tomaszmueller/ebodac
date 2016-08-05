@@ -1,29 +1,27 @@
 package org.motechproject.ebodac.uitest.test;
 
-//import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
+import org.motechproject.ebodac.uitest.helper.BookingAppFilters;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.BookingAppScreeningPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
-
 import java.util.ArrayList;
-
 import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(BookingApplicationScreeningCreationUiTest.class.getName());
+    private static final int SIX = 6;
+    private static final int FIVE = 5;
+    private static final int FOUR = 4;
+    private static final int THREE = 3;
+    private static final int TWO = 2;
+    private static final int ONE = 1;
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -61,54 +59,73 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
     }
 
     @Test
-    public void bookingApplicationScreeningCreationTest() throws Exception {
+    public void findScreeningTest() throws Exception {
+        boolean status = false;
         try {
             ArrayList<LocalDate> dates = new ArrayList<>();
             homePage.clickModules();
             homePage.openBookingAppModule();
             bookingAppPage.openScreening();
-            bookingAppScreeningPage.changeFilterTo("Date range");
-            String bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(". ", "");
-            assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
-            bookingAppScreeningPage.changeFilterTo("Today");
+
+            String bookingId = bookingAppScreeningPage.bookScreeningVisitForToday().replace(". ", "");
+            if (!"".equalsIgnoreCase(bookingId)) {
+                assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
+            }
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TODAY.getValue());
+
             dates.add(LocalDate.now());
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-            bookingAppScreeningPage.changeFilterTo("Tomorrow");
+
+            // We start from tomorrow.
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TOMORROW.getValue());
+
             dates.remove(0);
-            dates.add(LocalDate.now().plusDays(1));
+            dates.add(LocalDate.now().plusDays(ONE));
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-            bookingAppScreeningPage.changeFilterTo("Day after tomorrow");
+
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DAY_AFTER_TOMORROW.getValue());
+
             dates.remove(0);
-            dates.add(LocalDate.now().plusDays(2));
+            dates.add(LocalDate.now().plusDays(TWO));
+            status = bookingAppScreeningPage.isFirstBookingOK(dates);
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-            bookingAppScreeningPage.changeFilterTo("Next 3 days");
+
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_3_DAYS.getValue());
+
             dates.remove(0);
             dates.add(LocalDate.now());
-            dates.add(LocalDate.now().plusDays(1));
-            dates.add(LocalDate.now().plusDays(2));
+            dates.add(LocalDate.now().plusDays(ONE));
+            dates.add(LocalDate.now().plusDays(TWO));
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-            bookingAppScreeningPage.changeFilterTo("Next 7 days");
-            dates.add(LocalDate.now().plusDays(3));
-            dates.add(LocalDate.now().plusDays(4));
-            dates.add(LocalDate.now().plusDays(5));
-            dates.add(LocalDate.now().plusDays(6));
+
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_7_DAYS.getValue());
+
+            dates.add(LocalDate.now().plusDays(THREE));
+            dates.add(LocalDate.now().plusDays(FOUR));
+            dates.add(LocalDate.now().plusDays(FIVE));
+            dates.add(LocalDate.now().plusDays(SIX));
+            status = bookingAppScreeningPage.isFirstBookingOK(dates);
+
             assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-            bookingAppScreeningPage.changeFilterTo("Date range");
+
+            bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DATE_RANGE.getValue());
+
             bookingAppScreeningPage.setDate();
             bookingAppScreeningPage.exportToPDF();
             bookingAppScreeningPage.exportToXLS();
 
-        } catch (AssertException e) {
-            getLogger().error("bookingApplicationScreeningCreationTest - AssertException . Reason : " + e.getLocalizedMessage(),
-                    e);
+        } catch (AssertionError e) {
+            getLogger().error("findScreeningTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("findScreeningTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("bookingApplicationScreeningCreationTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("findScreeningTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("bookingApplicationScreeningCreationTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("findScreeningTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -116,4 +133,5 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
     public void tearDown() throws Exception {
         logout();
     }
+
 }

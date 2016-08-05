@@ -5,18 +5,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
 public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(DisplayOfSubjectVisitInTabularFormatUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private ParticipantPage participantPage;
@@ -50,9 +45,9 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
             homePage.openEBODACModule();
             participantPage.openFirstParticipant();
             assertTrue(participantEditPage.isTable());
-        } catch (AssertException e) {
+        } catch (AssertionError e) {
             getLogger().error(
-                    "displayOfSubjectVisitInTabularFormatTest - AssertException - Reason : " + e.getLocalizedMessage(),
+                    "displayOfSubjectVisitInTabularFormatTest - AssertionError - Reason : " + e.getLocalizedMessage(),
                     e);
 
         } catch (NullPointerException e) {

@@ -7,14 +7,11 @@ import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.page.LoginPage;
 import org.motechproject.uitest.TestBase;
-import org.motechproject.ebodac.uitest.helper.CreateUsersHelper;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import static org.junit.Assert.assertFalse;
-import org.apache.log4j.Logger;
 
 public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
-    private static Logger log = Logger.getLogger(AnalystClicksOnRowStaysOnTheSameScreenUiTest.class.getName());
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
@@ -24,18 +21,11 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     private String l1analystUser;
     private String l1analystpassword;
     private UserPropertiesHelper userPropertiesHelper;
-    // private UITestHttpClientHelper httpClientHelper;
-    private CreateUsersHelper createUsersHelper;
-  
 
     @Before
     public void setUp() throws Exception {
         try {
-            
-            // if (url.contains(LOCAL_TEST_MACHINE)) {
-            // createUsersHelper = new CreateUsersHelper(getDriver());
-            // createUsersHelper.createUsersWithLogin(getTestProperties());
-            // }
+
             ebodacPage = new EBODACPage(getDriver());
             enrollmentsPage = new EnrollmentPage(getDriver());
             userPropertiesHelper = new UserPropertiesHelper();
@@ -53,10 +43,10 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
                 loginPage.login(l1analystUser, l1analystpassword);
             }
         } catch (NullPointerException e) {
-            log.error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -67,19 +57,19 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
             ebodacPage.goToEnrollment();
             assertFalse(enrollmentsPage.checkEnroll());
         } catch (AssertionError e) {
-            log.error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
+            getLogger().error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
                     + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            log.error("analystClicksOnRowStaysOnTheSameScreenTest - InterruptedException - Reason : "
+            getLogger().error("analystClicksOnRowStaysOnTheSameScreenTest - InterruptedException - Reason : "
                     + e.getLocalizedMessage(), e);
 
-        }  catch (NullPointerException e) {
-            log.error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
+        } catch (NullPointerException e) {
+            getLogger().error("analystClicksOnRowStaysOnTheSameScreenTest - NullPointerException - Reason : "
                     + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            log.error("analystClicksOnRowStaysOnTheSameScreenTest - Exception - Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error(
+                    "analystClicksOnRowStaysOnTheSameScreenTest - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

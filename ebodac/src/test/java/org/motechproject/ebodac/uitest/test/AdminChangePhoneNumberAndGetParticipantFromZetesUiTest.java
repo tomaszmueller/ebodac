@@ -1,9 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -18,13 +15,9 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import java.lang.Exception;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
-import org.apache.log4j.Logger;
 
 public class AdminChangePhoneNumberAndGetParticipantFromZetesUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
-    // Object initialization for log
-    private static Logger log = Logger
-            .getLogger(AdminChangePhoneNumberAndGetParticipantFromZetesUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -61,9 +54,9 @@ public class AdminChangePhoneNumberAndGetParticipantFromZetesUiTest extends Test
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            log.error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -81,14 +74,15 @@ public class AdminChangePhoneNumberAndGetParticipantFromZetesUiTest extends Test
             participantEditPage.changePhoneNumber(testNumber);
             // New phone number
             changedNumber = participantEditPage.getPhoneNumber();
-            log.error("testNumber =*****" + testNumber + "   changedNumber : ******" + changedNumber + "******");
+            getLogger()
+                    .error("testNumber =*****" + testNumber + "   changedNumber : ******" + changedNumber + "******");
             assertEquals(testNumber, changedNumber);
-        } catch (AssertException e) {
-            log.error("changePhoneNumberTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("changePhoneNumberTest - AssertError . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            log.error("changePhoneNumberTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changePhoneNumberTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            log.error("changePhoneNumberTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("changePhoneNumberTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

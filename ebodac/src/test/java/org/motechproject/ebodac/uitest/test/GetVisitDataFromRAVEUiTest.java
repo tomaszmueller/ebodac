@@ -5,9 +5,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.RAVESettingsHelper;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
@@ -17,17 +14,11 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.AdminPage;
 import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.ebodac.uitest.page.ServerLogPage;
-
 import static org.junit.Assert.assertTrue;
-
-//import org.apache.log4j.Logger;
 
 @Ignore
 public class GetVisitDataFromRAVEUiTest extends TestBase {
     private static final int WAIT_500MLSEC = 500;
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(GetVisitDataFromRAVEUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private AdminPage adminPage;
@@ -88,8 +79,8 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
                 String logContent = serverLogPage.getLogContent();
                 assertTrue(logContent.contains("Started fetching CSV files"));
             }
-        } catch (AssertException e) {
-            getLogger().error("getVisitDataFromRAVETest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("getVisitDataFromRAVETest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(),
                     e);

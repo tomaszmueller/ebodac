@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.uitest.test;
 
-//import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,14 +11,9 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
-
 import static org.junit.Assert.assertTrue;
 
 public class AdminHiddenButtonsEnabledUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(AdminHiddenButtonsEnabledUiTest.class.getName());
-
     private LoginPage loginPage;
     private HomePage homePage;
     private String user;
@@ -60,12 +54,21 @@ public class AdminHiddenButtonsEnabledUiTest extends TestBase {
 
     @Test
     public void hiddenButtonsEnabledTest() throws Exception {
-        assertTrue(homePage.isEBODACModulePresent());
-        assertTrue(homePage.isIVRModulePresent());
-        assertTrue(homePage.isSMSModulePresent());
-        homePage.openEBODACModule();
-        participantPage.openFirstParticipant();
-        assertTrue(participantEditPage.checkButtons());
+        try {
+            assertTrue(homePage.isEBODACModulePresent());
+            assertTrue(homePage.isIVRModulePresent());
+            assertTrue(homePage.isSMSModulePresent());
+            homePage.openEBODACModule();
+            participantPage.openFirstParticipant();
+            assertTrue(participantEditPage.checkButtons());
+        } catch (AssertionError e) {
+            getLogger().error("hiddenButtonsEnabledTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
+        } catch (NumberFormatException e) {
+            getLogger().error("hiddenButtonsEnabledTest - NumberFormatException . Reason : " + e.getLocalizedMessage(),
+                    e);
+        } catch (Exception e) {
+            getLogger().error("hiddenButtonsEnabledTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
     }
 
     @After

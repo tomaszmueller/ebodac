@@ -7,39 +7,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidSelectorException;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BookingAppRescheduleVisitPage extends AbstractBasePage {
-
-    public static final String URL_PATH = "/#/bookingApp/reschedule/";
-
-    static final By PLANNED_DATE_COLUMN = By.xpath("//div[@id='jqgh_visitReschedule_plannedDate']");
-    static final By PLANNED_DATE_COLUMN_SORT = By.xpath("//div[@id='jqgh_visitReschedule_plannedDate']/span/span[2]");
-    static final By VISIT = By.xpath("//table[@id='visitReschedule']/tbody/tr[2]");
-    static final By VISIT_DATE = By.xpath("//table[@id='visitReschedule']/tbody/tr[2]/td[@aria-describedby='visitReschedule_plannedDate']");
-    static final By DATE_FIELD = By.xpath("//div[@id='visitRescheduleModal']/div/div/div/div/div/input[@type='text']");
-    static final By TIME_FIELD = By.xpath("//input[@mds-time-picker='']");
-    static final By TIME_DONE = By.xpath("//button[@data-handler='hide']");
-    static final By SAVE_BUTTON = By.xpath("//button[@ng-click='saveVisitReschedule(false)']");
-    static final By POPUP_OK = By.id("popup_ok");
-    static final By PRINT_CARD = By.xpath("//button[@ng-click='print()']");
-    static final By CLOSE_BUTTON = By.xpath("//button[@data-dismiss='modal']");
-    static final By IGNORE_EARLIEST_LATEST_DATE = By.xpath("//div[@id='visitRescheduleModal']/div[2]/div/div[2]/div/div[4]/input[@type='checkbox']");
-    static final By YEAR_FIELD = By.xpath("//div[@id='ui-datepicker-div']/div/div/select/option[@selected='selected']");
-    static final By MONTH_FIELD = By.className("ui-datepicker-month");
-    static final By PREV = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Prev']");
-    static final By NEXT = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Next']");
-    static final By NEXT_PAGE = By.xpath("//td[@id='next_pager']/span");
-    static final By DIALOG_TEXT = By.xpath("//div[@class='modal-dialog']/div/div[2]/div");
-    static final int BIG_TIMEOUT = 2000;
-    static final int TIMEOUT = 1000;
-    static final int WIDTH = 1920;
-    static final int HEIGHT = 1080;
-    static final int SECONDS_IN_DAY = 86400000;
-    static final int NUMDER_OF_DAYS = 5;
-    static final int MAX_PAGES = 10;
 
     static final int DEFAULT_VALUE = -1;
     static final int JANUARY = 0;
@@ -55,10 +30,66 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     static final int NOVEMBER = 10;
     static final int DECEMBER = 11;
 
+    public static final String URL_PATH = "/#/bookingApp/reschedule/";
+
+    static final By PLANNED_DATE_COLUMN = By.xpath("//div[@id='jqgh_visitReschedule_plannedDate']");
+    static final By PLANNED_DATE_COLUMN_SORT = By.xpath("//div[@id='jqgh_visitReschedule_plannedDate']/span/span[2]");
+    static final By VISIT = By.xpath("//table[@id='visitReschedule']/tbody/tr[2]");
+    static final By VISIT_DATE = By
+            .xpath("//table[@id='visitReschedule']/tbody/tr[2]/td[@aria-describedby='visitReschedule_plannedDate']");
+    static final By DATE_FIELD = By.xpath("//div[@id='visitRescheduleModal']/div/div/div/div/div/input[@type='text']");
+    static final By TIME_FIELD = By.xpath("//input[@mds-time-picker='']");
+    static final By TIME_DONE = By.xpath("//button[@data-handler='hide']");
+    static final By SAVE_BUTTON = By.xpath("//button[@ng-click='saveVisitReschedule(false)']");
+    static final By POPUP_OK = By.id("popup_ok");
+    static final By PRINT_CARD = By.xpath("//button[@ng-click='print()']");
+    static final By CLOSE_BUTTON = By.xpath("//button[@data-dismiss='modal']");
+    static final By IGNORE_EARLIEST_LATEST_DATE = By
+            .xpath("//div[@id='visitRescheduleModal']/div[2]/div/div[2]/div/div[4]/input[@type='checkbox']");
+    static final By YEAR_FIELD = By.xpath("//div[@id='ui-datepicker-div']/div/div/select/option[@selected='selected']");
+    static final By MONTH_FIELD = By.className("ui-datepicker-month");
+    static final By PREV = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Prev']");
+    static final By NEXT = By.xpath("//div[@id='ui-datepicker-div']/div/a[@title='Next']");
+    static final By NEXT_PAGE = By.xpath("//td[@id='next_pager']/span");
+    static final By DIALOG_TEXT = By.xpath("//div[@class='modal-dialog']/div/div[2]/div");
+    static final By TITLE_MODAL_SCREEN = By.xpath("//*[@id='visitRescheduleModal']/div[2]/div/div[1]/h4");
+    static final By CLOSE_ERROR_RESCHEDULE_BUTTON = By
+            .xpath("//*[@id='visitRescheduleModal']/div[2]/div/div[2]/div[2]/div/button");
+    static final int BIG_TIMEOUT = 2000;
+    static final int TIMEOUT = 1000;
+    static final int WIDTH = 1920;
+    static final int HEIGHT = 1080;
+    static final int SECONDS_IN_DAY = 86400000;
+    static final int NUMDER_OF_DAYS = 5;
+    static final int MAX_PAGES = 10;
+
+    private Map<String, Integer> months = new HashMap<String, Integer>() {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = DEFAULT_VALUE;
+
+        {
+            put("default", new Integer(DEFAULT_VALUE));
+            put("january", new Integer(JANUARY));
+            put("february", new Integer(FEBRUARY));
+            put("march", new Integer(MARCH));
+            put("april", new Integer(APRIL));
+            put("may", new Integer(MAY));
+            put("june", new Integer(JUNE));
+            put("july", new Integer(JULY));
+            put("august", new Integer(AUGUST));
+            put("september", new Integer(SEPTEMBER));
+            put("october", new Integer(OCTOBER));
+            put("november", new Integer(NOVEMBER));
+            put("december", new Integer(DECEMBER));
+
+        }
+    };
+
     public BookingAppRescheduleVisitPage(WebDriver driver) {
         super(driver);
     }
-
 
     @Override
     public String expectedUrlPath() {
@@ -70,7 +101,6 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
     }
 
-
     public void sortByPlannedDateColumn() throws InterruptedException {
         clickWhenVisible(PLANNED_DATE_COLUMN);
         Thread.sleep(BIG_TIMEOUT);
@@ -78,10 +108,21 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         Thread.sleep(BIG_TIMEOUT);
     }
 
-    public void chooseVisit() throws InterruptedException {
-        WebElement visit = findElement(VISIT);
-        clickWhenVisible(VISIT);
-        visit.sendKeys(Keys.ENTER);
+    public boolean chooseVisit() throws InterruptedException {
+        boolean status = false;
+        try {
+            WebElement visit = findElement(VISIT);
+            clickWhenVisible(VISIT);
+            visit.sendKeys(Keys.ENTER);
+            // if we could select the visit we have the status = true;
+            status = true;
+        } catch (NullPointerException e) {
+            getLogger().error("chooseVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            getLogger().error("chooseVisit - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
+
+        return status;
     }
 
     public boolean visitsExist() {
@@ -96,56 +137,84 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         }
     }
 
-
     public void resizePage() {
         getDriver().manage().window().setSize(new Dimension(WIDTH, HEIGHT));
     }
 
-    public boolean rescheduleVisit() throws InterruptedException {
-        Thread.sleep(TIMEOUT);
-        waitForElement(IGNORE_EARLIEST_LATEST_DATE);
-        clickWhenVisible(IGNORE_EARLIEST_LATEST_DATE);
-        Thread.sleep(TIMEOUT);
-        waitForElement(DATE_FIELD);
-        clickOn(DATE_FIELD);
-        Calendar cal1 = Calendar.getInstance();
-        Date setDate = cal1.getTime();
-        Date myDate = new Date(setDate.getTime() + NUMDER_OF_DAYS * SECONDS_IN_DAY);
-        cal1.setTime(myDate);
-        int year = cal1.get(Calendar.YEAR);
-        int month = cal1.get(Calendar.MONTH);
-        int day = cal1.get(Calendar.DAY_OF_MONTH);
-        int selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
-        int selectedMonth = getMonthNumber(findElement(MONTH_FIELD).getText());
-        while (year != selectedYear || month != selectedMonth) {
-            selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
-            selectedMonth = getMonthNumber(findElement(MONTH_FIELD).getText());
-            if (year < selectedYear || (year == selectedYear && month < selectedMonth)) {
-                waitForElement(PREV);
-                clickOn(PREV);
-            } else {
-                waitForElement(NEXT);
-                clickOn(NEXT);
+    public boolean rescheduleVisit() throws Exception {
+        return checkVisit();
+
+    }
+
+    public String getTitleReschedule() {
+        return findElement(TITLE_MODAL_SCREEN).getAttribute("innerHTML").trim();
+
+    }
+
+    public String getModalText() {
+        return findElement(DIALOG_TEXT).getAttribute("innerHTML").trim();
+
+    }
+
+    public boolean checkVisit() throws InterruptedException {
+        boolean status = false;
+        String text;
+        try {
+            waitForElement(IGNORE_EARLIEST_LATEST_DATE);
+            clickWhenVisible(IGNORE_EARLIEST_LATEST_DATE);
+            Thread.sleep(TIMEOUT);
+            waitForElement(DATE_FIELD);
+            clickOn(DATE_FIELD);
+            Calendar cal1 = Calendar.getInstance();
+            Date setDate = cal1.getTime();
+            Date myDate = new Date(setDate.getTime() + NUMDER_OF_DAYS * SECONDS_IN_DAY);
+            cal1.setTime(myDate);
+            int year = cal1.get(Calendar.YEAR);
+            int month = cal1.get(Calendar.MONTH);
+            int day = cal1.get(Calendar.DAY_OF_MONTH);
+            int selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
+            int selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
+            getLogger().error("selectedMonth :" + selectedMonth);
+            while (year != selectedYear || month != selectedMonth) {
+                selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
+                selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
+                if (year < selectedYear || (year == selectedYear && month < selectedMonth)) {
+                    waitForElement(PREV);
+                    clickOn(PREV);
+                } else {
+                    waitForElement(NEXT);
+                    clickOn(NEXT);
+                }
             }
+            clickWhenVisible(By.linkText("" + day));
+            setTextToFieldNoEnter(TIME_FIELD, "12:00");
+            clickWhenVisible(TIME_DONE);
+            Thread.sleep(TIMEOUT);
+            clickWhenVisible(SAVE_BUTTON);
+            waitForElement(POPUP_OK);
+            clickWhenVisible(POPUP_OK);
+            Thread.sleep(BIG_TIMEOUT);
+            clickWhenVisible(POPUP_OK);
+            text = findElement(DIALOG_TEXT).getText();
+            Thread.sleep(BIG_TIMEOUT);
+            waitForElement(CLOSE_BUTTON);
+            Thread.sleep(BIG_TIMEOUT);
+            clickWhenVisible(CLOSE_BUTTON);
+            getLogger().error("text :" + text);
+            if (text.contains("Visit Planned Date updated successfully.")) {
+                return status;
+            }
+        } catch (InterruptedException e) {
+            status = false;
+            getLogger().error("rescheduleVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (NullPointerException e) {
+            status = false;
+            getLogger().error("rescheduleVisit - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("rescheduleVisit - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
-        clickWhenVisible(By.linkText("" + day));
-        setTextToFieldNoEnter(TIME_FIELD, "12:00");
-        clickWhenVisible(TIME_DONE);
-        Thread.sleep(TIMEOUT);
-        clickWhenVisible(SAVE_BUTTON);
-        waitForElement(POPUP_OK);
-        clickWhenVisible(POPUP_OK);
-        Thread.sleep(BIG_TIMEOUT);
-        clickWhenVisible(POPUP_OK);
-        String text = findElement(DIALOG_TEXT).getText();
-        Thread.sleep(BIG_TIMEOUT);
-        waitForElement(CLOSE_BUTTON);
-        Thread.sleep(BIG_TIMEOUT);
-        clickWhenVisible(CLOSE_BUTTON);
-        if (text.contains("Visit Planned Date updated successfully.")) {
-            return true;
-        }
-        return false;
+        return status;
     }
 
     public void printCard() throws InterruptedException {
@@ -155,11 +224,17 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     }
 
     /**
-     * <p>Checks if two dates are on the same day ignoring time.</p>
-     * @param date1  the first date, not altered, not null
-     * @param date2  the second date, not altered, not null
+     * <p>
+     * Checks if two dates are on the same day ignoring time.
+     * </p>
+     * 
+     * @param date1
+     *            the first date, not altered, not null
+     * @param date2
+     *            the second date, not altered, not null
      * @return true if they represent the same day
-     * @throws IllegalArgumentException if either date is <code>null</code>
+     * @throws IllegalArgumentException
+     *             if either date is <code>null</code>
      */
     public static boolean isSameDay(Date date1, Date date2) {
         if (date1 == null || date2 == null) {
@@ -173,64 +248,43 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
     }
 
     /**
-     * <p>Checks if two calendars represent the same day ignoring time.</p>
-     * @param cal1  the first calendar, not altered, not null
-     * @param cal2  the second calendar, not altered, not null
+     * <p>
+     * Checks if two calendars represent the same day ignoring time.
+     * </p>
+     * 
+     * @param cal1
+     *            the first calendar, not altered, not null
+     * @param cal2
+     *            the second calendar, not altered, not null
      * @return true if they represent the same day
-     * @throws IllegalArgumentException if either calendar is <code>null</code>
+     * @throws IllegalArgumentException
+     *             if either calendar is <code>null</code>
      */
     public static boolean isSameDay(Calendar cal1, Calendar cal2) {
         if (cal1 == null || cal2 == null) {
             throw new IllegalArgumentException("The dates must not be null");
         }
-        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
-                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+                && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
     }
 
-    public static int getMonthNumber(String monthName) {//NO CHECKSTYLE CyclomaticComplexity
-        int number = DEFAULT_VALUE;
-        switch(monthName.toLowerCase()) {
-            case "january":
-                number = JANUARY;
-                break;
-            case "february":
-                number = FEBRUARY;
-                break;
-            case "march":
-                number = MARCH;
-                break;
-            case "april":
-                number = APRIL;
-                break;
-            case "may":
-                number = MAY;
-                break;
-            case "june":
-                number = JUNE;
-                break;
-            case "july":
-                number = JULY;
-                break;
-            case "august":
-                number = AUGUST;
-                break;
-            case "september":
-                number = SEPTEMBER;
-                break;
-            case "october":
-                number = OCTOBER;
-                break;
-            case "november":
-                number = NOVEMBER;
-                break;
-            case "december":
-                number = DECEMBER;
-                break;
-            default:
-                number = DEFAULT_VALUE;
-                break;
+    public boolean clickCose() throws InterruptedException {
+        boolean status = false;
+        try {
+            Thread.sleep(TIMEOUT);
+            clickOn(CLOSE_ERROR_RESCHEDULE_BUTTON);
+            status = true;
+        } catch (InvalidSelectorException e) {
+            status = false;
+            getLogger().error("clickCose - InvalidSelectorException . Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (NullPointerException e) {
+            status = false;
+            getLogger().error("clickCose - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("clickCose - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
-        return number;
+        return status;
     }
 }

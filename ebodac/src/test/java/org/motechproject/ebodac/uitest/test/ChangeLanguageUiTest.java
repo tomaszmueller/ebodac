@@ -1,7 +1,6 @@
 package org.motechproject.ebodac.uitest.test;
 
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import org.motechproject.uitest.TestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -12,9 +11,8 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import java.util.HashMap;
-import static org.junit.Assert.assertNotEquals;
 import java.util.Map;
-//import org.apache.log4j.Logger;
+import static org.junit.Assert.assertNotEquals;
 
 public class ChangeLanguageUiTest extends TestBase {
 
@@ -25,8 +23,6 @@ public class ChangeLanguageUiTest extends TestBase {
     private Map<String, String> map = new HashMap<String, String>();
     // Original language
     private String originalLanguage;
-    // Object initialization for log
-    //private static Logger log = Logger.getLogger(ChangeLanguageUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     // private EBODACPage ebodacPage;
@@ -90,11 +86,11 @@ public class ChangeLanguageUiTest extends TestBase {
             } else if (originalLanguage != null && changedLanguage != null) {
                 assertNotEquals(changedLanguage.replace(" ", ""), originalLanguage.replace(" ", ""));
             } else if (originalLanguage == null || changedLanguage == null) {
-                getLogger().error("Cannot compate languages: originalLanguage: " + originalLanguage + " and changedLanguage: "
-                        + changedLanguage);
+                getLogger().error("Cannot compate languages: originalLanguage: " + originalLanguage
+                        + " and changedLanguage: " + changedLanguage);
             }
-        } catch (AssertException e) {
-            getLogger().error("changeLanguageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("changeLanguageTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
             getLogger().error("changeLanguageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {

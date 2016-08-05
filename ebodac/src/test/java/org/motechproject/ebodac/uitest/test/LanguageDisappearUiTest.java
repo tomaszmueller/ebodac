@@ -1,25 +1,20 @@
 package org.motechproject.ebodac.uitest.test;
 
-import static org.junit.Assert.assertFalse;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.ebodac.uitest.page.ParticipantPage;
-//import org.apache.log4j.Logger;
+import static org.junit.Assert.assertFalse;
 
 public class LanguageDisappearUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(LanguageDisappearUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private String user;

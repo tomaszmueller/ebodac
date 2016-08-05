@@ -10,16 +10,12 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.ebodac.uitest.page.PrimeFollowAndBoostReportPage;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import org.motechproject.uitest.TestBase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
 public class PrimeFollowAndBoostReportUiTest extends TestBase {
     private static final CharSequence TEST_LOCAL_MACHINE = "localhost";
-    // Object initialization for log
-    //private static Logger log = Logger.getLogger(PrimeFollowAndBoostReportUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -77,14 +73,17 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
             primeFollowAndBoostReportPage.openVisitType();
             assertTrue(primeFollowAndBoostReportPage.areAllVisitsAvailable());
 
-        } catch (AssertException e) {
-            getLogger().error("primeFollowAndBoostReportTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("primeFollowAndBoostReportTest - AssertionError - Reason : " + e.getLocalizedMessage(),
+                    e);
 
         } catch (InterruptedException e) {
-            getLogger().error("primeFollowAndBoostReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "primeFollowAndBoostReportTest - InterruptedException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
-            getLogger().error("primeFollowAndBoostReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error(
+                    "primeFollowAndBoostReportTest - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
             getLogger().error("primeFollowAndBoostReportTest - Exception - Reason : " + e.getLocalizedMessage(), e);

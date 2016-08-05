@@ -4,9 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.uitest.page.LoginPage;
-
-import com.mchange.util.AssertException;
-
 import org.motechproject.uitest.TestBase;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
@@ -14,14 +11,10 @@ import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.helper.UserPropertiesHelper;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
-
 import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
 public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
-    //private static Logger log = Logger.getLogger(AdminShouldNotSeeAdvancePageUiTest.class.getName());
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -73,20 +66,16 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
      */
     @Test
     public void adminhouldNotSeeAdvancePageTest() throws Exception {
-        homePage.clickModules();
-        homePage.openEBODACModule();
-        ebodacPage.goToEnrollment();
-        // We should not be able to see the advance page for enrollment.
         try {
+            homePage.clickModules();
+            homePage.openEBODACModule();
+            ebodacPage.goToEnrollment();
+            // We should not be able to see the advance page for enrollment.
+
             assertFalse(enrollmentPage.enrollmentDetailEnabled());
-        } catch (NullPointerException e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertNull : NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
-        } catch (AssertException e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
-        }
-        // It should be allowed to enrol unenroll participants.
-        try {
+
+            // It should be allowed to enrol unenroll participants.
+
             // We try to enroll.
             enrollmentPage.clickAction();
             enrollmentPage.clickOK();
@@ -94,29 +83,24 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
                 enrollmentPage.clickOK();
                 enrollmentPage.nextAction();
             }
-        } catch (NullPointerException e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - Error :" + e.getMessage());
-        }
-        try {
-            if (enrollmentPage.enrolled()) {
-                getLogger().error("adminhouldNotSeeAdvancePageTest - After enrollmentPage enrolled True");
-                try {
-                    assertTrue(enrollmentPage.enrolled());
-                } catch (AssertException e) {
-                    getLogger().error(
-                            "adminhouldNotSeeAdvancePageTest - AssertTrue Error . Reason : " + e.getLocalizedMessage(),
-                            e);
-                }
 
+            if (enrollmentPage.enrolled()) {
+                assertTrue(enrollmentPage.enrolled());
                 enrollmentPage.clickOK();
             }
             if (enrollmentPage.unenrolled()) {
                 assertTrue(enrollmentPage.unenrolled());
                 enrollmentPage.clickOK();
             }
-        } catch (NullPointerException e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - enrolled & unenrolled . Reason : " + e.getLocalizedMessage(),
+
+        } catch (AssertionError e) {
+            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertionError . Reason : " + e.getLocalizedMessage(),
                     e);
+        } catch (NumberFormatException e) {
+            getLogger().error(
+                    "adminhouldNotSeeAdvancePageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            getLogger().error("adminhouldNotSeeAdvancePageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

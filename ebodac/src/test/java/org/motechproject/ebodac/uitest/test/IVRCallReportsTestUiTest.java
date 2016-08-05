@@ -1,6 +1,5 @@
 package org.motechproject.ebodac.uitest.test;
 
-//import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,13 +10,9 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import com.mchange.util.AssertException;
 import static org.junit.Assert.assertEquals;
 
 public class IVRCallReportsTestUiTest extends TestBase {
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(IVRCallReportsTestUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -64,8 +59,8 @@ public class IVRCallReportsTestUiTest extends TestBase {
             reportPage.showCallDetailRecord();
             reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible();
             assertEquals(true, reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible());
-        } catch (AssertException e) {
-            getLogger().error("iVRCallReportsTestUiTest - AssertException . Reason : " + e.getLocalizedMessage(), e);
+        } catch (AssertionError e) {
+            getLogger().error("iVRCallReportsTestUiTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
             getLogger().error("iVRCallReportsTestUiTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
                     e);

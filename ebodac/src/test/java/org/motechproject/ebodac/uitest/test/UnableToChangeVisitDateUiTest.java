@@ -13,13 +13,9 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
-//import org.apache.log4j.Logger;
 
 public class UnableToChangeVisitDateUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(UnableToChangeVisitDateUiTest.class.getName());
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -70,7 +66,7 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
             visitEditPage.changePlannedDate(date);
             assertTrue(visitEditPage.changeVisit());
         } catch (AssertionError e) {
-            getLogger().error("unableToChangVisitDateTest - AssertException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("unableToChangVisitDateTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (NullPointerException e) {
             getLogger().error("unableToChangVisitDateTest - NullPointerException - Reason : " + e.getLocalizedMessage(),
