@@ -25,31 +25,16 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     public static final String URL_PATH = "/#/bookingApp/screening";
     static final By SCREENING_BUTTON = By.xpath("//div[@id='main-content']/div/div/div/button[1]");
     static final By SCREENING_BUTTON_NG_CLICK = By.xpath("//button[@ng-click='addScreening()']");
-    // static final By DATE_FIELD =
-    // By.xpath("//div[@class='modal-body']/div/input[@type='text']");
     static final By SCREENING_MODAL_PATH = By.xpath("//*[@id='screeningModal']");
     static final String MODAL_CLASS_VISIBLE = "modal fade ng-scope in";
     static final By DATE_FIELD = By.xpath("//*[@id='screeningModal']/div[2]/div/div[2]/div[1]/div[1]/input");
-    // static final By DATE_VALIDATOR_CLASS =
-    // By.xpath("//*[@class='input-group-addon validator alert-success'");
     static final By TODAY_BUTTON = By.xpath("//*[@id='ui-datepicker-div']/div[2]/button[1]");
     static final By SAVE_DATE_BUTTON_MODAL = By.xpath("//*[@id='ui-datepicker-div']/div[2]/button[2]");
-    // static final By TODAY_BUTTON =
-    // By.xpath("//button[@data-handler='today']");
-    // static final By DAY = By.linkText("13");
     static final By TIME_FIELD = By.xpath("//input[@mds-time-picker='']");
-    // static final By TIME_FIELD = By.xpath("//*[@id='dp1470299468393']");
     static final By TIME_DONE = By.xpath("//button[@data-handler='hide']");
-    // static final By CLINIC_LOCATION = By.xpath("//div[@class='booking-app
-    // input-group'][3]");
     static final By CLINIC_LOCATION = By.xpath("//*[@id='clinicSelect']");
-    // static final By CLINIC =
-    // By.xpath("(//div[@class='select2-result-label'])[2]");
     static final By CLINIC = By.xpath("//*[@id='select2-result-label-51']");
-    // static final By SAVE_BUTTON =
-    // By.xpath("//button[@ng-click='saveScreening(false)']");
     static final By SAVE_BUTTON = By.xpath("//*[@id='screeningModal']/div[2]/div/div[2]/div[2]/div/button[1]");
-    // static final By POPUP_OK = By.id("popup_ok");
     static final By POPUP_OK = By.xpath("//*[@id='popup_ok']");
     static final By PRINT_CARD = By.xpath("//button[@ng-click='printRow(-1)']");
     static final By CLOSE_BUTTON = By.xpath("//button[@data-dismiss='modal']");
@@ -169,7 +154,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         if (findElement(SCREENING_MODAL_PATH).getAttribute("class").equalsIgnoreCase(MODAL_CLASS_VISIBLE)) {
             clickWhenVisible(DATE_FIELD);
             if (findElement(TODAY_BUTTON).isDisplayed()) {
-                //Add the date here.
+                // Add the date here.
                 if (findElement(SAVE_DATE_BUTTON_MODAL).isDisplayed()) {
                     clickWhenVisible(SAVE_DATE_BUTTON_MODAL);
                 } else {
@@ -353,7 +338,6 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             sleep(TIMEOUT);
 
             waitForElementToBeEnabled(elementBookingId);
-            // waitForElement(elementBookingId);
             WebElement element = findElement(elementBookingId);
             if (element.isDisplayed()) {
                 status = true;
