@@ -96,9 +96,9 @@
                                 </div>
 
                                 <div class="form-group" ng-class="{'has-error': !report.scheduleTime}">
-                                    <label class="col-md-3 control-label" for="scheduleTime{{$index}}">{{msg('ebodac.web.emailReports.scheduleTime')}}</label>
+                                    <label class="col-md-3 control-label" >{{msg('ebodac.web.emailReports.scheduleTime')}}</label>
                                     <div class="col-md-2" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.scheduleTime.tooltip')}}">
-                                        <input type="text" class="form-control" id="scheduleTime{{$index}}" mds-time-picker ng-model="report.scheduleTime" required/>
+                                        <input type="text" class="form-control" mds-time-picker ng-model="report.scheduleTime" required/>
                                         <span ng-hide="report.scheduleTime" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
                                     </div>
                                 </div>
