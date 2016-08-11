@@ -24,8 +24,8 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
     private BookingAppPrimeVaccinationPage bookingAppPrimeVaccinationPage;
     private String user;
     private String password;
-    static final int SLEEP_500 = 500;
-    static final int SLEEP_2000 = 2000;
+    static final int SLEEP_500MLS = 500;
+    static final int SLEEP_2SEC = 2000;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +54,11 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
     }
 
     @Test // EBODAC-781
-    public void bookingApplicationEditPrimeVaccinationVisitTest() throws Exception {
+    public void bookingAppEditPrimeVacVisitTest() throws Exception {
+        String participantId = "";
+        String participantVacDate = "";
+        String participantVadDateAfterChange = "";
+
         try {
             homePage.resizePage();
             homePage.clickModules();
@@ -63,40 +67,44 @@ public class BookingApplicationEditPrimeVaccinationVisitTestUiTest extends TestB
 
             assertEquals(true, bookingAppPrimeVaccinationPage.checkIfElementAddPrimeVaccinationIsVisible());
             bookingAppPrimeVaccinationPage.changeDateRangeFromToday();
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             bookingAppPrimeVaccinationPage.sortTableByPrimeVacDate();
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             bookingAppPrimeVaccinationPage.sortTableByPrimeVacDate();
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             // We run the next code if we have visits
             if (bookingAppPrimeVaccinationPage.hasVisitsVisible()) {
-                String participantId = bookingAppPrimeVaccinationPage.firstParticipantId();
-                String participantVacDate = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
+                participantId = bookingAppPrimeVaccinationPage.firstParticipantId();
+                sleep(SLEEP_500MLS);
+                participantVacDate = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
+                sleep(SLEEP_500MLS);
                 bookingAppPrimeVaccinationPage.clickOnFirstRowInTheGridUI();
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLS);
                 bookingAppPrimeVaccinationPage.changeDates();
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLS);
                 bookingAppPrimeVaccinationPage.saveAndConfirmChanges();
-                if (!participantId.equals("") && participantId != null && !participantVacDate.equals("")
-                        && participantVacDate != null) {
-                    bookingAppPrimeVaccinationPage.findParticipantInLookup(participantId);
-                    String participantVadDateAfterChange = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
-                    assertEquals(false, participantVacDate.equals(participantVadDateAfterChange));
+                if (bookingAppPrimeVaccinationPage.findParticipantInLookup(participantId)) {
+                    participantVadDateAfterChange = bookingAppPrimeVaccinationPage.firstParticipantPrimeVacDay();
+                    assertEquals(false, participantVacDate.equalsIgnoreCase(participantVadDateAfterChange));
                 }
             }
         } catch (AssertionError e) {
-            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - AsserionError . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("Var Status : participantId: " + participantId);
+            getLogger().error("Var Satus  : participantVacDate: " + participantVacDate);
+            getLogger().error("Var Status : participantVadDateAfterChange: " + participantVadDateAfterChange);
+            getLogger().error("bookingAppEditPrimeVacVisitTest - AsserionError .");
+            getLogger().error("Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
-        } catch (NullPointerException e) {
-            getLogger().error("bookingApplicationEditPrimeVaccinationVisitTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
-        } catch (Exception e) {
             getLogger().error(
-                    "bookingApplicationEditPrimeVaccinationVisitTest - Exception . Reason : " + e.getLocalizedMessage(),
-                    e);
+                    "bookingAppEditPrimeVacVisitTest - NullPointerException Reason : " + e.getLocalizedMessage(), e);
+        } catch (NullPointerException e) {
+            getLogger().error(
+                    "bookingAppEditPrimeVacVisitTest - NullPointerException Reason : " + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            getLogger().error("Var Status : participantId: " + participantId);
+            getLogger().error("Var Satus  : participantVacDate: " + participantVacDate);
+            getLogger().error("Var Status : participantVadDateAfterChange: " + participantVadDateAfterChange);
+            getLogger().error("bookingAppEditPrimeVacVisitTest - Exception Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

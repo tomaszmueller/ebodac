@@ -2,15 +2,13 @@ package org.motechproject.ebodac.uitest.page;
 
 import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import static java.lang.Thread.sleep;
-import org.apache.log4j.Logger;
 
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
-    // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingAppPrimeVaccinationPage.class.getName());
     private static final int MAX_COUNTER_VALUE = 10;
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final String PRIMEVAC_MODAL_CLASS_ENABLED = "modal fade ng-scope in";
@@ -92,9 +90,25 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         super(driver);
     }
 
-    public void clickAddPrimeVaccinationButton() throws InterruptedException {
-        sleep(SLEEP_500);
-        clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
+    public boolean clickAddPrimeVaccinationButton() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_500);
+            clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
+            status = true;
+        } catch (NullPointerException e) {
+            status = false;
+            getLogger().error(
+                    "clickAddPrimeVaccinationButton - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("clickAddPrimeVaccinationButton - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
     public boolean isModalVisible() throws InterruptedException {
@@ -118,19 +132,34 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
      * 
      * @throws InterruptedException
      */
-    public void clickFirstParticipantId() throws InterruptedException {
-        // We add a counter to avoid an infinite loop.
-        int counter = MAX_COUNTER_VALUE;
-        while (findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
-                .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED) && counter > 0) {
-            clickWhenVisible(PARTICIPANT_SELECT);
-            findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
-            if (!findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
-                    .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED)) {
-                counter = 0;
+    public boolean clickFirstParticipantId() throws InterruptedException {
+        boolean status = false;
+        try {
+            // We add a counter to avoid an infinite loop.
+            int counter = MAX_COUNTER_VALUE;
+            while (findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
+                    .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED) && counter > 0) {
+                clickWhenVisible(PARTICIPANT_SELECT);
+                findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
+                if (!findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
+                        .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED)) {
+                    counter = 0;
+                }
+                counter--;
             }
-            counter--;
+        } catch (NullPointerException e) {
+            status = false;
+            getLogger().error("clickFirstParticipantId - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("clickFirstParticipantId - Exception - Reason : " + e.getLocalizedMessage(), e);
+
         }
+        return status;
     }
 
     public String firstParticipantId() {
@@ -150,146 +179,404 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     }
 
     public boolean clickOnIngoreLatesEarliestDate() throws InterruptedException {
-        boolean checked = false;
-        if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
-            clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
-            checked = true;
-        }
-        return checked;
+        boolean status = false;
+        try {
+            if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
+                clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
+                status = false;
+            }
+        } catch (NullPointerException e) {
+            getLogger().error(
+                    "clickSaveInUpdateVisitBookingDetails - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
 
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("clickOnIngoreLatesEarliestDate - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
-    public void clickSaveInUpdateVisitBookingDetails() throws InterruptedException {
-        clickWhenVisible(SAVE_BUTTON_UPDATE_VISIT_BOOKING_DAY);
+    public boolean clickSaveInUpdateVisitBookingDetails() throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(SAVE_BUTTON_UPDATE_VISIT_BOOKING_DAY);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error(
+                    "clickSaveInUpdateVisitBookingDetails - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("clickSaveInUpdateVisitBookingDetails - Exception - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        }
+        return status;
     }
 
     public boolean setDateOfPrimeVacDateFields() throws InterruptedException {
-        sleep(SLEEP_500);
-        findElement(PRIME_VAC_DATE_FIELD).click();
-        clickWhenVisible(NEXT_MONTH_BUTTON);
-        clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
-        return true;
+        boolean status = false;
+        try {
+            sleep(SLEEP_500);
+            findElement(PRIME_VAC_DATE_FIELD).click();
+            clickWhenVisible(NEXT_MONTH_BUTTON);
+            clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error(
+                    "setDateOfPrimeVacDateFields - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setDateOfPrimeVacDateFields - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
 
     }
 
     public boolean setTimeOfPrimeVacDateFields() throws InterruptedException {
-        sleep(SLEEP_500);
-        findElement(PRIME_VAC_TIME_FIELD).sendKeys("10:29");
-        findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
-        clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
-        return true;
+        boolean status = false;
+        try {
+            sleep(SLEEP_500);
+            findElement(PRIME_VAC_TIME_FIELD).sendKeys("10:29");
+            findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
+            clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error(
+                    "setTimeOfPrimeVacDateFields - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setTimeOfPrimeVacDateFields - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
-    public void setMaxDateRangeOfPrimeVaccination() throws InterruptedException {
-        sleep(SLEEP_2000);
-        clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
-        sleep(SLEEP_2000);
-        clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_NEXT_7_DAYS_CHOOSE);
-        sleep(SLEEP_500);
-        clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
-        sleep(SLEEP_500);
-        clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE);
+    public boolean setMaxDateRangeOfPrimeVaccination() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_2000);
+            clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
+            sleep(SLEEP_2000);
+            clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_NEXT_7_DAYS_CHOOSE);
+            sleep(SLEEP_500);
+            clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
+            sleep(SLEEP_500);
+            clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error(
+                    "setMaxDateRangeOfPrimeVaccination - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setMaxDateRangeOfPrimeVaccination - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
 
     }
 
-    public void setFemaleChildBearingAge() throws InterruptedException {
+    public boolean setFemaleChildBearingAge() throws InterruptedException {
+        boolean status = false;
         boolean exists;
         try {
             exists = null != findElement(FEMALE_CHILD_BEARING_AGE_DROPDOWN);
-        } catch (Exception e) {
-            exists = false;
-        }
+            if (exists) {
+                clickWhenVisible(FEMALE_CHILD_BEARING_AGE_DROPDOWN);
+                findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys("Yes");
+                findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys(Keys.ENTER);
+            }
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("setFemaleChildBearingAge - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
 
-        if (exists) {
-            clickWhenVisible(FEMALE_CHILD_BEARING_AGE_DROPDOWN);
-            findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys("Yes");
-            findElement(FEMALE_CHILD_BEARING_AGE_YES_OPTION).sendKeys(Keys.ENTER);
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setFemaleChildBearingAge - Exception - Reason : " + e.getLocalizedMessage(), e);
+
         }
+        return status;
 
     }
 
-    public void saveCreatedPrimeVaccination() throws InterruptedException {
-        // sleep(SLEEP_2000);
-        clickWhenVisible(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS);
+    public boolean saveCreatedPrimeVaccination() throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error(
+                    "saveCreatedPrimeVaccination - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("saveCreatedPrimeVaccination - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
     public boolean isEnabledSaveButton() throws InterruptedException {
-        return findElement(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS).isEnabled();
-    }
-
-    public void confirmAddVisitBookingDetailsAndPrintCard() throws InterruptedException {
-        sleep(SLEEP_2000);
-        boolean exists;
-        clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
-        sleep(SLEEP_2000);
+        boolean status = false;
         try {
-            exists = null != findElement(SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+            status = findElement(SAVE_BUTTON_ADD_VISIT_BOOKING_DETAILS).isEnabled();
+
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("isEnabledSaveButton - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
         } catch (Exception e) {
-            exists = false;
-        }
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("isEnabledSaveButton - Exception - Reason : " + e.getLocalizedMessage(), e);
 
-        if (exists) {
+        }
+        return status;
+    }
+
+    public boolean confirmAddVisitBookingDetailsAndPrintCard() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_2000);
+            boolean exists;
             clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+            sleep(SLEEP_2000);
+            try {
+                exists = null != findElement(SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+            } catch (Exception e) {
+                exists = false;
+            }
+
+            if (exists) {
+                clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+            }
+            sleep(SLEEP_500);
+            clickWhenVisible(PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON);
+            clickWhenVisible(CLOSE_BUTTON);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("setDateOfScreeningDate - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setDateOfScreeningDate - Exception - Reason : " + e.getLocalizedMessage(), e);
+
         }
-        sleep(SLEEP_500);
-        clickWhenVisible(PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON);
-        clickWhenVisible(CLOSE_BUTTON);
+        return status;
     }
 
-    public void setDateOfScreeningDate() throws InterruptedException {
-        clickWhenVisible(SCREENING_DATE_PICKER);
-        clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
-        clickWhenVisible(SCREENING_DATE_PICKER_DONE_BUTTON);
+    public boolean setDateOfScreeningDate() throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
+            clickWhenVisible(SCREENING_DATE_PICKER_DONE_BUTTON);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("setDateOfScreeningDate - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
 
-    }
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("setDateOfScreeningDate - Exception - Reason : " + e.getLocalizedMessage(), e);
 
-    public void changeDateRangeFromToday() throws InterruptedException {
-        sleep(SLEEP_500);
-        clickWhenVisible(DATE_RANGE_DROPDOWN);
-        sleep(SLEEP_500);
-        clickWhenVisible(SET_DATE_RANGE_FROM_DROP_DOWN);
-        sleep(SLEEP_500);
-    }
-
-    public void sortTableByPrimeVacDate() throws InterruptedException {
-        clickWhenVisible(PRIME_VAC_DATE_COLUMN_NAME);
-    }
-
-    public void changeDates() throws InterruptedException {
-        sleep(SLEEP_2000);
-        if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
-            clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
-            sleep(SLEEP_500);
-            clickWhenVisible(PRIME_VAC_DATE_FIELD);
-            sleep(SLEEP_500);
-            clickWhenVisible(NEXT_MONTH_BUTTON);
-            sleep(SLEEP_500);
-            clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
-            sleep(SLEEP_500);
-        } else {
-            clickWhenVisible(PRIME_VAC_DATE_FIELD);
-            sleep(SLEEP_500);
-            clickWhenVisible(NEXT_MONTH_BUTTON);
-            sleep(SLEEP_500);
-            clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
-            sleep(SLEEP_500);
         }
+        return status;
+
     }
 
-    public void saveAndConfirmChanges() throws InterruptedException {
-        clickWhenVisible(SAVE_BUTTON);
-        clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
-        clickWhenVisible(CLOSE_BUTTON_AFTER_SUCCESSFULLY_UPDATED);
+    public boolean changeDateRangeFromToday() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_500);
+            clickWhenVisible(DATE_RANGE_DROPDOWN);
+            sleep(SLEEP_500);
+            clickWhenVisible(SET_DATE_RANGE_FROM_DROP_DOWN);
+            sleep(SLEEP_500);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("changeDateRangeFromToday - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("changeDateRangeFromToday - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
-    public void findParticipantInLookup(String participantId) throws InterruptedException {
-        clickWhenVisible(FILTER_BUTTON);
-        clickWhenVisible(FILTER_DROPDOWN_BUTTON);
-        clickWhenVisible(FIND_BY_PARTICIPANT_ID);
-        sleep(SLEEP_2000);
-        findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
-        clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
-        sleep(SLEEP_2000);
+    public boolean sortTableByPrimeVacDate() throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(PRIME_VAC_DATE_COLUMN_NAME);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("sortTableByPrimeVacDate - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("sortTableByPrimeVacDate - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
+    }
+
+    public boolean changeDates() throws InterruptedException {
+        boolean status = false;
+        try {
+            sleep(SLEEP_2000);
+            if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
+                clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
+                sleep(SLEEP_500);
+                clickWhenVisible(PRIME_VAC_DATE_FIELD);
+                sleep(SLEEP_500);
+                clickWhenVisible(NEXT_MONTH_BUTTON);
+                sleep(SLEEP_500);
+                clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+                sleep(SLEEP_500);
+            } else {
+                clickWhenVisible(PRIME_VAC_DATE_FIELD);
+                sleep(SLEEP_500);
+                clickWhenVisible(NEXT_MONTH_BUTTON);
+                sleep(SLEEP_500);
+                clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
+                sleep(SLEEP_500);
+            }
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("changeDates - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("changeDates - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
+    }
+
+    public boolean saveAndConfirmChanges() throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(SAVE_BUTTON);
+            clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
+            clickWhenVisible(CLOSE_BUTTON_AFTER_SUCCESSFULLY_UPDATED);
+            status = true;
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("saveAndConfirmChanges - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("saveAndConfirmChanges - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
+    }
+
+    public boolean findParticipantInLookup(String participantId) throws InterruptedException {
+        boolean status = false;
+        try {
+            clickWhenVisible(FILTER_BUTTON);
+            clickWhenVisible(FILTER_DROPDOWN_BUTTON);
+            clickWhenVisible(FIND_BY_PARTICIPANT_ID);
+            sleep(SLEEP_2000);
+            findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
+            sleep(SLEEP_2000);
+            clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
+            status = true;
+        } catch (ElementNotVisibleException e) {
+            status = false;
+            getLogger().error(
+                    "ElementNotVisibleException - ElementNotVisibleException - Reason : " + e.getLocalizedMessage(), e);
+
+        } catch (NullPointerException e) {
+            // IF we have an NullPointerException we catch it and send false as
+            // right status.
+            status = false;
+            getLogger().error("ElementNotVisibleException - NullPointerException - Reason : " + e.getLocalizedMessage(),
+                    e);
+
+        } catch (Exception e) {
+            // IF we have an Exception we catch it and send false as right
+            // status.
+            status = false;
+            getLogger().error("ElementNotVisibleException - Exception - Reason : " + e.getLocalizedMessage(), e);
+
+        }
+        return status;
     }
 
     public boolean closePdfIfIsOpen() throws InterruptedException {
@@ -308,13 +595,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         } catch (NullPointerException e) {
             // IF we have an NullPointerException we catch it and send false as
             // right status.
-            log.error("closePdfIfIsOpen - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("closePdfIfIsOpen - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
             status = false;
 
         } catch (Exception e) {
             // IF we have an Exception we catch it and send false as right
             // status.
-            log.error("closePdfIfIsOpen - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("closePdfIfIsOpen - Exception - Reason : " + e.getLocalizedMessage(), e);
             status = false;
         }
         return status;

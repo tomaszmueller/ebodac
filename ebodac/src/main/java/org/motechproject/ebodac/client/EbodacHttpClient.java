@@ -52,8 +52,10 @@ public class EbodacHttpClient {
     }
 
     private HttpResponse sendRequestEntity(String url, String username, String password, RequestEntity entity) {
+        HttpResponse httpResponse = null;
         HttpClient client = new HttpClient();
         PostMethod method = new PostMethod(url);
+        
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
             Credentials creds = new UsernamePasswordCredentials(username, password);
             client.getState().setCredentials(AuthScope.ANY, creds);
@@ -61,30 +63,33 @@ public class EbodacHttpClient {
         try {
             method.setRequestEntity(entity);
 
-            HttpResponse httpResponse = new HttpResponse();
+            httpResponse = new HttpResponse();
             int status = client.executeMethod(method);
             httpResponse.setStatus(status);
             Header contentType = method.getResponseHeader("Content-Type");
+            
             if (contentType != null) {
                 httpResponse.setContentType(contentType.getValue());
             }
+            
             if (method.getResponseBodyAsStream() != null) {
                 InputStream responseStream = method.getResponseBodyAsStream();
                 httpResponse.setResponseBody(IOUtils.toString(responseStream));
                 responseStream.close();
+            } else {
+                LOGGER.error("sendRequestEntity - response is null");
             }
 
-            return httpResponse;
         } catch (HttpException e) {
-            LOGGER.error("HttpException occurred while sending request: " + e.getMessage(), e);
+            LOGGER.error("sendRequestEntity - HttpException occurred while sending request: " + e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.error("IOException occurred while sending request: " + e.getMessage(), e);
+            LOGGER.error("sendRequestEntity - IOException occurred while sending request: " + e.getMessage(), e);
         } catch (Exception e) {
-            LOGGER.error("Fatal exception occurred while sending request: " + e.getMessage(), e);
+            LOGGER.error("sendRequestEntity - Fatal exception occurred while sending request: " + e.getMessage(), e);
         } finally {
             method.releaseConnection();
         }
 
-        return null;
+        return httpResponse;
     }
 }

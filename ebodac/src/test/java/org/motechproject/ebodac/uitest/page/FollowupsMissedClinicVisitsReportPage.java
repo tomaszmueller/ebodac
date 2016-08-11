@@ -10,7 +10,7 @@ public class FollowupsMissedClinicVisitsReportPage extends AbstractBasePage {
     // Object initialization for log
     private static Logger log = Logger.getLogger(FollowupsMissedClinicVisitsReportPage.class.getName());
     public static final String URL_PATH = "/home#/mds/dataBrowser";
-    static final By TABLE = By.xpath("//table[@class='ui-jqgrid-htable']");
+    static final By TABLE = By.id("reportInstanceTable");
 
     public FollowupsMissedClinicVisitsReportPage(WebDriver driver) {
         super(driver);
@@ -19,7 +19,7 @@ public class FollowupsMissedClinicVisitsReportPage extends AbstractBasePage {
     public boolean existTable() {
         boolean status = false;
         try {
-            if (findElement(TABLE).isDisplayed()) {
+            if (!findElement(TABLE).getAttribute("innerHTML").isEmpty()) {
                 status = true;
             }
         } catch (Exception e) {
@@ -31,13 +31,13 @@ public class FollowupsMissedClinicVisitsReportPage extends AbstractBasePage {
     public boolean isReportEmpty() {
         boolean status = false;
         try {
-            if (findElement(TABLE) != null) {
-                status = false;
+            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
+                    .contains("No records to view")) {
+                status = true;
             }
-            status = true;
         } catch (Exception e) {
             log.error("isReportEmpty -  Exception . Reason : " + e.getLocalizedMessage(), e);
-            status = true;
+            status = false;
         }
         return status;
     }

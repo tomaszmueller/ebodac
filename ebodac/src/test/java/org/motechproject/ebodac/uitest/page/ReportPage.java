@@ -4,18 +4,19 @@ import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
 public class ReportPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
-    static final By MEMISSEDCLINICVISITSREPORT = By.linkText("M&E Missed Clinic Visits Report");
+    static final By FOLLOW_UPS_MISSED_CLINIC_REPORT = By.xpath("//*[@id='main-content']/div/div/table/tbody/tr[5]/td/a");
+    // linkText("Follow-ups Missed Clinic Visit Report");
+    
+    static final By MEMISSEDCLINICVISITSREPORT = By.xpath("//*[@id='main-content']/div/div/table/tbody/tr[7]/td/a");
+    // linkText("M&E Missed Clinic Visits Report");
 
     static final By DAILYCLINICVISITSCHEDULEREPORT = By.linkText("Daily Clinic Visit Schedule Report");
 
     static final By FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT = By.linkText("Follow-ups After Prime Injection Report");
-
-    static final By FOLLOW_UPS_MISSED_CLINIC_REPORT = By.linkText("Follow-ups Missed Clinic Visit Report");
 
     static final By PRIME_VACCINATION_REPORT = By.linkText("Primer Vaccination Report");
 
@@ -25,14 +26,16 @@ public class ReportPage extends AbstractBasePage {
 
     static final By SMS_LOG = By.linkText("SMS Log");
 
-    static final By NUMBER_OF_TIMES_REPORT = By.linkText("Number of times participants listened to each message Report");
+    static final By NUMBER_OF_TIMES_REPORT = By
+            .linkText("Number of times participants listened to each message Report");
 
-    static final By PARTICIPANTS_WHO_OPT_OUT_OF_MESSAGES_REPORT = By.linkText("Participants Who Opt Out of Receiving MOTECH Messages");
+    static final By PARTICIPANTS_WHO_OPT_OUT_OF_MESSAGES_REPORT = By
+            .linkText("Participants Who Opt Out of Receiving MOTECH Messages");
 
     static final By SCREENING_REPORT = By.linkText("Screening Report");
 
     static final By PRIME_FOLLOW_AND_BOOST_REPORT = By.linkText("Prime Vac 1st Follow-up and Boost Vac Day Report");
-    //TABLES
+    // TABLES
     static final By CALL_DETAIL_REPORT_TABLE_ID = By.id("jqgh_instancesTable_id");
 
     static final By CALL_DETAIL_REPORT_TABLE_CONFIG_NAME = By.id("instancesTable_configName");
@@ -63,54 +66,34 @@ public class ReportPage extends AbstractBasePage {
 
     public static final int DEFAULT_VALUE_OF_FAILUIRE_SEARCH = 0;
 
+    private static final long WAIT_2SEC = 2000;
 
-    public boolean checkIfTableOfCallDetailRecordInstancesIsVisible() throws InterruptedException { //NO CHECKSTYLE CyclomaticComplexity
+    public boolean checkIfTableOfCallDetailRecordInstancesIsVisible() throws InterruptedException { 
         int result = DEFAULT_VALUE_OF_FAILUIRE_SEARCH;
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_ID).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CONFIG_NAME).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_FROM).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_TO).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_STATUS).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_CALL_DURATION).getText()))) {
-            result++;
-        }
-        if (!("".equals(findElement(CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED).getText()))) {
-            result++;
-        }
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_ID);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CONFIG_NAME);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_FROM);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_TO);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_STATUS);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_DURATION);
+        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED);
         return (result > DEFAULT_VALUE_OF_FAILUIRE_SEARCH);
     }
 
+    public int checkIfCallDetailReportIsAvailable(By by) {
+        
+        if (!("".equals(findElement(by).getText()))) {
+            return 1;
+        }
+        return 0;
+    }
 
     public ReportPage(WebDriver driver) {
         super(driver);
@@ -126,6 +109,7 @@ public class ReportPage extends AbstractBasePage {
 
     public void showMEMissedClinicVisitsReport() throws InterruptedException {
         clickWhenVisible(MEMISSEDCLINICVISITSREPORT);
+        sleep(WAIT_2SEC);
     }
 
     public void showDailyClinicVisitReportSchedule() throws InterruptedException {
@@ -146,6 +130,7 @@ public class ReportPage extends AbstractBasePage {
 
     public void showFollowUpsMissedClinicReport() throws InterruptedException {
         clickWhenVisible(FOLLOW_UPS_MISSED_CLINIC_REPORT);
+        sleep(WAIT_2SEC);
     }
 
     public void showNumberOfTimesReport() throws InterruptedException {
@@ -173,4 +158,10 @@ public class ReportPage extends AbstractBasePage {
     public void goToPage() {
 
     }
+
+    public void sleep(long sleep) throws InterruptedException {
+        Thread.sleep(sleep);
+
+    }
+
 }

@@ -14,15 +14,34 @@ public class FollowupsAfterPrimeInjectionReportPage extends AbstractBasePage {
         super(driver);
     }
 
-    public boolean isReportEmpty() {
+    public boolean existTable() {
+        boolean status = false;
         try {
-            if (findElement(TABLE) != null) {
-                return false;
+            if (findElement(TABLE).isDisplayed()) {
+                status = false;
             }
-            return true;
+            status = true;
         } catch (Exception e) {
-            return true;
+            getLogger().error("existTable - Exception . Reason : " + e.getLocalizedMessage(), e);
+            status = true;
         }
+        return status;
+    }
+    
+    public boolean isReportEmpty() {
+        boolean status = true;
+        try {
+            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
+                    .contains("No records to view")) {
+                status = true;
+            } else {
+                status = false;
+            }
+        } catch (Exception e) {
+            getLogger().error("isReportEmpty - Exception . Reason : " + e.getLocalizedMessage(), e);
+            status = true;
+        }
+        return status;
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
 public class ScreeningReportPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
@@ -12,17 +11,6 @@ public class ScreeningReportPage extends AbstractBasePage {
 
     public ScreeningReportPage(WebDriver driver) {
         super(driver);
-    }
-
-    public boolean isReportEmpty() {
-        try {
-            if (findElement(TABLE) != null) {
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return true;
-        }
     }
 
     @Override
@@ -33,5 +21,31 @@ public class ScreeningReportPage extends AbstractBasePage {
     @Override
     public void goToPage() {
 
+    }
+
+    public boolean existTable() {
+        boolean status = false;
+        try {
+            if (!findElement(TABLE).getAttribute("innerHTML").isEmpty()) {
+                status = true;
+            }
+        } catch (Exception e) {
+            getLogger().error("existTable - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+        return status;
+    }
+
+    public boolean isReportEmpty() {
+        boolean status = false;
+        try {
+            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
+                    .contains("No records to view")) {
+                status = true;
+            }
+        } catch (Exception e) {
+            getLogger().error("isReportEmpty -  Exception . Reason : " + e.getLocalizedMessage(), e);
+            status = false;
+        }
+        return status;
     }
 }
