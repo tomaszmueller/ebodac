@@ -181,4 +181,13 @@ public class EnrollmentPage extends AbstractBasePage {
     public void clickOnButtonToUnenrollParticipant(String idOfParticipant) {
         findElement(By.xpath("//button[@ng-click='unenroll(\"" + idOfParticipant + "\")']")).click();
     }
+
+    public boolean checkIfParticipantWasEnrolledOrUnenrolledSuccessfully() {
+        String popup = findElement(POPUP_MESSAGE).getText();
+        if (("Participant was unenrolled successfully.".equals(popup)) || ("Participant was enrolled successfully.".equals(popup))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
