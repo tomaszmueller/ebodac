@@ -3,11 +3,9 @@ package org.motechproject.ebodac.uitest.page;
 import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.apache.log4j.Logger;
 
 public class MEMissedClinicVisitsReportPage extends AbstractBasePage {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(MEMissedClinicVisitsReportPage.class.getName());
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By TABLE = By.xpath("//table[@class='ui-jqgrid-htable']");
 
@@ -23,21 +21,23 @@ public class MEMissedClinicVisitsReportPage extends AbstractBasePage {
             }
             status = true;
         } catch (Exception e) {
-            log.error("existTable - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("existTable - Exception . Reason : " + e.getLocalizedMessage(), e);
             status = true;
         }
         return status;
     }
 
     public boolean isReportEmpty() {
-        boolean status = false;
+        boolean status = true;
         try {
-            if (findElement(TABLE) != null) {
+            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
+                    .contains("No records to view")) {
+                status = true;
+            } else {
                 status = false;
             }
-            status = true;
         } catch (Exception e) {
-            log.error("isReportEmpty - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("isReportEmpty - Exception . Reason : " + e.getLocalizedMessage(), e);
             status = true;
         }
         return status;

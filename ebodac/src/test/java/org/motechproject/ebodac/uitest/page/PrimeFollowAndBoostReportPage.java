@@ -4,7 +4,6 @@ import org.motechproject.uitest.page.AbstractBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
 public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
@@ -13,28 +12,23 @@ public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
     static final By DROPDOWN = By.xpath("//button[@data-toggle='dropdown']");
     static final By VISIT_TYPE_AND_ACTUAL_VISIT_DATE_LOOKUP = By.linkText("Find By Visit Type And Actual Visit Date");
     static final By VISIT_TYPE_AND_SITENAME_LOOKUP = By.linkText("Find By Visit Type And Site Name");
-    static final By VISIT_TYPE_PLANNED_VISIT_DATE_AND_SITENAME_LOOKUP = By.linkText("Find By Visit Type Planned Visit Date And Site Name");
-    static final By VISIT_TYPE_ACTUAL_VISIT_DATE_AND_STAGE_ID = By.linkText("Find By Visit Type Actual Visit Date And Stage Id");
+    static final By VISIT_TYPE_PLANNED_VISIT_DATE_AND_SITENAME_LOOKUP = By
+            .linkText("Find By Visit Type Planned Visit Date And Site Name");
+    static final By VISIT_TYPE_ACTUAL_VISIT_DATE_AND_STAGE_ID = By
+            .linkText("Find By Visit Type Actual Visit Date And Stage Id");
     static final By VISIT_TYPE_AND_STAGE_ID = By.linkText("Find By Visit Type And Stage Id");
-    static final By VISIT_TYPE_PLANNED_VISIT_DATE_AND_STAGE_ID = By.linkText("Find By Visit Type Planned Visit Date And Stage Id");
-    static final By VISIT_TYPE_ACTUAL_VISIT_DATE_AND_SITENAME_LOOKUP = By.linkText("Find By Visit Type Actual Visit Date And Site Name");
+    static final By VISIT_TYPE_PLANNED_VISIT_DATE_AND_STAGE_ID = By
+            .linkText("Find By Visit Type Planned Visit Date And Stage Id");
+    static final By VISIT_TYPE_ACTUAL_VISIT_DATE_AND_SITENAME_LOOKUP = By
+            .linkText("Find By Visit Type Actual Visit Date And Site Name");
     static final By VISIT_TYPE_FIELD = By.xpath("//select[@ng-model='lookupBy[buildLookupFieldName(field)]']");
-    static final By PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT_OPTION = By.xpath("//option[text()='Prime Vaccination First Follow-up visit']");
+    static final By PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT_OPTION = By
+            .xpath("//option[text()='Prime Vaccination First Follow-up visit']");
     static final By BOOST_VACCINATION_VISIT_OPTION = By.xpath("//option[text()='Boost Vaccination Day']");
     static final int TIMEOUT = 2000;
+
     public PrimeFollowAndBoostReportPage(WebDriver driver) {
         super(driver);
-    }
-
-    public boolean isReportEmpty() {
-        try {
-            if (findElement(TABLE) != null) {
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return true;
-        }
     }
 
     public boolean isLookupVisible() {
@@ -128,5 +122,31 @@ public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
 
     public void openDropdown() throws InterruptedException {
         clickWhenVisible(DROPDOWN);
+    }
+
+    public boolean existTable() {
+        boolean status = false;
+        try {
+            if (!findElement(TABLE).getAttribute("innerHTML").isEmpty()) {
+                status = true;
+            }
+        } catch (Exception e) {
+            getLogger().error("existTable - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+        return status;
+    }
+
+    public boolean isReportEmpty() {
+        boolean status = false;
+        try {
+            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
+                    .contains("No records to view")) {
+                status = true;
+            }
+        } catch (Exception e) {
+            getLogger().error("isReportEmpty -  Exception . Reason : " + e.getLocalizedMessage(), e);
+            status = false;
+        }
+        return status;
     }
 }

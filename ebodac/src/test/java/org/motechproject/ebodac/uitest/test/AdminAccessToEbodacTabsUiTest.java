@@ -81,19 +81,17 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
             url = getServerUrl();
-            if (url.contains(LOCAL_TEST_MACHINE)) {
+            if (url.contains(LOCAL_TEST_MACHINE) || (homePage.expectedUrlPath() != currentPage().urlPath())) {
                 httpClientHelper = new UITestHttpClientHelper(url);
                 httpClientHelper.addParticipant(new TestParticipant(), user, password);
                 loginPage.goToPage();
                 loginPage.login(user, password);
                 // Load the rest of the pages
-                loadEbodacPages();
-            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
-                loginPage.goToPage();
-                loginPage.login(user, password);
-                // Load the rest of the pages
-                loadEbodacPages();
+
             }
+            loadEbodacPages();
+            // Start Ebodac
+            startEbodac();
         } catch (NullPointerException e) {
             getLogger().error("setUp - NullPointerException Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
@@ -110,8 +108,6 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
      */
     public void testAdminEbodacHome() throws Exception {
         try {
-            homePage.clickOnEbodac();
-            ebodacPage = new EBODACPage(getDriver());
             ebodacPage.showParticipants();
             participantPage.openFirstParticipant();
             assertTrue(participantEditPage.isNameEditable());
@@ -132,8 +128,9 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
      * We use this method to load all the pages needed for the test.
      * 
      * @return the list of pages loaded for the test
+     * @throws InterruptedException
      */
-    public void loadEbodacPages() {
+    public void loadEbodacPages() throws InterruptedException {
 
         reportPage = new ReportPage(getDriver());
         enrollmentPage = new EnrollmentPage(getDriver());
@@ -156,14 +153,20 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         ivrEditPage = new IVREditPage(getDriver());
         visitPage = new VisitPage(getDriver());
         visitEditPage = new VisitEditPage(getDriver());
+    }
 
+    public void startEbodac() throws InterruptedException {
+        // Load Ebodac Page
+        homePage.clickModules();
+        homePage.clickOnEbodac();
+        ebodacPage = new EBODACPage(getDriver());
     }
 
     @Test // Test for EBODAC-531
     public void adminAccessOnlyToEbodacUiTest() throws Exception {
         try {
             // We try to access to the Ebodac
-            homePage.clickModules();
+
             // Ebodac Asserts.
             testAdminEbodacHome();
             // Visits Asserts
@@ -239,65 +242,68 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
     }
 
     public void testAdminWithReports() throws Exception {
+
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showPrimeVaccinationReport();
-        assertFalse(primerVaccinationReportPage.isReportEmpty());
+        assertTrue(primerVaccinationReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showBoostVaccinationReport();
-        assertFalse(boosterVaccinationReportPage.isReportEmpty());
+        assertTrue(boosterVaccinationReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showDailyClinicVisitReportSchedule();
-        assertFalse(dailyClinicVisitScheduleReportPage.isReportEmpty());
+        assertTrue(dailyClinicVisitScheduleReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showFollowUpsAfterPrimeInjectionReport();
-        assertFalse(followupsAfterPrimeInjectionReportPage.isReportEmpty());
-
-        ebodacPage.sleep(SLEEP_2SEC);
-        ebodacPage.gotoReports();
-        reportPage.showFollowUpsMissedClinicReport();
-        assertFalse(followupsMissedClinicVisitsReportPage.existTable());
-
-        ebodacPage.sleep(SLEEP_2SEC);
-        ebodacPage.gotoReports();
-        reportPage.showMEMissedClinicVisitsReport();
-        assertFalse(meMissedClinicVisitsReportPage.existTable());
+        assertTrue(followupsAfterPrimeInjectionReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showParticipantsWhoOptOutOfMessages();
-        assertFalse(participantsWhoOptOutOfMessagesReportPage.isReportEmpty());
+        assertTrue(participantsWhoOptOutOfMessagesReportPage.existTable());
+
+        // Report FollowupsMissedClinicVisits
+        ebodacPage.sleep(SLEEP_2SEC);
+        ebodacPage.gotoReports();
+        reportPage.showFollowUpsMissedClinicReport();
+        assertTrue(followupsMissedClinicVisitsReportPage.existTable());
+
+        // Report MEMissed Clinics Visits Reports.
+        ebodacPage.sleep(SLEEP_2SEC);
+        ebodacPage.gotoReports();
+        reportPage.showMEMissedClinicVisitsReport();
+        assertTrue(meMissedClinicVisitsReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showNumberOfTimesReport();
-        assertFalse(numberOfTimesListenedReportPage.isReportEmpty());
+        assertTrue(numberOfTimesListenedReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showScreeningReport();
-        assertFalse(screeningReportPage.isReportEmpty());
+        assertTrue(screeningReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showPrimeFollowAndBoostReport();
-        assertFalse(primeFollowAndBoostReportPage.isReportEmpty());
+        assertTrue(primeFollowAndBoostReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showCallDetailRecord();
-        assertFalse(callDetailRecordPage.isReportEmpty());
+        assertTrue(callDetailRecordPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
         reportPage.showSMSLog();
-        assertFalse(smsLogReportPage.isReportEmpty());
+        assertTrue(smsLogReportPage.existTable());
     }
 
     @After

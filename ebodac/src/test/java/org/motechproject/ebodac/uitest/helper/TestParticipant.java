@@ -1,18 +1,31 @@
 package org.motechproject.ebodac.uitest.helper;
 
-/**
- * Created by tomasz on 30.09.15.
- */
 public class TestParticipant {
     private String id;
+    private String participantId;
     private String name;
     private String language;
     private String phoneNumber;
     private String siteId;
+    private String siteName;
     private String householdName;
     private String headOfHousehold;
     private String community;
     private String address;
+
+    public TestParticipant() {
+        this.setId("9999999999");
+        this.setParticipantId("9999999999");
+        this.setName("TestTest");
+        this.setLanguage("eng");
+        this.setPhoneNumber("232000000000054");
+        this.setSiteId("B05-SL10001");
+        this.setSiteName("Kambia I");
+        this.setHouseholdName("Kingdom");
+        this.setHeadOfHousehold("King");
+        this.setCommunity("Magadascar");
+        this.setAddress("Nowa str.");
+    }
 
     public String getId() {
         return id;
@@ -22,8 +35,16 @@ public class TestParticipant {
         this.id = id;
     }
 
+    public String getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(String participantId) {
+        this.participantId = participantId;
+    }
+
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -31,7 +52,7 @@ public class TestParticipant {
     }
 
     public String getLanguage() {
-        return language;
+        return this.language;
     }
 
     public void setLanguage(String language) {
@@ -39,7 +60,7 @@ public class TestParticipant {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -47,15 +68,23 @@ public class TestParticipant {
     }
 
     public String getSiteId() {
-        return siteId;
+        return this.siteId;
     }
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
+    public String getSiteName() {
+        return this.siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
     public String getHouseholdName() {
-        return householdName;
+        return this.householdName;
     }
 
     public void setHouseholdName(String householdName) {
@@ -63,7 +92,7 @@ public class TestParticipant {
     }
 
     public String getHeadOfHousehold() {
-        return headOfHousehold;
+        return this.headOfHousehold;
     }
 
     public void setHeadOfHousehold(String headOfHousehold) {
@@ -71,7 +100,7 @@ public class TestParticipant {
     }
 
     public String getCommunity() {
-        return community;
+        return this.community;
     }
 
     public void setCommunity(String community) {
@@ -79,22 +108,11 @@ public class TestParticipant {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public TestParticipant() {
-        id = "1110079999";
-        name = "TestTest";
-        language = "English";
-        phoneNumber = "999888777";
-        siteId = "OTHER";
-        householdName = "Kingdom";
-        headOfHousehold = "King";
-        community = "Klingon";
-        address = "Nowa str.";
-    }
 }
