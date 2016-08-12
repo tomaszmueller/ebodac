@@ -10,7 +10,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.ReportPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IVRCallReportsTestUiTest extends TestBase {
     private LoginPage loginPage;
@@ -30,9 +30,7 @@ public class IVRCallReportsTestUiTest extends TestBase {
             user = getTestProperties().getUserName();
             password = getTestProperties().getPassword();
             loginPage = new LoginPage(getDriver());
-            homePage = new HomePage(getDriver());
-            homePage.resizePage();
-            ebodacPage = homePage.openEBODACModule();
+            
 
             url = getServerUrl();
             if (url.contains(LOCAL_TEST_MACHINE)) {
@@ -54,11 +52,12 @@ public class IVRCallReportsTestUiTest extends TestBase {
     @Test // EBODAC-811
     public void iVRCallReportsTestUiTest() throws Exception {
         try {
-
+            homePage = new HomePage(getDriver());
+            homePage.resizePage();
+            ebodacPage = homePage.openEBODACModule();
             reportPage = ebodacPage.gotoReports();
             reportPage.showCallDetailRecord();
-            reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible();
-            assertEquals(true, reportPage.checkIfTableOfCallDetailRecordInstancesIsVisible());
+            assertTrue(reportPage.checkIfIVRTableHistoryContainsRows());
         } catch (AssertionError e) {
             getLogger().error("iVRCallReportsTestUiTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {

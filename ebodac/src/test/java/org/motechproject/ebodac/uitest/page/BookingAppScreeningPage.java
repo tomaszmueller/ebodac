@@ -66,7 +66,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     static final int TEXTPOINT = 52;
     static final int TIMEOUT = 1000;
     static final int MAX_PAGES = 10;
-    static final By TABLE_SCREENING = By.className("ui-jqgrid-bdiv");
+    static final By TABLE_SCREENING = By.xpath("//*[@id='gview_screenings']/div[2]/div/table");
     private ScreeningCardPage screeningCardPage;
 
     public BookingAppScreeningPage(WebDriver driver) {
@@ -373,9 +373,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
                             DateTimeFormat.forPattern(FORMAT_DATE));
                     if (dates.contains(date)) {
                         status = true;
-                    } else {
-                        status = false;
-                    }
+                    } 
                 }
             }
         } catch (NullPointerException e) {
@@ -388,7 +386,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             status = false;
             getLogger().error("isFirstBookingOK - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
-        getLogger().error("isFirstBookingOK - status :" + status);
+
         return status;
     }
 
@@ -396,7 +394,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         boolean status = false;
         try {
             String html = findElement(TABLE_SCREENING).getAttribute("innerHTML");
-            if (html.contains("Active") || html.contains("Canceled")) {
+            if (html.contains("printRow")) {
                 status = true;
             }
         } catch (NullPointerException e) {

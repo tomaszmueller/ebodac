@@ -6,11 +6,14 @@ import org.openqa.selenium.WebDriver;
 
 public class ReportPage extends AbstractBasePage {
 
+    private static final String NO_RECORDS_TO_VIEW = "No records to view";
+
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
-    static final By FOLLOW_UPS_MISSED_CLINIC_REPORT = By.xpath("//*[@id='main-content']/div/div/table/tbody/tr[5]/td/a");
+    static final By FOLLOW_UPS_MISSED_CLINIC_REPORT = By
+            .xpath("//*[@id='main-content']/div/div/table/tbody/tr[5]/td/a");
     // linkText("Follow-ups Missed Clinic Visit Report");
-    
+
     static final By MEMISSEDCLINICVISITSREPORT = By.xpath("//*[@id='main-content']/div/div/table/tbody/tr[7]/td/a");
     // linkText("M&E Missed Clinic Visits Report");
 
@@ -35,64 +38,26 @@ public class ReportPage extends AbstractBasePage {
     static final By SCREENING_REPORT = By.linkText("Screening Report");
 
     static final By PRIME_FOLLOW_AND_BOOST_REPORT = By.linkText("Prime Vac 1st Follow-up and Boost Vac Day Report");
-    // TABLES
-    static final By CALL_DETAIL_REPORT_TABLE_ID = By.id("jqgh_instancesTable_id");
-
-    static final By CALL_DETAIL_REPORT_TABLE_CONFIG_NAME = By.id("instancesTable_configName");
-
-    static final By CALL_DETAIL_REPORT_TABLE_FROM = By.id("instancesTable_configName");
-
-    static final By CALL_DETAIL_REPORT_TABLE_TO = By.id("instancesTable_to");
-
-    static final By CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION = By.id("instancesTable_callDirection");
-
-    static final By CALL_DETAIL_REPORT_TABLE_CALL_STATUS = By.id("instancesTable_callStatus");
-
-    static final By CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME = By.id("instancesTable_templateName");
-
-    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA = By.id("instancesTable_providerExtraData");
-
-    static final By CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID = By.id("instancesTable_motechCallId");
-
-    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID = By.id("instancesTable_providerCallId");
-
-    static final By CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP = By.id("instancesTable_motechTimestamp");
-
-    static final By CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP = By.id("instancesTable_providerTimestamp");
-
-    static final By CALL_DETAIL_REPORT_TABLE_CALL_DURATION = By.id("instancesTable_callDuration");
-
-    static final By CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED = By.id("instancesTable_messagePercentListened");
 
     public static final int DEFAULT_VALUE_OF_FAILUIRE_SEARCH = 0;
 
     private static final long WAIT_2SEC = 2000;
 
-    public boolean checkIfTableOfCallDetailRecordInstancesIsVisible() throws InterruptedException { 
-        int result = DEFAULT_VALUE_OF_FAILUIRE_SEARCH;
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_ID);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CONFIG_NAME);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_FROM);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_TO);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_DIRECTION);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_STATUS);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_TEMPLATE_NAME);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_EXTRA_DATA);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MOTECH_CALL_ID);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_CALL_ID);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MOTEH_TIMESTAMP);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_PROVIDER_TIMESTAMP);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_CALL_DURATION);
-        result += checkIfCallDetailReportIsAvailable(CALL_DETAIL_REPORT_TABLE_MESSAGE_PERCENT_LISTENED);
-        return (result > DEFAULT_VALUE_OF_FAILUIRE_SEARCH);
-    }
-
-    public int checkIfCallDetailReportIsAvailable(By by) {
-        
-        if (!("".equals(findElement(by).getText()))) {
-            return 1;
+    public boolean checkIfIVRTableHistoryContainsRows() throws InterruptedException {
+        boolean status = false;
+        try {
+            return !findElement(By.xpath("//*[@id='pageInstancesTable_left']/div")).getAttribute("innerHTML")
+                    .contains(NO_RECORDS_TO_VIEW);
+        } catch (NullPointerException e) {
+            status = false;
+            getLogger().error("checkIfTableOfCallDetailRecordInstancesIsVisible - NullPointerException . Reason : "
+                    + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("checkIfTableOfCallDetailRecordInstancesIsVisible - Exception . Reason : "
+                    + e.getLocalizedMessage(), e);
         }
-        return 0;
+        return status;
     }
 
     public ReportPage(WebDriver driver) {

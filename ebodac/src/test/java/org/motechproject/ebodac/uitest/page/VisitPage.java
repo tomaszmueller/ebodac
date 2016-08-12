@@ -112,7 +112,7 @@ public class VisitPage extends AbstractBasePage {
             getLogger().error("findVisitsByParticipantID - webElementHTML :" + webElementHtml);
             getLogger().error("findVisitsByParticipantID - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
-        getLogger().error("findVisitsByParticipantID - status:" + status);
+
         return status;
 
     }

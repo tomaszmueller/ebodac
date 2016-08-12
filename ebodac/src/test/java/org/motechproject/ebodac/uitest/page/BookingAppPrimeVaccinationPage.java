@@ -9,11 +9,16 @@ import org.openqa.selenium.WebElement;
 import static java.lang.Thread.sleep;
 
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
+    private static final String TIME_10_29 = "10:29";
+    private static final String SUCCESS_CLASS_PRIMEVACDATE = "input-group-addon validator alert-success";
+    private static final String PRIMEVAC_DATE_FIELD = "//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[3]/span[2]";
+    private static final String CHECKBOX_FIELD_FEMALEBEARINGCHILD = "//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[4]/div/span";
+    private static final String PRIMEVAC_FIELD_FEMALEBEARINGCHILD = "//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[4]/div";
+    private static final String NO = "No";
     private static final int MAX_COUNTER_VALUE = 10;
     public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final String PRIMEVAC_MODAL_CLASS_ENABLED = "modal fade ng-scope in";
     static final String PRIMEVAC_COMBO_CLASS_DISABLED = "input-group-addon validator alert-danger";
-    static final String PRIMEVAC_COMBO_CLASS_ENABLED = "input-group-addon validator alert-success";
     static final By PRIMEVAC_MODAL_COMBO = By.xpath("//*[@id='primeVaccinationScheduleModal']");
     static final By PRIMEVAC_COMBO_FIELD = By.id("select2-chosen-2");
     static final By PRIMEVAC_COMBO_FIELD_ALERT = By
@@ -123,7 +128,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
      */
     public boolean isPartincipantIdEnabled() throws InterruptedException {
         return findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
-                .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_ENABLED);
+                .equalsIgnoreCase(SUCCESS_CLASS_PRIMEVACDATE);
     }
 
     /**
@@ -139,8 +144,10 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             int counter = MAX_COUNTER_VALUE;
             while (findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
                     .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED) && counter > 0) {
+
                 clickWhenVisible(PARTICIPANT_SELECT);
                 findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
+                
                 if (!findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
                         .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED)) {
                     counter = 0;
@@ -183,9 +190,10 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         try {
             if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
                 clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
-                status = false;
+                status = true;
             }
         } catch (NullPointerException e) {
+            status = false;
             getLogger().error(
                     "clickSaveInUpdateVisitBookingDetails - NullPointerException - Reason : " + e.getLocalizedMessage(),
                     e);
@@ -254,7 +262,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         boolean status = false;
         try {
             sleep(SLEEP_500);
-            findElement(PRIME_VAC_TIME_FIELD).sendKeys("10:29");
+            findElement(PRIME_VAC_TIME_FIELD).sendKeys(TIME_10_29);
             findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
             clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
             status = true;
@@ -331,6 +339,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             getLogger().error("setFemaleChildBearingAge - Exception - Reason : " + e.getLocalizedMessage(), e);
 
         }
+
         return status;
 
     }
@@ -669,4 +678,39 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean hasVisitsVisible() {
         return findElement(By.className("ui-jqgrid-bdiv")).getAttribute("innerHTML").contains("printCardFrom");
     }
+
+    public boolean isPrimeVacDateEmpty() {
+        boolean status = false;
+        try {
+            return !findElement(
+                    By.xpath(PRIMEVAC_DATE_FIELD))
+                            .getAttribute("class").equalsIgnoreCase(SUCCESS_CLASS_PRIMEVACDATE);
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("isPrimeVacDateEmpty - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+        return status;
+    }
+
+    public boolean isFemailChildBearingAgeEmpty() {
+        boolean status = false;
+        try {
+            if (NO.equalsIgnoreCase(findElement(By.xpath(PRIMEVAC_FIELD_FEMALEBEARINGCHILD))
+                    .getAttribute("innerHTML"))) {
+                status = false;
+            } else if (findElement(
+                    By.xpath(CHECKBOX_FIELD_FEMALEBEARINGCHILD))
+                            .getAttribute("class").equalsIgnoreCase("input-group-addon validator")) {
+                status = true;
+
+            }
+
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("isFemailChildBearingAgeEmpty - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+     
+        return status;
+    }
+
 }

@@ -60,7 +60,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
 
     @Test
     public void findScreeningTest() throws Exception {
-        boolean status = false;
+
         try {
             ArrayList<LocalDate> dates = new ArrayList<>();
             homePage.clickModules();
@@ -74,24 +74,21 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TODAY.getValue());
 
             dates.add(LocalDate.now());
-
-            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
-
+            
+            checkBookingAvailableForSpecificDate(dates);
             // We start from tomorrow.
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TOMORROW.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now().plusDays(ONE));
-
-            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
+            
+            checkBookingAvailableForSpecificDate(dates);
 
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DAY_AFTER_TOMORROW.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now().plusDays(TWO));
-            status = bookingAppScreeningPage.isFirstBookingOK(dates);
-
-            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
+            checkBookingAvailableForSpecificDate(dates);
 
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_3_DAYS.getValue());
 
@@ -100,7 +97,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             dates.add(LocalDate.now().plusDays(ONE));
             dates.add(LocalDate.now().plusDays(TWO));
 
-            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
+            checkBookingAvailableForSpecificDate(dates);
 
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.NEXT_7_DAYS.getValue());
 
@@ -108,9 +105,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             dates.add(LocalDate.now().plusDays(FOUR));
             dates.add(LocalDate.now().plusDays(FIVE));
             dates.add(LocalDate.now().plusDays(SIX));
-            status = bookingAppScreeningPage.isFirstBookingOK(dates);
-
-            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
+            checkBookingAvailableForSpecificDate(dates);
 
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DATE_RANGE.getValue());
 
@@ -126,6 +121,13 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             getLogger().error("findScreeningTest - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             getLogger().error("findScreeningTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
+
+    }
+
+    public void checkBookingAvailableForSpecificDate(ArrayList<LocalDate> dates) {
+        if (bookingAppScreeningPage.hasBookings(dates)) {
+            assertTrue(bookingAppScreeningPage.isFirstBookingOK(dates));
         }
     }
 
