@@ -61,41 +61,18 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
             bookingAppPage.openPrimeVaccination();
             bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
 
-            // bookingAppPrimeVaccinationPage.sleepForMilisec(SLEEP_5000);
-            // We Have to wait for a while to have the participant list.
-            int counter = 10; // We make sure we do not generate an infinite
-                              // loop
-            while (!bookingAppPrimeVaccinationPage.isPartincipantIdEnabled() && counter > 0) {
-                bookingAppPrimeVaccinationPage.clickFirstParticipantId();
-                counter--;
-            }
+            addParticipantField();
             // After setting the participant id the rest should run step by
             // step.
-            bookingAppPrimeVaccinationPage.setDateOfScreeningDate();
-            bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
+            // We set the date of the date of the screening date if it is not
+            // added before.
+            setDateOfScreeningDate();
+            // Set the female Child Bear age
+            setFemaleChildBearingAge();
+
             // We click this option to make sure we can select dates for the
             // prime.vaccination
-            counter = MAX_COUNTER_VALUE; // reset counter;
-            // Check the ignore earliest date.
-            boolean clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
-            // getLogger().error("clickOnIngoreLatesEarliestDate = " +
-            // clickOnIngoreLatesEarliestDate);
-            while (!bookingAppPrimeVaccinationPage.isEnabledSaveButton() && counter > 0) {
-                // After checking the check-box to ignore the EarliestDate we
-                // select
-                // the dates.
-                if (clickOnIngoreLatesEarliestDate) {
-                    bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
-                    bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
-
-                }
-                // We make sure that the Save Button is enabled.
-                if (bookingAppPrimeVaccinationPage.isEnabledSaveButton()) {
-                    counter = -1;
-                } else {
-                    counter--;
-                }
-            }
+            setEarliestLatestDate();
             bookingAppPrimeVaccinationPage.isEnabledSaveButton();
             bookingAppPrimeVaccinationPage.saveCreatedPrimeVaccination();
             bookingAppPrimeVaccinationPage.confirmAddVisitBookingDetailsAndPrintCard();
@@ -115,6 +92,61 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
                     e);
         }
 
+    }
+
+    public void addParticipantField() throws InterruptedException {
+        // bookingAppPrimeVaccinationPage.sleepForMilisec(SLEEP_5000);
+        // We Have to wait for a while to have the participant list.
+        int counter = 10; // We make sure we do not generate an infinite
+                          // loop
+        while (!bookingAppPrimeVaccinationPage.isPartincipantIdEnabled() && counter > 0) {
+            bookingAppPrimeVaccinationPage.clickFirstParticipantId();
+            counter--;
+        }
+    }
+
+    public void setEarliestLatestDate() throws InterruptedException {
+        int counter;
+        counter = MAX_COUNTER_VALUE; // reset counter;
+        // Check the ignore earliest date.
+        boolean clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
+
+        while (!bookingAppPrimeVaccinationPage.isEnabledSaveButton() && counter > 0) {
+            // After checking the check-box to ignore the EarliestDate we
+            // select
+            // the dates.
+            if (clickOnIngoreLatesEarliestDate) {
+                bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
+                bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
+
+            } else {
+                clickOnIngoreLatesEarliestDate = bookingAppPrimeVaccinationPage.clickOnIngoreLatesEarliestDate();
+            }
+            // We make sure that the Save Button is enabled.
+            if (bookingAppPrimeVaccinationPage.isEnabledSaveButton()) {
+                counter = -1;
+            } else {
+                counter--;
+            }
+        }
+
+        if (clickOnIngoreLatesEarliestDate) {
+            bookingAppPrimeVaccinationPage.setDateOfPrimeVacDateFields();
+            bookingAppPrimeVaccinationPage.setTimeOfPrimeVacDateFields();
+
+        }
+    }
+
+    public void setDateOfScreeningDate() throws InterruptedException {
+        while (bookingAppPrimeVaccinationPage.isPrimeVacDateEmpty()) {
+            bookingAppPrimeVaccinationPage.setDateOfScreeningDate();
+        }
+    }
+
+    public void setFemaleChildBearingAge() throws InterruptedException {
+        if (bookingAppPrimeVaccinationPage.isFemailChildBearingAgeEmpty()) {
+            bookingAppPrimeVaccinationPage.setFemaleChildBearingAge();
+        }
     }
 
     @After

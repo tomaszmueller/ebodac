@@ -200,7 +200,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
             waitForElement(CLOSE_BUTTON);
             Thread.sleep(BIG_TIMEOUT);
             clickWhenVisible(CLOSE_BUTTON);
-            getLogger().error("text :" + text);
+
             if (text.contains("Visit Planned Date updated successfully.")) {
                 return status;
             }
