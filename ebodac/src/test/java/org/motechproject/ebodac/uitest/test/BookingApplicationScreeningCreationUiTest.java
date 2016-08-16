@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
+    private static final String EMPTY_STRING = "";
     private static final int SIX = 6;
     private static final int FIVE = 5;
     private static final int FOUR = 4;
@@ -67,11 +68,11 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             homePage.openBookingAppModule();
             bookingAppPage.openScreening();
 
-            String bookingId = "";
-            if ("" != bookingAppScreeningPage.bookScreeningVisitForToday()) {
-                bookingId = bookingAppScreeningPage.bookScreeningVisitForToday().replace(". ", "");
+            String bookingId = EMPTY_STRING;
+            if (EMPTY_STRING != bookingAppScreeningPage.bookScreeningVisitForToday()) {
+                bookingId = bookingAppScreeningPage.bookScreeningVisitForToday().replace(". ", EMPTY_STRING);
             }
-            if (!"".equalsIgnoreCase(bookingId)) {
+            if (!EMPTY_STRING.equalsIgnoreCase(bookingId)) {
                 assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
             }
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TODAY.getValue());
