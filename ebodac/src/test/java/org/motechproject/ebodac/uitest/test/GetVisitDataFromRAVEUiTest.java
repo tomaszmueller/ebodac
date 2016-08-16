@@ -16,7 +16,7 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import static org.junit.Assert.assertTrue;
 
 public class GetVisitDataFromRAVEUiTest extends TestBase {
-    private static final String SERVICE_IMPORT_CSV = "module/ebodac/web-api/import-csv";
+    private static final String SERVICE_IMPORT_CSV = "/module/ebodac/web-api/import-csv";
     private String stringCSVFile = "SiteNumber,Subject,BRTHDT,SEX,STAGE,PRMDT,BOOSTDT,VACDSDT,TRDSDT,VISIT,VISITDT,VISITDTPRJ\n"
             + "B05-SL10001,9999999952,1981-10-09,M,2,,,,2016-08-10,Screening,2016-08-01,\n"
             + "B05-SL10001,9999999952,1981-10-09,M,2,,,,2016-08-10,Prime Vaccination Day,2016-08-10,\n"
@@ -84,28 +84,16 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
 
             if (httpClientHelper.addParticipant(participant, user, password)) {
                 // Add visits for the participant
-                InputStream in = replaceInStringtoInputStream();
+                InputStream in = new ByteArrayInputStream(stringCSVFile.getBytes("UTF-8"));
                 // Define the right url to access to the IMPORT-CSV
-                if (in != null) {
-                    httpClientHelper.sendCsvFile((new StringBuffer(url)).append(SERVICE_IMPORT_CSV).toString(), user,
-                            password, in);
-                } else {
-                    getLogger().error("setup - Cannot add the visits file is null");
-                }
-
+                httpClientHelper.sendCsvFile((new StringBuffer(url)).append(SERVICE_IMPORT_CSV).toString(), user,
+                        password, in);
             } else {
                 getLogger().error("setup - Cannot add the participant ");
             }
         } catch (IOException e) {
             getLogger().error("initNewParticipantAndVisits - IOException . Reason : " + e.getLocalizedMessage(), e);
         }
-    }
-
-    private InputStream replaceInStringtoInputStream() throws IOException {
-        // Convert the String into InputStream
-
-        return new ByteArrayInputStream(stringCSVFile.getBytes("UTF-8"));
-
     }
 
     @Test // Test for EBODAC-512
@@ -119,29 +107,31 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
             // Validate New Participant
             ebodacPage.goToPage();
 
-            assertTrue(ebodacPage.findByParticipantID(PARTICIPANT_ID));
+            if (ebodacPage.findByParticipantID(PARTICIPANT_ID)) {
 
-            ebodacPage.sleep(WAIT_500MLSEC);
-            // Go to Visit
-            visitPage = new VisitPage(getDriver());
-            // Go to Visit Page
-            ebodacPage.goToVisit();
-            visitPage.goToPage();
-            visitPage.sleep(WAIT_2SEC);
-            boolean selectParticipant = visitPage.findByParticipantId(PARTICIPANT_ID);
-            visitPage.sleep(WAIT_2SEC);
+                ebodacPage.sleep(WAIT_500MLSEC);
+                // Go to Visit
+                visitPage = new VisitPage(getDriver());
+                // Go to Visit Page
+                ebodacPage.goToVisit();
+                visitPage.goToPage();
+                visitPage.sleep(WAIT_2SEC);
+                boolean selectParticipant = visitPage.findByParticipantId(PARTICIPANT_ID);
+                visitPage.sleep(WAIT_2SEC);
 
-            // Add assert to set that the participant is added and the
-            if (selectParticipant) {
-                // Visits select specific visit
-                assertTrue(visitPage.findActualDate(NEW_SCREENING_ACTUAL_DATE));
+                // Add assert to set that the participant is added and the
+                if (selectParticipant) {
+                    // Visits select specific visit
+                    assertTrue(visitPage.findActualDate(NEW_SCREENING_ACTUAL_DATE));
+                } else {
+                    getLogger().error("setDataVisitsTest - No participant Found with ID : " + PARTICIPANT_ID);
+                }
+                ebodacPage.sleep(WAIT_5SEC);
+                // visits.
+
             } else {
-                getLogger().error("setDataVisitsTest - No participant Found ");
+                getLogger().error("setDataVisitsTest - No participant Found  with ID :" + PARTICIPANT_ID);
             }
-            ebodacPage.sleep(WAIT_5SEC);
-            // visits.
-
-            // Select the specific visit added to validate the changes.
 
         } catch (
 

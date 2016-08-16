@@ -81,15 +81,19 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
             url = getServerUrl();
-            if (url.contains(LOCAL_TEST_MACHINE) || (homePage.expectedUrlPath() != currentPage().urlPath())) {
+
+            if (url.contains(LOCAL_TEST_MACHINE)) {
                 httpClientHelper = new UITestHttpClientHelper(url);
                 httpClientHelper.addParticipant(new TestParticipant(), user, password);
                 loginPage.goToPage();
                 loginPage.login(user, password);
                 // Load the rest of the pages
-
+            } else if (homePage.expectedUrlPath() != currentPage().urlPath()) {
+                loginPage.goToPage();
+                loginPage.login(user, password);
             }
             loadEbodacPages();
+
             // Start Ebodac
             startEbodac();
         } catch (NullPointerException e) {

@@ -80,10 +80,19 @@ public class VisitEditPage extends AbstractBasePage {
     }
 
     public void changePlannedDate(String date) throws InterruptedException {
-        Thread.sleep(BIG_TIMEOUT);
+        sleep(BIG_TIMEOUT);
         findElement(PLANNED_VISIT_DATE).clear();
         findElement(PLANNED_VISIT_DATE).sendKeys(date);
         findElement(PLANNED_VISIT_DATE).sendKeys(Keys.ENTER);
+    }
+
+    public void sleep(long timeout) {
+        try {
+            Thread.sleep(timeout);
+        } catch (Exception e) {
+            getLogger().error("sleep - Exception - Reason : " + e.getLocalizedMessage(), e);
+        }
+        
     }
 
 }

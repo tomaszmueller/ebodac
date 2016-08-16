@@ -55,7 +55,7 @@ public class EbodacHttpClient {
         HttpResponse httpResponse = null;
         HttpClient client = new HttpClient();
         PostMethod method = new PostMethod(url);
-        
+
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
             Credentials creds = new UsernamePasswordCredentials(username, password);
             client.getState().setCredentials(AuthScope.ANY, creds);
@@ -67,11 +67,11 @@ public class EbodacHttpClient {
             int status = client.executeMethod(method);
             httpResponse.setStatus(status);
             Header contentType = method.getResponseHeader("Content-Type");
-            
+
             if (contentType != null) {
                 httpResponse.setContentType(contentType.getValue());
             }
-            
+
             if (method.getResponseBodyAsStream() != null) {
                 InputStream responseStream = method.getResponseBodyAsStream();
                 httpResponse.setResponseBody(IOUtils.toString(responseStream));

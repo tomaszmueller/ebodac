@@ -38,6 +38,7 @@ public class BookingApplicationModifyaPrimeFollowUpVisitTestUiTest extends TestB
             user = getTestProperties().getUserName();
             password = getTestProperties().getPassword();
             url = getServerUrl();
+
             if (url.contains(LOCAL_TEST_MACHINE)) {
                 httpClientHelper = new UITestHttpClientHelper(url);
                 httpClientHelper.addParticipant(new TestParticipant(), user, password);
