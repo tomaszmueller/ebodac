@@ -9,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import java.util.HashMap;
 import java.util.Map;
 
-//import org.apache.log4j.Logger;
-
 public class ParticipantEditPage extends AbstractBasePage {
 
     private static final int MIN_LANGUAGE_POS = 1;
@@ -20,10 +18,6 @@ public class ParticipantEditPage extends AbstractBasePage {
     private static final int START_POS_LANGUAGE = 2;
 
     private Map<String, String> mapLangPos = new HashMap<String, String>();
-
-    // Object initialization for log
-    // private static Logger log =
-    // Logger.getLogger(ParticipantEditPage.class.getName());
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
     static final int SMALL_TIMEOUT = 500;
