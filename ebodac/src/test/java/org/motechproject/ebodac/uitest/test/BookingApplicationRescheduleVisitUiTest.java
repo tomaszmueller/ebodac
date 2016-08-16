@@ -12,8 +12,8 @@ import org.motechproject.ebodac.uitest.page.BookingAppRescheduleVisitPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import static org.junit.Assert.assertTrue;
 
-
 public class BookingApplicationRescheduleVisitUiTest extends TestBase {
+    private static final String CANNOT = "Cannot";
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -23,7 +23,6 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
     private BookingAppRescheduleVisitPage bAReschedulePage;
     private String user;
     private String password;
-    private static final String ERROR_TITLE_MODAL = "Cannot change planned date";
 
     @Before
     public void setUp() throws Exception {
@@ -59,13 +58,13 @@ public class BookingApplicationRescheduleVisitUiTest extends TestBase {
             bookingAppPage.openRescheduleVisit();
             bAReschedulePage.resizePage();
             bAReschedulePage.sortByPlannedDateColumn();
-            assertTrue(bAReschedulePage.visitsExist());
 
             if (bAReschedulePage.chooseVisit()) {
-                if (bAReschedulePage.getTitleReschedule() != ERROR_TITLE_MODAL) {
+                if (!bAReschedulePage.getTitleReschedule().trim().startsWith(CANNOT)) {
                     assertTrue(bAReschedulePage.rescheduleVisit());
                     bAReschedulePage.printCard();
                 } else {
+
                     bAReschedulePage.clickCose();
                 }
             }

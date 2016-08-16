@@ -15,6 +15,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PrimeFollowAndBoostReportUiTest extends TestBase {
+    private static final int SLEEP_2SEC = 2000;
     private static final CharSequence TEST_LOCAL_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -62,14 +63,21 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
 
             ebodacPage.gotoReports();
             reportPage.showPrimeFollowAndBoostReport();
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             assertFalse(primeFollowAndBoostReportPage.isReportEmpty());
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             assertTrue(primeFollowAndBoostReportPage.isLookupVisible());
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             primeFollowAndBoostReportPage.openLookup();
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             primeFollowAndBoostReportPage.openDropdown();
-
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             assertTrue(primeFollowAndBoostReportPage.areLookupsPresent());
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             primeFollowAndBoostReportPage.openByVisittypeAndActualVisitDateLookup();
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             assertTrue(primeFollowAndBoostReportPage.islookupOpen());
+            primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);
             primeFollowAndBoostReportPage.openVisitType();
             assertTrue(primeFollowAndBoostReportPage.areAllVisitsAvailable());
 

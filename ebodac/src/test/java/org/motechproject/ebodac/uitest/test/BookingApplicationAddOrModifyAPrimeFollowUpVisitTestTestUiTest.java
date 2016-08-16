@@ -23,7 +23,7 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
     private BookingAppClinicVisitSchedulePage bookingAppClinicVisitSchedulePage;
     private String user;
     private String password;
-    public static final int SLEEP_1SEC = 1000;
+    public static final int SLEEP_2SEC = 2000;
 
     @Before
     public void setUp() throws Exception {
@@ -58,14 +58,19 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
             homePage.resizePage();
             homePage.clickModules();
             homePage.openBookingAppModule();
+            sleep(SLEEP_2SEC);
             bookingAppPage.openClinicVisitSchedule();
+            sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickOnDropDownParticipantId();
-            sleep(SLEEP_1SEC);
+            sleep(SLEEP_2SEC);
             String dayBeforeClean = bookingAppClinicVisitSchedulePage.getPrimeVacDateInput();
             bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
+            sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();
+            sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickButtonCleanDate();
             // Assert to validate the changes.
+            sleep(SLEEP_2SEC);
             assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
         } catch (AssertionError e) {
             getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"

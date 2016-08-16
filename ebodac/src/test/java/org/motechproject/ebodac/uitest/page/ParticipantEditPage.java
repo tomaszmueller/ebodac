@@ -9,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import java.util.HashMap;
 import java.util.Map;
 
-//import org.apache.log4j.Logger;
-
 public class ParticipantEditPage extends AbstractBasePage {
 
     private static final int MIN_LANGUAGE_POS = 1;
@@ -20,9 +18,6 @@ public class ParticipantEditPage extends AbstractBasePage {
     private static final int START_POS_LANGUAGE = 2;
 
     private Map<String, String> mapLangPos = new HashMap<String, String>();
-
-    // Object initialization for log
-    //private static Logger log = Logger.getLogger(ParticipantEditPage.class.getName());
     public static final String URL_PATH = "/home#/mds/dataBrowser";
 
     static final int SMALL_TIMEOUT = 500;
@@ -38,7 +33,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final String LANGUAGE_PATH_END = "]/a/label";
     static final By SELECTED_LANGUAGE = By
             .xpath("//*[@id='dataBrowser']/div[1]/div/div/ng-form/div[1]/form/div[8]/div/ng-form/div[1]/div/button");
-    private static final By SELECTED_PHONE_NUMBER = By.xpath(".//*[@id='phoneNumberForm']");
+    private static final By SELECTED_PHONE_NUMBER = By.xpath("//*[@id='phoneNumberForm']");
     static final By DELETE_BUTTON = By.xpath("//div[@id='dataBrowser']/div/div/div/div/button[2]");
     static final By DELETE_CONFIRMATION_BUTTON = By.xpath("//div[@id='deleteInstanceModal']/div[2]/div/div[3]/button");
     static final By DATE = By.linkText("1");
@@ -75,10 +70,18 @@ public class ParticipantEditPage extends AbstractBasePage {
         Thread.sleep(SLEEP_2000);
         setPhoneNumber(number);
         Thread.sleep(SLEEP_2000);
-        clickOn(SAVE_BUTTON);
+        clickOnSaveButton();
         Thread.sleep(SLEEP_2000);
+        clickOnConfirmationButton();
+        Thread.sleep(SLEEP_2000);
+    }
+
+    public void clickOnConfirmationButton() throws InterruptedException {
         clickWhenVisible(CONFIRMATION_BUTTON);
-        Thread.sleep(SLEEP_2000);
+    }
+
+    public void clickOnSaveButton() {
+        clickOn(SAVE_BUTTON);
     }
 
     public boolean setPhoneNumber(String number) throws InterruptedException {
@@ -91,12 +94,6 @@ public class ParticipantEditPage extends AbstractBasePage {
         }
         return false;
     }
-
-    /**
-     * private void changeFocus() {
-     * findElement(By.className("form-control")).click();
-     * findElement(By.className("form-control")).sendKeys(""); }
-     **/
 
     public boolean changeLanguage(String languagePos) throws InterruptedException {
         boolean status = false;
@@ -139,8 +136,8 @@ public class ParticipantEditPage extends AbstractBasePage {
         boolean status = true;
         Thread.sleep(SMALL_TIMEOUT);
         try {
-            clickOn(SAVE_BUTTON);
-            clickWhenVisible(CONFIRMATION_BUTTON);
+            clickOnSaveButton();
+            clickOnConfirmationButton();
         } catch (InterruptedException e) {
             status = false;
             throw new InterruptedException(e.getLocalizedMessage());
@@ -189,7 +186,7 @@ public class ParticipantEditPage extends AbstractBasePage {
     }
 
     public void changeVisit() {
-        clickOn(SAVE_BUTTON);
+        clickOnSaveButton();
         clickOn(POPUP_OK);
     }
 
@@ -226,7 +223,7 @@ public class ParticipantEditPage extends AbstractBasePage {
             clickOn(DATE_TABLE);
             WebElement date = findElement(By.linkText("" + day + ""));
             date.click();
-            clickOn(SAVE_BUTTON);
+            clickOnSaveButton();
             clickOn(POPUP_OK);
         } while (dateEnroll());
     }
@@ -308,7 +305,34 @@ public class ParticipantEditPage extends AbstractBasePage {
      * @return
      */
     public String getPhoneNumber() {
-        return findElement(SELECTED_PHONE_NUMBER).getText();
+        String number = "";
+        try {
+            if (findElement(SELECTED_PHONE_NUMBER) != null) {
+                number = findElement(SELECTED_PHONE_NUMBER).getText();
+                getLogger().error("getphone number : " + number);
+                // To make sure we get the phone number from the field.
+                if ("".equalsIgnoreCase(number)) {
+                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerHTML");
+                    getLogger().error("getphone number innerhtml: " + number);
+                }
+               
+                if ("".equalsIgnoreCase(number)) {
+                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerText");
+                    getLogger().error("getphone number innerText: " + number);
+                }
+                
+                if ("".equalsIgnoreCase(number)) {
+                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("textContent");
+                    getLogger().error("getphone number textContent: " + number);
+                }
+            } else {
+                getLogger().error("getPhoneNumber - cannot find Element " + SELECTED_PHONE_NUMBER.toString());
+            }
+        } catch (Exception e) {
+            getLogger().error("getPhoneNumber - Error Getting phone number . Reason :" + e.getLocalizedMessage(), e);
+        }
+
+        return number;
     }
 
     /**
@@ -345,8 +369,8 @@ public class ParticipantEditPage extends AbstractBasePage {
                 }
 
             } catch (Exception e) {
-                getLogger().error("Error in the try xpath " + languageText);
-                throw new AssertionError("No language value found  at chosen position");
+                getLogger().error("setListLanguagePosition - Error in the try xpath " + languageText + " Reason: "
+                        + e.getLocalizedMessage(), e);
             }
 
         }

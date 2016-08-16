@@ -30,7 +30,7 @@ public class IVRCallReportsTestUiTest extends TestBase {
             user = getTestProperties().getUserName();
             password = getTestProperties().getPassword();
             loginPage = new LoginPage(getDriver());
-            
+            homePage = new HomePage(getDriver());
 
             url = getServerUrl();
             if (url.contains(LOCAL_TEST_MACHINE)) {
@@ -42,6 +42,7 @@ public class IVRCallReportsTestUiTest extends TestBase {
                 loginPage.goToPage();
                 loginPage.login(user, password);
             }
+
         } catch (NullPointerException e) {
             getLogger().error("setup - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
@@ -52,7 +53,6 @@ public class IVRCallReportsTestUiTest extends TestBase {
     @Test // EBODAC-811
     public void iVRCallReportsTestUiTest() throws Exception {
         try {
-            homePage = new HomePage(getDriver());
             homePage.resizePage();
             ebodacPage = homePage.openEBODACModule();
             reportPage = ebodacPage.gotoReports();

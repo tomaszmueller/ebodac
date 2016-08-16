@@ -18,13 +18,14 @@ public class TestParticipant {
         this.setParticipantId("9999999999");
         this.setName("TestTest");
         this.setLanguage("eng");
-        this.setPhoneNumber("232000000000054");
+        this.setPhoneNumber("23200000054");
         this.setSiteId("B05-SL10001");
         this.setSiteName("Kambia I");
         this.setHouseholdName("Kingdom");
         this.setHeadOfHousehold("King");
         this.setCommunity("Magadascar");
         this.setAddress("Nowa str.");
+
     }
 
     public String getId() {

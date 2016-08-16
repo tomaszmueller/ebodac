@@ -15,6 +15,7 @@ import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
 public class UnableToChangeVisitDateUiTest extends TestBase {
+    private static final int SLEEP_2SEC = 2000;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private LoginPage loginPage;
     private HomePage homePage;
@@ -64,6 +65,7 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
             visitPage.clickVisit();
             String date = LocalDate.now().toString("yyyy-MM-dd");
             visitEditPage.changePlannedDate(date);
+            visitEditPage.sleep(SLEEP_2SEC);
             assertTrue(visitEditPage.changeVisit());
         } catch (AssertionError e) {
             getLogger().error("unableToChangVisitDateTest - AssertionError - Reason : " + e.getLocalizedMessage(), e);

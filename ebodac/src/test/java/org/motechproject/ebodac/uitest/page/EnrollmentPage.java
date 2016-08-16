@@ -5,15 +5,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
 import static java.lang.Thread.sleep;
-import org.apache.log4j.Logger;
 
 public class EnrollmentPage extends AbstractBasePage {
-    private static final String CLASS_ENROLMENT_HIGHLIGHT = "ui-state-highlight";
-    // ui-widget-content jqgrow ui-row-ltr ui-state-hover ui-state-highlight"
-    // private static final int SLEEP_5SEC = 5000;
-    private static Logger log = Logger.getLogger(EnrollmentPage.class.getName());
+    private static final String BUTTON_NG_CLICK_ENROLL = "//button[@ng-click='enroll(\"";
+    private static final String BUTTON_NG_CLICK_UNENROLL = "//button[@ng-click='unenroll(\"";
+    private static final String ID_ENROLLMENT_TABLE = "//*[@id='enrollmentTable']/tbody/tr[@id='1']/td[2]";
+    private static final String PARTICIPANT_WAS_UNENROLLED_SUCCESSFULLY = "Participant was unenrolled successfully.";
+    private static final String INNERHTML = "innerHTML";
+    private static final String TITLE_ADVANCE_ENROLLMENT = "//*[@id='main-content']/div/div/h4";
+    private static final String EBODAC_ENROLLMENT_ADVANCED = "EBODAC - Enrollment Advanced";
     public static final String URL_PATH = "home#/ebodac/enrollment";
     static final By ACTION = By.xpath("//table[@id='enrollmentTable']/tbody/tr[2]/td[6]/button");
     static final By POPUP_OK = By.id("popup_ok");
@@ -30,6 +31,7 @@ public class EnrollmentPage extends AbstractBasePage {
     static final By AMMOUNT_OF_RESULTS = By.xpath("//select[@title='Records per Page']");
     static final By FIRST_PARTICIPANT_STATUS = By.xpath("//*[@id=\"1\"]/td[5]");
     static final By FIRST_PARTICIPANT_ID = By.xpath("//*[@id=\"1\"]/td[2]");
+    private static final long TIMEOUT_5SEC = 5000;
 
     public EnrollmentPage(WebDriver driver) {
         super(driver);
@@ -85,7 +87,7 @@ public class EnrollmentPage extends AbstractBasePage {
 
     public boolean unenrolled() {
         try {
-            return findElement(POPUP_CONTENT).getText().contains("Participant was unenrolled successfully.");
+            return findElement(POPUP_CONTENT).getText().contains(PARTICIPANT_WAS_UNENROLLED_SUCCESSFULLY);
         } catch (Exception ex) {
             return false;
         }
@@ -112,27 +114,16 @@ public class EnrollmentPage extends AbstractBasePage {
     public boolean enrollmentDetailEnabled() throws InterruptedException {
         boolean status = false;
         try {
-            clickWhenVisible(ENROLLMENT_RECORD);
             sleep(TIMEOUT_2SEC);
-            // If the ENROLLMENT_RECORD is visible we check that we cannot
-            // access to the next screen
-            if (findElement(ENROLLMENT_RECORD).isDisplayed()
-                    && findElement(ENROLLMENT_RECORD).getAttribute("class").contains(CLASS_ENROLMENT_HIGHLIGHT)) {
-                status = false;
-            } else if (findElement(ENROLLMENT_ADVANCED) != null) {
-                // If we are not in the ENROLLMENT_RECORD then we are in the
-                // next page.
-                status = true;
-            } else {
-                status = false;
-            }
+            status = findElement(By.xpath(TITLE_ADVANCE_ENROLLMENT)).getAttribute(INNERHTML)
+                    .startsWith(EBODAC_ENROLLMENT_ADVANCED);
         } catch (NullPointerException e) {
             status = false;
-            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage(), e);
+            getLogger().error(" enrollmentDetailEnabled : NPE " + e.getLocalizedMessage(), e);
 
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             status = false;
-            log.error(" enrollmentDetailEnabled : " + e.getLocalizedMessage(), e);
+            getLogger().error(" enrollmentDetailEnabled : Exception . Reason : " + e.getLocalizedMessage(), e);
 
         }
         return status;
@@ -175,19 +166,36 @@ public class EnrollmentPage extends AbstractBasePage {
     }
 
     public void clickOnButtonToEnrollParticipant(String idOfParticipant) {
-        findElement(By.xpath("//button[@ng-click='enroll(\"" + idOfParticipant + "\")']")).click();
+        findElement(By.xpath(BUTTON_NG_CLICK_ENROLL + idOfParticipant + "\")']")).click();
     }
 
     public void clickOnButtonToUnenrollParticipant(String idOfParticipant) {
-        findElement(By.xpath("//button[@ng-click='unenroll(\"" + idOfParticipant + "\")']")).click();
+        findElement(By.xpath(BUTTON_NG_CLICK_UNENROLL + idOfParticipant + "\")']")).click();
     }
 
-    public boolean checkIfParticipantWasEnrolledOrUnenrolledSuccessfully() {
-        String popup = findElement(POPUP_MESSAGE).getText();
-        if (("Participant was unenrolled successfully.".equals(popup)) || ("Participant was enrolled successfully.".equals(popup))) {
-            return true;
-        } else {
-            return false;
+
+    public void clickOnFirstRow() {
+        try {
+            sleep(TIMEOUT_5SEC);
+            findElement(By.xpath(ID_ENROLLMENT_TABLE)).click();
+        } catch (Exception e) {
+            getLogger().error("clickOnFirstRow - Exception . Reason :" + e.getLocalizedMessage(), e);
         }
+
     }
+
+
+
+    public boolean checkIfParticipantWasEnrolledOrUnenrolledSuccessfully() {
+        boolean status = false;
+        String popup = findElement(POPUP_MESSAGE).getText();
+        if ((PARTICIPANT_WAS_UNENROLLED_SUCCESSFULLY.equals(popup)) || ("Participant was enrolled successfully.".equals(popup))) {
+            status = true;
+        } else {
+            status = false;
+        }
+        
+        return status;
+    }
+
 }

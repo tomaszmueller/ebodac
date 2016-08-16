@@ -70,12 +70,10 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
             homePage.clickModules();
             homePage.openEBODACModule();
             ebodacPage.goToEnrollment();
+            enrollmentPage.clickOnFirstRow();
             // We should not be able to see the advance page for enrollment.
-
             assertFalse(enrollmentPage.enrollmentDetailEnabled());
-
             // It should be allowed to enrol unenroll participants.
-
             // We try to enroll.
             enrollmentPage.clickAction();
             enrollmentPage.clickOK();

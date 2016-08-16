@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 
 public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
 
+    private static final String INNER_HTML = "innerHTML";
+    private static final String REPORT_BOTTOM_DIV = "//*[@id='pageReportTable_left']/div";
+    private static final String NO_RECORDS_TO_VIEW = "No records to view";
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By TABLE = By.xpath("//table[@class='ui-jqgrid-htable']");
     static final By LOOKUP = By.id("lookupDialogButton");
@@ -127,7 +130,7 @@ public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
     public boolean existTable() {
         boolean status = false;
         try {
-            if (!findElement(TABLE).getAttribute("innerHTML").isEmpty()) {
+            if (!findElement(TABLE).getAttribute(INNER_HTML).isEmpty()) {
                 status = true;
             }
         } catch (Exception e) {
@@ -139,8 +142,8 @@ public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
     public boolean isReportEmpty() {
         boolean status = false;
         try {
-            if (findElement(By.xpath("//*[@id='pageReportTable_left']/div")).getAttribute("innerHTML")
-                    .contains("No records to view")) {
+            if (findElement(By.xpath(REPORT_BOTTOM_DIV)) != null
+                    && findElement(By.xpath(REPORT_BOTTOM_DIV)).getAttribute(INNER_HTML).contains(NO_RECORDS_TO_VIEW)) {
                 status = true;
             }
         } catch (Exception e) {
@@ -148,5 +151,15 @@ public class PrimeFollowAndBoostReportPage extends AbstractBasePage {
             status = false;
         }
         return status;
+    }
+
+    public void sleep(long sleep) {
+        try {
+            Thread.sleep(sleep);
+        } catch (Exception e) {
+            getLogger().error("sleep -  Exception . Reason : " + e.getLocalizedMessage(), e);
+
+        }
+
     }
 }

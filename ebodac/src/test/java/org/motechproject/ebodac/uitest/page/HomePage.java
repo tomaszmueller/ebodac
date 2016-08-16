@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import java.lang.Override;
 import java.lang.String;
 
-
 public class HomePage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home";
@@ -44,14 +43,16 @@ public class HomePage extends AbstractBasePage {
     public void goToPage() {
 
     }
+
     public EBODACPage openEBODACModule() throws InterruptedException {
         clickWhenVisible(EBODAC);
         return new EBODACPage(getDriver());
     }
 
-    public void openBookingAppModule() throws  InterruptedException {
+    public void openBookingAppModule() throws InterruptedException {
         clickWhenVisible(BOOKING_APP);
     }
+
     public boolean isEBODACModulePresent() throws InterruptedException {
         try {
             if (findElement(EBODAC) != null) {
@@ -184,5 +185,14 @@ public class HomePage extends AbstractBasePage {
 
     public void resizePage() {
         getDriver().manage().window().setSize(new Dimension(WIDTH, HEIGHT));
+    }
+
+    public void sleep(long sleep) {
+        try {
+            Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+            getLogger().error("waitTimeout - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
+
     }
 }

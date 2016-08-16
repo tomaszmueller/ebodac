@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 
 public class ReportPage extends AbstractBasePage {
 
+    private static final String ID_PAGE_INSTANCES_TABLE_LEFT_DIV = "//*[@id='pageInstancesTable_left']/div";
+
     private static final String NO_RECORDS_TO_VIEW = "No records to view";
 
     public static final String URL_PATH = "/home#/mds/dataBrowser";
@@ -46,7 +48,7 @@ public class ReportPage extends AbstractBasePage {
     public boolean checkIfIVRTableHistoryContainsRows() throws InterruptedException {
         boolean status = false;
         try {
-            return !findElement(By.xpath("//*[@id='pageInstancesTable_left']/div")).getAttribute("innerHTML")
+            return !findElement(By.xpath(ID_PAGE_INSTANCES_TABLE_LEFT_DIV)).getAttribute("innerHTML")
                     .contains(NO_RECORDS_TO_VIEW);
         } catch (NullPointerException e) {
             status = false;

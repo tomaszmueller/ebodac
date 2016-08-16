@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import static java.lang.Thread.sleep;
 
 public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
+    private static final String INPUT_GROUP_ADDON_VALIDATOR = "input-group-addon validator";
     private static final String TIME_10_29 = "10:29";
     private static final String SUCCESS_CLASS_PRIMEVACDATE = "input-group-addon validator alert-success";
     private static final String PRIMEVAC_DATE_FIELD = "//*[@id='primeVaccinationScheduleModal']/div[2]/div/div[2]/div[1]/div[3]/span[2]";
@@ -76,9 +77,9 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final By FIND_BY_PARTICIPANT_ID_FIELD = By
             .xpath("//input[@ng-model='lookupBy[buildLookupFieldName(field)]']");
     static final By FIND_BY_PARTICIPANT_ID_BUTTON = By.xpath("//button[@ng-click='filterInstancesByLookup()']");
-    static final int SLEEP_500 = 500;
-    static final int SLEEP_2000 = 2000;
-    static final int SLEEP_5000 = 5000;
+    static final int SLEEP_500MLSEC = 500;
+    static final int SLEEP_2SEC = 2000;
+    static final int SLEEP_5SEC = 5000;
     static final By CLINIC_LOCATION = By.id("jqgh_primeVaccinationSchedule_location");
     static final By PARTICIPANT_ID = By.id("jqgh_primeVaccinationSchedule_participantId");
     static final By PARTICIPANT_NAME = By.id("jqgh_primeVaccinationSchedule_participantName");
@@ -98,7 +99,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean clickAddPrimeVaccinationButton() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(ADD_PRIME_VACCINATION_BUTTON);
             status = true;
         } catch (NullPointerException e) {
@@ -147,7 +148,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
 
                 clickWhenVisible(PARTICIPANT_SELECT);
                 findElement(PARTICIPANT_ID_INPUT).sendKeys(Keys.ENTER);
-                
+
                 if (!findElement(PRIMEVAC_COMBO_FIELD_ALERT).getAttribute("class")
                         .equalsIgnoreCase(PRIMEVAC_COMBO_CLASS_DISABLED)) {
                     counter = 0;
@@ -235,7 +236,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean setDateOfPrimeVacDateFields() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_500);
+            sleep(SLEEP_2SEC);
             findElement(PRIME_VAC_DATE_FIELD).click();
             clickWhenVisible(NEXT_MONTH_BUTTON);
             clickWhenVisible(SCHEDULER_DAY_OF_MONTH);
@@ -261,7 +262,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean setTimeOfPrimeVacDateFields() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             findElement(PRIME_VAC_TIME_FIELD).sendKeys(TIME_10_29);
             findElement(PRIME_VAC_TIME_FIELD).sendKeys(Keys.ENTER);
             clickWhenVisible(PRIME_VAC_TIME_CLOSE_BUTTON);
@@ -286,13 +287,13 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean setMaxDateRangeOfPrimeVaccination() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_NEXT_7_DAYS_CHOOSE);
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN);
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(PRIME_VAC_DAY_DATE_RANGE_DROP_DOWN_DATE_RANGE_CHOOSE);
             status = true;
         } catch (NullPointerException e) {
@@ -390,10 +391,10 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean confirmAddVisitBookingDetailsAndPrintCard() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             boolean exists;
             clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             try {
                 exists = null != findElement(SECOND_CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
             } catch (Exception e) {
@@ -403,7 +404,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             if (exists) {
                 clickWhenVisible(CONFIRM_ADD_VISIT_BOOKING_DETAILS_BUTTON);
             }
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(PRINT_CARD_VISIT_BOOKING_DETAILS_BUTTON);
             clickWhenVisible(CLOSE_BUTTON);
             status = true;
@@ -449,11 +450,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean changeDateRangeFromToday() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(DATE_RANGE_DROPDOWN);
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             clickWhenVisible(SET_DATE_RANGE_FROM_DROP_DOWN);
-            sleep(SLEEP_500);
+            sleep(SLEEP_500MLSEC);
             status = true;
         } catch (NullPointerException e) {
             // IF we have an NullPointerException we catch it and send false as
@@ -497,23 +498,23 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean changeDates() throws InterruptedException {
         boolean status = false;
         try {
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             if (!findElement(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX).isSelected()) {
                 clickWhenVisible(IGNOTE_LATES_EARLIEST_DATE_CHECKBOX);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
                 clickWhenVisible(PRIME_VAC_DATE_FIELD);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
                 clickWhenVisible(NEXT_MONTH_BUTTON);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
                 clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
             } else {
                 clickWhenVisible(PRIME_VAC_DATE_FIELD);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
                 clickWhenVisible(NEXT_MONTH_BUTTON);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
                 clickWhenVisible(FIRST_DAY_OF_THE_MONTH);
-                sleep(SLEEP_500);
+                sleep(SLEEP_500MLSEC);
             }
             status = true;
         } catch (NullPointerException e) {
@@ -561,9 +562,9 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             clickWhenVisible(FILTER_BUTTON);
             clickWhenVisible(FILTER_DROPDOWN_BUTTON);
             clickWhenVisible(FIND_BY_PARTICIPANT_ID);
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
-            sleep(SLEEP_2000);
+            sleep(SLEEP_2SEC);
             clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
             status = true;
         } catch (ElementNotVisibleException e) {
@@ -682,9 +683,8 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean isPrimeVacDateEmpty() {
         boolean status = false;
         try {
-            return !findElement(
-                    By.xpath(PRIMEVAC_DATE_FIELD))
-                            .getAttribute("class").equalsIgnoreCase(SUCCESS_CLASS_PRIMEVACDATE);
+            return !findElement(By.xpath(PRIMEVAC_DATE_FIELD)).getAttribute("class")
+                    .equalsIgnoreCase(SUCCESS_CLASS_PRIMEVACDATE);
         } catch (Exception e) {
             status = false;
             getLogger().error("isPrimeVacDateEmpty - Exception - Reason : " + e.getLocalizedMessage(), e);
@@ -695,12 +695,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean isFemailChildBearingAgeEmpty() {
         boolean status = false;
         try {
-            if (NO.equalsIgnoreCase(findElement(By.xpath(PRIMEVAC_FIELD_FEMALEBEARINGCHILD))
-                    .getAttribute("innerHTML"))) {
+            if (NO.equalsIgnoreCase(
+                    findElement(By.xpath(PRIMEVAC_FIELD_FEMALEBEARINGCHILD)).getAttribute("innerHTML"))) {
                 status = false;
-            } else if (findElement(
-                    By.xpath(CHECKBOX_FIELD_FEMALEBEARINGCHILD))
-                            .getAttribute("class").equalsIgnoreCase("input-group-addon validator")) {
+            } else if (INPUT_GROUP_ADDON_VALIDATOR
+                    .equalsIgnoreCase(findElement(By.xpath(CHECKBOX_FIELD_FEMALEBEARINGCHILD)).getAttribute("class"))) {
                 status = true;
 
             }
@@ -709,7 +708,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             status = false;
             getLogger().error("isFemailChildBearingAgeEmpty - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
-     
+
         return status;
     }
 

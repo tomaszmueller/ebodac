@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class BookingAppRescheduleVisitPage extends AbstractBasePage {
 
+    private static final String VISIT_PLANNED_DATE_UPDATED_SUCCESSFULLY = "Visit Planned Date updated successfully.";
+    private static final String HOUR_12_MINUTE_00 = "12:00";
     static final int DEFAULT_VALUE = -1;
     static final int JANUARY = 0;
     static final int FEBRUARY = 1;
@@ -160,11 +162,9 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
         boolean status = false;
         String text;
         try {
-            waitForElement(IGNORE_EARLIEST_LATEST_DATE);
             clickWhenVisible(IGNORE_EARLIEST_LATEST_DATE);
             Thread.sleep(TIMEOUT);
-            waitForElement(DATE_FIELD);
-            clickOn(DATE_FIELD);
+            clickWhenVisible(DATE_FIELD);
             Calendar cal1 = Calendar.getInstance();
             Date setDate = cal1.getTime();
             Date myDate = new Date(setDate.getTime() + NUMDER_OF_DAYS * SECONDS_IN_DAY);
@@ -174,7 +174,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
             int day = cal1.get(Calendar.DAY_OF_MONTH);
             int selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
             int selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
-            getLogger().error("selectedMonth :" + selectedMonth);
+            
             while (year != selectedYear || month != selectedMonth) {
                 selectedYear = Integer.parseInt(findElement(YEAR_FIELD).getText());
                 selectedMonth = months.get(findElement(MONTH_FIELD).getText().toLowerCase()).intValue();
@@ -187,7 +187,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
                 }
             }
             clickWhenVisible(By.linkText("" + day));
-            setTextToFieldNoEnter(TIME_FIELD, "12:00");
+            setTextToFieldNoEnter(TIME_FIELD, HOUR_12_MINUTE_00);
             clickWhenVisible(TIME_DONE);
             Thread.sleep(TIMEOUT);
             clickWhenVisible(SAVE_BUTTON);
@@ -201,7 +201,7 @@ public class BookingAppRescheduleVisitPage extends AbstractBasePage {
             Thread.sleep(BIG_TIMEOUT);
             clickWhenVisible(CLOSE_BUTTON);
 
-            if (text.contains("Visit Planned Date updated successfully.")) {
+            if (text.contains(VISIT_PLANNED_DATE_UPDATED_SUCCESSFULLY)) {
                 return status;
             }
         } catch (InterruptedException e) {

@@ -54,8 +54,12 @@ public class EBODACPage extends AbstractBasePage {
 
     }
 
-    public void sleep(long sleep) throws InterruptedException {
-        Thread.sleep(sleep);
+    public void sleep(long sleep) {
+        try {
+            Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+            getLogger().error("sleep - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
 
     }
 

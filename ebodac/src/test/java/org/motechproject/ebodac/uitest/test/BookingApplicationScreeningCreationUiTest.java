@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationScreeningCreationUiTest extends TestBase {
+    private static final String EMPTY_STRING = "";
     private static final int SIX = 6;
     private static final int FIVE = 5;
     private static final int FOUR = 4;
@@ -67,21 +68,24 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             homePage.openBookingAppModule();
             bookingAppPage.openScreening();
 
-            String bookingId = bookingAppScreeningPage.bookScreeningVisitForToday().replace(". ", "");
-            if (!"".equalsIgnoreCase(bookingId)) {
+            String bookingId = EMPTY_STRING;
+            if (EMPTY_STRING != bookingAppScreeningPage.bookScreeningVisitForToday()) {
+                bookingId = bookingAppScreeningPage.bookScreeningVisitForToday().replace(". ", EMPTY_STRING);
+            }
+            if (!EMPTY_STRING.equalsIgnoreCase(bookingId)) {
                 assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
             }
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TODAY.getValue());
 
             dates.add(LocalDate.now());
-            
+
             checkBookingAvailableForSpecificDate(dates);
             // We start from tomorrow.
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.TOMORROW.getValue());
 
             dates.remove(0);
             dates.add(LocalDate.now().plusDays(ONE));
-            
+
             checkBookingAvailableForSpecificDate(dates);
 
             bookingAppScreeningPage.changeFilterTo(BookingAppFilters.DAY_AFTER_TOMORROW.getValue());

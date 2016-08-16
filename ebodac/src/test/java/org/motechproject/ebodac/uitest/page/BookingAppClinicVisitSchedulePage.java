@@ -5,12 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import static java.lang.Thread.sleep;
-import org.apache.log4j.Logger;
 
 public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     // Object initialization for log
-    private static Logger log = Logger.getLogger(BookingAppClinicVisitSchedulePage.class.getName());
-    public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
+   public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final By PRIME_VAC_FIRST_FOLLOW_UP_VALUE = By
             .cssSelector("#main-content > div > div > table > tbody > tr > td:nth-child(4)");
     static final By PARTICIPANT_ID_DROPDOWN = By.id("s2id_subjectId");
@@ -33,7 +31,8 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
         sleep(SLEEP_3SEC);
         clickWhenVisible(PARTICIPANT_ID_DROPDOWN);
         sleep(SLEEP_1SEC);
-        findElement(FIRST_PARTICIPANT_IN_DROPDOWN).click();
+        clickWhenVisible(FIRST_PARTICIPANT_IN_DROPDOWN);
+
     }
 
     public void findParticipantWithoutPrimeVacDay() throws InterruptedException {
@@ -73,13 +72,13 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
             clickWhenVisible(SET_FIRST_DAY);
             status = true;
         } catch (NullPointerException e) {
-            log.error("clickOnFirstDayInCalendar - NullPointerException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstDayInCalendar - NullPointerException . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         } catch (InterruptedException e) {
-            log.error("clickOnFirstDayInCalendar - InterruptedException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstDayInCalendar - InterruptedException . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         } catch (Exception e) {
-            log.error("clickOnFirstDayInCalendar - Exception . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstDayInCalendar - Exception . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         }
 
@@ -98,13 +97,13 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
             clickWhenVisible(PRINT_BUTTON);
             status = true;
         } catch (NullPointerException e) {
-            log.error("clickOnButtonToPrint - NullPointerException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnButtonToPrint - NullPointerException . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         } catch (InterruptedException e) {
-            log.error("clickOnButtonToPrint - InterruptedException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnButtonToPrint - InterruptedException . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         } catch (Exception e) {
-            log.error("clickOnButtonToPrint - Exception . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnButtonToPrint - Exception . Reason :" + e.getLocalizedMessage(), e);
             status = false;
         }
 
