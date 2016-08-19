@@ -6,6 +6,14 @@ import org.openqa.selenium.WebDriver;
 
 public class VisitPage extends AbstractBasePage {
 
+    private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_3_DIV_BUTTON = "//*[@id='lookup-dialog']/div[2]/div[3]/div/button";
+    private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_2_DIV_INPUT = "//*[@id='lookup-dialog']/div[2]/div[2]/div/input";
+    private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_1_DIV_UL_LI_6_A = "//*[@id='lookup-dialog']/div[2]/div[1]/div/ul/li[6]/a";
+    private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_1_DIV_BUTTON = "//*[@id='lookup-dialog']/div[2]/div[1]/div/button";
+    private static final String ID_LOOKUP_DIALOG_BUTTON = "//*[@id='lookupDialogButton']";
+    private static final String INNER_HTML = "innerHTML";
+    private static final String VISIT_ID_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[1]";
+    private static final String ACTUAL_VISIT_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[3]";
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
     static final By VISIT_DATE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[2]");
@@ -59,23 +67,23 @@ public class VisitPage extends AbstractBasePage {
         try {
             // Click on Button Lookup
             sleep(SLEEP_2SEG);
-            namePath = "//*[@id='lookupDialogButton']";
+            namePath = ID_LOOKUP_DIALOG_BUTTON;
             clickWhenVisible(By.xpath(namePath));
 
             // click on select
-            namePath = "//*[@id='lookup-dialog']/div[2]/div[1]/div/button";
+            namePath = ID_LOOKUP_DIALOG_DIV_2_DIV_1_DIV_BUTTON;
             clickWhenVisible(By.xpath(namePath));
 
             // Select Find by Participant
-            namePath = "//*[@id='lookup-dialog']/div[2]/div[1]/div/ul/li[6]/a";
+            namePath = ID_LOOKUP_DIALOG_DIV_2_DIV_1_DIV_UL_LI_6_A;
             clickWhenVisible(By.xpath(namePath));
 
             // Add the value participant id
-            namePath = "//*[@id='lookup-dialog']/div[2]/div[2]/div/input";
+            namePath = ID_LOOKUP_DIALOG_DIV_2_DIV_2_DIV_INPUT;
             sleep(SLEEP_500);
             findElement(By.xpath(namePath)).sendKeys(participantId);
 
-            namePath = "//*[@id='lookup-dialog']/div[2]/div[3]/div/button";
+            namePath = ID_LOOKUP_DIALOG_DIV_2_DIV_3_DIV_BUTTON;
             clickWhenVisible(By.xpath(namePath));
             sleep(SLEEP_500);
             status = true;
@@ -98,8 +106,8 @@ public class VisitPage extends AbstractBasePage {
         boolean status = false;
         String webElementHtml = "";
         try {
-            webElementHtml = findElement(By.xpath("//*[@id='instancesTable']/tbody/tr[2]/td[1]"))
-                    .getAttribute("innerHTML");
+            webElementHtml = findElement(By.xpath(VISIT_ID_HTML))
+                    .getAttribute(INNER_HTML);
             getLogger().error("findVisitsByParticipantID - webElementHTML :" + webElementHtml);
             status = webElementHtml.contains(participantId);
         } catch (NullPointerException e) {
@@ -120,7 +128,7 @@ public class VisitPage extends AbstractBasePage {
     public boolean findActualDate(String actualDate) {
         boolean status = false;
         try {
-            status = findElement(By.xpath("//*[@id='instancesTable']/tbody/tr[2]/td[3]")).getAttribute("innerHTML")
+            status = findElement(By.xpath(ACTUAL_VISIT_HTML)).getAttribute(INNER_HTML)
                     .contains(actualDate);
         } catch (Exception e) {
             status = false;
