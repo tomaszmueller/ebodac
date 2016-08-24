@@ -14,6 +14,7 @@ public class VisitPage extends AbstractBasePage {
     private static final String INNER_HTML = "innerHTML";
     private static final String VISIT_ID_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[1]";
     private static final String ACTUAL_VISIT_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[3]";
+    private static final String TABLE_HTML = "//*[@id='gview_instancesTable']/div[3]";
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
     static final By VISIT_DATE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[2]");
@@ -140,5 +141,16 @@ public class VisitPage extends AbstractBasePage {
     public void sleep(long sleep) throws InterruptedException {
         Thread.sleep(sleep);
 
+    }
+
+    public boolean hasVisitsVisible() {
+        boolean status = false;
+        try {
+            status = findElement(By.xpath(TABLE_HTML)).getAttribute(INNER_HTML).contains("id=");
+        } catch (Exception e) {
+            status = false;
+            getLogger().error("findActualDate - Exception . Reason : " + e.getLocalizedMessage(), e);
+        }
+        return status;
     }
 }

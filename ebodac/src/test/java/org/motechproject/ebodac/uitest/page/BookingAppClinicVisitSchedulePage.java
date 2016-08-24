@@ -8,7 +8,7 @@ import static java.lang.Thread.sleep;
 
 public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     // Object initialization for log
-   public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
+    public static final String URL_PATH = "/#/bookingApp/capacityInfo/";
     static final By PRIME_VAC_FIRST_FOLLOW_UP_VALUE = By
             .cssSelector("#main-content > div > div > table > tbody > tr > td:nth-child(4)");
     static final By PARTICIPANT_ID_DROPDOWN = By.id("s2id_subjectId");
@@ -35,22 +35,43 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
 
     }
 
-    public void findParticipantWithoutPrimeVacDay() throws InterruptedException {
-        sleep(SLEEP_3SEC);
-        clickWhenVisible(PARTICIPANT_ID_DROPDOWN);
-        sleep(SLEEP_1SEC);
-        findElement(FIRST_PARTICIPANT_IN_DROPDOWN).click();
-        WebElement element = findElement(PRIME_VAC_FIRST_FOLLOW_UP_VALUE);
-        String textt = element.getText();
-        if (!"".equals(textt)) {
-            int temp = START_INTER;
-            while (!"".equals(textt)) {
-                temp++;
-                String intToString = Integer.toString(temp);
-                findElement(By.cssSelector(PARTICIPANT_CSS_SELECTOR + intToString));
-                textt = element.getText();
+    public boolean findParticipantWithoutPrimeVacDay() throws InterruptedException {
+        boolean status = false;
+        try {
+            waitForElement(By.xpath("//*[@id='select2-results-2']"));
+            if (findElement(By.xpath("//*[@id='select2-results-2']")).getAttribute("innerHTML")
+                    .contains("No matches found")) {
+
+                clickWhenVisible(PARTICIPANT_ID_DROPDOWN);
+                sleep(SLEEP_1SEC);
+                findElement(FIRST_PARTICIPANT_IN_DROPDOWN).click();
+                WebElement element = findElement(PRIME_VAC_FIRST_FOLLOW_UP_VALUE);
+                String textt = element.getText();
+                if (!"".equals(textt)) {
+                    int temp = START_INTER;
+                    while (!"".equals(textt)) {
+                        temp++;
+                        String intToString = Integer.toString(temp);
+                        findElement(By.cssSelector(PARTICIPANT_CSS_SELECTOR + intToString));
+                        textt = element.getText();
+                        status = true;
+                    }
+                }
+
             }
+
+        } catch (NullPointerException e) {
+            getLogger().error("findParticipantWithoutPrimeVacDay - NPE . Reason :" + e.getLocalizedMessage(), e);
+            status = false;
+        } catch (InterruptedException e) {
+            getLogger().error("findParticipantWithoutPrimeVacDay - IE . Reason :" + e.getLocalizedMessage(), e);
+            status = false;
+        } catch (Exception e) {
+            getLogger().error("findParticipantWithoutPrimeVacDay - Exc . Reason :" + e.getLocalizedMessage(), e);
+            status = false;
         }
+
+        return status;
     }
 
     public void clickButtonCleanDate() throws InterruptedException {
@@ -72,10 +93,12 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
             clickWhenVisible(SET_FIRST_DAY);
             status = true;
         } catch (NullPointerException e) {
-            getLogger().error("clickOnFirstDayInCalendar - NullPointerException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstDayInCalendar - NullPointerException . Reason :" + e.getLocalizedMessage(),
+                    e);
             status = false;
         } catch (InterruptedException e) {
-            getLogger().error("clickOnFirstDayInCalendar - InterruptedException . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstDayInCalendar - InterruptedException . Reason :" + e.getLocalizedMessage(),
+                    e);
             status = false;
         } catch (Exception e) {
             getLogger().error("clickOnFirstDayInCalendar - Exception . Reason :" + e.getLocalizedMessage(), e);
@@ -114,6 +137,11 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
     @Override
     public String expectedUrlPath() {
         return getServerURL() + URL_PATH;
+
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
 
     }
 }
