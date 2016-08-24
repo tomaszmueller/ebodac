@@ -18,6 +18,7 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import static org.junit.Assert.assertTrue;
 
 public class GetVisitDataFromRAVEUiTest extends TestBase {
+    private static final String EMPTY_STRING = "";
     private Map<String, String> prop = new HashMap<String, String>();
     private LoginPage loginPage;
     private HomePage homePage;
@@ -48,7 +49,9 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
             // We change the participant id
             setParticipantId(httpClientHelper.generateNewParticipantId(participantId));
             // We start the visits and the participants.
-            initReplaceNewParticipantFile(this.getParticipantId());
+            if (null != this.getParticipantId()) {
+                initReplaceNewParticipantFile(this.getParticipantId());
+            }
             // We start the pages.
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
@@ -72,9 +75,11 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
         try {
             // Add a participant in the Participant.
             participant = new TestParticipant();
-            participant.setId(participantId);
-            participant.setParticipantId(participantId);
-            if (httpClientHelper.addParticipant(participant, user, password)) {
+            if (null != participantId && EMPTY_STRING != participantId) {
+                participant.setId(participantId);
+                participant.setParticipantId(participantId);
+            }
+            if (null != participantId && httpClientHelper.addParticipant(participant, user, password)) {
                 // Add visits for the participant
                 prop.put(UITestHttpClientHelper.PARTICIPANT_ID, participant.getParticipantId());
                 prop.put(UITestHttpClientHelper.DATE_OF_BIRTH, "1970-01-01");
@@ -83,8 +88,6 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
                 prop.put(UITestHttpClientHelper.PRIME_ACTUAL_DATE,
                         (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
                 httpClientHelper.addVisits(user, password, prop, null);
-            } else {
-                getLogger().error("setup - Cannot add the participant ");
             }
         } catch (Exception e) {
             getLogger().error("initNewParticipantAndVisits - Exception . Reason : " + e.getLocalizedMessage(), e);
@@ -110,11 +113,11 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
                 visitPage.sleep(WAIT_2SEC);
 
                 // Add assert to set that the participant is added and the
-                if (selectParticipant) {
+                if (selectParticipant && visitPage.hasVisitsVisible()) {
                     // Visits select specific visit
                     assertTrue(visitPage.findActualDate(NEW_SCREENING_ACTUAL_DATE));
                 } else {
-                    getLogger().error("setDataVisitsTest - No participant Found with ID : " + participantId);
+                    getLogger().error("setDataVisitsTest - No participant Visits Found with ID : " + participantId);
                 }
                 ebodacPage.sleep(WAIT_5SEC);
                 // visits.

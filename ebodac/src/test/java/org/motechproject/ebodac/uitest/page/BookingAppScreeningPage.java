@@ -108,7 +108,7 @@ public class BookingAppScreeningPage extends AbstractBasePage {
                                                    // Kambia 1
 
         }
-
+        sleep(SLEEP_4SEC);
         if (findElement(SAVE_BUTTON).isEnabled()) {
 
             waitForElement(SAVE_BUTTON);
