@@ -174,7 +174,9 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             // Ebodac Asserts.
             testAdminEbodacHome();
             // Visits Asserts
-            testAdminVisitsTab();
+            if (visitPage.hasVisitsVisible()) {
+                testAdminVisitsTab();
+            }
 
             // Report Asserts
             testAdminWithReports();
