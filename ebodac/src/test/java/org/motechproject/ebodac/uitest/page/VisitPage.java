@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 public class VisitPage extends AbstractBasePage {
 
+    private static final String NO_RECORDS_TO_VIEW = "No records to view";
     private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_3_DIV_BUTTON = "//*[@id='lookup-dialog']/div[2]/div[3]/div/button";
     private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_2_DIV_INPUT = "//*[@id='lookup-dialog']/div[2]/div[2]/div/input";
     private static final String ID_LOOKUP_DIALOG_DIV_2_DIV_1_DIV_UL_LI_6_A = "//*[@id='lookup-dialog']/div[2]/div[1]/div/ul/li[6]/a";
@@ -14,16 +15,16 @@ public class VisitPage extends AbstractBasePage {
     private static final String INNER_HTML = "innerHTML";
     private static final String VISIT_ID_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[1]";
     private static final String ACTUAL_VISIT_HTML = "//*[@id='instancesTable']/tbody/tr[2]/td[3]";
-    private static final String TABLE_HTML = "//*[@id='gview_instancesTable']/div[3]";
-    public static final String URL_PATH = "/home#/mds/dataBrowser";
-    static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
-    static final By VISIT_DATE = By.xpath("//table[@id='instancesTable']/tbody/tr[2]/td[2]");
-    static final int SLEEP_500 = 500;
-    static final int SLEEP_1000 = 1000;
-    public static final By PLANNED_VISIT_DATE_HEAD = By.id("jqgh_instancesTable_motechProjectedDate");
-    public static final By PLANNED_VISIT_DATE_SORT = By
-            .xpath("//div[@id='jqgh_instancesTable_motechProjectedDate']/span/span[2]");
+    private static final String AMOUNT_VISITS_DIV = "//*[@id='pageInstancesTable_left']/div";
+    private static final String URL_PATH = "/home#/mds/dataBrowser";
+    private static final By VISIT = By.xpath("//table[@id='instancesTable']/tbody/tr[2]");
+    private static final int SLEEP_500 = 500;
+    private static final int SLEEP_1SEC = 1000;
     private static final long SLEEP_2SEG = 2000;
+    private static final By PLANNED_VISIT_DATE_HEAD = By.id("jqgh_instancesTable_motechProjectedDate");
+    private static final By PLANNED_VISIT_DATE_SORT = By
+            .xpath("//div[@id='jqgh_instancesTable_motechProjectedDate']/span/span[2]");
+  
 
     public VisitPage(WebDriver driver) {
         super(driver);
@@ -41,7 +42,7 @@ public class VisitPage extends AbstractBasePage {
 
     public boolean visitsExist() {
         try {
-            Thread.sleep(SLEEP_1000);
+            Thread.sleep(SLEEP_1SEC);
             findElement(VISIT);
             return true;
         } catch (Exception e) {
@@ -57,9 +58,9 @@ public class VisitPage extends AbstractBasePage {
 
     public void sortByPlannedDateColumn() throws InterruptedException {
         clickWhenVisible(PLANNED_VISIT_DATE_HEAD);
-        Thread.sleep(SLEEP_1000);
+        Thread.sleep(SLEEP_1SEC);
         clickWhenVisible(PLANNED_VISIT_DATE_SORT);
-        Thread.sleep(SLEEP_1000);
+        sleep(SLEEP_1SEC);
     }
 
     public boolean findByParticipantId(String participantId) {
@@ -107,8 +108,7 @@ public class VisitPage extends AbstractBasePage {
         boolean status = false;
         String webElementHtml = "";
         try {
-            webElementHtml = findElement(By.xpath(VISIT_ID_HTML))
-                    .getAttribute(INNER_HTML);
+            webElementHtml = findElement(By.xpath(VISIT_ID_HTML)).getAttribute(INNER_HTML);
             getLogger().error("findVisitsByParticipantID - webElementHTML :" + webElementHtml);
             status = webElementHtml.contains(participantId);
         } catch (NullPointerException e) {
@@ -129,8 +129,7 @@ public class VisitPage extends AbstractBasePage {
     public boolean findActualDate(String actualDate) {
         boolean status = false;
         try {
-            status = findElement(By.xpath(ACTUAL_VISIT_HTML)).getAttribute(INNER_HTML)
-                    .contains(actualDate);
+            status = findElement(By.xpath(ACTUAL_VISIT_HTML)).getAttribute(INNER_HTML).contains(actualDate);
         } catch (Exception e) {
             status = false;
             getLogger().error("findActualDate - Exception . Reason : " + e.getLocalizedMessage(), e);
@@ -146,7 +145,7 @@ public class VisitPage extends AbstractBasePage {
     public boolean hasVisitsVisible() {
         boolean status = false;
         try {
-            status = findElement(By.xpath(TABLE_HTML)).getAttribute(INNER_HTML).contains("id=");
+            status = !findElement(By.xpath(AMOUNT_VISITS_DIV)).getAttribute(INNER_HTML).contains(NO_RECORDS_TO_VIEW);
         } catch (Exception e) {
             status = false;
             getLogger().error("findActualDate - Exception . Reason : " + e.getLocalizedMessage(), e);

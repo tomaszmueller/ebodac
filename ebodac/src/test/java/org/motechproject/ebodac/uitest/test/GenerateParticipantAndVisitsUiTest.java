@@ -17,7 +17,7 @@ import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.VisitPage;
 import static org.junit.Assert.assertTrue;
 
-public class GetVisitDataFromRAVEUiTest extends TestBase {
+public class GenerateParticipantAndVisitsUiTest extends TestBase {
     private static final String EMPTY_STRING = "";
     private Map<String, String> prop = new HashMap<String, String>();
     private LoginPage loginPage;
@@ -90,7 +90,7 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
                 httpClientHelper.addVisits(user, password, prop, null);
             }
         } catch (Exception e) {
-            getLogger().error("initNewParticipantAndVisits - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("initNewParticipantAndVisits - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -127,15 +127,15 @@ public class GetVisitDataFromRAVEUiTest extends TestBase {
             }
 
         } catch (AssertionError e) {
-            getLogger().error("getVisitDataFromRAVETest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - AEx . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("getVisitDataFromRAVETest - IEx . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (NullPointerException e) {
-            getLogger().error("getVisitDataFromRAVETest - NullPointerException . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("getVisitDataFromRAVETest - NPE . Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (Exception e) {
-            getLogger().error("getVisitDataFromRAVETest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
