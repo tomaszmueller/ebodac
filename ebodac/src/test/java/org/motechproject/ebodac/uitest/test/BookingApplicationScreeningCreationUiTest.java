@@ -82,7 +82,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             bookingAppScreeningPage.changeFilterTo(DATE_RANGE);
             bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(DOT, EMPTY);
 
-            if (EMPTY != bookingId) {
+            if (EMPTY != bookingId && null != bookingId) {
                 assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
             }
 

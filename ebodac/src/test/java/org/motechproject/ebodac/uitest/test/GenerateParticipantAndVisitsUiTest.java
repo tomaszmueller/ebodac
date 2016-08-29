@@ -50,7 +50,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             setParticipantId(httpClientHelper.generateNewParticipantId(participantId));
             // We start the visits and the participants.
             if (null != this.getParticipantId()) {
-                initReplaceNewParticipantFile(this.getParticipantId());
+                addNewVisitsForParticipant();
             }
             // We start the pages.
             loginPage = new LoginPage(getDriver());
@@ -65,32 +65,39 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
         } catch (NullPointerException e) {
             getLogger().error("setup - NPE . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("setup - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setup - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }
 
-    public void initReplaceNewParticipantFile(String participantId) {
+    public void addNewVisitsForParticipant() {
 
         try {
             // Add a participant in the Participant.
             participant = new TestParticipant();
-            if (null != participantId && EMPTY_STRING != participantId) {
+            if (null != this.getParticipantId() && EMPTY_STRING != this.getParticipantId()) {
                 participant.setId(participantId);
-                participant.setParticipantId(participantId);
+                participant.setParticipantId(this.getParticipantId());
+                if (httpClientHelper.addParticipant(participant, user, password)) {
+                    // Add visits for the participant
+                    prop.put(UITestHttpClientHelper.PARTICIPANT_ID, participant.getParticipantId());
+                    prop.put(UITestHttpClientHelper.DATE_OF_BIRTH, "1970-01-01");
+                    prop.put(UITestHttpClientHelper.GENDER, "M");
+                    prop.put(UITestHttpClientHelper.SCREENING_ACTUAL_DATE, NEW_SCREENING_ACTUAL_DATE);
+                    prop.put(UITestHttpClientHelper.PRIME_ACTUAL_DATE,
+                            (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
+                    httpClientHelper.addVisits(user, password, prop, null);
+                } else {
+                    getLogger().error("addNewVisitsForParticipant - cannot add the Visits for the participant :"
+                            + this.getParticipantId());
+                }
+
+            } else {
+                getLogger().error("addNewVisitsForParticipant - participantId is null or empty");
             }
-            if (null != participantId && httpClientHelper.addParticipant(participant, user, password)) {
-                // Add visits for the participant
-                prop.put(UITestHttpClientHelper.PARTICIPANT_ID, participant.getParticipantId());
-                prop.put(UITestHttpClientHelper.DATE_OF_BIRTH, "1970-01-01");
-                prop.put(UITestHttpClientHelper.GENDER, "M");
-                prop.put(UITestHttpClientHelper.SCREENING_ACTUAL_DATE, NEW_SCREENING_ACTUAL_DATE);
-                prop.put(UITestHttpClientHelper.PRIME_ACTUAL_DATE,
-                        (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
-                httpClientHelper.addVisits(user, password, prop, null);
-            }
+
         } catch (Exception e) {
-            getLogger().error("initNewParticipantAndVisits - Exc . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("addNewVisitsForParticipant - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -129,11 +136,9 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
         } catch (AssertionError e) {
             getLogger().error("getVisitDataFromRAVETest - AEx . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("getVisitDataFromRAVETest - IEx . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error("getVisitDataFromRAVETest - IEx . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("getVisitDataFromRAVETest - NPE . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error("getVisitDataFromRAVETest - NPE . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             getLogger().error("getVisitDataFromRAVETest - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
