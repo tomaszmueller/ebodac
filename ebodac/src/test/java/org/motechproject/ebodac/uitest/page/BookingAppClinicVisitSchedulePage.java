@@ -58,7 +58,7 @@ public class BookingAppClinicVisitSchedulePage extends AbstractBasePage {
                         status = true;
                     }
                 }
-            }
+            } 
 
         } catch (NullPointerException e) {
             getLogger().error("findParticipantWithoutPrimeVacDay - NPE . Reason :" + e.getLocalizedMessage(), e);
