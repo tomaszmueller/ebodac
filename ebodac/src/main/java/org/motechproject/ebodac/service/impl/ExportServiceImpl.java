@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 @Service("exportService")
@@ -33,47 +34,65 @@ public class ExportServiceImpl implements ExportService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void exportEntityToPDF(PdfBasicTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
-                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+    public void exportEntityToPDF(PdfBasicTemplate template, Class<?> entityDtoType, Class<?> entityType,
+            Map<String, String> headerMap, String lookup, String lookupFields, QueryParams queryParams)
+            throws IOException {
         PdfTableWriter tableWriter = new CustomColumnWidthPdfTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
     @Override
-    public void exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
-                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+    public void exportEntityToCSV(Writer writer, Class<?> entityDtoType, Class<?> entityType,
+            Map<String, String> headerMap, String lookup, String lookupFields, QueryParams queryParams)
+            throws IOException {
         CsvTableWriter tableWriter = new CsvTableWriter(writer);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
     @Override
-    public void exportEntityToExcel(XlsBasicTemplate template, Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
-                                    String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+    public void exportEntityToExcel(XlsBasicTemplate template, Class<?> entityDtoType, Class<?> entityType,
+            Map<String, String> headerMap, String lookup, String lookupFields, QueryParams queryParams)
+            throws IOException {
         ExcelTableWriter tableWriter = new ExcelTableWriter(template);
         exportEntity(entityDtoType, entityType, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
     @Override
-    public void exportEntityToCSV(Writer writer, String entityClassName, Map<String, String> headerMap,
-                                  String lookup, String lookupFields, QueryParams queryParams) throws IOException {
+    public void emailExportEntityToCSV(Writer writer, String entityClassName, Map<String, String> headerMap,
+            String lookup, String lookupFields, QueryParams queryParams , boolean showNullsCells) throws IOException {
+        CsvTableWriter tableWriter = new CsvTableWriter(writer);
+        emailExportEntity(entityClassName, headerMap, tableWriter, lookup, lookupFields, queryParams , showNullsCells);
+    }
+
+    @Override
+    public void exportEntityToCSV(Writer writer, String entityClassName, Map<String, String> headerMap, String lookup,
+            String lookupFields, QueryParams queryParams) throws IOException {
         CsvTableWriter tableWriter = new CsvTableWriter(writer);
         exportEntity(entityClassName, headerMap, tableWriter, lookup, lookupFields, queryParams);
     }
 
     @Override
-    public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
+    public <T> void exportEntity(List<T> entities, Map<String, String> headerMap, TableWriter tableWriter)
+            throws IOException {
         exportEntityList(entities, headerMap, tableWriter);
     }
 
-    private void exportEntity(String entityClassName, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
-                                  String lookupFields, QueryParams queryParams) throws IOException {
+    private void emailExportEntity(String entityClassName, Map<String, String> headerMap, TableWriter tableWriter,
+            String lookup, String lookupFields, QueryParams queryParams, boolean showNullsCells) throws IOException {
+        Records<?> records = lookupService.getEntities(entityClassName, lookup, lookupFields, queryParams);
+
+        emailExportEntityList(records.getRows(), headerMap, tableWriter , showNullsCells);
+    }
+
+    private void exportEntity(String entityClassName, Map<String, String> headerMap, TableWriter tableWriter,
+            String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         Records<?> records = lookupService.getEntities(entityClassName, lookup, lookupFields, queryParams);
 
         exportEntityList(records.getRows(), headerMap, tableWriter);
     }
 
-    private void exportEntity(Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap, TableWriter tableWriter, String lookup,
-                                                      String lookupFields, QueryParams queryParams) throws IOException {
+    private void exportEntity(Class<?> entityDtoType, Class<?> entityType, Map<String, String> headerMap,
+            TableWriter tableWriter, String lookup, String lookupFields, QueryParams queryParams) throws IOException {
         Records records;
         if (entityDtoType != null) {
             records = lookupService.getEntities(entityDtoType, entityType, lookup, lookupFields, queryParams);
@@ -84,7 +103,36 @@ public class ExportServiceImpl implements ExportService {
         exportEntityList(records.getRows(), headerMap, tableWriter);
     }
 
-    private void exportEntityList(List entities, Map<String, String> headerMap, TableWriter tableWriter) throws IOException {
+    private void emailExportEntityList(List entities, Map<String, String> headerMap, TableWriter tableWriter,
+            boolean showNullsCells) throws IOException {
+        Set<String> keys = headerMap.keySet();
+        String[] fields = keys.toArray(new String[keys.size()]);
+        try {
+            tableWriter.writeHeader(fields);
+            for (Object entity : entities) {
+                Map<String, String> row = buildRow(entity, headerMap);
+
+                // Forced update due to EBODAC-1088
+                if (showNullsCells) {
+                    for (Entry<String, String> entry : row.entrySet()) {
+                        if (entry.getValue() == null) {
+                            String key = entry.getKey();
+                            row.put(key, "NULL");
+                        }
+                    }
+                }
+
+                tableWriter.writeRow(row, fields);
+            }
+        } catch (IOException e) {
+            throw new IOException("IO Error when writing data", e);
+        } finally {
+            tableWriter.close();
+        }
+    }
+
+    private void exportEntityList(List entities, Map<String, String> headerMap, TableWriter tableWriter)
+            throws IOException {
         Set<String> keys = headerMap.keySet();
         String[] fields = keys.toArray(new String[keys.size()]);
         try {
@@ -102,7 +150,8 @@ public class ExportServiceImpl implements ExportService {
 
     private <T> Map<String, String> buildRow(T entity, Map<String, String> headerMap) throws IOException {
         String json = objectMapper.writeValueAsString(entity);
-        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() { });
+        Map<String, Object> entityMap = objectMapper.readValue(json, new TypeReference<HashMap>() {
+        });
         Map<String, String> row = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
@@ -127,6 +176,6 @@ public class ExportServiceImpl implements ExportService {
             }
             row.put(entry.getKey(), value);
         }
-        return  row;
+        return row;
     }
 }

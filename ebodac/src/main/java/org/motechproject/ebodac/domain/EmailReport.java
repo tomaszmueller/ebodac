@@ -51,6 +51,9 @@ public class EmailReport {
 
     @Field
     private EmailReportStatus status;
+    
+    @Field
+    private boolean showNullsCells;
 
     public EmailReport() {
     }
@@ -79,6 +82,14 @@ public class EmailReport {
         this.subject = subject;
     }
 
+    public boolean getShowNullsCells() {
+        return this.showNullsCells;
+    }
+
+    public void setShowNullsCells(boolean showNullsCells) {
+        this.showNullsCells = showNullsCells;
+    }
+    
     public String getMessageContent() {
         return messageContent;
     }

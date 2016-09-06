@@ -102,6 +102,7 @@ public class EmailReportServiceImpl implements EmailReportService {
                 try {
                     ebodacScheduler.scheduleEmailReportJob(startDate, period.getPeriod(), report.getId());
                 } catch (RuntimeException e) {
+                    LOGGER.error("saveReport - RE - Reason:" + e.getLocalizedMessage(), e);
                     deleteReport(report);
                     throw new MotechSchedulerException(e);
                 }
@@ -153,13 +154,16 @@ public class EmailReportServiceImpl implements EmailReportService {
                     Map<String, String> headerMap = new LinkedHashMap<>();
 
                     for (EbodacEntityField field : emailReport.getEntity().getFields()) {
-                        headerMap.put(field.isRelationField() ? field.getRelatedFieldDisplayName() : field.getDisplayName(), field.getFieldPath());
+                        headerMap.put(
+                                field.isRelationField() ? field.getRelatedFieldDisplayName() : field.getDisplayName(),
+                                field.getFieldPath());
                     }
 
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     Writer writer = new OutputStreamWriter(out);
 
-                    exportService.exportEntityToCSV(writer, emailReport.getEntity().getClassName(), headerMap, null, null, null);
+                    exportService.emailExportEntityToCSV(writer, emailReport.getEntity().getClassName(), headerMap,
+                            null, null, null, emailReport.getShowNullsCells());
                     source = new ByteArrayDataSource(out.toByteArray(), "text/csv");
                 }
 
@@ -168,15 +172,20 @@ public class EmailReportServiceImpl implements EmailReportService {
                 }
 
                 DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
-                String fileName = (StringUtils.isNotBlank(emailReport.getName()) ? emailReport.getName() : emailReport.getEntity().getName())
-                        + "_" + DateTime.now().toString(dateTimeFormatter) + ".csv";
+                String fileName = (StringUtils.isNotBlank(emailReport.getName()) ? emailReport.getName()
+                        : emailReport.getEntity().getName()) + "_" + DateTime.now().toString(dateTimeFormatter)
+                        + ".csv";
 
-                ebodacEmailClient.sendNewMessage(config.getEmailReportHost(), config.getEmailReportAddress(), config.getEmailReportPassword(),
-                        config.getEmailReportPort(), emailReport.getSubject(), recipients, emailReport.getMessageContent(), source, fileName);
+                ebodacEmailClient.sendNewMessage(config.getEmailReportHost(), config.getEmailReportAddress(),
+                        config.getEmailReportPassword(), config.getEmailReportPort(), emailReport.getSubject(),
+                        recipients, emailReport.getMessageContent(), source, fileName);
             } catch (IllegalArgumentException e) {
-                LOGGER.error("Could not send email for report with id: {}, because of wrong report data: {}", reportId, e.getMessage(), e);
+                LOGGER.error("Could not send email for report with id: {}, because of wrong report data: {}", reportId,
+                        e.getMessage(), e);
             } catch (Exception e) {
-                LOGGER.error("Could not send email for report with id: {}, because exception occurred when generating report: {}", reportId, e.getMessage(), e);
+                LOGGER.error(
+                        "Could not send email for report with id: {}, because exception occurred when generating report: {}",
+                        reportId, e.getMessage(), e);
             }
         }
     }
