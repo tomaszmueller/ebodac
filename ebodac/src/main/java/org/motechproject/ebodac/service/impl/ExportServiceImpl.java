@@ -28,6 +28,8 @@ import java.util.Set;
 @Service("exportService")
 public class ExportServiceImpl implements ExportService {
 
+    private static final String NULL = "NULL";
+
     @Autowired
     private LookupService lookupService;
 
@@ -116,12 +118,11 @@ public class ExportServiceImpl implements ExportService {
                 if (showNullsCells) {
                     for (Entry<String, String> entry : row.entrySet()) {
                         if (entry.getValue() == null) {
-                            String key = entry.getKey();
-                            row.put(key, "NULL");
+                            entry.setValue(NULL);
                         }
                     }
                 }
-
+                // -- end update
                 tableWriter.writeRow(row, fields);
             }
         } catch (IOException e) {
