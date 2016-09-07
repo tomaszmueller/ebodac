@@ -25,7 +25,6 @@ public class ChangeLanguageUiTest extends TestBase {
     private String originalLanguage;
     private LoginPage loginPage;
     private HomePage homePage;
-    // private EBODACPage ebodacPage;
     private ParticipantPage participantPage;
     private ParticipantEditPage participantEditPage;
     private Integer htmlposition;

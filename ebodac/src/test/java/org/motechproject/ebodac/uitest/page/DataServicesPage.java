@@ -46,16 +46,25 @@ public class DataServicesPage extends AbstractBasePage {
 
     }
 
+    public void sleep(long timeout) throws Exception {
+        Thread.sleep(timeout);
+    }
 
-    public boolean sleep(long timeout) throws Exception {
-        boolean status = false;
+    public void searchEntity(String entity) {
         try {
-            wait(timeout);
-            status = true;
+            findElement(By.xpath("//*[@id='dataBrowser']/div/div[1]/div[1]/input")).sendKeys(entity);
         } catch (Exception e) {
-            status = false;
+            getLogger().error("searchEntity - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
 
-        return status;
+    }
+
+    public void selectEntity() {
+        try {
+            findElement(By.xpath("//*[@id='data-browser-entity']/div[2]/a/div")).click();
+        } catch (Exception e) {
+            getLogger().error("selectEntity - Exc . Reason : " + e.getLocalizedMessage(), e);
+        }
+
     }
 }

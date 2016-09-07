@@ -48,38 +48,87 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="subject{{$index}}">{{msg('ebodac.web.emailReports.subject')}}</label>
-                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.subject.tooltip')}}">
-                                        <input type="text" class="form-control" id="subject{{$index}}" ng-model="report.subject"/>
+                                    <label class="col-md-3 control-label" 
+                                            for="subject{{$index}}">{{msg('ebodac.web.emailReports.subject')}}</label>
+                                    <div class="col-md-8" 
+                                        data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        data-trigger="hover" 
+                                        bs-popover="{{msg('ebodac.web.emailReports.subject.tooltip')}}">
+                                        <input type="text" 
+                                            class="form-control" 
+                                            id="subject{{$index}}" ng-model="report.subject"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label" for="messageContent{{$index}}">{{msg('ebodac.web.emailReports.messageContent')}}</label>
-                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.messageContent.tooltip')}}">
-                                        <textarea spellcheck="false" class="form-control" id="messageContent{{$index}}" type="text" ng-model="report.messageContent" rows="6"></textarea>
+                                    <label class="col-md-3 control-label" 
+                                        for="messageContent{{$index}}">{{msg('ebodac.web.emailReports.messageContent')}}</label>
+                                    <div class="col-md-8" 
+                                            data-toggle="tooltip" 
+                                            data-placement="top" 
+                                            data-trigger="hover" 
+                                            bs-popover="{{msg('ebodac.web.emailReports.messageContent.tooltip')}}">
+                                        <textarea spellcheck="false" 
+                                            class="form-control" 
+                                            id="messageContent{{$index}}" 
+                                            type="text" 
+                                            ng-model="report.messageContent" rows="6"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-group" ng-class="{'has-error': !report.entity}">
-                                    <label class="col-md-3 control-label" for="entity{{$index}}">{{msg('ebodac.web.emailReports.entity')}}</label>
-                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.entity.tooltip')}}">
-                                        <select class="form-control" id="entity{{$index}}" ui-select2 ng-model="selectedEntity[$index]" ng-change="entityChanged($index)"
+                                    <label class="col-md-3 control-label" 
+                                        for="entity{{$index}}">{{msg('ebodac.web.emailReports.entity')}}</label>
+                                    <div class="col-md-8" 
+                                        data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        data-trigger="hover" 
+                                        bs-popover="{{msg('ebodac.web.emailReports.entity.tooltip')}}">
+                                        <select class="form-control" 
+                                                id="entity{{$index}}" ui-select2 ng-model="selectedEntity[$index]" 
+                                                ng-change="entityChanged($index)"
                                                 ng-options="entity as entity.name for (key, entity) in entities">
                                             <option value=""></option>
                                         </select>
-                                        <span ng-show="!report.entity" class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
+                                        <span ng-show="!report.entity" 
+                                            class="form-hint form-hint-bottom">{{msg('ebodac.web.required_field')}}</span>
                                     </div>
                                 </div>
-
+                                
                                 <div class="form-group" ng-hide="!report.entity">
-                                    <label class="col-md-3 control-label" for="entityFields{{$index}}">{{msg('ebodac.web.emailReports.entityFields')}}</label>
-                                    <div class="col-md-8" data-toggle="tooltip" data-placement="top" data-trigger="hover" bs-popover="{{msg('ebodac.web.emailReports.entityFields.tooltip')}}">
-                                        <select class="form-control" id="entityFields{{$index}}" ui-select2 multiple ng-model="report.entity.fields"
+                                    <label class="col-md-3 control-label" 
+                                            for="entityFields{{$index}}">{{msg('ebodac.web.emailReports.entityFields')}}</label>
+                                    <div class="col-md-8" 
+                                                data-toggle="tooltip" 
+                                                data-placement="top" 
+                                                data-trigger="hover" 
+                                                bs-popover="{{msg('ebodac.web.emailReports.entityFields.tooltip')}}">
+                                        <select class="form-control" 
+                                                id="entityFields{{$index}}" 
+                                                ui-select2 multiple ng-model="report.entity.fields"
                                                 ng-options="field as field.displayName + (field.relationField ? ' -> ' + field.relatedFieldDisplayName : '') for field in selectedEntity[$index].fields track by field.fieldPath">
                                             <option value=""></option>
                                         </select>
                                     </div>
+                                </div>
+                                
+                                <div class="form-group" ng-class="{'has-error': !report.entity}">
+                                    <label class="col-md-3 control-label" 
+                                            for="showNullsCells{{$index}}" >{{msg('ebodac.web.emailReports.showNullsCells')}}</label>
+                                        <div class="col-md-1" 
+                                                    data-toggle="tooltip" 
+                                                    data-placement="top" 
+                                                    data-trigger="hover" 
+                                                    bs-popover="{{msg('ebodac.web.emailReports.showNullsCells.tooltip')}}">
+                                            <input class="form-control"  
+                                                   id="showNullsCells{{$index}}" 
+                                                   type="checkbox" 
+                                                   name="showNullsCells{{$index}}" 
+                                                   ng-change="showNullsCells($index)"
+                                                   ng-model="report.showNullsCells"  
+                                                   value="showNullsCells{{$index}}"/>
+                                        </div>    
                                 </div>
 
                                 <div class="form-group">
