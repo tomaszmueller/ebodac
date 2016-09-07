@@ -14,6 +14,11 @@ import static org.junit.Assert.assertEquals;
 
 public class BookingAppScreeningPage extends AbstractBasePage {
 
+    private static final By XPATH_FIND_BUTTON = By.xpath("//*[@id='lookup-dialog']/div[2]/div[3]/div/button");
+    private static final By XPATH_LOOKUP_FIELD = By.xpath("//*[@id='lookup-dialog']/div[2]/div[2]/div/input");
+    private static final By XPATH_LINK_TEXT = By.linkText("Find By Booking Id");
+    private static final By XPATH_LOOKUP_BUTTON = By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/button");
+    private static final By XPATH_FILTER_BUTTON = By.xpath("//*[@id='lookupDialogButton']");
     private static final String TITLE = "title";
     private static final String YYYY_MM_DD = "yyyy-MM-dd";
     private static final String INNER_HTML = "innerHTML";
@@ -41,10 +46,11 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     private static final By CLOSE_BUTTON = By.xpath("//button[@data-dismiss='modal']");
     private static final By CLOSE_BUTTON_TEXT = By.xpath("//button[contains(text(),'Close')]");
     private static final By EXPORT_BUTTON = By.xpath("(//button[@type='button'])[5]");
-    private static final By CONFIRM_EXPORT = By.xpath("//div[@id='exportBookingAppInstanceModal']/div[2]/div/div[3]/button");
+    private static final By CONFIRM_EXPORT = By
+            .xpath("//div[@id='exportBookingAppInstanceModal']/div[2]/div/div[3]/button");
     private static final By FILTER = By.xpath("//div[@class='btn-group']/button[@data-toggle='dropdown']");
     private static final By BOOKING_STRING = By.xpath("//div[@id='screeningModal']/div[2]/div/div[2]/div");
-    private static final By FIRST_VISIT = By.xpath("//table[@id='screenings']/tbody/tr[2]/td[3]");
+    private static final By FIRST_VISIT = By.xpath("//table[@id='screenings']/tbody/tr[2]/td[4]");
     private static final By FORMAT = By.linkText("PDF");
     private static final By XLS = By.xpath("(//a[contains(text(),'XLS')])[2]");
     private static final By START_DATE = By.xpath("//input[@ng-model='selectedFilter.startDate']");
@@ -65,69 +71,78 @@ public class BookingAppScreeningPage extends AbstractBasePage {
     private static final int SLEEP_2SEC = 2000;
     private static final int SLEEP_4SEC = 4000;
     private ScreeningCardPage screeningCardPage;
-  
+
     public BookingAppScreeningPage(WebDriver driver) {
         super(driver);
     }
 
     public String bookScreeningVisit() throws InterruptedException {
         String bookingString = EMPTY;
-        waitForElement(SCREENING_BUTTON);
-        clickOn(SCREENING_BUTTON);
-        clickWhenVisible(SCREENING_BUTTON);
-        sleep(SLEEP_2SEC);
-        clickWhenVisible(DATE_FIELD);
-        clickWhenVisible(TODAY_BUTTON);
-        setTextToFieldNoEnter(TIME_FIELD, new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
-        clickWhenVisible(TIME_DONE);
-        waitForElement(CLINIC_LOCATION);
-        sleep(SLEEP_2SEC);
-        clickWhenVisible(CLINIC_LOCATION);
-        clickWhenVisible(CLINIC);
-        waitForElement(SAVE_BUTTON);
-        clickWhenVisible(SAVE_BUTTON);
-        waitForElement(POPUP_OK);
-        clickWhenVisible(POPUP_OK);
-        sleep(TIMEOUT);
-        clickWhenVisible(POPUP_OK);
-        sleep(TIMEOUT);
-        if (findElement(By.xpath(MODAL)).isDisplayed()) {
-            waitForElement(BOOKING_STRING);
-            bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace(DOT, EMPTY)
-                    .replace(SPACE, EMPTY);
+        try {
+            waitForElement(SCREENING_BUTTON);
+            clickOn(SCREENING_BUTTON);
+            clickWhenVisible(SCREENING_BUTTON);
+            sleep(SLEEP_2SEC);
+            clickWhenVisible(DATE_FIELD);
+            clickWhenVisible(TODAY_BUTTON);
+            setTextToFieldNoEnter(TIME_FIELD, new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
+            clickWhenVisible(TIME_DONE);
+            waitForElement(CLINIC_LOCATION);
+            sleep(SLEEP_2SEC);
+            clickWhenVisible(CLINIC_LOCATION);
+            clickWhenVisible(CLINIC);
+            waitForElement(SAVE_BUTTON);
+            clickWhenVisible(SAVE_BUTTON);
+            waitForElement(POPUP_OK);
+            clickWhenVisible(POPUP_OK);
+            sleep(TIMEOUT);
+            clickWhenVisible(POPUP_OK);
+            sleep(TIMEOUT);
+            if (findElement(By.xpath(MODAL)).isDisplayed()) {
+                waitForElement(BOOKING_STRING);
+                bookingString = findElement(BOOKING_STRING).getText().substring(TEXTPOINT).replace(DOT, EMPTY)
+                        .replace(SPACE, EMPTY);
 
-            waitForElement(PRINT_CARD);
-            clickWhenVisible(PRINT_CARD);
-            sleep(TIMEOUT);
-            ArrayList<String> tabs2 = new ArrayList<String>(getDriver().getWindowHandles());
-            getDriver().switchTo().window(tabs2.get(1));
-            screeningCardPage = new ScreeningCardPage(getDriver());
-            String screeningBookingId = screeningCardPage.getBookingId();
-            assertEquals(screeningBookingId, bookingString);
-            getDriver().close();
-            getDriver().switchTo().window(tabs2.get(ZERO));
-            sleep(TIMEOUT);
-            waitForElement(CLOSE_BUTTON);
-            clickOn(CLOSE_BUTTON);
-            clickWhenVisible(CLOSE_BUTTON);
+                waitForElement(PRINT_CARD);
+                clickWhenVisible(PRINT_CARD);
+                sleep(TIMEOUT);
+                ArrayList<String> tabs2 = new ArrayList<String>(getDriver().getWindowHandles());
+                getDriver().switchTo().window(tabs2.get(1));
+                screeningCardPage = new ScreeningCardPage(getDriver());
+                String screeningBookingId = screeningCardPage.getBookingId();
+                assertEquals(screeningBookingId, bookingString);
+                getDriver().close();
+                getDriver().switchTo().window(tabs2.get(ZERO));
+                sleep(TIMEOUT);
+                waitForElement(CLOSE_BUTTON);
+                clickOn(CLOSE_BUTTON);
+                clickWhenVisible(CLOSE_BUTTON);
+            }
+        } catch (Exception e) {
+            getLogger().error("bookScreeningVisit - Exc . Reason : " + e.getLocalizedMessage(), e);
+
         }
-
         return bookingString;
     }
 
     public void bookVisitForScreening() throws InterruptedException {
-        sleep(SLEEP_1SEC);
-        clickWhenVisible(SCREENING_BUTTON_NG_CLICK);
-        clickWhenVisible(DATE_FIELD_INPUT);
-        clickWhenVisible(TODAY_BUTTON);
-        clickWhenVisible(DONE_BUTTON);
-        clickWhenVisible(START_TIME_PICKER);
-        clickWhenVisible(NOW_BUTTON);
-        clickWhenVisible(DONE_BUTTON);
-        clickWhenVisible(CLINIC_LOCATION_DROP_DOWN);
-        sleep(SLEEP_1SEC);
-        clickWhenVisible(CLINIC_LOCACATION_KAMBIA_I);
-        clickWhenVisible(SAVE_BUTTON_NG_CLICK);
+        try {
+            sleep(SLEEP_1SEC);
+            clickWhenVisible(SCREENING_BUTTON_NG_CLICK);
+            clickWhenVisible(DATE_FIELD_INPUT);
+            clickWhenVisible(TODAY_BUTTON);
+            clickWhenVisible(DONE_BUTTON);
+            clickWhenVisible(START_TIME_PICKER);
+            clickWhenVisible(NOW_BUTTON);
+            clickWhenVisible(DONE_BUTTON);
+            clickWhenVisible(CLINIC_LOCATION_DROP_DOWN);
+            sleep(SLEEP_1SEC);
+            clickWhenVisible(CLINIC_LOCACATION_KAMBIA_I);
+            clickWhenVisible(SAVE_BUTTON_NG_CLICK);
+        } catch (Exception e) {
+            getLogger().error("bookVisitForScreening - Exc . Reason : " + e.getLocalizedMessage(), e);
+
+        }
     }
 
     public void confirmBookVistiForScreening() throws InterruptedException {
@@ -186,54 +201,63 @@ public class BookingAppScreeningPage extends AbstractBasePage {
 
     public boolean bookingIdExists(String id) {
         boolean exists = false;
-        int counter = 0;
-        while (findElement(NEXT_PAGE).isEnabled()) {
-            if (counter > MAX_PAGES) {
-                break;
-            }
-            if (bookingIdExistsOnPage(id)) {
+        try {
+            clickWhenClickable(XPATH_FILTER_BUTTON);
+            sleep(SLEEP_2SEC);
+            clickWhenClickable(XPATH_LOOKUP_BUTTON);
+            sleep(SLEEP_2SEC);
+            clickWhenClickable(XPATH_LINK_TEXT);
+            sleep(SLEEP_2SEC);
+            findElement(XPATH_LOOKUP_FIELD).sendKeys(id);
+            sleep(SLEEP_2SEC);
+            clickWhenVisible(XPATH_FIND_BUTTON);
+            if (hasVisits()) {
                 exists = true;
-                break;
-            } else {
-                clickOn(NEXT_PAGE);
             }
-            counter++;
+
+        } catch (Exception e) {
+            getLogger().error("bookingIdExists - Exc . Reason : " + e.getLocalizedMessage(), e);
+            exists = false;
         }
         return exists;
-
     }
 
     public boolean bookingIdExistsOnPage(String id) {
+        boolean status = false;
         try {
             By elementBookingId = By.cssSelector("td[title=\"" + id + "\"]");
             sleep(TIMEOUT);
             waitForElement(elementBookingId);
             WebElement element = findElement(elementBookingId);
             if (element != null) {
-                return true;
+                status = true;
             }
-            return false;
+
         } catch (Exception e) {
-            return false;
+            getLogger().error("bookingIdExistsOnPage - Exc . Reason : " + e.getLocalizedMessage(), e);
+            status = false;
         }
+
+        return status;
     }
 
     public boolean isFirstBookingOK(ArrayList<LocalDate> dates) {
+        boolean status = false;
         try {
-            WebElement firstVisitElement = findElement(FIRST_VISIT);
-            if (firstVisitElement == null) {
-                return true;
-            } else {
-                LocalDate date = LocalDate.parse((firstVisitElement.getAttribute(TITLE)).toString(),
+            if (hasVisits()) {
+                LocalDate date = LocalDate.parse((findElement(FIRST_VISIT).getAttribute(TITLE)).toString(),
                         DateTimeFormat.forPattern(YYYY_MM_DD));
                 if (dates.contains(date)) {
-                    return true;
+                    status = true;
                 }
-                return false;
+
             }
+
         } catch (Exception e) {
-            return true;
+            getLogger().error("isFirstBookingOK - Exc . Reason : " + e.getLocalizedMessage(), e);
+            status = false;
         }
+        return status;
     }
 
     @Override
