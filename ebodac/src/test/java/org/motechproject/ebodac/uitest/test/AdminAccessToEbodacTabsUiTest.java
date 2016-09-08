@@ -80,6 +80,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             password = userPropertiesHelper.getAdminPassword();
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
+            homePage.resizePage();
             url = getServerUrl();
 
             if (url.contains(LOCAL_TEST_MACHINE)) {
@@ -174,9 +175,7 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             // Ebodac Asserts.
             testAdminEbodacHome();
             // Visits Asserts
-            if (visitPage.hasVisitsVisible()) {
-                testAdminVisitsTab();
-            }
+            testAdminVisitsTab();
 
             // Report Asserts
             testAdminWithReports();
@@ -216,13 +215,15 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     public void testAdminVisitsTab() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
+        ebodacPage.goToVisit();
         ebodacPage.showVisits();
-        visitPage.clickVisit();
-        // DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
-        assertTrue(visitEditPage.isPlannedVisitDateEditable());
-        assertFalse(visitEditPage.isActualVisitDateEditable());
-        assertFalse(visitEditPage.isVisitTypeEditable());
-        visitEditPage.changeVisit();
+        ebodacPage.sleep(SLEEP_2SEC);
+        if (visitPage.hasVisitsVisible()) {
+            assertTrue(visitEditPage.isPlannedVisitDateEditable());
+            assertFalse(visitEditPage.isActualVisitDateEditable());
+            assertFalse(visitEditPage.isVisitTypeEditable());
+            visitEditPage.changeVisit();
+        }
     }
 
     public void testAdminEnrolmentTab() throws Exception {

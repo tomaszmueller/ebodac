@@ -50,6 +50,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         try {
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
+            homePage.resizePage();
             bookingAppPage = new BookingAppPage(getDriver());
             bookingAppScreeningPage = new BookingAppScreeningPage(getDriver());
             user = getTestProperties().getUserName();

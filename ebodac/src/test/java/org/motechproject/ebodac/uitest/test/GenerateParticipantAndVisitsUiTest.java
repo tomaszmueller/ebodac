@@ -55,6 +55,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             // We start the pages.
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
+            homePage.resizePage();
             ebodacPage = new EBODACPage(getDriver());
 
             if (url.contains(LOCAL_TEST_MACHINE) || (homePage.expectedUrlPath() != currentPage().urlPath())) {
