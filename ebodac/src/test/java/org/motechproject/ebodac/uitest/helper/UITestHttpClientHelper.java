@@ -144,7 +144,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
                         + "\"headOfHousehold\":\"" + participant.getHeadOfHousehold() + "\"," + "\"householdName\":\""
                         + participant.getHeadOfHousehold() + "\"," + "\"community\":\"" + participant.getCommunity()
                         + "\"," + "\"address\":\"" + participant.getAddress() + "\"}";
-                status = sendJson(zetesRegistrationURL, sJSONAddParticipant, user, password) != null;
+                status = null != sendJson(zetesRegistrationURL, sJSONAddParticipant, user, password);
             }
         } catch (NullPointerException e) {
             status = false;
@@ -157,7 +157,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
                     + e.getLocalizedMessage(), e);
 
         }
-
+       
         return status;
     }
 
@@ -192,7 +192,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
             LOGGER.error("addVisits - Exception . Reason : " + e.getLocalizedMessage(), e);
 
         }
-
+      
         return status;
 
     }

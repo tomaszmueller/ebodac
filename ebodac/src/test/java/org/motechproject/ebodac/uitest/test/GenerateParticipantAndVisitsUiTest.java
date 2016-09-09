@@ -30,10 +30,11 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
     private String participantId = "9999999902";
 
     private static final String NEW_SCREENING_ACTUAL_DATE = "2016-08-01";
-    private static final int WAIT_500MLSEC = 500;
-    private static final long WAIT_2SEC = 2000;
-    private static final long WAIT_5SEC = 5000;
+
+    private static final long SLEEP_2SEC = 2000;
+    private static final long SLEEP_4SEC = 4000;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    
 
     private UITestHttpClientHelper httpClientHelper;
     private TestParticipant participant;
@@ -47,11 +48,9 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             url = getServerUrl();
             httpClientHelper = new UITestHttpClientHelper(url);
             // We change the participant id
-            setParticipantId(httpClientHelper.generateNewParticipantId(participantId));
+            this.setParticipantId(httpClientHelper.generateNewParticipantId(participantId));
             // We start the visits and the participants.
-            if (null != this.getParticipantId()) {
-                addNewVisitsForParticipant();
-            }
+            addNewVisitsForParticipant();
             // We start the pages.
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
@@ -77,7 +76,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             // Add a participant in the Participant.
             participant = new TestParticipant();
             if (null != this.getParticipantId() && EMPTY_STRING != this.getParticipantId()) {
-                participant.setId(participantId);
+                participant.setId(this.getParticipantId());
                 participant.setParticipantId(this.getParticipantId());
                 if (httpClientHelper.addParticipant(participant, user, password)) {
                     // Add visits for the participant
@@ -88,6 +87,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
                     prop.put(UITestHttpClientHelper.PRIME_ACTUAL_DATE,
                             (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
                     httpClientHelper.addVisits(user, password, prop, null);
+                 
                 } else {
                     getLogger().error("addNewVisitsForParticipant - cannot add the Visits for the participant :"
                             + this.getParticipantId());
@@ -98,7 +98,8 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             }
 
         } catch (Exception e) {
-            getLogger().error("addNewVisitsForParticipant - Exc . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("addNewVisitsForParticipant - Exc . ParticipantId = " + this.getParticipantId()
+                    + " Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -107,41 +108,48 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
         try {
             // We access to the edit page of the participant
             homePage.openEBODACModule();
+            homePage.resizePage();
             // We open the Ebodac page
             ebodacPage.goToPage();
-            ebodacPage.sleep(WAIT_500MLSEC);
-            if (ebodacPage.findByParticipantID(participantId)) {
+            ebodacPage.sleep(SLEEP_4SEC);
+            ebodacPage.showParticipants();
+            ebodacPage.sleep(SLEEP_4SEC);
+            if (ebodacPage.findByParticipantID(this.getParticipantId())) {
                 // Go to Visit
+                ebodacPage.sleep(SLEEP_4SEC);
                 visitPage = new VisitPage(getDriver());
                 // Go to Visit Page
                 ebodacPage.goToVisit();
-                visitPage.goToPage();
-                visitPage.sleep(WAIT_2SEC);
-                boolean selectParticipant = visitPage.findByParticipantId(participantId);
-                visitPage.sleep(WAIT_2SEC);
+                visitPage.sleep(SLEEP_4SEC);
+                boolean selectParticipant = visitPage.findByParticipantId(this.getParticipantId());
+                visitPage.sleep(SLEEP_2SEC);
 
                 // Add assert to set that the participant is added and the
                 if (selectParticipant && visitPage.hasVisitsVisible()) {
                     // Visits select specific visit
                     assertTrue(visitPage.findActualDate(NEW_SCREENING_ACTUAL_DATE));
                 } else {
-                    getLogger().error("setDataVisitsTest - No participant Visits Found with ID : " + participantId);
+                    getLogger().error(
+                            "setDataVisitsTest - No participant Visits Found with ID : " + this.getParticipantId());
                 }
-                ebodacPage.sleep(WAIT_5SEC);
                 // visits.
 
             } else {
-                getLogger().error("setDataVisitsTest - No participant Found  with ID :" + participantId);
+                getLogger().error("setDataVisitsTest - No participant Found  with ID :" + this.getParticipantId());
             }
 
         } catch (AssertionError e) {
-            getLogger().error("getVisitDataFromRAVETest - AEx . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - AEx . ParticipantId = " + this.getParticipantId()
+                    + " Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("getVisitDataFromRAVETest - IEx . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - IEx . ParticipantId = " + this.getParticipantId()
+                    + " Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("getVisitDataFromRAVETest - NPE . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - NPE . ParticipantId = " + this.getParticipantId()
+                    + " Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("getVisitDataFromRAVETest - Exc . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("getVisitDataFromRAVETest - Exc . ParticipantId = " + this.getParticipantId()
+                    + " Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
