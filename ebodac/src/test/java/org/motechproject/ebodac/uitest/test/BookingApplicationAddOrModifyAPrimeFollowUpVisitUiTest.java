@@ -10,10 +10,9 @@ import org.motechproject.ebodac.uitest.page.BookingAppPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
-public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest extends TestBase {
+public class BookingApplicationAddOrModifyAPrimeFollowUpVisitUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -45,49 +44,41 @@ public class BookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest exte
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NPE. - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exc. - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
     @Test // EBODAC-800
-    public void bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest() throws Exception {
+    public void bookingAppAddOrModifyUiTest() throws Exception {
         try {
             homePage.resizePage();
             homePage.clickModules();
             homePage.openBookingAppModule();
-            sleep(SLEEP_2SEC);
+            homePage.sleep(SLEEP_2SEC);
             bookingAppPage.openClinicVisitSchedule();
-            sleep(SLEEP_2SEC);
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickOnDropDownParticipantId();
-            sleep(SLEEP_2SEC);
+            bookingAppPage.sleep(SLEEP_2SEC);
             String dayBeforeClean = bookingAppClinicVisitSchedulePage.getPrimeVacDateInput();
             bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
-            sleep(SLEEP_2SEC);
+            bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();
-            sleep(SLEEP_2SEC);
+            bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
             bookingAppClinicVisitSchedulePage.clickButtonCleanDate();
             // Assert to validate the changes.
-            sleep(SLEEP_2SEC);
+            bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
             assertEquals(dayBeforeClean, bookingAppClinicVisitSchedulePage.assertIfPrimeVacDayIsEmpty());
         } catch (AssertionError e) {
-            getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Error Assert : Reason :"
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAddOrModifyUiTest - AEr. Reason :" + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger()
-                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - InterruptedException . Reason :"
-                            + e.getLocalizedMessage(), e);
-
+            getLogger().error("bookingAppAddOrModifyUiTest - IEx. Reason :" + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger()
-                    .error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - NullPointerException . Reason :"
-                            + e.getLocalizedMessage(), e);
-
+            getLogger().error("bookingAppAddOrModifyUiTest - NPE. Reason :" + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("bookingApplicationAddOrModifyAPrimeFollowUpVisitTestTestUiTest - Exception . Reason :"
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppAddOrModifyUiTest - Exc. Reason :" + e.getLocalizedMessage(), e);
         }
     }
 

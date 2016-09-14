@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class EnrollAndUnenrollParticipantUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private LoginPage loginPage;
     private HomePage homePage;
     private EnrollmentPage enrollmentPage;
@@ -55,6 +56,8 @@ public class EnrollAndUnenrollParticipantUiTest extends TestBase {
     public void enrollAndUnenrollParticipantTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.goToEnrollment();
             enrollmentPage.clickAction();
             enrollmentPage.clickOK();

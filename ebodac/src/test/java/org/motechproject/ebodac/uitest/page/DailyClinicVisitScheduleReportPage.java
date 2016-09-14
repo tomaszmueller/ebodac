@@ -48,4 +48,9 @@ public class DailyClinicVisitScheduleReportPage extends AbstractBasePage {
         }
         return status;
     }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
+    }
 }

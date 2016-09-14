@@ -18,6 +18,9 @@ import org.motechproject.ebodac.uitest.page.VisitPage;
 import static org.junit.Assert.assertTrue;
 
 public class GenerateParticipantAndVisitsUiTest extends TestBase {
+    private static final String YYYY_MM_DD = "yyyy-MM-dd";
+    private static final String MALE = "M";
+    private static final String SAMPLE_DATE = "1970-01-01";
     private static final String EMPTY_STRING = "";
     private Map<String, String> prop = new HashMap<String, String>();
     private LoginPage loginPage;
@@ -33,8 +36,8 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
 
     private static final long SLEEP_2SEC = 2000;
     private static final long SLEEP_4SEC = 4000;
+
     private static final String LOCAL_TEST_MACHINE = "localhost";
-    
 
     private UITestHttpClientHelper httpClientHelper;
     private TestParticipant participant;
@@ -54,7 +57,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
             // We start the pages.
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
-            homePage.resizePage();
+
             ebodacPage = new EBODACPage(getDriver());
 
             if (url.contains(LOCAL_TEST_MACHINE) || (homePage.expectedUrlPath() != currentPage().urlPath())) {
@@ -81,25 +84,24 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
                 if (httpClientHelper.addParticipant(participant, user, password)) {
                     // Add visits for the participant
                     prop.put(UITestHttpClientHelper.PARTICIPANT_ID, participant.getParticipantId());
-                    prop.put(UITestHttpClientHelper.DATE_OF_BIRTH, "1970-01-01");
-                    prop.put(UITestHttpClientHelper.GENDER, "M");
+                    prop.put(UITestHttpClientHelper.DATE_OF_BIRTH, SAMPLE_DATE);
+                    prop.put(UITestHttpClientHelper.GENDER, MALE);
                     prop.put(UITestHttpClientHelper.SCREENING_ACTUAL_DATE, NEW_SCREENING_ACTUAL_DATE);
                     prop.put(UITestHttpClientHelper.PRIME_ACTUAL_DATE,
-                            (new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
+                            (new SimpleDateFormat(YYYY_MM_DD)).format(new Date()));
                     httpClientHelper.addVisits(user, password, prop, null);
-                 
+
                 } else {
-                    getLogger().error("addNewVisitsForParticipant - cannot add the Visits for the participant :"
-                            + this.getParticipantId());
+                    getLogger()
+                            .error("addNewVisits4Part - cannot add the Visits for the PID :" + this.getParticipantId());
                 }
 
             } else {
-                getLogger().error("addNewVisitsForParticipant - participantId is null or empty");
+                getLogger().error("addNewVisits4Part - PId is null or empty");
             }
 
         } catch (Exception e) {
-            getLogger().error("addNewVisitsForParticipant - Exc . ParticipantId = " + this.getParticipantId()
-                    + " Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("addNV4P - Exc . PId :" + this.getParticipantId() + " R: " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -108,11 +110,7 @@ public class GenerateParticipantAndVisitsUiTest extends TestBase {
         try {
             // We access to the edit page of the participant
             homePage.openEBODACModule();
-            homePage.resizePage();
             // We open the Ebodac page
-            ebodacPage.goToPage();
-            ebodacPage.sleep(SLEEP_4SEC);
-            ebodacPage.showParticipants();
             ebodacPage.sleep(SLEEP_4SEC);
             if (ebodacPage.findByParticipantID(this.getParticipantId())) {
                 // Go to Visit

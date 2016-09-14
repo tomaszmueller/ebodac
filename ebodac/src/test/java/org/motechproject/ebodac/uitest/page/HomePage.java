@@ -9,7 +9,8 @@ import java.lang.String;
 
 public class HomePage extends AbstractBasePage {
 
-    public static final String URL_PATH = "/home";
+    // public static final String URL_PATH = "/home";
+    public static final String URL_PATH = "/home#/ebodac/subjects";
     static final By EBODAC = By.linkText("EBODAC");
     static final By SECURITY = By.linkText("Security");
     public static final By DATA_SERVICES = By.linkText("Data Services");

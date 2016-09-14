@@ -16,6 +16,7 @@ import static org.junit.Assert.assertFalse;
 public class DailyClinicVisitReportScheduleUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
     private String user;
     private String password;
@@ -56,7 +57,9 @@ public class DailyClinicVisitReportScheduleUiTest extends TestBase {
     public void dailyClinicVisitReportScheduleTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            ebodacPage.sleep(SLEEP_2SEC);
             ebodacPage.gotoReports();
+            reportPage.sleep(SLEEP_2SEC);
             reportPage.showDailyClinicVisitReportSchedule();
             assertFalse(dailyClinicVisitScheduleReportPage.isReportEmpty());
 

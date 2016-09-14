@@ -5,9 +5,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import static java.lang.Thread.sleep;
 
 public class EnrollmentPage extends AbstractBasePage {
+    private static final String ERROR_UNENROLL = "Error occurred during unenrolling Participant: Cannot unenroll Participant";
+    private static final String ERROR_ENROLMENT = "Error occurred during enrolling Participant: Cannot enroll Participant";
+    private static final String PARTICIPANT_ENROLLED_SUCCESSFULLY = "Participant was enrolled successfully.";
     private static final String BUTTON_NG_CLICK_ENROLL = "//button[@ng-click='enroll(\"";
     private static final String BUTTON_NG_CLICK_UNENROLL = "//button[@ng-click='unenroll(\"";
     private static final String ID_ENROLLMENT_TABLE = "//*[@id='enrollmentTable']/tbody/tr[@id='1']/td[2]";
@@ -31,7 +33,6 @@ public class EnrollmentPage extends AbstractBasePage {
     static final By AMMOUNT_OF_RESULTS = By.xpath("//select[@title='Records per Page']");
     static final By FIRST_PARTICIPANT_STATUS = By.xpath("//*[@id=\"1\"]/td[5]");
     static final By FIRST_PARTICIPANT_ID = By.xpath("//*[@id=\"1\"]/td[2]");
-    private static final long TIMEOUT_5SEC = 5000;
 
     public EnrollmentPage(WebDriver driver) {
         super(driver);
@@ -65,10 +66,7 @@ public class EnrollmentPage extends AbstractBasePage {
     public boolean error() {
         try {
             WebElement popUpContent = findElement(POPUP_CONTENT);
-            if (popUpContent.getText()
-                    .contains("Error occurred during enrolling Participant: Cannot enroll Participant")
-                    || popUpContent.getText()
-                            .contains("Error occurred during unenrolling Participant: Cannot unenroll Participant")) {
+            if (popUpContent.getText().contains(ERROR_ENROLMENT) || popUpContent.getText().contains(ERROR_UNENROLL)) {
                 return true;
             }
             return false;
@@ -79,7 +77,7 @@ public class EnrollmentPage extends AbstractBasePage {
 
     public boolean enrolled() {
         try {
-            return findElement(POPUP_CONTENT).getText().contains("Participant was enrolled successfully.");
+            return findElement(POPUP_CONTENT).getText().contains(PARTICIPANT_ENROLLED_SUCCESSFULLY);
         } catch (Exception ex) {
             return false;
         }
@@ -115,8 +113,7 @@ public class EnrollmentPage extends AbstractBasePage {
         boolean status = false;
         try {
             sleep(TIMEOUT_2SEC);
-            status = findElement(By.xpath(TITLE_ADVANCE_ENROLLMENT)).getAttribute(INNERHTML)
-                    .startsWith(EBODAC_ENROLLMENT_ADVANCED);
+            status = findElement(By.xpath(TITLE_ADVANCE_ENROLLMENT)).getAttribute(INNERHTML).startsWith(EBODAC_ENROLLMENT_ADVANCED);
         } catch (NullPointerException e) {
             status = false;
             getLogger().error(" enrollmentDetailEnabled : NPE " + e.getLocalizedMessage(), e);
@@ -173,29 +170,31 @@ public class EnrollmentPage extends AbstractBasePage {
         findElement(By.xpath(BUTTON_NG_CLICK_UNENROLL + idOfParticipant + "\")']")).click();
     }
 
-
     public void clickOnFirstRow() {
         try {
-            sleep(TIMEOUT_5SEC);
             findElement(By.xpath(ID_ENROLLMENT_TABLE)).click();
         } catch (Exception e) {
-            getLogger().error("clickOnFirstRow - Exception . Reason :" + e.getLocalizedMessage(), e);
+            getLogger().error("clickOnFirstRow - Exc. Reason :" + e.getLocalizedMessage(), e);
         }
 
     }
 
-
-
     public boolean checkIfParticipantWasEnrolledOrUnenrolledSuccessfully() {
         boolean status = false;
         String popup = findElement(POPUP_MESSAGE).getText();
-        if ((PARTICIPANT_WAS_UNENROLLED_SUCCESSFULLY.equals(popup)) || ("Participant was enrolled successfully.".equals(popup))) {
+        if ((PARTICIPANT_WAS_UNENROLLED_SUCCESSFULLY.equals(popup))
+                || (PARTICIPANT_ENROLLED_SUCCESSFULLY.equals(popup))) {
             status = true;
         } else {
             status = false;
         }
-        
+
         return status;
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+
     }
 
 }

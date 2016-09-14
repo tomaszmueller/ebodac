@@ -43,9 +43,14 @@ public class NumberOfTimesListenedReportPage extends AbstractBasePage {
                 status = true;
             }
         } catch (Exception e) {
-            getLogger().error("isReportEmpty -  Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("isReportEmpty -  Exc. Reason : " + e.getLocalizedMessage(), e);
             status = false;
         }
         return status;
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
     }
 }

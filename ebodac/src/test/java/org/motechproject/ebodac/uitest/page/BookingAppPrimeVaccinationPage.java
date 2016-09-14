@@ -91,6 +91,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     static final String SEARCH = "primeVaccinationCard";
     static final int TAB_GET_1 = 1;
     static final int TAB_GET_0 = 0;
+    
 
     public BookingAppPrimeVaccinationPage(WebDriver driver) {
         super(driver);
@@ -562,7 +563,7 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
             clickWhenVisible(FILTER_BUTTON);
             clickWhenVisible(FILTER_DROPDOWN_BUTTON);
             clickWhenVisible(FIND_BY_PARTICIPANT_ID);
-            sleep(SLEEP_2SEC);
+            sleep(SLEEP_5SEC);
             findElement(FIND_BY_PARTICIPANT_ID_FIELD).sendKeys(participantId);
             sleep(SLEEP_2SEC);
             clickWhenVisible(FIND_BY_PARTICIPANT_ID_BUTTON);
@@ -710,6 +711,11 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
         }
 
         return status;
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
     }
 
 }

@@ -11,15 +11,18 @@ import java.util.Map;
 
 public class ParticipantEditPage extends AbstractBasePage {
 
+    private static final String EMPTY = "";
+    private static final String TEMNE = "Temne";
+    private static final String SUSU = "Susu";
+    private static final String LIMBA = "Limba";
+    private static final String KRIO = "Krio";
+    private static final String ENGLISH = "English";
     private static final int MIN_LANGUAGE_POS = 1;
-
     private static final int LAST_POSITION_LANGUAGE = 6;
-
     private static final int START_POS_LANGUAGE = 2;
 
     private Map<String, String> mapLangPos = new HashMap<String, String>();
     public static final String URL_PATH = "/home#/mds/dataBrowser";
-
     static final int SMALL_TIMEOUT = 500;
     static final int SLEEP_2000 = 2000;
     static final int TIMEOUT_BORDER = 10000;
@@ -27,8 +30,6 @@ public class ParticipantEditPage extends AbstractBasePage {
     static final By SAVE_BUTTON = By.xpath("//button[@ng-click='addEntityInstance()']");
     static final By CONFIRMATION_BUTTON = By.xpath("//button[@ng-click='addEntityInstanceDefault()']");
     static final By LANGUAGE_FIELD = By.xpath("(//button[@type='button'])[2]");
-    // static final String LANGUAGE_PATH =
-    // "//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[8]/div/ng-form/div/div/ul/li[";
     static final String LANGUAGE_PATH = "//*[@id='dataBrowser']/div[1]/div/div/ng-form/div[1]/form/div[8]/div/ng-form/div[1]/div/ul/li[";
     static final String LANGUAGE_PATH_END = "]/a/label";
     static final By SELECTED_LANGUAGE = By
@@ -221,7 +222,7 @@ public class ParticipantEditPage extends AbstractBasePage {
             day++;
             Thread.sleep(SMALL_TIMEOUT);
             clickOn(DATE_TABLE);
-            WebElement date = findElement(By.linkText("" + day + ""));
+            WebElement date = findElement(By.linkText(EMPTY + day + EMPTY));
             date.click();
             clickOnSaveButton();
             clickOn(POPUP_OK);
@@ -304,32 +305,24 @@ public class ParticipantEditPage extends AbstractBasePage {
      * 
      * @return
      */
-    public String getPhoneNumber() {
-        String number = "";
-        try {
-            if (findElement(SELECTED_PHONE_NUMBER) != null) {
-                number = findElement(SELECTED_PHONE_NUMBER).getText();
-                getLogger().error("getphone number : " + number);
-                // To make sure we get the phone number from the field.
-                if ("".equalsIgnoreCase(number)) {
-                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerHTML");
-                    getLogger().error("getphone number innerhtml: " + number);
-                }
-               
-                if ("".equalsIgnoreCase(number)) {
-                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerText");
-                    getLogger().error("getphone number innerText: " + number);
-                }
-                
-                if ("".equalsIgnoreCase(number)) {
-                    number = findElement(SELECTED_PHONE_NUMBER).getAttribute("textContent");
-                    getLogger().error("getphone number textContent: " + number);
-                }
-            } else {
-                getLogger().error("getPhoneNumber - cannot find Element " + SELECTED_PHONE_NUMBER.toString());
+    public String getPhoneNumber() throws Exception {
+        String number = EMPTY;
+
+        if (findElement(SELECTED_PHONE_NUMBER) != null) {
+            number = findElement(SELECTED_PHONE_NUMBER).getText();
+            getLogger().error("getphone number : " + number);
+            // To make sure we get the phone number from the field.
+            if (EMPTY.equalsIgnoreCase(number)) {
+                number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerHTML");
             }
-        } catch (Exception e) {
-            getLogger().error("getPhoneNumber - Error Getting phone number . Reason :" + e.getLocalizedMessage(), e);
+            if (EMPTY.equalsIgnoreCase(number)) {
+                number = findElement(SELECTED_PHONE_NUMBER).getAttribute("innerText");
+            }
+            if (EMPTY.equalsIgnoreCase(number)) {
+                number = findElement(SELECTED_PHONE_NUMBER).getAttribute("textContent");
+            }
+        } else {
+            getLogger().error("getPhoneNumber - cannot find Element " + SELECTED_PHONE_NUMBER.toString());
         }
 
         return number;
@@ -340,7 +333,7 @@ public class ParticipantEditPage extends AbstractBasePage {
      * 
      * @throws InterruptedException
      */
-    public void setListLanguagePosition() throws InterruptedException {
+    public void setListLanguagePosition() throws Exception {
 
         String routelang = new String();
         String languageText = new String();
@@ -349,28 +342,22 @@ public class ParticipantEditPage extends AbstractBasePage {
 
         for (int counter = START_POS_LANGUAGE; counter <= LAST_POSITION_LANGUAGE; counter++) {
 
-            try {
-                routelang = LANGUAGE_PATH + ((new Integer(counter)).toString()) + LANGUAGE_PATH_END;
-                xpathlanguage = By.xpath(routelang);
-                languageText = findElement(xpathlanguage).getAttribute("innerHTML");
-                // We get the position of the language.
-                poshtmlvalue = findElement(By.xpath(routelang + "/input")).getAttribute("value");
+            routelang = LANGUAGE_PATH + ((new Integer(counter)).toString()) + LANGUAGE_PATH_END;
+            xpathlanguage = By.xpath(routelang);
+            languageText = findElement(xpathlanguage).getAttribute("innerHTML");
+            // We get the position of the language.
+            poshtmlvalue = findElement(By.xpath(routelang + "/input")).getAttribute("value");
 
-                if (languageText.contains("English")) {
-                    mapLangPos.put("English", poshtmlvalue);
-                } else if (languageText.contains("Krio")) {
-                    mapLangPos.put("Krio", poshtmlvalue);
-                } else if (languageText.contains("Limba")) {
-                    mapLangPos.put("Limba", poshtmlvalue);
-                } else if (languageText.contains("Susu")) {
-                    mapLangPos.put("Susu", poshtmlvalue);
-                } else if (languageText.contains("Temne")) {
-                    mapLangPos.put("Temne", poshtmlvalue);
-                }
-
-            } catch (Exception e) {
-                getLogger().error("setListLanguagePosition - Error in the try xpath " + languageText + " Reason: "
-                        + e.getLocalizedMessage(), e);
+            if (languageText.contains(ENGLISH)) {
+                mapLangPos.put(ENGLISH, poshtmlvalue);
+            } else if (languageText.contains(KRIO)) {
+                mapLangPos.put(KRIO, poshtmlvalue);
+            } else if (languageText.contains(LIMBA)) {
+                mapLangPos.put(LIMBA, poshtmlvalue);
+            } else if (languageText.contains(SUSU)) {
+                mapLangPos.put(SUSU, poshtmlvalue);
+            } else if (languageText.contains(TEMNE)) {
+                mapLangPos.put(TEMNE, poshtmlvalue);
             }
 
         }
@@ -398,6 +385,11 @@ public class ParticipantEditPage extends AbstractBasePage {
             }
         }
         return newLanguage;
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+
     }
 
 }

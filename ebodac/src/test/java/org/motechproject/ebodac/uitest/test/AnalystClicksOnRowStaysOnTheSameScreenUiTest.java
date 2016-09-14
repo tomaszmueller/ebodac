@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -54,6 +55,8 @@ public class AnalystClicksOnRowStaysOnTheSameScreenUiTest extends TestBase {
     public void analystClicksOnRowStaysOnTheSameScreenTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.goToEnrollment();
             assertFalse(enrollmentsPage.checkEnroll());
         } catch (AssertionError e) {

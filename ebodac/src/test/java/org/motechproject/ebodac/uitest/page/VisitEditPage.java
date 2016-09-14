@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 
 public class VisitEditPage extends AbstractBasePage {
 
+    private static final String TRUE = "true";
+    private static final String READONLY = "readonly";
     public static final String URL_PATH = "/home#/mds/dataBrowser";
     public static final By PLANNED_VISIT_DATE = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[2]/div/ng-form/div/input[@type='text']");
     public static final By ACTUAL_VISIT_DATE = By.xpath("//div[@id='dataBrowser']/div/div/div/ng-form/div/form/div[3]/div/ng-form/div/input[@type='text']");
@@ -46,7 +48,7 @@ public class VisitEditPage extends AbstractBasePage {
     public boolean isPlannedVisitDateEditable() {
         WebElement nameElement = findElement(PLANNED_VISIT_DATE);
         try {
-            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+            if (nameElement.getAttribute(READONLY).contains(READONLY) || nameElement.getAttribute(READONLY).contains(TRUE)) {
                 return false;
             }
             return true;
@@ -58,7 +60,7 @@ public class VisitEditPage extends AbstractBasePage {
     public boolean isActualVisitDateEditable() {
         WebElement nameElement = findElement(ACTUAL_VISIT_DATE);
         try {
-            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+            if (nameElement.getAttribute(READONLY).contains(READONLY) || nameElement.getAttribute(READONLY).contains(TRUE)) {
                 return false;
             }
             return true;
@@ -70,7 +72,7 @@ public class VisitEditPage extends AbstractBasePage {
     public boolean isVisitTypeEditable() {
         WebElement nameElement = findElement(VISIT_TYPE);
         try {
-            if (nameElement.getAttribute("readonly").contains("readonly") || nameElement.getAttribute("readonly").contains("true")) {
+            if (nameElement.getAttribute(READONLY).contains(READONLY) || nameElement.getAttribute(READONLY).contains(TRUE)) {
                 return false;
             }
             return true;

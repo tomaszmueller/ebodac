@@ -53,4 +53,9 @@ public class FollowupsAfterPrimeInjectionReportPage extends AbstractBasePage {
     public void goToPage() {
 
     }
+
+    public void sleep(long timeout) throws InterruptedException {
+       Thread.sleep(timeout);
+        
+    }
 }

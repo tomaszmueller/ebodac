@@ -49,10 +49,10 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
                 loginPage.login(user, password);
             }
         } catch (NullPointerException e) {
-            getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - NPE - Reason : " + e.getLocalizedMessage(), e);
 
         } catch (Exception e) {
-            getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("setUp - Exc - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -60,7 +60,8 @@ public class PrimeFollowAndBoostReportUiTest extends TestBase {
     public void primeFollowAndBoostReportTest() throws Exception {
         try {
             homePage.openEBODACModule();
-
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.gotoReports();
             reportPage.showPrimeFollowAndBoostReport();
             primeFollowAndBoostReportPage.sleep(SLEEP_2SEC);

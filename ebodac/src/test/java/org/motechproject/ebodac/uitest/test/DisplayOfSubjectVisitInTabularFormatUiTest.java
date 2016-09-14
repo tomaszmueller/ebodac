@@ -12,6 +12,7 @@ import org.motechproject.ebodac.uitest.page.ParticipantPage;
 import static org.junit.Assert.assertTrue;
 
 public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
+    private static final long SLEEP_2SEC = 2000;
     private LoginPage loginPage;
     private HomePage homePage;
     private ParticipantPage participantPage;
@@ -43,23 +44,19 @@ public class DisplayOfSubjectVisitInTabularFormatUiTest extends TestBase {
     public void displayOfSubjectVisitInTabularFormatTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             participantPage.openFirstParticipant();
+            participantPage.sleep(SLEEP_2SEC);
             assertTrue(participantEditPage.isTable());
         } catch (AssertionError e) {
-            getLogger().error(
-                    "displayOfSubjectVisitInTabularFormatTest - AssertionError - Reason : " + e.getLocalizedMessage(),
-                    e);
-
+            getLogger().error("displayTest - AEr - Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("displayOfSubjectVisitInTabularFormatTest - NullPointerException - Reason : "
-                    + e.getLocalizedMessage(), e);
-
+            getLogger().error("displayTest - NPE - Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("displayOfSubjectVisitInTabularFormatTest - InterruptedException - Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("displayTest - IEx - Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error(
-                    "displayOfSubjectVisitInTabularFormatTest - Exception - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("displayTest - Exc - Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

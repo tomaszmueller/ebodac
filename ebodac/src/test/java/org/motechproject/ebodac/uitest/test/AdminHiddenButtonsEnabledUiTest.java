@@ -22,6 +22,7 @@ public class AdminHiddenButtonsEnabledUiTest extends TestBase {
     private ParticipantEditPage participantEditPage;
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
     private UserPropertiesHelper userPropertiesHelper;
 
@@ -59,6 +60,8 @@ public class AdminHiddenButtonsEnabledUiTest extends TestBase {
             assertTrue(homePage.isIVRModulePresent());
             assertTrue(homePage.isSMSModulePresent());
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             participantPage.openFirstParticipant();
             assertTrue(participantEditPage.checkButtons());
         } catch (AssertionError e) {

@@ -74,6 +74,7 @@ public class AdminChangePhoneNumberUiTest extends TestBase {
             homePage.clickOnEbodac();
             sleep(SLEEP_2SEC);
             homePage.openEBODACModule();
+            homePage.resizePage();
             sleep(SLEEP_2SEC);
             //homePage.clickOnEbodac();
             sleep(SLEEP_2SEC);

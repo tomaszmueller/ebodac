@@ -52,4 +52,9 @@ public class FollowupsMissedClinicVisitsReportPage extends AbstractBasePage {
 
     }
 
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
+    }
+
 }

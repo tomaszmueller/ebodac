@@ -18,6 +18,7 @@ public class ChangeLanguageUiTest extends TestBase {
 
     private static final int OFFSET_HTML = 2;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
 
     // Map for the languages
     private Map<String, String> map = new HashMap<String, String>();
@@ -67,6 +68,8 @@ public class ChangeLanguageUiTest extends TestBase {
         try {
             // We access to the edit page of the participant
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             participantPage.openFirstParticipant();
             // We store the language.
             originalLanguage = participantEditPage.getLanguage();

@@ -23,6 +23,7 @@ public class LanguageDisappearUiTest extends TestBase {
     private ParticipantEditPage participantEditPage;
     private static final int OFFSET_HTML = 2;
     private static final String TEST_LOCAL_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
 
     // Map for the languages
     private Map<String, String> map = new HashMap<String, String>();
@@ -62,6 +63,8 @@ public class LanguageDisappearUiTest extends TestBase {
         try {
             // Access to the page
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             participantPage = new ParticipantPage(getDriver());
             participantPage.openFirstParticipant();
             participantEditPage = new ParticipantEditPage(getDriver());
