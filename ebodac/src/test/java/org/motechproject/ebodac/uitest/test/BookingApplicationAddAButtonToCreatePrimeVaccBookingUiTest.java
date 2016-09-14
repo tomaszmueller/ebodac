@@ -56,10 +56,12 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingUiTest extends 
     @Test // EBODAC-781
     public void bookingApplicationCapacityInfoTest() throws Exception {
         try {
-            homePage.resizePage();
             homePage.clickModules();
+            homePage.sleep(SLEEP_2SEC);
             homePage.openBookingAppModule();
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppPage.openPrimeVaccination();
+            bookingAppPrimeVaccinationPage.sleep(SLEEP_2SEC);
             bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
 
             addParticipantField();

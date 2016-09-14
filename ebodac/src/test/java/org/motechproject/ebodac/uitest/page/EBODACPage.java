@@ -19,7 +19,6 @@ public class EBODACPage extends AbstractBasePage {
     private static final By XPATH_LOOKUP_BUTTON = By.id("lookupDialogButton");
     private static final By XPATH_LOOKUP_DIALOG = By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/button");
     public static final String URL_PATH = "/home#/mds/dataBrowser";
-    //public static final String URL_PATH = "/home#/ebodac/subjects";
     static final long SMALL_TIMEOUT = 500;
     static final long SLEEP_2SEC = 2000;
     private static final long SLEEP_4SEC = 4000;
