@@ -26,6 +26,7 @@ public class EBODACPage extends AbstractBasePage {
     static final By REPORTS = By.linkText("Reports");
     static final By VISITS = By.linkText("Visits");
     static final By ENROLLMENT = By.linkText("Enrollment");
+    private static final By EMAIL_REPORTS = By.linkText("Email Reports");;
 
     public EBODACPage(WebDriver driver) {
         super(driver);
@@ -113,5 +114,10 @@ public class EBODACPage extends AbstractBasePage {
             getLogger().error("findByPID - PId:" + participantId + "Exc. Reason : " + e.getLocalizedMessage(), e);
         }
         return status;
+    }
+
+    public void showEmailExport() throws InterruptedException {
+        clickWhenVisible(EMAIL_REPORTS);
+        
     }
 }

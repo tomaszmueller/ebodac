@@ -1314,6 +1314,11 @@
         $scope.accordions = [];
         $scope.recipients = [];
         $scope.emailReports = [];
+        
+        // Added for the EBODAC-1088
+        $scope.showNullsCells = [];
+        
+        ////
 
         $scope.entities = [];
         $scope.selectedEntity = [];
@@ -1443,6 +1448,7 @@
                 'name': '',
                 'subject': '',
                 'messageContent': '',
+                'showNullsCells': '',
                 'recipients': [],
                 'entity': null,
                 'schedulePeriod': $scope.schedulePeriods[0],

@@ -18,7 +18,7 @@ public class TestParticipant {
         this.setParticipantId("9999999952");
         this.setName("TestTest");
         this.setLanguage("eng");
-        this.setPhoneNumber("23200000054");
+        this.setPhoneNumber("23200000004");
         this.setSiteId("B05-SL10001");
         this.setSiteName("Kambia I");
         this.setHouseholdName("Kingdom");
