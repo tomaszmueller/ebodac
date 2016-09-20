@@ -59,6 +59,7 @@ public class ConfirmationBeforeUnenrollmentEnrollmentUiTest extends TestBase {
         try {
             homePage.resizePage();
             homePage.openEBODACModule();
+            homePage.resizePage();
             homePage.sleep(SLEEP_2SEC);
             ebodacPage.goToEnrollment();
             ebodacPage.sleep(SLEEP_2SEC);

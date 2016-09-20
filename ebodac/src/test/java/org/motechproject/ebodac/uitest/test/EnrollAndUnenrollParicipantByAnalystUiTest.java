@@ -8,27 +8,24 @@ import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
 import org.motechproject.ebodac.uitest.page.EnrollmentPage;
 import org.motechproject.ebodac.uitest.page.HomePage;
-import org.motechproject.ebodac.uitest.page.ParticipantEditPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
-
-import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertTrue;
 
 public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
+    private static final String ENROLLED = "Enrolled";
     private LoginPage loginPage;
     private HomePage homePage;
     private EnrollmentPage enrollmentPage;
     private EBODACPage ebodacPage;
-    private ParticipantEditPage participantEditPage;
     private String l1AdminUser;
     private String l1AdminPassword;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
-    public static final int SLEEP_3000 = 3000;
+    public static final int SLEEP_3SEC = 3000;
     public static final int BEGIN_LOOP = 0;
     public static final int END_LOOP = 1;
-
+    private static final long SLEEP_2SEC = 2000;
 
     @Before
     public void setUp() {
@@ -38,7 +35,6 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
         homePage = new HomePage(getDriver());
         ebodacPage = new EBODACPage(getDriver());
         enrollmentPage = new EnrollmentPage(getDriver());
-        participantEditPage = new ParticipantEditPage(getDriver());
         url = getServerUrl();
         if (url.contains("localhost")) {
             httpClientHelper = new UITestHttpClientHelper(url);
@@ -49,28 +45,43 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
             loginPage.login(l1AdminUser, l1AdminPassword);
         }
     }
-    @Test  //EBODAC-476
+
+    @Test // EBODAC-476
     public void enrollAndUnenrollParticipant() throws Exception {
-        homePage.resizePage();
+        String idOfParticipant = "";
+        String temp = "";
         homePage.openEBODACModule();
+        homePage.sleep(SLEEP_2SEC);
+        homePage.resizePage();
+        homePage.sleep(SLEEP_2SEC);
         ebodacPage.goToEnrollment();
-        sleep(SLEEP_3000);
+        enrollmentPage.goToPage();
+        enrollmentPage.sleep(SLEEP_2SEC);
         for (int i = BEGIN_LOOP; i <= END_LOOP; i++) {
-            String idOfParticipant = enrollmentPage.getParticipantId();
-            String temp = enrollmentPage.getStatusOfFirstParticipantEnrollment();
-            if ("Enrolled".equals(temp)) {
+            idOfParticipant = enrollmentPage.getParticipantId();
+            enrollmentPage.sleep(SLEEP_2SEC);
+            temp = enrollmentPage.getStatusOfFirstParticipantEnrollment();
+            enrollmentPage.sleep(SLEEP_2SEC);
+            if (ENROLLED.equals(temp)) {
                 enrollmentPage.clickOnButtonToUnenrollParticipant(idOfParticipant);
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
+                enrollmentPage.sleep(SLEEP_2SEC);
                 assertTrue(enrollmentPage.checkIfParticipantWasEnrolledOrUnenrolledSuccessfully());
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
             } else {
                 enrollmentPage.clickOnButtonToEnrollParticipant(idOfParticipant);
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
+                enrollmentPage.sleep(SLEEP_2SEC);
                 assertTrue(enrollmentPage.checkIfParticipantWasEnrolledOrUnenrolledSuccessfully());
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
             }
         }
     }
+
     @After
     public void tearDown() throws Exception {
         logout();

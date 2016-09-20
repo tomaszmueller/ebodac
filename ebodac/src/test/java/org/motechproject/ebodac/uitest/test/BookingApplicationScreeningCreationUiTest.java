@@ -37,6 +37,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
     private static final String DATE_RANGE = "Date range";
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
     private LoginPage loginPage;
     private HomePage homePage;
@@ -78,46 +79,56 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         try {
             ArrayList<LocalDate> dates = new ArrayList<>();
             homePage.clickModules();
+            homePage.sleep(SLEEP_2SEC);
             homePage.openBookingAppModule();
+            homePage.sleep(SLEEP_2SEC);
+            homePage.resizePage();
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppPage.openScreening();
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(DATE_RANGE);
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(DOT, EMPTY);
 
             if (EMPTY != bookingId && null != bookingId) {
+                bookingAppScreeningPage.sleep(SLEEP_2SEC);
                 assertTrue(bookingAppScreeningPage.bookingIdExists(bookingId));
             }
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(TODAY);
             dates.add(LocalDate.now());
             assertVisitTest(dates);
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(TOMORROW);
             dates.remove(ZERO);
             dates.add(LocalDate.now().plusDays(ONE));
             assertVisitTest(dates);
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(DAY_AFTER_TOMORROW);
             dates.remove(ZERO);
             dates.add(LocalDate.now().plusDays(TWO));
             assertVisitTest(dates);
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(NEXT_3_DAYS);
             dates.remove(ZERO);
             dates.add(LocalDate.now());
             dates.add(LocalDate.now().plusDays(ONE));
             dates.add(LocalDate.now().plusDays(TWO));
             assertVisitTest(dates);
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(NEXT_7_DAYS);
             dates.add(LocalDate.now().plusDays(THREE));
             dates.add(LocalDate.now().plusDays(FOUR));
             dates.add(LocalDate.now().plusDays(FIVE));
             dates.add(LocalDate.now().plusDays(SIX));
             assertVisitTest(dates);
-
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(DATE_RANGE);
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.setDate();
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.exportToPDF();
+            bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.exportToXLS();
 
         } catch (AssertException e) {

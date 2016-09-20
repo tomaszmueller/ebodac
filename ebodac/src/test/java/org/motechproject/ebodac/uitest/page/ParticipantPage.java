@@ -45,7 +45,7 @@ public class ParticipantPage extends AbstractBasePage {
 
     }
 
-    private void sleep(long timeout) throws InterruptedException {
+    public void sleep(long timeout) throws InterruptedException {
         Thread.sleep(timeout);
 
     }

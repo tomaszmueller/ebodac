@@ -16,6 +16,7 @@ import org.motechproject.ebodac.uitest.page.HomePage;
 public class BookingApplicationCapacityInfoUiTest extends TestBase {
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
 
     private LoginPage loginPage;
@@ -57,36 +58,45 @@ public class BookingApplicationCapacityInfoUiTest extends TestBase {
     public void bookingApplicationCapacityInfoTest() throws Exception {
         try {
             homePage.clickModules();
+            homePage.sleep(SLEEP_2SEC);
             homePage.openBookingAppModule();
+            homePage.sleep(SLEEP_2SEC);
+            homePage.resizePage();
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppPage.openAdvancedSettings();
             int maxCapacity = Integer.parseInt(bookingAppAdvancedSettingsPage.getMaxCapacity());
             bookingAppPage.openCapacityInfo();
             bookingAppCapacityInfoPage.filterToday();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + maxCapacity);
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             bookingAppCapacityInfoPage.filterTomorrow();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + maxCapacity);
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             bookingAppCapacityInfoPage.filterDayAfterTomorrow();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + maxCapacity);
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             bookingAppCapacityInfoPage.filterNext3Days();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (3 * maxCapacity));
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             bookingAppCapacityInfoPage.filterNext7Days();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (7 * maxCapacity));
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             bookingAppCapacityInfoPage.filterDateRange();
+            bookingAppCapacityInfoPage.sleep(SLEEP_2SEC);
             Assert.assertEquals(bookingAppCapacityInfoPage.getMaxCapacity(), "" + (28 * maxCapacity));
         } catch (AssertionError e) {
-            getLogger().error(
-                    "bookingApplicationCapacityInfoTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("bookingAppTest - AEx. Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error(
-                    "bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error("bookingAppTest - IEx. Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error(
-                    "bookingApplicationCapacityInfoTest - NullPointerException . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error("bookingAppTest - NPE. Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("bookingApplicationCapacityInfoTest - Exception . Reason : " + e.getLocalizedMessage(),
-                    e);
+            getLogger().error("bookingAppTest - Exc. Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

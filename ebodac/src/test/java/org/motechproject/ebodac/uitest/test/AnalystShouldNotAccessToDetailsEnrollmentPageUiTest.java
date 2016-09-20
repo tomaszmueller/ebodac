@@ -15,6 +15,8 @@ import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 
 public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBase {
+    private static final String ONE = "1";
+    private static final String ENROLLED = "Enrolled";
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private UITestHttpClientHelper httpClientHelper;
@@ -61,11 +63,12 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
     @Test // EBODAC-828
     public void shouldnothaveAccessDetailsEnrolmentPageTest() throws Exception {
         try {
-            homePage.resizePage();
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_3SEC);
             ebodacPage.goToEnrollment();
             sleep(SLEEP_3SEC);
-            if (!"1".equals(enrollmentPage.getAmmountPagesOfTable())) {
+            if (!ONE.equals(enrollmentPage.getAmmountPagesOfTable())) {
                 enrollmentPage.goToNextPageInTable();
             } else {
                 enrollmentPage.changeAmmountOfResultsShownOnPage();
@@ -76,7 +79,7 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
             String idOfParticipant = enrollmentPage.getParticipantId();
             String temp = enrollmentPage.getStatusOfFirstParticipantEnrollment();
 
-            if ("Enrolled".equals(temp)) {
+            if (ENROLLED.equals(temp)) {
                 enrollmentPage.clickOnButtonToUnenrollParticipant(idOfParticipant);
                 enrollmentPage.clickOK();
                 enrollmentPage.clickOK();
@@ -87,17 +90,13 @@ public class AnalystShouldNotAccessToDetailsEnrollmentPageUiTest extends TestBas
             }
             assertEquals(pagingInfo, enrollmentPage.getNumberOfActualPage());
         } catch (AssertionError e) {
-            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - AssertionError . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("shouldnothaveATest - AEr . Reason : " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("shouldnothaveATest - NPE . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("shouldnothaveAccessDetailsEnrolmentPageTest - NullPointerException . Reason : "
-                    + e.getLocalizedMessage(), e);
+            getLogger().error("shouldnothaveATest - NPE . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error(
-                    "shouldnothaveAccessDetailsEnrolmentPageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("shouldnothaveATest - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
     }
 

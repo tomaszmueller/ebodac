@@ -12,10 +12,11 @@ import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
-public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest extends TestBase {
+public class BookingApplicationAddAButtonToCreatePrimeVaccBookingUiTest extends TestBase {
     private static final int MAX_COUNTER_VALUE = 10;
     private String url;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
     private LoginPage loginPage;
     private HomePage homePage;
@@ -55,10 +56,12 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
     @Test // EBODAC-781
     public void bookingApplicationCapacityInfoTest() throws Exception {
         try {
-            homePage.resizePage();
             homePage.clickModules();
+            homePage.sleep(SLEEP_2SEC);
             homePage.openBookingAppModule();
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppPage.openPrimeVaccination();
+            bookingAppPrimeVaccinationPage.sleep(SLEEP_2SEC);
             bookingAppPrimeVaccinationPage.clickAddPrimeVaccinationButton();
 
             addParticipantField();
@@ -100,7 +103,12 @@ public class BookingApplicationAddAButtonToCreatePrimeVaccBookingTestUiTest exte
         int counter = 10; // We make sure we do not generate an infinite
                           // loop
         while (!bookingAppPrimeVaccinationPage.isPartincipantIdEnabled() && counter > 0) {
-            bookingAppPrimeVaccinationPage.clickFirstParticipantId();
+            if (!bookingAppPrimeVaccinationPage.isPartincipantIdEnabled()) {
+                bookingAppPrimeVaccinationPage.clickFirstParticipantId();
+                bookingAppPrimeVaccinationPage.sleep(SLEEP_2SEC);
+            } else {
+                counter = 0;
+            }
             counter--;
         }
     }

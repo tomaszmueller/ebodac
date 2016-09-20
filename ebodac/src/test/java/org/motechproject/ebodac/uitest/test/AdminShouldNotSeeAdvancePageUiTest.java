@@ -16,6 +16,9 @@ import static org.junit.Assert.assertTrue;
 
 public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
+    private static final long SLEEP_4SEC = 4000;
+    private static final long SLEEP_6SEC = 6000;
     private LoginPage loginPage;
     private HomePage homePage;
     private EBODACPage ebodacPage;
@@ -69,36 +72,49 @@ public class AdminShouldNotSeeAdvancePageUiTest extends TestBase {
         try {
             homePage.clickModules();
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.goToEnrollment();
+            ebodacPage.sleep(SLEEP_4SEC);
             enrollmentPage.clickOnFirstRow();
+            enrollmentPage.sleep(SLEEP_6SEC);
             // We should not be able to see the advance page for enrollment.
             assertFalse(enrollmentPage.enrollmentDetailEnabled());
             // It should be allowed to enrol unenroll participants.
             // We try to enroll.
+            enrollmentPage.sleep(SLEEP_2SEC);
             enrollmentPage.clickAction();
+            enrollmentPage.sleep(SLEEP_2SEC);
             enrollmentPage.clickOK();
+            enrollmentPage.sleep(SLEEP_2SEC);
             if (enrollmentPage.error()) {
                 enrollmentPage.clickOK();
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.nextAction();
+                enrollmentPage.sleep(SLEEP_2SEC);
             }
 
             if (enrollmentPage.enrolled()) {
                 assertTrue(enrollmentPage.enrolled());
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
+                enrollmentPage.sleep(SLEEP_2SEC);
             }
             if (enrollmentPage.unenrolled()) {
                 assertTrue(enrollmentPage.unenrolled());
+                enrollmentPage.sleep(SLEEP_2SEC);
                 enrollmentPage.clickOK();
+                enrollmentPage.sleep(SLEEP_2SEC);
             }
 
         } catch (AssertionError e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - AssertionError . Reason : " + e.getLocalizedMessage(),
+            getLogger().error("adminhouldNotSeeAdvancePageTest - AEr. Reason : " + e.getLocalizedMessage(),
                     e);
         } catch (NumberFormatException e) {
             getLogger().error(
-                    "adminhouldNotSeeAdvancePageTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+                    "adminhouldNotSeeAdvancePageTest - NFE. Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("adminhouldNotSeeAdvancePageTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("adminhouldNotSeeAdvancePageTest - Exc. Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

@@ -150,14 +150,16 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
             status = false;
             LOGGER.error("addParticipant - NPE - JSONString: " + sJSONAddParticipant + " . Reason : "
                     + e.getLocalizedMessage(), e);
-
         } catch (Exception e) {
             status = false;
             LOGGER.error("addParticipant - Exc. - JSONString: " + sJSONAddParticipant + " . Reason : "
                     + e.getLocalizedMessage(), e);
-
+        } catch (ExceptionInInitializerError e) {
+            status = false;
+            LOGGER.error("addParticipant - EIExc. - JSONString: " + sJSONAddParticipant + " . Reason : "
+                    + e.getLocalizedMessage(), e);
         }
-       
+
         return status;
     }
 
@@ -192,7 +194,7 @@ public class UITestHttpClientHelper extends EbodacHttpClient {
             LOGGER.error("addVisits - Exception . Reason : " + e.getLocalizedMessage(), e);
 
         }
-      
+
         return status;
 
     }

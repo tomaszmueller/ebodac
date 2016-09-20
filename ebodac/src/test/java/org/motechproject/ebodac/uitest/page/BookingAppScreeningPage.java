@@ -245,12 +245,16 @@ public class BookingAppScreeningPage extends AbstractBasePage {
         boolean status = false;
         try {
             if (hasVisits()) {
-                LocalDate date = LocalDate.parse((findElement(FIRST_VISIT).getAttribute(TITLE)).toString(),
-                        DateTimeFormat.forPattern(YYYY_MM_DD));
+                String firstVisit = (findElement(FIRST_VISIT).getAttribute(TITLE)).toString();
+                sleep(SLEEP_2SEC);
+                LocalDate date = LocalDate.parse(firstVisit, DateTimeFormat.forPattern(YYYY_MM_DD));
                 if (dates.contains(date)) {
                     status = true;
+                } else {
+                    getLogger().error("isFBOK - No contains the Date: " + dates.toString());
                 }
-
+            } else {
+                getLogger().error("isFBOK - No visits for Date: " + dates.toString());
             }
 
         } catch (Exception e) {
@@ -283,5 +287,10 @@ public class BookingAppScreeningPage extends AbstractBasePage {
             status = false;
         }
         return status;
+    }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
     }
 }

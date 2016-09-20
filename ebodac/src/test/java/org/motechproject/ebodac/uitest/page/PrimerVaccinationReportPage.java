@@ -49,4 +49,9 @@ public class PrimerVaccinationReportPage extends AbstractBasePage {
         }
         return status;
     }
+
+    public void sleep(long timeout) throws InterruptedException {
+        Thread.sleep(timeout);
+        
+    }
 }

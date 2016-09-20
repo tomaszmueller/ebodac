@@ -22,6 +22,7 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
     private String user;
     private String password;
     private static final String TEST_LOCAL_MACHINE = "localhost";
+    private static final long SLEEP_2SEC = 2000;
     private UITestHttpClientHelper httpClientHelper;
     private String url;
 
@@ -57,6 +58,8 @@ public class MEMissedClinicVisitsReportUiTest extends TestBase {
     public void mEMissedClinicVisitsReportTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.gotoReports();
             reportPage.showMEMissedClinicVisitsReport();
             assertTrue(mEMissedClinicVisitsReportPage.existTable());

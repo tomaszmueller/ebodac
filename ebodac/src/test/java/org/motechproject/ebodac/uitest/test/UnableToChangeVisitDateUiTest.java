@@ -60,6 +60,8 @@ public class UnableToChangeVisitDateUiTest extends TestBase {
     public void unableToChangVisitDateTest() throws Exception {
         try {
             homePage.openEBODACModule();
+            homePage.resizePage();
+            homePage.sleep(SLEEP_2SEC);
             ebodacPage.goToVisit();
             visitPage.sortByPlannedDateColumn();
             visitPage.clickVisit();

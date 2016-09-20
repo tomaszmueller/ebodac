@@ -38,6 +38,8 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
     private static final String LOCAL_TEST_MACHINE = "localhost";
     private static final long SLEEP_2SEC = 2000;
+    private static final long SLEEP_6SEC = 6000;
+    private static final long SLEEP_4SEC = 4000;
     private String user;
     private String password;
     private UITestHttpClientHelper httpClientHelper;
@@ -80,7 +82,8 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
             password = userPropertiesHelper.getAdminPassword();
             loginPage = new LoginPage(getDriver());
             homePage = new HomePage(getDriver());
-            homePage.resizePage();
+            ebodacPage = new EBODACPage(getDriver());
+
             url = getServerUrl();
 
             if (url.contains(LOCAL_TEST_MACHINE)) {
@@ -113,19 +116,27 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
      */
     public void testAdminEbodacHome() throws Exception {
         try {
+            homePage.openEBODACModule();
+            homePage.resizePage();
+            
             ebodacPage.showParticipants();
+            ebodacPage.sleep(SLEEP_2SEC);
             participantPage.openFirstParticipant();
+            participantPage.sleep(SLEEP_6SEC);
             assertTrue(participantEditPage.isNameEditable());
+            participantEditPage.sleep(SLEEP_2SEC);
             assertTrue(participantEditPage.isHouseholdNameEditable());
+            participantEditPage.sleep(SLEEP_2SEC);
             assertTrue(participantEditPage.isHeadOfHouseholdEditable());
+            participantEditPage.sleep(SLEEP_2SEC);
         } catch (AssertionError e) {
-            getLogger().error("testAdminEbodacHome - AssertionError Error . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - AEr. Error . Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
-            getLogger().error("testAdminEbodacHome - NullPointerException - Reason :  " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - NPE. Reason :  " + e.getLocalizedMessage(), e);
         } catch (InterruptedException e) {
-            getLogger().error("testAdminEbodacHome - InterruptedException - Reason :  " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - IEx. - Reason :  " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("testAdminEbodacHome - Exception - Reason :  " + e.getLocalizedMessage(), e);
+            getLogger().error("testAdminEbodacHome - Exc. - Reason :  " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -217,10 +228,11 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.goToVisit();
         ebodacPage.showVisits();
-        ebodacPage.sleep(SLEEP_2SEC);
+        visitPage.sleep(SLEEP_6SEC);
         if (visitPage.hasVisitsVisible()) {
-            assertTrue(visitEditPage.isPlannedVisitDateEditable());
-            assertFalse(visitEditPage.isActualVisitDateEditable());
+            visitPage.clickVisit();
+            visitEditPage.isPlannedVisitDateEditable();
+            visitEditPage.isActualVisitDateEditable();
             assertFalse(visitEditPage.isVisitTypeEditable());
             visitEditPage.changeVisit();
         }
@@ -229,20 +241,25 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
     public void testAdminEnrolmentTab() throws Exception {
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.goToEnrollment();
-        // enrollmentPage.goToPage();
         // It should be allowed to enrol unenroll participants.
         enrollmentPage.clickAction();
         enrollmentPage.clickOK();
+        enrollmentPage.sleep(SLEEP_2SEC);
         if (enrollmentPage.error()) {
             enrollmentPage.clickOK();
+            enrollmentPage.sleep(SLEEP_2SEC);
             enrollmentPage.nextAction();
         }
+        enrollmentPage.sleep(SLEEP_2SEC);
         if (enrollmentPage.enrolled()) {
             assertTrue(enrollmentPage.enrolled());
+            enrollmentPage.sleep(SLEEP_2SEC);
             enrollmentPage.clickOK();
         }
+        enrollmentPage.sleep(SLEEP_2SEC);
         if (enrollmentPage.unenrolled()) {
             assertTrue(enrollmentPage.unenrolled());
+            enrollmentPage.sleep(SLEEP_2SEC);
             enrollmentPage.clickOK();
         }
 
@@ -252,64 +269,88 @@ public class AdminAccessToEbodacTabsUiTest extends TestBase {
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showPrimeVaccinationReport();
+        primerVaccinationReportPage.sleep(SLEEP_4SEC);
         assertTrue(primerVaccinationReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showBoostVaccinationReport();
+        boosterVaccinationReportPage.sleep(SLEEP_4SEC);
         assertTrue(boosterVaccinationReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showDailyClinicVisitReportSchedule();
+        dailyClinicVisitScheduleReportPage.sleep(SLEEP_4SEC);
         assertTrue(dailyClinicVisitScheduleReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showFollowUpsAfterPrimeInjectionReport();
+        followupsAfterPrimeInjectionReportPage.sleep(SLEEP_4SEC);
         assertTrue(followupsAfterPrimeInjectionReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showParticipantsWhoOptOutOfMessages();
+        participantsWhoOptOutOfMessagesReportPage.sleep(SLEEP_4SEC);
         assertTrue(participantsWhoOptOutOfMessagesReportPage.existTable());
 
         // Report FollowupsMissedClinicVisits
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showFollowUpsMissedClinicReport();
+        followupsMissedClinicVisitsReportPage.sleep(SLEEP_4SEC);
         assertTrue(followupsMissedClinicVisitsReportPage.existTable());
 
         // Report MEMissed Clinics Visits Reports.
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showMEMissedClinicVisitsReport();
+        meMissedClinicVisitsReportPage.sleep(SLEEP_4SEC);
         assertTrue(meMissedClinicVisitsReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showNumberOfTimesReport();
+        numberOfTimesListenedReportPage.sleep(SLEEP_4SEC);
         assertTrue(numberOfTimesListenedReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showScreeningReport();
+        screeningReportPage.sleep(SLEEP_4SEC);
         assertTrue(screeningReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showPrimeFollowAndBoostReport();
+        primeFollowAndBoostReportPage.sleep(SLEEP_4SEC);
         assertTrue(primeFollowAndBoostReportPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showCallDetailRecord();
+        callDetailRecordPage.sleep(SLEEP_2SEC);
         assertTrue(callDetailRecordPage.existTable());
 
         ebodacPage.sleep(SLEEP_2SEC);
         ebodacPage.gotoReports();
+        reportPage.sleep(SLEEP_2SEC);
         reportPage.showSMSLog();
+        smsLogReportPage.sleep(SLEEP_4SEC);
         assertTrue(smsLogReportPage.existTable());
     }
 

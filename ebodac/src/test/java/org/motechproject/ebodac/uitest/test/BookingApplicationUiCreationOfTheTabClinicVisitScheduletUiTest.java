@@ -13,8 +13,10 @@ import org.motechproject.uitest.page.LoginPage;
 import static org.junit.Assert.assertTrue;
 
 public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest extends TestBase {
-    private static final int WAIT_2SEC = 2000;
+    private static final int SLEEP_2SEC = 2000;
+    private static final long SLEEP_4SEC = 4000;
     private static final String LOCAL_TEST_MACHINE = "localhost";
+    
     private LoginPage loginPage;
     private HomePage homePage;
     private BookingAppPage bookingAppPage;
@@ -43,11 +45,9 @@ public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest exte
             }
         } catch (NullPointerException e) {
             getLogger().error("setUp - NullPointerException - Reason : " + e.getLocalizedMessage(), e);
-
         } catch (Exception e) {
             getLogger().error("setUp - Exception - Reason : " + e.getLocalizedMessage(), e);
         }
-
     }
 
     @Test // EBODAC-710
@@ -55,35 +55,31 @@ public class BookingApplicationUiCreationOfTheTabClinicVisitScheduletUiTest exte
         try {
             homePage.resizePage();
             homePage.clickModules();
-            homePage.sleep(WAIT_2SEC);
+            homePage.sleep(SLEEP_2SEC);
             homePage.openBookingAppModule();
-            bookingAppPage.sleep(WAIT_2SEC);
+            bookingAppPage.sleep(SLEEP_2SEC);
             bookingAppPage.openClinicVisitSchedule();
-            bookingAppPage.sleep(WAIT_2SEC);
+            bookingAppPage.sleep(SLEEP_4SEC);
 
             if (bookingAppClinicVisitSchedulePage.findParticipantWithoutPrimeVacDay()) {
-                bookingAppClinicVisitSchedulePage.sleep(WAIT_2SEC);
+                bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
                 bookingAppClinicVisitSchedulePage.clickOnPrimeVacDayDate();
-                bookingAppClinicVisitSchedulePage.sleep(WAIT_2SEC);
+                bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
                 bookingAppClinicVisitSchedulePage.clickOnFirstDayInCalendar();
-                bookingAppClinicVisitSchedulePage.sleep(WAIT_2SEC);
+                bookingAppClinicVisitSchedulePage.sleep(SLEEP_2SEC);
                 // We assert that this step works
                 assertTrue(bookingAppClinicVisitSchedulePage.clickOnButtonToPrint());
             } else {
                 getLogger().error("modifyAPrimeFollowUpVisitTest - No participant found ");
-
             }
         } catch (AssertionError e) {
-            getLogger().error("modifyAPrimeFollowUpVisitTest - AssertionError - Reason : " + e.getLocalizedMessage(),
-                    e);
-
+            getLogger().error("modifyAPrimeFollowUpVisitTest - AEr - Reason : " + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
             getLogger().error("modifyAPrimeFollowUpVisitTest - NPE - Reason : " + e.getLocalizedMessage(), e);
-
         } catch (InterruptedException e) {
-            getLogger().error("modifyAPrimeFollowUpVisitTest - IE - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisitTest - IEx - Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("modifyAPrimeFollowUpVisitTest - E - Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("modifyAPrimeFollowUpVisitTest - Exc - Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

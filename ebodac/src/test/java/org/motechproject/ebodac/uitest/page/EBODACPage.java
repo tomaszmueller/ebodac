@@ -10,8 +10,18 @@ import java.lang.String;
 
 public class EBODACPage extends AbstractBasePage {
 
+    private static final By XPATH_INSTANCES_TABLE = By.xpath("//*[@id='instancesTable']/tbody/tr[2]/td[1]");
+    private static final By XPATH_LKUP_DIALOG_BUTTON = By.xpath("//*[@id='lookup-dialog']/div[2]/div[3]/div/button");
+    private static final By XPATH_LKUP_DIALOG_INPUT = By.xpath("//*[@id='lookup-dialog']/div[2]/div[2]/div/input");
+    private static final String FIND_BY_PARTICIPANT_ID = "Find By Participant Id";
+    private static final String INNER_HTML = "innerHTML";
+    private static final By XPATH_LOOKUPDIALOG_ELEM = By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/ul/li[1]/a");
+    private static final By XPATH_LOOKUP_BUTTON = By.id("lookupDialogButton");
+    private static final By XPATH_LOOKUP_DIALOG = By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/button");
     public static final String URL_PATH = "/home#/mds/dataBrowser";
-    static final int SMALL_TIMEOUT = 500;
+    static final long SMALL_TIMEOUT = 500;
+    static final long SLEEP_2SEC = 2000;
+    private static final long SLEEP_4SEC = 4000;
     static final By PARTICIPANTS = By.linkText("Participants");
     static final By REPORTS = By.linkText("Reports");
     static final By VISITS = By.linkText("Visits");
@@ -68,38 +78,40 @@ public class EBODACPage extends AbstractBasePage {
         boolean status = false;
         try {
             // Click on Lookup field and find by Participant id
-            clickWhenVisible(By.id("lookupDialogButton"));
+            clickWhenVisible(XPATH_LOOKUP_BUTTON);
+            sleep(SLEEP_4SEC);
             // Click select
-            clickWhenClickable(By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/button"));
+            clickWhenClickable(XPATH_LOOKUP_DIALOG);
+            sleep(SLEEP_2SEC);
             // Search the specific lookup.
 
-            WebElement webElement = findElement(By.xpath("//*[@id='lookup-dialog']/div[2]/div[1]/div/ul/li[1]/a"));
+            WebElement webElement = findElement(XPATH_LOOKUPDIALOG_ELEM);
 
-            if (webElement.getAttribute("innerHTML").contains("Find By Participant Id")) {
+            if (webElement.getAttribute(INNER_HTML).contains(FIND_BY_PARTICIPANT_ID)) {
                 // Select specific option
                 webElement.click();
                 // Add participant id
-                sleep(SMALL_TIMEOUT);
-                findElement(By.xpath("//*[@id='lookup-dialog']/div[2]/div[2]/div/input")).sendKeys(participantId);
-                sleep(SMALL_TIMEOUT);
+                sleep(SLEEP_2SEC);
+                findElement(XPATH_LKUP_DIALOG_INPUT).sendKeys(participantId);
+                sleep(SLEEP_2SEC);
                 // Click find
-                clickOn(By.xpath("//*[@id='lookup-dialog']/div[2]/div[3]/div/button"));
-                sleep(SMALL_TIMEOUT);
+                clickOn(XPATH_LKUP_DIALOG_BUTTON);
+                sleep(SLEEP_2SEC);
                 // Check if we have data for such participant
-                status = findElement(By.xpath("//*[@id='instancesTable']/tbody/tr[2]/td[1]")).getAttribute("innerHTML")
-                        .contains(participantId);
+                status = findElement(XPATH_INSTANCES_TABLE).getAttribute(INNER_HTML).contains(participantId);
+                sleep(SLEEP_2SEC);
             } else {
                 status = false;
-                getLogger().error("findByParticipantID - Non Found Find by Participant id");
+                getLogger().error("findByPID - Non Found Find by PID:" + participantId);
 
             }
 
         } catch (NullPointerException e) {
             status = false;
-            getLogger().error("findByParticipantID - NullPointerException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("findByPID - PId:" + participantId + "NPE. Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             status = false;
-            getLogger().error("findByParticipantID - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("findByPID - PId:" + participantId + "Exc. Reason : " + e.getLocalizedMessage(), e);
         }
         return status;
     }
