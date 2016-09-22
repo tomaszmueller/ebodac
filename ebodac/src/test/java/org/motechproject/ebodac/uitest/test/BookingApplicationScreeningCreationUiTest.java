@@ -88,7 +88,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
             bookingAppScreeningPage.sleep(SLEEP_2SEC);
             bookingAppScreeningPage.changeFilterTo(DATE_RANGE);
             bookingAppScreeningPage.sleep(SLEEP_2SEC);
-            bookingId = bookingAppScreeningPage.bookScreeningVisit().replace(DOT, EMPTY);
+            bookingId = removeDotFrombookingAppVisit();
 
             if (EMPTY != bookingId && null != bookingId) {
                 bookingAppScreeningPage.sleep(SLEEP_2SEC);
@@ -140,6 +140,17 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         } catch (Exception e) {
             getLogger().error("bAScreeningVisitCreationTest - Exc . Reason : " + e.getLocalizedMessage(), e);
         }
+    }
+
+    public String removeDotFrombookingAppVisit() throws InterruptedException {
+        String result = bookingAppScreeningPage.bookScreeningVisit(); 
+        String temp = result;
+        
+        if(temp.contains(DOT)){
+            result = temp.replace(DOT, EMPTY);
+        }
+        
+        return result;
     }
 
     public void assertVisitTest(ArrayList<LocalDate> dates) {
