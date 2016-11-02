@@ -58,7 +58,7 @@ public class ScreeningServiceTest {
     @Before
     public void setUp() {
         initMocks(this);
-        clinic = new Clinic("siteId", "location", 1, 5, 2, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10);
+        clinic = new Clinic("siteId", "location", 1, 5, 2, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
         clinic.setId(1L);
     }
 

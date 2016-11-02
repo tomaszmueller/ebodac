@@ -42,7 +42,7 @@ public class Visit {
 
     @NonEditable
     @Field(displayName = "Visit Type", required = true)
-    @EnumDisplayName(enumField = "value")
+    @EnumDisplayName(enumField = "motechValue")
     private VisitType type;
 
     @NonEditable
@@ -211,7 +211,7 @@ public class Visit {
 
     @Override
     public String toString() {
-        return type.getValue() +
+        return type.getMotechValue() +
                 (getDateProjected() != null ? " / Planned Date: " + getDateProjected().toString() : "") +
                 (getDate() != null ? " / Actual Date: " + getDate().toString() : "");
     }

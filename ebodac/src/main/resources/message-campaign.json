@@ -921,6 +921,238 @@
     ]
   },
   {
+    "name": "Fourth Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 1",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 2",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
+        "startTime": "7:00"
+      }
+    ]
+  },
+  {
+    "name": "Fifth Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 1",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 2",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
+        "startTime": "7:00"
+      }
+    ]
+  },
+  {
+    "name": "Sixth Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 1",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 2",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
+        "startTime": "7:00"
+      }
+    ]
+  },
+  {
+    "name": "Seventh Long-term Follow-up visit",
+    "type": "OFFSET",
+    "messages": [
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 week",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-week",
+        "timeOffset": "-7 Days",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Reminder No Exam: 1 day",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-reminder-no-exam-1-day",
+        "timeOffset": "-1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 1",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-1",
+        "timeOffset": "1 Day",
+        "startTime": "7:00"
+      },
+      {
+        "name": "Clinic Visit Missed appointment 2",
+        "formats": [
+          "IVR",
+          "SMS"
+        ],
+        "languages": [
+          "en"
+        ],
+        "messageKey": "clinic-visit-missed-appointment-2",
+        "timeOffset": "3 Days",
+        "startTime": "7:00"
+      }
+    ]
+  },
+  {
     "name": "Screening - stage 2",
     "type": "OFFSET",
     "messages": [

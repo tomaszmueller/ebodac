@@ -69,9 +69,17 @@ public class VisitLimitationHelper {
                 return clinic.getMaxSecondLongTermFollowUpVisits();
             case THIRD_LONG_TERM_FOLLOW_UP_VISIT:
                 return clinic.getMaxThirdLongTermFollowUpVisits();
+            case FOURTH_LONG_TERM_FOLLOW_UP_VISIT:
+                return clinic.getMaxFourthLongTermFollowUpVisits();
+            case FIFTH_LONG_TERM_FOLLOW_UP_VISIT:
+                return clinic.getMaxFifthLongTermFollowUpVisits();
+            case SIXTH_LONG_TERM_FOLLOW_UP_VISIT:
+                return clinic.getMaxSixthLongTermFollowUpVisits();
+            case SEVENTH_LONG_TERM_FOLLOW_UP_VISIT:
+                return clinic.getMaxSeventhLongTermFollowUpVisits();
             default:
                 throw new IllegalArgumentException(String.format("Cannot find max visits number in Clinic for Visit Type: %s",
-                        visitType.getValue()));
+                        visitType.getMotechValue()));
         }
     }
 }
