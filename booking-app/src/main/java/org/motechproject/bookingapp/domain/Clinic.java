@@ -74,6 +74,22 @@ public class Clinic {
     @Field(required = true, defaultValue = "10")
     private Integer maxThirdLongTermFollowUpVisits;
 
+    @UIDisplayable(position = 15)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxFourthLongTermFollowUpVisits;
+
+    @UIDisplayable(position = 16)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxFifthLongTermFollowUpVisits;
+
+    @UIDisplayable(position = 17)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxSixthLongTermFollowUpVisits;
+
+    @UIDisplayable(position = 18)
+    @Field(required = true, defaultValue = "10")
+    private Integer maxSeventhLongTermFollowUpVisits;
+
     @NonEditable(display = false)
     @Field
     private String owner;
@@ -84,7 +100,9 @@ public class Clinic {
     public Clinic(String siteId, String location, Integer numberOfRooms, Integer maxCapacityByDay, Integer maxScreeningVisits, //NO CHECKSTYLE ParameterNumber
                   Integer maxPrimeVisits, Integer maxPrimeFirstFollowUpVisits, Integer maxPrimeSecondFollowUpVisits, Integer maxBoosterVisits,
                   Integer maxBoosterFirstFollowUpVisits, Integer maxBoosterSecondFollowUpVisits, Integer maxBoosterThirdFollowUpVisits,
-                  Integer maxFirstLongTermFollowUpVisits, Integer maxSecondLongTermFollowUpVisits, Integer maxThirdLongTermFollowUpVisits) {
+                  Integer maxFirstLongTermFollowUpVisits, Integer maxSecondLongTermFollowUpVisits, Integer maxThirdLongTermFollowUpVisits,
+                  Integer maxFourthLongTermFollowUpVisits, Integer maxFifthLongTermFollowUpVisits, Integer maxSixthLongTermFollowUpVisits,
+                  Integer maxSeventhLongTermFollowUpVisits) {
         this.siteId = siteId;
         this.location = location;
         this.numberOfRooms = numberOfRooms;
@@ -100,6 +118,10 @@ public class Clinic {
         this.maxFirstLongTermFollowUpVisits = maxFirstLongTermFollowUpVisits;
         this.maxSecondLongTermFollowUpVisits = maxSecondLongTermFollowUpVisits;
         this.maxThirdLongTermFollowUpVisits = maxThirdLongTermFollowUpVisits;
+        this.maxFourthLongTermFollowUpVisits = maxFourthLongTermFollowUpVisits;
+        this.maxFifthLongTermFollowUpVisits = maxFifthLongTermFollowUpVisits;
+        this.maxSixthLongTermFollowUpVisits = maxSixthLongTermFollowUpVisits;
+        this.maxSeventhLongTermFollowUpVisits = maxSeventhLongTermFollowUpVisits;
     }
 
     public Long getId() {
@@ -216,6 +238,38 @@ public class Clinic {
 
     public Integer getMaxThirdLongTermFollowUpVisits() {
         return maxThirdLongTermFollowUpVisits;
+    }
+
+    public Integer getMaxFourthLongTermFollowUpVisits() {
+        return maxFourthLongTermFollowUpVisits;
+    }
+
+    public void setMaxFourthLongTermFollowUpVisits(Integer maxFourthLongTermFollowUpVisits) {
+        this.maxFourthLongTermFollowUpVisits = maxFourthLongTermFollowUpVisits;
+    }
+
+    public Integer getMaxFifthLongTermFollowUpVisits() {
+        return maxFifthLongTermFollowUpVisits;
+    }
+
+    public void setMaxFifthLongTermFollowUpVisits(Integer maxFifthLongTermFollowUpVisits) {
+        this.maxFifthLongTermFollowUpVisits = maxFifthLongTermFollowUpVisits;
+    }
+
+    public Integer getMaxSixthLongTermFollowUpVisits() {
+        return maxSixthLongTermFollowUpVisits;
+    }
+
+    public void setMaxSixthLongTermFollowUpVisits(Integer maxSixthLongTermFollowUpVisits) {
+        this.maxSixthLongTermFollowUpVisits = maxSixthLongTermFollowUpVisits;
+    }
+
+    public Integer getMaxSeventhLongTermFollowUpVisits() {
+        return maxSeventhLongTermFollowUpVisits;
+    }
+
+    public void setMaxSeventhLongTermFollowUpVisits(Integer maxSeventhLongTermFollowUpVisits) {
+        this.maxSeventhLongTermFollowUpVisits = maxSeventhLongTermFollowUpVisits;
     }
 
     public void setMaxThirdLongTermFollowUpVisits(Integer maxThirdLongTermFollowUpVisits) {

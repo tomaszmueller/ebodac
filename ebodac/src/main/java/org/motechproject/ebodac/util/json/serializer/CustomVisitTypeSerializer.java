@@ -16,6 +16,6 @@ public class CustomVisitTypeSerializer extends JsonSerializer<VisitType> {
     public void serialize(VisitType value, JsonGenerator gen,
                           SerializerProvider arg2)
             throws IOException {
-        gen.writeString(value.getValue());
+        gen.writeString(value.getMotechValue());
     }
 }

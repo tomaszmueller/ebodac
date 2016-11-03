@@ -243,7 +243,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         List<Enrollment> enrollments = enrollmentDataService.retrieveAll();
         assertEquals(1, enrollments.size());
 
-        checkCampaignEnrollment("1000000162", VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT.getValue(),
+        checkCampaignEnrollment("1000000162", VisitType.FIRST_LONG_TERM_FOLLOW_UP_VISIT.getMotechValue(),
                 LocalDate.parse("2115-10-11", formatter), enrollments.get(0));
     }
 
@@ -765,7 +765,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
             assertEquals(new LocalDate(2115, 10, 10), enrollment.getReferenceDate());
         }
 
-        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getValue());
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getMotechValue());
         assertEquals("Boost Vaccination Day Thursday", enrollment.getCampaignName());
 
         Visit visit = subject.getVisits().get(0);
@@ -776,7 +776,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(new LocalDate(2115, 10, 11), visit.getMotechProjectedDate());
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
-        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getValue());
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_DAY.getMotechValue());
         assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         assertEquals(new LocalDate(2115, 10, 11), enrollment.getReferenceDate());
         assertEquals("Boost Vaccination Day Friday", enrollment.getCampaignName());
@@ -790,7 +790,7 @@ public class EnrollmentControllerIT extends BasePaxIT {
         assertEquals(new LocalDate(2115, 10, 15), visit.getMotechProjectedDate());
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
-        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+        enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getMotechValue());
         assertEquals(EnrollmentStatus.UNENROLLED, enrollment.getStatus());
         assertEquals(new LocalDate(2115, 10, 15), enrollment.getReferenceDate());
     }
@@ -889,14 +889,14 @@ public class EnrollmentControllerIT extends BasePaxIT {
             assertEquals(EnrollmentStatus.INITIAL, enrollment.getStatus());
         }
 
-        ebodacEnrollmentService.enrollSubjectToCampaign(subject.getSubjectId(), VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+        ebodacEnrollmentService.enrollSubjectToCampaign(subject.getSubjectId(), VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getMotechValue());
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
         assertNotNull(subjectEnrollments);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
         assertEquals(3, subjectEnrollments.getEnrollments().size());
 
-        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getValue());
+        Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getMotechValue());
         assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
     }
 

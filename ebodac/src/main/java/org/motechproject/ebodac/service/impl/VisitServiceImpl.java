@@ -125,12 +125,12 @@ public class VisitServiceImpl implements VisitService {
 
         if (activeStageId == null && stageId == null) {
             LOGGER.warn("Visit of type: {} is not created for Participant with id: {}, because Participant Stage Id and Active Stage Id are empty",
-                    visit.getType().getValue(), visit.getSubject().getSubjectId());
+                    visit.getType().getMotechValue(), visit.getSubject().getSubjectId());
             return true;
         }
         if (activeStageId != null && stageId != null && !activeStageId.equals(stageId)) {
             LOGGER.warn("Visit of type: {} is not created for Participant with id: {}, because Participant Stage Id and Active Stage Id are different",
-                    visit.getType().getValue(), visit.getSubject().getSubjectId());
+                    visit.getType().getMotechValue(), visit.getSubject().getSubjectId());
             return true;
         }
         return false;

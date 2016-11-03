@@ -46,7 +46,7 @@ public class VisitLimitationHelperTest {
     @Before
     public void setUp() {
         initMocks(this);
-        clinic = new Clinic("siteId", "location", 1, 5, 1, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10);
+        clinic = new Clinic("siteId", "location", 1, 5, 1, 9, 8, 7, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
         clinic.setId(1L);
 
     }

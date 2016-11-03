@@ -12,27 +12,35 @@ public enum VisitType {
     FIRST_LONG_TERM_FOLLOW_UP_VISIT("First Long-term Follow-up visit"),
     SECOND_LONG_TERM_FOLLOW_UP_VISIT("Second Long-term Follow-up visit"),
     THIRD_LONG_TERM_FOLLOW_UP_VISIT("Third Long-term Follow-up visit"),
+    FOURTH_LONG_TERM_FOLLOW_UP_VISIT("Fourth Long-term Follow-up visit", "LFU4 (18MPP)"),
+    FIFTH_LONG_TERM_FOLLOW_UP_VISIT("Fifth Long-term Follow-up visit", "LFU5 (24MPP)"),
+    SIXTH_LONG_TERM_FOLLOW_UP_VISIT("Sixth Long-term Follow-up visit", "LFU6 (30MPP)"),
+    SEVENTH_LONG_TERM_FOLLOW_UP_VISIT("Seventh Long-term Follow-up visit", "LFU7 (36MPP)"),
     UNSCHEDULED_VISIT("Unscheduled Visit");
 
-    private String value;
+    private String motechValue;
+    private String[] typeValues;
 
-    private VisitType(String value) {
-        this.value = value;
+    VisitType(String... values) {
+        this.typeValues = values;
+        this.motechValue = values[0];
     }
 
     public static VisitType getByValue(String value) {
-        if (value != null && value.startsWith(UNSCHEDULED_VISIT.getValue())) {
+        if (value != null && value.startsWith(UNSCHEDULED_VISIT.getMotechValue())) {
             return UNSCHEDULED_VISIT;
         }
         for (VisitType visitType : VisitType.values()) {
-            if (visitType.getValue().equalsIgnoreCase(value)) {
-                return visitType;
+            for (String typeValue : visitType.typeValues) {
+                if (typeValue.equalsIgnoreCase(value)) {
+                    return visitType;
+                }
             }
         }
         return null;
     }
 
-    public String getValue() {
-        return value;
+    public String getMotechValue() {
+        return motechValue;
     }
 }
