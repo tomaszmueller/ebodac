@@ -26,7 +26,6 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
     private UITestHttpClientHelper httpClientHelper;
     private String url;
     public static final int SLEEP_3SEC = 3000;
-    public static final int BEGIN_LOOP = 1;
     private static final long SLEEP_2SEC = 2000;
     private UserPropertiesHelper userPropertiesHelper;
 
@@ -61,28 +60,37 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
         ebodacPage.goToEnrollment();
         enrollmentPage.goToPage();
         enrollmentPage.sleep(SLEEP_2SEC);
-        int endLoop = Integer.parseInt(enrollmentPage.getNumberOfEnrollments());
+        int total = Integer.parseInt(enrollmentPage.getTotalNumberOfEnrollments());
+        int endLoop = 1;
+        int beginLoop = 1;
         boolean enrollunenrollsuccessfull = false;
-        for (int i = BEGIN_LOOP+1; i <= endLoop; i++) {
-            idOfParticipant = enrollmentPage.getCurrentParticipantId(""+i);
-            enrollmentPage.sleep(SLEEP_2SEC);
-            temp = enrollmentPage.getStatusOfCurrentParticipantEnrollment(""+i);
-            enrollmentPage.sleep(SLEEP_2SEC);
-            if (ENROLLED.equals(temp)) {
-                boolean success = unenrollment(idOfParticipant);
-                if(success) {
-                    enrollment(idOfParticipant);
-                    enrollunenrollsuccessfull = true;
-                    break;
-                }
-            } else if(UNENROLLED.equals(temp)){
-                boolean success = enrollment(idOfParticipant);
-                if(success) {
-                    unenrollment(idOfParticipant);
-                    enrollunenrollsuccessfull = true;
-                    break;
+        loop:
+        while(endLoop < total) {
+            endLoop = Integer.parseInt(enrollmentPage.getNumberOfEnrollments());
+            for (int i = beginLoop; i <= endLoop; i++) {
+                idOfParticipant = enrollmentPage.getCurrentParticipantId("" + i);
+                enrollmentPage.sleep(SLEEP_2SEC);
+                temp = enrollmentPage.getStatusOfCurrentParticipantEnrollment("" + i);
+                enrollmentPage.sleep(SLEEP_2SEC);
+                if (ENROLLED.equals(temp)) {
+                    boolean success = unenrollment(idOfParticipant);
+                    if (success) {
+                        enrollment(idOfParticipant);
+                        enrollunenrollsuccessfull = true;
+                        break loop;
+                    }
+                } else if (UNENROLLED.equals(temp)) {
+                    boolean success = enrollment(idOfParticipant);
+                    if (success) {
+                        unenrollment(idOfParticipant);
+                        enrollunenrollsuccessfull = true;
+                        break loop;
+                    }
                 }
             }
+            beginLoop = endLoop+1;
+            enrollmentPage.goToNextPageInTable();
+            enrollmentPage.sleep(SLEEP_3SEC);
         }
         if(!enrollunenrollsuccessfull) {
             getLogger().error("No enrollment/unenrollment was performed");

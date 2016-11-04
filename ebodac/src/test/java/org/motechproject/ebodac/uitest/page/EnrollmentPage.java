@@ -62,9 +62,13 @@ public class EnrollmentPage extends AbstractBasePage {
 
     public String getNumberOfEnrollments() {
         String noeRecord = findElement(By.xpath(AMOUNT_ENROLLMENTS_DIV)).getAttribute(INNER_HTML);
-        return noeRecord.substring(noeRecord.indexOf("of")+3);
+        return noeRecord.substring(noeRecord.indexOf("-")+2, noeRecord.indexOf("of")-1);
     }
 
+    public String getTotalNumberOfEnrollments() {
+        String noeRecord = findElement(By.xpath(AMOUNT_ENROLLMENTS_DIV)).getAttribute(INNER_HTML);
+        return noeRecord.substring(noeRecord.indexOf("of")+3);
+    }
     public void clickOK() throws InterruptedException {
         sleep(TIMEOUT_500MLSEC);
         clickWhenVisible(POPUP_OK);
