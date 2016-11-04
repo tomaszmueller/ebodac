@@ -156,7 +156,7 @@ public class VisitScheduleServiceImpl implements VisitScheduleService {
                 VisitScheduleOffset offset = offsetMap.get(details.getVisit().getType());
                 if (offset == null) {
                     throw new VisitScheduleException(String.format("Cannot calculate Planned Dates, because no Visit Schedule Offset found for visit: %s",
-                            details.getVisit().getType().getValue()));
+                            details.getVisit().getType().getMotechValue()));
                 }
                 details.setBookingPlannedDate(primeVaccinationDate.plusDays(offset.getTimeOffset()));
                 detailsList.add(details);

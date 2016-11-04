@@ -52,7 +52,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     @Override
     public void enrollScreening(Subject subject) {
         try {
-            enrollNew(subject, VisitType.SCREENING.getValue(), DateUtil.now().toLocalDate(), new Time(DateUtil.now().toLocalTime()));
+            enrollNew(subject, VisitType.SCREENING.getMotechValue(), DateUtil.now().toLocalDate(), new Time(DateUtil.now().toLocalTime()));
         } catch (EbodacEnrollmentException e) {
             LOGGER.debug(e.getMessage(), e);
         }
@@ -168,7 +168,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
             throw new EbodacEnrollmentException("Prime Vaccination Day Visit date cannot be changed", "ebodac.reenroll.error.primeVaccinationDateChanged");
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-            String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getValue(), visit.getSubject().getStageId());
+            String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getMotechValue(), visit.getSubject().getStageId());
             reenrollSubjectWithNewDate(visit.getSubject().getSubjectId(), campaignName, visit.getMotechProjectedDate());
         }
     }
@@ -221,7 +221,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         }
 
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
-        String campaignName = visit.getType().getValue();
+        String campaignName = visit.getType().getMotechValue();
 
         if (null == subjectEnrollments) {
             return false;
@@ -293,7 +293,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         for (Visit visit : subject.getVisits()) {
             if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-                String campaignName = visit.getType().getValue();
+                String campaignName = visit.getType().getMotechValue();
                 Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
 
                 if (enrollment == null) {
@@ -305,7 +305,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
                     if (referenceDate != null) {
                         if (VisitType.BOOST_VACCINATION_DAY.equals(visit.getType())) {
                             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
-                            campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+                            campaignName = VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + dayOfWeek;
                         }
 
                         campaignName = addStageIdToCampaignNameIfNeeded(campaignName, subject.getStageId());
@@ -348,19 +348,19 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     public void unenrollAndRemoveEnrollment(Visit visit) {
         if (!VisitType.PRIME_VACCINATION_DAY.equals(visit.getType()) && !VisitType.UNSCHEDULED_VISIT.equals(visit.getType())
                 && !VisitType.SCREENING.equals(visit.getType())) {
-            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getValue());
+            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getMotechValue());
         }
     }
 
     @Override
     public void rollbackOrRemoveEnrollment(Visit visit) {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getValue());
+            unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), visit.getType().getMotechValue());
             unenrollAndRemoveEnrollment(visit.getSubject().getSubjectId(), EbodacConstants.BOOSTER_RELATED_MESSAGES);
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
             SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
             if (subjectEnrollments != null) {
-                rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, visit.getSubject(), visit.getType().getValue(),
+                rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, visit.getSubject(), visit.getType().getMotechValue(),
                         visit.getMotechProjectedDate(), EnrollmentStatus.COMPLETED);
             }
         }
@@ -437,7 +437,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             enrollmentDataService.delete(enrollment);
 
             String dayOfWeek = visit.getMotechProjectedDate().dayOfWeek().getAsText(Locale.ENGLISH);
-            String campaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            String campaignName = VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + dayOfWeek;
             campaignName = addStageIdToCampaignNameIfNeeded(campaignName, visit.getSubject().getStageId());
             Enrollment newEnrollment = new Enrollment(visit.getSubject().getSubjectId(), campaignName);
             newEnrollment.setStatus(enrollmentStatus);
@@ -457,10 +457,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     private void enrollSubject(Visit visit) {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-            enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getDate());
+            enrollNew(visit.getSubject(), visit.getType().getMotechValue(), visit.getDate());
             enrollNew(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate());
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-            enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+            enrollNew(visit.getSubject(), visit.getType().getMotechValue(), visit.getMotechProjectedDate());
         }
     }
 
@@ -469,12 +469,12 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(visit.getSubject().getSubjectId());
 
             if (subjectEnrollments == null) {
-                enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+                enrollNew(visit.getSubject(), visit.getType().getMotechValue(), visit.getMotechProjectedDate());
             } else {
-                Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getValue());
+                Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(visit.getType().getMotechValue());
 
                 if (enrollment == null) {
-                    enrollNew(visit.getSubject(), visit.getType().getValue(), visit.getMotechProjectedDate());
+                    enrollNew(visit.getSubject(), visit.getType().getMotechValue(), visit.getMotechProjectedDate());
                 } else if (!enrollment.getReferenceDate().equals(visit.getMotechProjectedDate())) {
                     try {
                         if (EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())) {
@@ -520,9 +520,9 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(newCampaignName);
 
-        if (newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+        if (newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getMotechValue())) {
             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
-            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + dayOfWeek;
             newCampaignName = addStageIdToCampaignNameIfNeeded(newCampaignName, subject.getStageId());
         }
 
@@ -560,19 +560,19 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
         checkIfUnenrolled(enrollment, subjectId, newCampaignName);
 
-        if (referenceDate != null && newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+        if (referenceDate != null && newCampaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getMotechValue())) {
             subjectEnrollments.removeEnrolment(enrollment);
             subjectEnrollmentsDataService.update(subjectEnrollments);
             enrollmentDataService.delete(enrollment);
             String dayOfWeek = referenceDate.dayOfWeek().getAsText(Locale.ENGLISH);
-            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getValue() + " " + dayOfWeek;
+            newCampaignName = VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + dayOfWeek;
             newCampaignName = addStageIdToCampaignNameIfNeeded(newCampaignName, subject.getStageId());
             enrollment = new Enrollment(subjectId, newCampaignName);
             subjectEnrollments.addEnrolment(enrollment);
         }
 
         if (referenceDate != null) {
-            if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(newCampaignName) && !referenceDate.equals(enrollment.getReferenceDate())) {
+            if (VisitType.PRIME_VACCINATION_DAY.getMotechValue().equals(newCampaignName) && !referenceDate.equals(enrollment.getReferenceDate())) {
                 throw new EbodacEnrollmentException("Cannot enroll Participant with id: %s to Campaign with name: %s, because reference date cannot be changed for Prime Vaccination Day Campaign",
                         "ebodac.enroll.error.primeVaccinationDateChanged", subjectId, enrollment.getCampaignName());
             }
@@ -609,10 +609,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
     private void completeCampaignForSubjectWithStatus(Visit visit, EnrollmentStatus status) {
         if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-            completeCampaignForSubjectWithStatus(visit.getSubject(), visit.getType().getValue(), status);
+            completeCampaignForSubjectWithStatus(visit.getSubject(), visit.getType().getMotechValue(), status);
             completeCampaignForSubjectWithStatus(visit.getSubject(), EbodacConstants.BOOSTER_RELATED_MESSAGES, status);
         } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-            completeCampaignForSubjectWithStatus(visit.getSubject(), visit.getType().getValue(), status);
+            completeCampaignForSubjectWithStatus(visit.getSubject(), visit.getType().getMotechValue(), status);
         }
     }
 
@@ -895,10 +895,10 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             }
             for (Visit visit : subject.getVisits()) {
                 if (VisitType.PRIME_VACCINATION_DAY.equals(visit.getType())) {
-                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getValue(), visit.getDate(), statusToRollback);
+                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getMotechValue(), visit.getDate(), statusToRollback);
                     rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, EbodacConstants.BOOSTER_RELATED_MESSAGES, visit.getDate(), statusToRollback);
                 } else if (!VisitType.UNSCHEDULED_VISIT.equals(visit.getType()) && !VisitType.SCREENING.equals(visit.getType())) {
-                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getValue(), visit.getMotechProjectedDate(), statusToRollback);
+                    rollbackEnrollmentStatusOrEnrollNew(subjectEnrollments, subject, visit.getType().getMotechValue(), visit.getMotechProjectedDate(), statusToRollback);
                 }
             }
             updateSubjectEnrollments(subjectEnrollments);
@@ -1005,7 +1005,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
             List<String> boosterRelatedMessages = configService.getConfig().getBoosterRelatedMessages();
             for (Visit visit : visits) {
                 try {
-                    String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getValue(), newSubject.getStageId());
+                    String campaignName = addStageIdToCampaignNameIfNeeded(visit.getType().getMotechValue(), newSubject.getStageId());
                     if (boosterRelatedMessages.contains(campaignName)) {
                         enrollNew(newSubject, campaignName, visit.getMotechProjectedDate(), null);
                     }
@@ -1022,12 +1022,12 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
     }
 
     private String removeDayOfTheWeekFormCampaignName(String campaignName) {
-        if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+        if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getMotechValue())) {
             String [] campaignNameAndStage = campaignName.split(EbodacConstants.STAGE);
             if (campaignNameAndStage.length > 1) {
-                return VisitType.BOOST_VACCINATION_DAY.getValue() + EbodacConstants.STAGE + campaignNameAndStage[1];
+                return VisitType.BOOST_VACCINATION_DAY.getMotechValue() + EbodacConstants.STAGE + campaignNameAndStage[1];
             }
-            return VisitType.BOOST_VACCINATION_DAY.getValue();
+            return VisitType.BOOST_VACCINATION_DAY.getMotechValue();
         }
         return campaignName;
     }

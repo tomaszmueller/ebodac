@@ -322,8 +322,8 @@ public final class DtoLookupHelper {
 
     public static List<LookupDto> changeLookupFieldsForDay8AndDay57Report(List<LookupDto> lookups) {
 
-        List<String> availableVisitTypes = Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString() + ":"  + VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.getValue(),
-                VisitType.BOOST_VACCINATION_DAY.toString() + ":"  + VisitType.BOOST_VACCINATION_DAY.getValue());
+        List<String> availableVisitTypes = Arrays.asList(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.toString() + ":"  + VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT.getMotechValue(),
+                VisitType.BOOST_VACCINATION_DAY.toString() + ":"  + VisitType.BOOST_VACCINATION_DAY.getMotechValue());
         for (LookupDto lookup : lookups) {
             for (LookupFieldDto lookupFieldDto : lookup.getLookupFields()) {
 

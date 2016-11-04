@@ -283,7 +283,7 @@ public class EbodacEnrollmentController {
 
         String campaignNameWithoutStage = campaignName.split(EbodacConstants.STAGE)[0];
 
-        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignNameWithoutStage)) {
+        if (VisitType.PRIME_VACCINATION_DAY.getMotechValue().equals(campaignNameWithoutStage)) {
             return new ResponseEntity<>("ebodac.enrollment.error.primeVaccinationDateChanged", HttpStatus.BAD_REQUEST);
         }
 
@@ -317,7 +317,7 @@ public class EbodacEnrollmentController {
 
         String campaignNameWithoutStage = campaignName.split(EbodacConstants.STAGE)[0];
 
-        if (VisitType.PRIME_VACCINATION_DAY.getValue().equals(campaignNameWithoutStage)) {
+        if (VisitType.PRIME_VACCINATION_DAY.getMotechValue().equals(campaignNameWithoutStage)) {
             return new ResponseEntity<>("ebodac.enrollment.error.primeVaccinationDateChanged", HttpStatus.BAD_REQUEST);
         }
 
@@ -353,7 +353,7 @@ public class EbodacEnrollmentController {
     private void updateVisit(String subjectId, String campaignName, LocalDate date) {
         if (!EbodacConstants.BOOSTER_RELATED_MESSAGES.equals(campaignName)) {
             VisitType visitType = null;
-            if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getValue())) {
+            if (campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getMotechValue())) {
                 visitType = VisitType.BOOST_VACCINATION_DAY;
             } else {
                 visitType = VisitType.getByValue(campaignName);

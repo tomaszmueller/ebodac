@@ -240,9 +240,9 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         String campaignName;
 
         if (stageId > 1) {
-            campaignName = visit.getType().getValue() + EbodacConstants.STAGE + stageId;
+            campaignName = visit.getType().getMotechValue() + EbodacConstants.STAGE + stageId;
         } else {
-            campaignName = visit.getType().getValue();
+            campaignName = visit.getType().getMotechValue();
         }
 
         LocalDate vaccinationDate;

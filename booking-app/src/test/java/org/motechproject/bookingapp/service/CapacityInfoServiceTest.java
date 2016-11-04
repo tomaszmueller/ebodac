@@ -61,8 +61,8 @@ public class CapacityInfoServiceTest {
 
         BookingGridSettings bookingGridSettings = createBookingGridSettings(1, 10, DateFilter.DATE_RANGE, "2017-1-1", "2017-1-2");
 
-        List<Clinic> clinics = new ArrayList<>(Arrays.asList(new Clinic("siteId", "first", 20, 5, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                new Clinic("siteId", "second", 20, 10, 2, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
+        List<Clinic> clinics = new ArrayList<>(Arrays.asList(new Clinic("siteId", "first", 20, 5, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+                new Clinic("siteId", "second", 20, 10, 2, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
         clinics.get(0).setId(1L);
         clinics.get(1).setId(2L);
 
@@ -92,8 +92,8 @@ public class CapacityInfoServiceTest {
     @Test
     public void shouldReturnZerosForEmptyDateRange() throws Exception {
         BookingGridSettings bookingGridSettings = createBookingGridSettings(1, 10, null, "", "");
-        List<Clinic> clinics = new ArrayList<>(Arrays.asList(new Clinic("siteId", "first", 20, 5, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                new Clinic("siteId", "second", 20, 10, 2, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
+        List<Clinic> clinics = new ArrayList<>(Arrays.asList(new Clinic("siteId", "first", 20, 5, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+                new Clinic("siteId", "second", 20, 10, 2, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
 
         when(clinicDataService.retrieveAll(Mockito.any(QueryParams.class))).thenReturn(clinics);
         when(clinicDataService.count()).thenReturn(2L);
