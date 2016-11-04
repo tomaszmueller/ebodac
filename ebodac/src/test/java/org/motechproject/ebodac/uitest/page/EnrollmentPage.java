@@ -18,6 +18,8 @@ public class EnrollmentPage extends AbstractBasePage {
     private static final String TITLE_ADVANCE_ENROLLMENT = "//*[@id='main-content']/div/div/h4";
     private static final String EBODAC_ENROLLMENT_ADVANCED = "EBODAC - Enrollment Advanced";
     public static final String URL_PATH = "home#/ebodac/enrollment";
+    private static final String AMOUNT_ENROLLMENTS_DIV = "//*[@id='pageEnrollmentTable_left']/div";
+    private static final String INNER_HTML = "innerHTML";
     static final By ACTION = By.xpath("//table[@id='enrollmentTable']/tbody/tr[2]/td[6]/button");
     static final By POPUP_OK = By.id("popup_ok");
     static final By POPUP_CONTENT = By.id("popup_content");
@@ -56,6 +58,11 @@ public class EnrollmentPage extends AbstractBasePage {
     public void clickAction() throws InterruptedException {
         sleep(TIMEOUT_500MLSEC);
         clickWhenVisible(ACTION);
+    }
+
+    public String getNumberOfEnrollments() {
+        String noeRecord = findElement(By.xpath(AMOUNT_ENROLLMENTS_DIV)).getAttribute(INNER_HTML);
+        return noeRecord.substring(noeRecord.indexOf("of")+3);
     }
 
     public void clickOK() throws InterruptedException {
@@ -158,8 +165,16 @@ public class EnrollmentPage extends AbstractBasePage {
         return findElement(FIRST_PARTICIPANT_STATUS).getAttribute("title");
     }
 
+    public String getStatusOfCurrentParticipantEnrollment(String id) {
+        return findElement(By.xpath("//*[@id='" + id + "']/td[5]")).getAttribute("title");
+    }
+
     public String getParticipantId() {
         return findElement(FIRST_PARTICIPANT_ID).getText();
+    }
+
+    public String getCurrentParticipantId(String id) {
+        return findElement(By.xpath("//*[@id='" + id + "']/td[2]")).getText();
     }
 
     public void clickOnButtonToEnrollParticipant(String idOfParticipant) {
