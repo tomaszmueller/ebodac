@@ -19,7 +19,8 @@ public class ClinicController {
             "Max Screening Visits", "Max Prime Visits", "Max Booster Visits", "Amount of Rooms", "Max Prime First Follow Up Visits",
             "Max Prime Second Follow Up Visits", "Max Booster First Follow Up Visits", "Max Booster Second Follow Up Visits",
             "Max Booster Third Follow Up Visits", "Max First Long Term Follow Up Visits", "Max Second Long Term Follow Up Visits",
-            "Max Third Long Term Follow Up Visits"));
+            "Max Third Long Term Follow Up Visits", "Max Fourth Long Term Follow Up Visits", "Max Fifth Long Term Follow Up Visits",
+            "Max Sixth Long Term Follow Up Visits", "Max Seventh Long Term Follow Up Visits"));
 
     @Autowired
     private ClinicService clinicService;
