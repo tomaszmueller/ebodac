@@ -146,7 +146,7 @@ public class BookingApplicationScreeningCreationUiTest extends TestBase {
         String result = bookingAppScreeningPage.bookScreeningVisit(); 
         String temp = result;
         
-        if(temp.contains(DOT)){
+        if (temp.contains(DOT)) {
             result = temp.replace(DOT, EMPTY);
         }
         

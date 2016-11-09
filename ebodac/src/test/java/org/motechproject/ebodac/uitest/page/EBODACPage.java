@@ -26,6 +26,7 @@ public class EBODACPage extends AbstractBasePage {
     static final By REPORTS = By.linkText("Reports");
     static final By VISITS = By.linkText("Visits");
     static final By ENROLLMENT = By.linkText("Enrollment");
+    static final By STATISTICS = By.linkText("Statistics");
     private static final By EMAIL_REPORTS = By.linkText("Email Reports");;
 
     public EBODACPage(WebDriver driver) {
@@ -49,6 +50,10 @@ public class EBODACPage extends AbstractBasePage {
     public void goToVisit() throws InterruptedException {
         Thread.sleep(SMALL_TIMEOUT);
         clickWhenVisible(VISITS);
+    }
+
+    public void showStatistics() throws InterruptedException {
+        clickWhenVisible(STATISTICS);
     }
 
     public void goToEnrollment() throws InterruptedException {
