@@ -11,17 +11,23 @@ public class IVRKPIPage extends AbstractBasePage {
     public static final String URL_PATH = "/home#/ebodac/subjects";
 
     static final By IVR_KPIS = By.linkText("IVR KPIs");
+    static final By SMS_KPIS = By.linkText("SMS KPIs");
     static final By STAT_PERIOD_BUTTON = By.xpath("(//button[@type='button'])[4]");
     static final By LAST_30_DAYS = By.linkText("Last 30 days");
     static final By DATE_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Date']");
     static final By TOTAL_CALLS_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Total Calls']");
+    static final By TOTAL_SMS_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Total SMS Sent']");
     static final By TOTAL_PENDING_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Total Pending']");
     static final By TOTAL_FAILED_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Total Failed']");
     static final By TOTAL_SUCCEEDED_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Total Succeed']");
     static final By CALL_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Call To Men']");
     static final By CALL_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Call To Women']");
-    static final By SUCCESSFULL_CALL_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful call to Men']");
-    static final By SUCCESSFULL_CALL_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful call to Women']");
+    static final By SUCCESSFULL_CALL_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful call To Men']");
+    static final By SUCCESSFULL_CALL_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful call To Women']");
+    static final By SMS_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='SMS To Men']");
+    static final By SMS_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='SMS To Women']");
+    static final By SUCCESSFULL_SMS_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Men']");
+    static final By SUCCESSFULL_SMS_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Women']");
 
     public IVRKPIPage(WebDriver driver) {
         super(driver);
@@ -31,20 +37,39 @@ public class IVRKPIPage extends AbstractBasePage {
         clickWhenVisible(IVR_KPIS);
     }
 
+    public void showSMSKPIs() throws InterruptedException {
+        clickWhenVisible(SMS_KPIS);
+    }
+
     public void showStatsFromLast30Days() throws InterruptedException {
         clickWhenVisible(STAT_PERIOD_BUTTON);
         clickWhenVisible(LAST_30_DAYS);
     }
 
-    public void checkColumns() {
-            assertTrue(checkColumn(DATE_COLUMN));
-            assertTrue(checkColumn(TOTAL_CALLS_COLUMN));
-            assertTrue(checkColumn(TOTAL_PENDING_COLUMN));
-            assertTrue(checkColumn(TOTAL_FAILED_COLUMN));
-            assertTrue(checkColumn(TOTAL_SUCCEEDED_COLUMN));
-            assertTrue(checkColumn(CALL_TO_MEN_COLUMN));
-            assertTrue(checkColumn(CALL_TO_WOMEN_COLUMN));
+    public void checkIVRColumns() {
+        assertTrue(checkColumn(DATE_COLUMN));
+        assertTrue(checkColumn(TOTAL_CALLS_COLUMN));
+        assertTrue(checkColumn(TOTAL_PENDING_COLUMN));
+        assertTrue(checkColumn(TOTAL_FAILED_COLUMN));
+        assertTrue(checkColumn(TOTAL_SUCCEEDED_COLUMN));
+        assertTrue(checkColumn(CALL_TO_MEN_COLUMN));
+        assertTrue(checkColumn(CALL_TO_WOMEN_COLUMN));
+        assertTrue(checkColumn(SUCCESSFULL_CALL_TO_MEN_COLUMN));
+        assertTrue(checkColumn(SUCCESSFULL_CALL_TO_WOMEN_COLUMN));
     }
+
+    public void checkSMSColumns() {
+        assertTrue(checkColumn(DATE_COLUMN));
+        assertTrue(checkColumn(TOTAL_SMS_COLUMN));
+        assertTrue(checkColumn(TOTAL_PENDING_COLUMN));
+        assertTrue(checkColumn(TOTAL_FAILED_COLUMN));
+        assertTrue(checkColumn(TOTAL_SUCCEEDED_COLUMN));
+        assertTrue(checkColumn(SMS_TO_MEN_COLUMN));
+        assertTrue(checkColumn(SMS_TO_WOMEN_COLUMN));
+        assertTrue(checkColumn(SUCCESSFULL_SMS_TO_MEN_COLUMN));
+        assertTrue(checkColumn(SUCCESSFULL_SMS_TO_WOMEN_COLUMN));
+    }
+
     public boolean checkColumn(By column) {
         try {
             if (findElement(column) == null) {

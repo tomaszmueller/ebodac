@@ -5,14 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.ebodac.uitest.helper.TestParticipant;
 import org.motechproject.ebodac.uitest.helper.UITestHttpClientHelper;
-import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.EBODACPage;
+import org.motechproject.ebodac.uitest.page.HomePage;
 import org.motechproject.ebodac.uitest.page.IVRKPIPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
 
-public class GenerateIVRTableUiTest extends TestBase {
+public class GenerateSMSTableUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;
@@ -48,15 +48,15 @@ public class GenerateIVRTableUiTest extends TestBase {
     }
 
 
-    @Test //EBODAC-1000
-    public void generateIVRTableTest() throws Exception {
+    @Test //EBODAC-1005
+    public void generateSMSTableTest() throws Exception {
         try {
             homePage.openEBODACModule();
             homePage.resizePage();
             ebodacPage.showStatistics();
-            ivrkpiPage.showIVRKPIs();
+            ivrkpiPage.showSMSKPIs();
             ivrkpiPage.showStatsFromLast30Days();
-            ivrkpiPage.checkIVRColumns();
+            ivrkpiPage.checkSMSColumns();
         } catch (NumberFormatException e) {
             getLogger().error("generateIVRTableTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
