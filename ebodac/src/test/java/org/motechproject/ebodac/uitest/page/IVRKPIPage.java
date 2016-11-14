@@ -10,6 +10,7 @@ public class IVRKPIPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/ebodac/subjects";
 
+    static final By IVR_GRAPHS = By.linkText("IVR Graphs");
     static final By IVR_KPIS = By.linkText("IVR KPIs");
     static final By SMS_KPIS = By.linkText("SMS KPIs");
     static final By STAT_PERIOD_BUTTON = By.xpath("(//button[@type='button'])[4]");
@@ -39,6 +40,10 @@ public class IVRKPIPage extends AbstractBasePage {
 
     public void showSMSKPIs() throws InterruptedException {
         clickWhenVisible(SMS_KPIS);
+    }
+
+    public void showIVRGraphs() throws InterruptedException {
+
     }
 
     public void showStatsFromLast30Days() throws InterruptedException {
