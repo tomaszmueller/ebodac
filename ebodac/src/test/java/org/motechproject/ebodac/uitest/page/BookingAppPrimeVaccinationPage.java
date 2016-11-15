@@ -593,14 +593,27 @@ public class BookingAppPrimeVaccinationPage extends AbstractBasePage {
     public boolean closePdfIfIsOpen() throws InterruptedException {
         boolean status = false;
         try {
+            sleep(SLEEP_5SEC);
             String originalHandle = getDriver().getWindowHandle();
             for (String handle : getDriver().getWindowHandles()) {
                 if (!handle.equals(originalHandle)) {
-                    getDriver().switchTo().window(handle);
-                    getDriver().close();
+                    try {
+                        while(true) {
+                            getDriver().switchTo().window(handle);
+                            sleep(SLEEP_5SEC);
+                            getDriver().close();
+                            sleep(SLEEP_5SEC);
+                        }
+                    } catch(Exception e) {
+                        ;
+                    }
                 }
             }
+
+            sleep(SLEEP_5SEC);
             getDriver().switchTo().window(originalHandle);
+
+            sleep(SLEEP_5SEC);
             status = true;
 
         } catch (NullPointerException e) {
