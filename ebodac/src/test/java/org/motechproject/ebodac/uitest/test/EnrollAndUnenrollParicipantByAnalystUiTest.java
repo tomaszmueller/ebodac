@@ -65,7 +65,7 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
         int beginLoop = 1;
         boolean enrollunenrollsuccessfull = false;
         loop:
-        while(endLoop < total) {
+        while (endLoop < total) {
             endLoop = Integer.parseInt(enrollmentPage.getNumberOfEnrollments());
             for (int i = beginLoop; i <= endLoop; i++) {
                 idOfParticipant = enrollmentPage.getCurrentParticipantId("" + i);
@@ -88,11 +88,11 @@ public class EnrollAndUnenrollParicipantByAnalystUiTest extends TestBase {
                     }
                 }
             }
-            beginLoop = endLoop+1;
+            beginLoop = endLoop + 1;
             enrollmentPage.goToNextPageInTable();
             enrollmentPage.sleep(SLEEP_3SEC);
         }
-        if(!enrollunenrollsuccessfull) {
+        if (!enrollunenrollsuccessfull) {
             getLogger().error("No enrollment/unenrollment was performed");
         }
     }

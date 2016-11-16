@@ -11,6 +11,8 @@ import org.motechproject.ebodac.uitest.page.IVRKPIPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
+import static org.junit.Assert.assertTrue;
+
 
 public class GenerateIVRGraphicsUiTest extends TestBase {
 
@@ -49,13 +51,14 @@ public class GenerateIVRGraphicsUiTest extends TestBase {
 
 
     @Test //EBODAC-1000
-    public void generateIVRTableTest() throws Exception {
+    public void generateIVRGraphicsTest() throws Exception {
         try {
             homePage.openEBODACModule();
             homePage.resizePage();
             ebodacPage.showStatistics();
             ivrkpiPage.showIVRGraphs();
-            ivrkpiPage.showStatsFromLast30Days();
+            ivrkpiPage.showStatsFromLastYear();
+            assertTrue(ivrkpiPage.checkGraphs());
         } catch (AssertionError e) {
             getLogger().error("generateIVRTableTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
