@@ -45,6 +45,10 @@ public class VisitRescheduleDto {
 
     private Boolean ignoreDateLimitation;
 
+    private Boolean boosterRelated;
+
+    private Boolean notVaccinated;
+
     public VisitRescheduleDto() {
     }
 
@@ -68,8 +72,11 @@ public class VisitRescheduleDto {
         }
     }
 
-    public VisitRescheduleDto(VisitBookingDetails details, Range<LocalDate> dateRange) {
+    public VisitRescheduleDto(VisitBookingDetails details, Range<LocalDate> dateRange,
+                              Boolean boosterRelated, Boolean notVaccinated) {
         this(details);
+        this.boosterRelated = boosterRelated;
+        this.notVaccinated = notVaccinated;
         calculateEarliestAndLatestDate(dateRange);
     }
 
@@ -198,16 +205,34 @@ public class VisitRescheduleDto {
         this.ignoreDateLimitation = ignoreDateLimitation;
     }
 
+    public Boolean getBoosterRelated() {
+        return boosterRelated;
+    }
+
+    public void setBoosterRelated(Boolean boosterRelated) {
+        this.boosterRelated = boosterRelated;
+    }
+
+    public Boolean getNotVaccinated() {
+        return notVaccinated;
+    }
+
+    public void setNotVaccinated(Boolean notVaccinated) {
+        this.notVaccinated = notVaccinated;
+    }
+
     private void calculateEarliestAndLatestDate(Range<LocalDate> dateRange) {
         if (dateRange != null) {
             LocalDate maxDate = dateRange.getMax();
+            LocalDate minDate = dateRange.getMin();
+            earliestWindowDate = minDate;
+
+            if (minDate.isBefore(LocalDate.now())) {
+                minDate = LocalDate.now();
+            }
+            earliestDate = minDate;
+
             if (!maxDate.isBefore(LocalDate.now())) {
-                LocalDate minDate = dateRange.getMin();
-                earliestWindowDate = minDate;
-                if (minDate.isBefore(LocalDate.now())) {
-                    minDate = LocalDate.now();
-                }
-                earliestDate = minDate;
                 latestDate = maxDate;
             }
         }

@@ -6,8 +6,8 @@ import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
-import org.motechproject.bookingapp.dto.VisitRescheduleDto;
 import org.motechproject.bookingapp.domain.VisitScheduleOffset;
+import org.motechproject.bookingapp.dto.VisitRescheduleDto;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
@@ -79,8 +79,23 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
         List<VisitRescheduleDto> dtos = new ArrayList<>();
 
         for (VisitBookingDetails details: detailsRecords.getRows()) {
-            dtos.add(new VisitRescheduleDto(details, calculateEarliestAndLatestDate(details.getVisit(), offsetMap,
-                    boosterRelatedMessages, activeStageId)));
+            Long stageId = details.getVisit().getSubject().getStageId();
+
+            if (stageId == null) {
+                stageId = activeStageId;
+            }
+
+            Boolean boosterRelated = isBoosterRelated(details.getVisit().getType(), boosterRelatedMessages, stageId);
+            LocalDate vaccinationDate = getVaccinationDate(details.getVisit(), boosterRelated);
+            Boolean notVaccinated = true;
+            Range<LocalDate> dateRange = null;
+
+            if (vaccinationDate != null) {
+                dateRange = calculateEarliestAndLatestDate(details.getVisit().getType(), offsetMap, vaccinationDate, stageId);
+                notVaccinated = false;
+            }
+
+            dtos.add(new VisitRescheduleDto(details, dateRange, boosterRelated, notVaccinated));
         }
 
         return new Records<>(detailsRecords.getPage(), detailsRecords.getTotal(), detailsRecords.getRecords(), dtos);
@@ -221,6 +236,18 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             stageId = activeStageId;
         }
 
+        Boolean boosterRelated = isBoosterRelated(visit.getType(), boosterRelatedMessages, stageId);
+        LocalDate vaccinationDate = getVaccinationDate(visit, boosterRelated);
+
+        if (vaccinationDate == null) {
+            return null;
+        }
+
+        return calculateEarliestAndLatestDate(visit.getType(), offsetMap, vaccinationDate, stageId);
+    }
+
+    private Range<LocalDate> calculateEarliestAndLatestDate(VisitType visitType, Map<Long, Map<VisitType, VisitScheduleOffset>> offsetMap,
+                                                            LocalDate vaccinationDate, Long stageId) {
         if (stageId == null) {
             return null;
         }
@@ -231,34 +258,39 @@ public class VisitRescheduleServiceImpl implements VisitRescheduleService {
             return null;
         }
 
-        VisitScheduleOffset offset = visitTypeOffset.get(visit.getType());
+        VisitScheduleOffset offset = visitTypeOffset.get(visitType);
 
         if (offset == null) {
+            return null;
+        }
+
+        LocalDate minDate = vaccinationDate.plusDays(offset.getEarliestDateOffset());
+        LocalDate maxDate = vaccinationDate.plusDays(offset.getLatestDateOffset());
+
+        return new Range<>(minDate, maxDate);
+    }
+
+    private LocalDate getVaccinationDate(Visit visit, Boolean boosterRelated) {
+        if (boosterRelated) {
+            return visit.getSubject().getBoosterVaccinationDate();
+        } else {
+            return visit.getSubject().getPrimerVaccinationDate();
+        }
+    }
+
+    private Boolean isBoosterRelated(VisitType visitType, List<String> boosterRelatedMessages, Long stageId) {
+        if (stageId == null) {
             return null;
         }
 
         String campaignName;
 
         if (stageId > 1) {
-            campaignName = visit.getType().getMotechValue() + EbodacConstants.STAGE + stageId;
+            campaignName = visitType.getMotechValue() + EbodacConstants.STAGE + stageId;
         } else {
-            campaignName = visit.getType().getMotechValue();
+            campaignName = visitType.getMotechValue();
         }
 
-        LocalDate vaccinationDate;
-
-        if (boosterRelatedMessages.contains(campaignName)) {
-            vaccinationDate = visit.getSubject().getBoosterVaccinationDate();
-        } else {
-            vaccinationDate = visit.getSubject().getPrimerVaccinationDate();
-        }
-
-        if (vaccinationDate != null) {
-            LocalDate minDate = vaccinationDate.plusDays(offset.getEarliestDateOffset());
-            LocalDate maxDate = vaccinationDate.plusDays(offset.getLatestDateOffset());
-            return new Range<>(minDate, maxDate);
-        }
-
-        return null;
+        return boosterRelatedMessages.contains(campaignName);
     }
 }

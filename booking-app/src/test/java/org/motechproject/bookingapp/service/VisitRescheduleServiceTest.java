@@ -122,9 +122,9 @@ public class VisitRescheduleServiceTest {
         when(configService.getConfig()).thenReturn(config);
 
         List<VisitRescheduleDto> expectedDtos = new ArrayList<>(Arrays.asList(
-                new VisitRescheduleDto(visitBookingDetailses.get(0), new Range<>(new LocalDate(2217, 2, 6), new LocalDate(2217, 2, 13))),
-                new VisitRescheduleDto(visitBookingDetailses.get(1), new Range<>(new LocalDate(2217, 3, 16), new LocalDate(2217, 3, 25))),
-                new VisitRescheduleDto(visitBookingDetailses.get(2), null)
+                new VisitRescheduleDto(visitBookingDetailses.get(0), new Range<>(new LocalDate(2217, 2, 6), new LocalDate(2217, 2, 13)), false, false),
+                new VisitRescheduleDto(visitBookingDetailses.get(1), new Range<>(new LocalDate(2217, 3, 16), new LocalDate(2217, 3, 25)), true, false),
+                new VisitRescheduleDto(visitBookingDetailses.get(2), null, false, true)
         ));
 
         List<VisitRescheduleDto> resultDtos = visitRescheduleService.getVisitsRecords(bookingGridSettings).getRows();
@@ -141,7 +141,7 @@ public class VisitRescheduleServiceTest {
     public void shouldSaveRescheduledVisit() {
         VisitBookingDetails visitBookingDetails = new VisitBookingDetails(null, createVisit(1L, VisitType.BOOST_VACCINATION_FIRST_FOLLOW_UP_VISIT, null, new LocalDate(2217, 1, 1), subject1));
 
-        VisitRescheduleDto visitRescheduleDto = new VisitRescheduleDto(visitBookingDetails, new Range<LocalDate>(new LocalDate(2217, 2, 1), new LocalDate(2217, 3, 1)));
+        VisitRescheduleDto visitRescheduleDto = new VisitRescheduleDto(visitBookingDetails, new Range<>(new LocalDate(2217, 2, 1), new LocalDate(2217, 3, 1)), true, false);
         Boolean ignoreLimitation = true;
         visitRescheduleDto.setStartTime(new Time(9, 0));
         visitRescheduleDto.setIgnoreDateLimitation(ignoreLimitation);

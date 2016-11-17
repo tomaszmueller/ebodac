@@ -558,6 +558,8 @@
             rowExtraData.earliestDate = rowObject.earliestDate;
             rowExtraData.latestDate = rowObject.latestDate;
             rowExtraData.ignoreDateLimitation = rowObject.ignoreDateLimitation;
+            rowExtraData.boosterRelated = rowObject.boosterRelated;
+            rowExtraData.notVaccinated = rowObject.notVaccinated;
 
             gridDataExtension[options.rowId] = rowExtraData;
 
@@ -662,6 +664,20 @@
                                 scope.form = null;
                                 scope.showRescheduleModal(scope.msg('bookingApp.visitReschedule.cannotReschedule'), scope.msg('bookingApp.visitReschedule.visitWithActualDate'));
                             } else if (extraRowData.earliestDate === undefined || extraRowData.earliestDate === null || extraRowData.earliestDate === "") {
+                                scope.visitForPrint = elem.getRowData(rowId);
+                                scope.form = null;
+                                var message = "bookingApp.visitReschedule.participantVisitScheduleOffsetMissing";
+
+                                if (extraRowData.notVaccinated) {
+                                    if (extraRowData.boosterRelated) {
+                                        message = "bookingApp.visitReschedule.participantNotBoostVaccinated";
+                                    } else {
+                                        message = "bookingApp.visitReschedule.participantNotPrimeVaccinated";
+                                    }
+                                }
+
+                                scope.showRescheduleModal(scope.msg('bookingApp.visitReschedule.cannotReschedule'), scope.msg(message));
+                            } else if (extraRowData.latestDate === undefined || extraRowData.latestDate === null || extraRowData.latestDate === "") {
                                 scope.visitForPrint = elem.getRowData(rowId);
                                 scope.form = null;
                                 scope.showRescheduleModal(scope.msg('bookingApp.visitReschedule.cannotReschedule'), scope.msg('bookingApp.visitReschedule.visitNotInRescheduleWindow'));
