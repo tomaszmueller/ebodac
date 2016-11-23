@@ -104,3 +104,34 @@ tr.sum-row>td {
     background: linear-gradient(to bottom,  #EDF2F4 0%,#CCD7DE 100%) !important;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EDF2F4', endColorstr='#CCD7DE',GradientType=0 );
 }
+
+.age-range label,
+.age-range input {
+    padding-left: 15px;
+    padding-right: 5px;
+    position: relative;
+}
+
+.age-range label {
+    margin-bottom: 0;
+    padding-top: 7px;
+    text-align: right;
+}
+
+.age-range input {
+    width: 80px;
+}
+
+.age-range button {
+    margin-left: 15px;
+    position: relative;
+}
+
+.age-range-first {
+    padding-left: 0px !important;
+}
+
+.age-range-add {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}

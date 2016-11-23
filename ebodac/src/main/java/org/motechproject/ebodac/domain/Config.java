@@ -72,6 +72,8 @@ public class Config {
 
     private Long activeStageId;
 
+    private List<SubjectAgeRange> subjectAgeRangeList;
+
     private List<String> availableLookupsForDailyClinicVisitScheduleReport;
 
     private List<String> availableLookupsForFollowupsAfterPrimeInjectionReport;
@@ -381,6 +383,18 @@ public class Config {
 
     public void setActiveStageId(Long activeStageId) {
         this.activeStageId = activeStageId;
+    }
+
+    public List<SubjectAgeRange> getSubjectAgeRangeList() {
+        if (subjectAgeRangeList == null) {
+            subjectAgeRangeList = new ArrayList<>();
+        }
+
+        return subjectAgeRangeList;
+    }
+
+    public void setSubjectAgeRangeList(List<SubjectAgeRange> subjectAgeRangeList) {
+        this.subjectAgeRangeList = subjectAgeRangeList;
     }
 
     public List<String> getAvailableLookupsForDailyClinicVisitScheduleReport() {

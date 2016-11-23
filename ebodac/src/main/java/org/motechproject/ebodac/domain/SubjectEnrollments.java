@@ -3,7 +3,6 @@ package org.motechproject.ebodac.domain;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.LocalDate;
-import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
 import org.motechproject.ebodac.util.json.serializer.CustomDateDeserializer;
 import org.motechproject.ebodac.util.json.serializer.CustomDateSerializer;
@@ -98,12 +97,12 @@ public class SubjectEnrollments {
 
     @Ignore
     public Enrollment findEnrolmentByCampaignName(String campaignName) {
-        String campaignNameWithoutStage = campaignName.split(EbodacConstants.STAGE)[0];
         for (Enrollment enrollment: enrollments) {
-            if (enrollment.getCampaignName().startsWith(campaignNameWithoutStage)) {
+            if (campaignName.startsWith(enrollment.getCampaignName())) {
                 return enrollment;
             }
         }
+
         return null;
     }
 

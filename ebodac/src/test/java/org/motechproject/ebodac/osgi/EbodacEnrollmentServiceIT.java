@@ -6,14 +6,14 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
-import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
+import org.motechproject.ebodac.domain.SubjectAgeRange;
 import org.motechproject.ebodac.domain.SubjectEnrollments;
 import org.motechproject.ebodac.domain.Visit;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.exception.EbodacEnrollmentException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
@@ -321,32 +321,32 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         for (Enrollment enrollment : subjectEnrollments1.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
             assertEquals(4, enrollment.getDuplicatedEnrollments().size());
         }
 
         for (Enrollment enrollment : subjectEnrollments2.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
 
         for (Enrollment enrollment : subjectEnrollments3.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
 
         for (Enrollment enrollment : subjectEnrollments4.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
 
         for (Enrollment enrollment : subjectEnrollments5.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
     }
@@ -377,29 +377,307 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
 
         for (Enrollment enrollment : subjectEnrollments1.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
             assertEquals(1, enrollment.getDuplicatedEnrollments().size());
         }
 
         for (Enrollment enrollment : subjectEnrollments2.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
 
         for (Enrollment enrollment : subjectEnrollments3.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
             assertEquals(1, enrollment.getDuplicatedEnrollments().size());
         }
 
         for (Enrollment enrollment : subjectEnrollments4.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + enrollment.getExternalId() + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment.getExternalId() + runonce;
             assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
+    }
+
+    @Test
+    public void shouldGroupEnrollmentsInAgeRanges() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Config config = new Config();
+        config.setSubjectAgeRangeList(Arrays.asList(new SubjectAgeRange(null, 100, 1L), new SubjectAgeRange(101, 110, 1L),
+                new SubjectAgeRange(111, null, 1L)));
+        configService.updateConfig(config);
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+        Subject subject4 = createSubjectWithRequireData("4");
+        Subject subject5 = createSubjectWithRequireData("5");
+        Subject subject6 = createSubjectWithRequireData("6");
+        Subject subject7 = createSubjectWithRequireData("7");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedInAgeRanges.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedInAgeRanges.csv");
+        inputStream.close();
+
+        Enrollment enrollment1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment4 = subjectEnrollmentsDataService.findBySubjectId(subject4.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment5 = subjectEnrollmentsDataService.findBySubjectId(subject5.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment6 = subjectEnrollmentsDataService.findBySubjectId(subject6.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment7 = subjectEnrollmentsDataService.findBySubjectId(subject7.getSubjectId()).getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        String triggerKeyString = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment3.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment4.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment4.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment4.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment3, enrollment4.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment5.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment5.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment5.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(2, enrollment5.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment6.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment6.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment6.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment5, enrollment6.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment7.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment7.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment7.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment5, enrollment7.getParentEnrollment());
+    }
+
+    @Test
+    public void shouldUpdateGroupedEnrollmentsInAgeRangesWhenDateOfBirthChanged() throws IOException, SchedulerException {
+        final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
+        final String runonce = "-runonce";
+
+        Config config = new Config();
+        config.setSubjectAgeRangeList(Arrays.asList(new SubjectAgeRange(null, 100, 1L), new SubjectAgeRange(101, 110, 1L),
+                new SubjectAgeRange(111, null, 1L)));
+        configService.updateConfig(config);
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+        Subject subject4 = createSubjectWithRequireData("4");
+        Subject subject5 = createSubjectWithRequireData("5");
+        Subject subject6 = createSubjectWithRequireData("6");
+        Subject subject7 = createSubjectWithRequireData("7");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedInAgeRanges.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedInAgeRanges.csv");
+        inputStream.close();
+
+        Enrollment enrollment1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment4 = subjectEnrollmentsDataService.findBySubjectId(subject4.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment5 = subjectEnrollmentsDataService.findBySubjectId(subject5.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment6 = subjectEnrollmentsDataService.findBySubjectId(subject6.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment7 = subjectEnrollmentsDataService.findBySubjectId(subject7.getSubjectId()).getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        String triggerKeyString = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment3.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment4.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment4.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment4.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment3, enrollment4.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment5.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment5.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment5.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(2, enrollment5.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment6.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment6.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment6.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment5, enrollment6.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment7.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment7.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment7.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment5, enrollment7.getParentEnrollment());
+
+
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedInAgeRangesDateOfBirthChanged.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedInAgeRangesDateOfBirthChanged.csv");
+        inputStream.close();
+
+        enrollment1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId()).getEnrollments().iterator().next();
+        enrollment2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId()).getEnrollments().iterator().next();
+        enrollment3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId()).getEnrollments().iterator().next();
+        enrollment4 = subjectEnrollmentsDataService.findBySubjectId(subject4.getSubjectId()).getEnrollments().iterator().next();
+        enrollment5 = subjectEnrollmentsDataService.findBySubjectId(subject5.getSubjectId()).getEnrollments().iterator().next();
+        enrollment6 = subjectEnrollmentsDataService.findBySubjectId(subject6.getSubjectId()).getEnrollments().iterator().next();
+        enrollment7 = subjectEnrollmentsDataService.findBySubjectId(subject7.getSubjectId()).getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment2, enrollment1.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(2, enrollment2.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment2, enrollment3.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment4.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment4.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment4.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment4.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment5.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment5.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment5.getExternalId() + runonce;
+        assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(1, enrollment5.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment6.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment6.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment6.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment4, enrollment6.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment7.getStatus());
+        triggerKeyString = campaignCompletedString + enrollment7.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment7.getExternalId() + runonce;
+        assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
+        assertEquals(enrollment5, enrollment7.getParentEnrollment());
+    }
+
+    @Test
+    public void shouldUpdateUnenrolledGroupedEnrollmentsInAgeRangesWhenDateOfBirthChanged() throws IOException, SchedulerException {
+        Config config = new Config();
+        config.setSubjectAgeRangeList(Arrays.asList(new SubjectAgeRange(null, 100, 1L), new SubjectAgeRange(101, 110, 1L),
+                new SubjectAgeRange(111, null, 1L)));
+        configService.updateConfig(config);
+
+        Subject subject1 = createSubjectWithRequireData("1");
+        Subject subject2 = createSubjectWithRequireData("2");
+        Subject subject3 = createSubjectWithRequireData("3");
+        Subject subject4 = createSubjectWithRequireData("4");
+        Subject subject5 = createSubjectWithRequireData("5");
+        Subject subject6 = createSubjectWithRequireData("6");
+        Subject subject7 = createSubjectWithRequireData("7");
+
+        InputStream inputStream = getClass().getResourceAsStream("/enrollDuplicatedInAgeRanges.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedInAgeRanges.csv");
+        inputStream.close();
+
+        Enrollment enrollment1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment4 = subjectEnrollmentsDataService.findBySubjectId(subject4.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment5 = subjectEnrollmentsDataService.findBySubjectId(subject5.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment6 = subjectEnrollmentsDataService.findBySubjectId(subject6.getSubjectId()).getEnrollments().iterator().next();
+        Enrollment enrollment7 = subjectEnrollmentsDataService.findBySubjectId(subject7.getSubjectId()).getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
+        assertEquals(1, enrollment1.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment2.getStatus());
+        assertEquals(enrollment1, enrollment2.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment3.getStatus());
+        assertEquals(1, enrollment3.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment4.getStatus());
+        assertEquals(enrollment3, enrollment4.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment5.getStatus());
+        assertEquals(2, enrollment5.getDuplicatedEnrollments().size());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment6.getStatus());
+        assertEquals(enrollment5, enrollment6.getParentEnrollment());
+
+        assertEquals(EnrollmentStatus.ENROLLED, enrollment7.getStatus());
+        assertEquals(enrollment5, enrollment7.getParentEnrollment());
+
+        ebodacEnrollmentService.unenrollSubject(subject1.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject2.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject3.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject4.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject5.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject6.getSubjectId());
+        ebodacEnrollmentService.unenrollSubject(subject7.getSubjectId());
+
+
+        inputStream = getClass().getResourceAsStream("/enrollDuplicatedInAgeRangesDateOfBirthChanged.csv");
+        raveImportService.importCsv(new InputStreamReader(inputStream), "/enrollDuplicatedInAgeRangesDateOfBirthChanged.csv");
+        inputStream.close();
+
+        enrollment1 = subjectEnrollmentsDataService.findBySubjectId(subject1.getSubjectId()).getEnrollments().iterator().next();
+        enrollment2 = subjectEnrollmentsDataService.findBySubjectId(subject2.getSubjectId()).getEnrollments().iterator().next();
+        enrollment3 = subjectEnrollmentsDataService.findBySubjectId(subject3.getSubjectId()).getEnrollments().iterator().next();
+        enrollment4 = subjectEnrollmentsDataService.findBySubjectId(subject4.getSubjectId()).getEnrollments().iterator().next();
+        enrollment5 = subjectEnrollmentsDataService.findBySubjectId(subject5.getSubjectId()).getEnrollments().iterator().next();
+        enrollment6 = subjectEnrollmentsDataService.findBySubjectId(subject6.getSubjectId()).getEnrollments().iterator().next();
+        enrollment7 = subjectEnrollmentsDataService.findBySubjectId(subject7.getSubjectId()).getEnrollments().iterator().next();
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment1.getStatus());
+        assertNull(enrollment1.getParentEnrollment());
+        assertFalse(enrollment1.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment2.getStatus());
+        assertNull(enrollment2.getParentEnrollment());
+        assertFalse(enrollment2.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment3.getStatus());
+        assertNull(enrollment3.getParentEnrollment());
+        assertFalse(enrollment3.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment4.getStatus());
+        assertNull(enrollment4.getParentEnrollment());
+        assertFalse(enrollment4.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment5.getStatus());
+        assertNull(enrollment5.getParentEnrollment());
+        assertFalse(enrollment5.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment6.getStatus());
+        assertNull(enrollment6.getParentEnrollment());
+        assertFalse(enrollment6.hasDuplicatedEnrollments());
+
+        assertEquals(EnrollmentStatus.UNENROLLED, enrollment7.getStatus());
+        assertNull(enrollment7.getParentEnrollment());
+        assertFalse(enrollment7.hasDuplicatedEnrollments());
     }
 
     @Test
@@ -647,9 +925,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId(subject.getSubjectId());
         for (Enrollment enrollment : enrollmentList) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
-            assertEquals(2, nameParts.length);
-            assertEquals("2", nameParts[1]);
+            assertEquals(2, enrollment.getStageId().intValue());
         }
 
         assertEquals(3, visitDataService.retrieveAll().size());
@@ -675,16 +951,13 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId("2");
         for (Enrollment enrollment : enrollmentList) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
-            assertEquals(2, nameParts.length);
-            assertEquals("2", nameParts[1]);
+            assertEquals(2, enrollment.getStageId().intValue());
         }
 
         enrollmentList = enrollmentDataService.findBySubjectId("1");
         for (Enrollment enrollment : enrollmentList) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
-            assertEquals(1, nameParts.length);
+            assertEquals(1, enrollment.getStageId().intValue());
         }
 
         assertEquals(3, visitDataService.findBySubjectId("2").size());
@@ -711,9 +984,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         List<Enrollment> enrollmentList = enrollmentDataService.findBySubjectId("2");
         for (Enrollment enrollment : enrollmentList) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
-            String [] nameParts = enrollment.getCampaignName().split(EbodacConstants.STAGE);
-            assertEquals(2, nameParts.length);
-            assertEquals("2", nameParts[1]);
+            assertEquals(2, enrollment.getStageId().intValue());
         }
 
         enrollmentList = enrollmentDataService.findBySubjectId("1");
@@ -793,7 +1064,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
         final String runonce = "-runonce";
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
-            String triggerKeyString = campaignCompletedString + enrollment.getCampaignName() + "." + stage + runonce;
+            String triggerKeyString = campaignCompletedString + enrollment.getCampaignNameWithBoostVacDayAndStageId() + "." + stage + runonce;
             assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString)));
         }
 
@@ -903,7 +1174,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
             SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(subject.getSubjectId());
             assertEquals(1, subjectEnrollments.getEnrollments().size());
             Enrollment enrollment = subjectEnrollments.getEnrollments().iterator().next();
-            assertEquals(VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + DAYS_OF_WEEK.get(i) + stageString, enrollment.getCampaignName());
+            assertEquals(VisitType.BOOST_VACCINATION_DAY.getMotechValue() + " " + DAYS_OF_WEEK.get(i) + stageString, enrollment.getCampaignNameWithBoostVacDayAndStageId());
             assertEquals(new LocalDate(2115, 9, 22 + i), subjectEnrollments.getEnrollments().iterator().next().getReferenceDate());
             i++;
         }
@@ -1152,12 +1423,12 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(stage);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
 
-        ebodacEnrollmentService.unenrollSubject(stage, subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT.getMotechValue()).getCampaignName());
+        ebodacEnrollmentService.unenrollSubject(stage, VisitType.BOOST_VACCINATION_THIRD_FOLLOW_UP_VISIT.getMotechValue());
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(stage);
         assertEquals(EnrollmentStatus.ENROLLED, subjectEnrollments.getStatus());
 
-        ebodacEnrollmentService.unenrollSubject(stage, subjectEnrollments.findEnrolmentByCampaignName(VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getMotechValue()).getCampaignName());
-        ebodacEnrollmentService.unenrollSubject(stage, subjectEnrollments.findEnrolmentByCampaignName("Boost Vaccination Day Thursday").getCampaignName());
+        ebodacEnrollmentService.unenrollSubject(stage, VisitType.BOOST_VACCINATION_SECOND_FOLLOW_UP_VISIT.getMotechValue());
+        ebodacEnrollmentService.unenrollSubject(stage, VisitType.BOOST_VACCINATION_DAY.getMotechValue());
 
         subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(stage);
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
@@ -1480,7 +1751,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
             assertEquals(new LocalDate(2115, 9, 10), enrollment.getReferenceDate());
-            campaignNamesList.add(enrollment.getCampaignName());
+            campaignNamesList.add(enrollment.getCampaignNameWithBoostVacDayAndStageId());
         }
 
         final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
@@ -1526,7 +1797,7 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         for (Enrollment enrollment : subjectEnrollments.getEnrollments()) {
             assertEquals(EnrollmentStatus.ENROLLED, enrollment.getStatus());
             assertEquals(new LocalDate(2115, 9, 10), enrollment.getReferenceDate());
-            campaignNamesList.add(enrollment.getCampaignName());
+            campaignNamesList.add(enrollment.getCampaignNameWithBoostVacDayAndStageId());
         }
 
         final String campaignCompletedString = "org.motechproject.messagecampaign.campaign-completed-EndOfCampaignJob.";
@@ -1617,9 +1888,9 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
         Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
-        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -1691,9 +1962,9 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
         Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
-        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -1756,8 +2027,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -1767,7 +2038,8 @@ public class EbodacEnrollmentServiceIT extends BasePaxIT {
         assertFalse(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString2)));
         assertEquals(enrollment1, enrollment2.getParentEnrollment());
 
-        ebodacEnrollmentService.reenrollSubjectWithNewDate(enrollment2.getExternalId(), enrollment2.getCampaignName(), new LocalDate(2115, 9, 22));
+        ebodacEnrollmentService.reenrollSubjectWithNewDate(enrollment2.getExternalId(),
+                enrollment2.getCampaignName(), new LocalDate(2115, 9, 22));
 
         subjectEnrollments1 = subjectEnrollmentsDataService.findBySubjectId(("1".equals(stage) ? "" : "2") + "1");
         subjectEnrollments2 = subjectEnrollmentsDataService.findBySubjectId(("1".equals(stage) ? "" : "2") + "2");

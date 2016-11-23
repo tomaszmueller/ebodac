@@ -190,8 +190,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -263,8 +263,8 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         Enrollment enrollment1 = subjectEnrollments1.getEnrollments().iterator().next();
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -341,9 +341,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
         Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
-        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));
@@ -433,9 +433,9 @@ public class SubjectCsvImportCustomizerIT extends BasePaxIT {
         Enrollment enrollment2 = subjectEnrollments2.getEnrollments().iterator().next();
         Enrollment enrollment3 = subjectEnrollments3.getEnrollments().iterator().next();
 
-        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignName() + "." + enrollment1.getExternalId() + runonce;
-        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignName() + "." + enrollment2.getExternalId() + runonce;
-        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignName() + "." + enrollment3.getExternalId() + runonce;
+        String triggerKeyString1 = campaignCompletedString + enrollment1.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment1.getExternalId() + runonce;
+        String triggerKeyString2 = campaignCompletedString + enrollment2.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment2.getExternalId() + runonce;
+        String triggerKeyString3 = campaignCompletedString + enrollment3.getCampaignNameWithBoostVacDayAndStageId() + "." + enrollment3.getExternalId() + runonce;
 
         assertEquals(EnrollmentStatus.ENROLLED, enrollment1.getStatus());
         assertTrue(scheduler.checkExists(TriggerKey.triggerKey(triggerKeyString1)));

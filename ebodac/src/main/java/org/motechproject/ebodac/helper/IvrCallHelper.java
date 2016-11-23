@@ -5,14 +5,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.LocalDate;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
-import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
-import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.VotoLanguage;
 import org.motechproject.ebodac.domain.VotoMessage;
+import org.motechproject.ebodac.domain.enums.EnrollmentStatus;
+import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.exception.EbodacInitiateCallException;
 import org.motechproject.ebodac.repository.EnrollmentDataService;
 import org.motechproject.ebodac.repository.VotoLanguageDataService;
@@ -54,9 +55,15 @@ public class IvrCallHelper {
         Config config = configService.getConfig();
 
         Subject subject = getSubject(externalId);
-        if (config.getSendIvrCalls() != null && config.getSendIvrCalls() && checkIfCallsForThisStageAreEnabled(config, subject.getStageId())) {
+        Enrollment enrollment = enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName);
+        Long actualStageId = getActualStageId(enrollment, subject.getStageId(), config.getActiveStageId());
+
+        if (config.getSendIvrCalls() != null && config.getSendIvrCalls() && checkIfCallsForThisStageAreEnabled(config, actualStageId)) {
+            String messageKeyWithAgeRange = messageKey + SubjectAgeRangeHelper.getAgeRangeMessageCode(subject.getDateOfBirth(),
+                    LocalDate.now(), actualStageId, config.getSubjectAgeRangeList());
+
             String votoLanguageId = getVotoLanguageId(subject.getLanguage(), externalId);
-            String votoMessageId = getVotoMessageId(messageKey, externalId);
+            String votoMessageId = getVotoMessageId(messageKeyWithAgeRange, externalId);
 
             JsonObject subscriber = new JsonObject();
             subscriber.addProperty(EbodacConstants.PHONE, subject.getPhoneNumber());
@@ -69,8 +76,6 @@ public class IvrCallHelper {
             String subscribers = gson.toJson(subscriberArray);
 
             StringBuilder subjectIds = new StringBuilder(externalId);
-
-            Enrollment enrollment = enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName);
 
             if (enrollment != null && enrollment.getDuplicatedEnrollments() != null) {
                 for (Enrollment e : enrollment.getDuplicatedEnrollments()) {
@@ -127,6 +132,18 @@ public class IvrCallHelper {
         }
 
         return subject;
+    }
+
+    private Long getActualStageId(Enrollment enrollment, Long subjectStageId, Long activeStageId) {
+        if (enrollment != null && enrollment.getStageId() != null) {
+            return enrollment.getStageId();
+        }
+
+        if (subjectStageId != null) {
+            return subjectStageId;
+        }
+
+        return activeStageId;
     }
 
     private String getVotoLanguageId(Language language, String subjectId) {

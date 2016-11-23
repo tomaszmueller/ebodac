@@ -1,5 +1,6 @@
 package org.motechproject.ebodac.service;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,27 +40,27 @@ public class EbodacEnrollmentServiceTest {
     public void shouldSetParticipantEnrolledStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.COMPLETED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 3");
+        enrollment = new Enrollment("1", "campaign 3", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.INITIAL);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 4");
+        enrollment = new Enrollment("1", "campaign 4", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 5");
+        enrollment = new Enrollment("1", "campaign 5", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.WITHDRAWN_FROM_STUDY);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 6");
+        enrollment = new Enrollment("1", "campaign 6", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -74,23 +75,23 @@ public class EbodacEnrollmentServiceTest {
     public void shouldSetParticipantUnenrolledStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.COMPLETED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.INITIAL);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 3");
+        enrollment = new Enrollment("1", "campaign 3", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 4");
+        enrollment = new Enrollment("1", "campaign 4", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.WITHDRAWN_FROM_STUDY);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 5");
+        enrollment = new Enrollment("1", "campaign 5", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -100,7 +101,7 @@ public class EbodacEnrollmentServiceTest {
 
         assertEquals(EnrollmentStatus.UNENROLLED, subjectEnrollments.getStatus());
 
-        enrollment = new Enrollment("1", "campaign 6");
+        enrollment = new Enrollment("1", "campaign 6", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -115,19 +116,19 @@ public class EbodacEnrollmentServiceTest {
     public void shouldSetParticipantInitialStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.COMPLETED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.INITIAL);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 3");
+        enrollment = new Enrollment("1", "campaign 3", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.WITHDRAWN_FROM_STUDY);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 4");
+        enrollment = new Enrollment("1", "campaign 4", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -137,7 +138,7 @@ public class EbodacEnrollmentServiceTest {
 
         assertEquals(EnrollmentStatus.INITIAL, subjectEnrollments.getStatus());
 
-        enrollment = new Enrollment("1", "campaign 5");
+        enrollment = new Enrollment("1", "campaign 5", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -158,15 +159,15 @@ public class EbodacEnrollmentServiceTest {
     public void shouldSetParticipantWithdrawnFromStudyStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.COMPLETED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.WITHDRAWN_FROM_STUDY);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 3");
+        enrollment = new Enrollment("1", "campaign 3", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -176,7 +177,7 @@ public class EbodacEnrollmentServiceTest {
 
         assertEquals(EnrollmentStatus.WITHDRAWN_FROM_STUDY, subjectEnrollments.getStatus());
 
-        enrollment = new Enrollment("1", "campaign 4");
+        enrollment = new Enrollment("1", "campaign 4", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -203,11 +204,11 @@ public class EbodacEnrollmentServiceTest {
     public void shouldSetParticipantCompletedStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.COMPLETED);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -217,7 +218,7 @@ public class EbodacEnrollmentServiceTest {
 
         assertEquals(EnrollmentStatus.COMPLETED, subjectEnrollments.getStatus());
 
-        enrollment = new Enrollment("1", "campaign 3");
+        enrollment = new Enrollment("1", "campaign 3", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.ENROLLED);
         subjectEnrollments.addEnrolment(enrollment);
 
@@ -250,11 +251,11 @@ public class EbodacEnrollmentServiceTest {
     public void shouldNotSetParticipantUnenrolledFormBoosterStatus() throws Exception {
         SubjectEnrollments subjectEnrollments = new SubjectEnrollments();
 
-        Enrollment enrollment = new Enrollment("1", "campaign 1");
+        Enrollment enrollment = new Enrollment("1", "campaign 1", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 
-        enrollment = new Enrollment("1", "campaign 2");
+        enrollment = new Enrollment("1", "campaign 2", LocalDate.now(), 1L);
         enrollment.setStatus(EnrollmentStatus.UNENROLLED_FROM_BOOSTER);
         subjectEnrollments.addEnrolment(enrollment);
 

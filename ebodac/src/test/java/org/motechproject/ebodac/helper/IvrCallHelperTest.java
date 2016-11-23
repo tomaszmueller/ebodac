@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicStatusLine;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import org.motechproject.admin.service.StatusMessageService;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
 import org.motechproject.ebodac.domain.Enrollment;
+import org.motechproject.ebodac.domain.SubjectAgeRange;
 import org.motechproject.ebodac.domain.enums.Language;
 import org.motechproject.ebodac.domain.Subject;
 import org.motechproject.ebodac.domain.VotoLanguage;
@@ -42,6 +44,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -131,7 +134,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -192,23 +195,23 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment parent = new Enrollment(externalId, campaignName);
+        Enrollment parent = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
 
         Set<Enrollment> enrollments = new LinkedHashSet<>();
 
-        Enrollment enrollment = new Enrollment("2", campaignName);
+        Enrollment enrollment = new Enrollment("2", campaignName, LocalDate.now(), 1L);
         enrollment.setParentEnrollment(parent);
         enrollments.add(enrollment);
 
-        enrollment = new Enrollment("3", campaignName);
+        enrollment = new Enrollment("3", campaignName, LocalDate.now(), 1L);
         enrollment.setParentEnrollment(parent);
         enrollments.add(enrollment);
 
-        enrollment = new Enrollment("4", campaignName);
+        enrollment = new Enrollment("4", campaignName, LocalDate.now(), 1L);
         enrollment.setParentEnrollment(parent);
         enrollments.add(enrollment);
 
-        enrollment = new Enrollment("5", campaignName);
+        enrollment = new Enrollment("5", campaignName, LocalDate.now(), 1L);
         enrollment.setParentEnrollment(parent);
         enrollments.add(enrollment);
 
@@ -274,7 +277,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -346,7 +349,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -408,7 +411,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -472,7 +475,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -527,7 +530,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -566,7 +569,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -605,7 +608,7 @@ public class IvrCallHelperTest {
 
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(null);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -649,7 +652,7 @@ public class IvrCallHelperTest {
         votoMessage.setVotoIvrId(votoMessageId);
         when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
 
-        Enrollment enrollment = new Enrollment(externalId, campaignName);
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
         when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
 
         Config config = new Config();
@@ -713,5 +716,99 @@ public class IvrCallHelperTest {
         Map subscriber = (Map) subscribers.get(0);
         assertEquals(subjectPhoneNumber, subscriber.get("phone").toString());
         assertEquals(votoLanguageId, subscriber.get("language").toString());
+    }
+
+    @Test
+    public void shouldAddAgeRangeMessageCodeIfAgeRangeSpecifiedAndParticipantIsInThisRange() {
+        String campaignName = "campaign";
+        String messageKey = "message";
+        String externalId = "1";
+
+        String subjectPhoneNumber = "123";
+        String votoMessageId = "456";
+        String votoLanguageId = "789";
+
+        Subject subject = new Subject();
+        subject.setSubjectId(externalId);
+        subject.setPhoneNumber(subjectPhoneNumber);
+        subject.setLanguage(Language.English);
+        subject.setDateOfBirth(LocalDate.now().minusYears(5));
+        when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
+
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+
+        Config config = new Config();
+        config.setSendIvrCalls(true);
+        config.setIvrSettingsName("Voto");
+        config.setApiKey("apiKey");
+        config.setStatusCallbackUrl("url");
+        config.setSendSmsIfVoiceFails(true);
+        config.setDetectVoiceMail(true);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
+        config.setSubjectAgeRangeList(Collections.singletonList(new SubjectAgeRange(2, 17, 1L)));
+        when(configService.getConfig()).thenReturn(config);
+
+        VotoLanguage votoLanguage = new VotoLanguage();
+        votoLanguage.setLanguage(Language.English);
+        votoLanguage.setVotoId(votoLanguageId);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+
+        VotoMessage votoMessage = new VotoMessage();
+        votoMessage.setMessageKey(messageKey);
+        votoMessage.setVotoIvrId(votoMessageId);
+        when(votoMessageDataService.findByMessageKey(messageKey + "-age:2-17")).thenReturn(votoMessage);
+
+        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+
+        verify(votoMessageDataService, times(1)).findByMessageKey(messageKey + "-age:2-17");
+    }
+
+    @Test
+    public void shouldNotAddAgeRangeMessageCodeIfParticipantIsNotInThisRange() {
+        String campaignName = "campaign";
+        String messageKey = "message";
+        String externalId = "1";
+
+        String subjectPhoneNumber = "123";
+        String votoMessageId = "456";
+        String votoLanguageId = "789";
+
+        Subject subject = new Subject();
+        subject.setSubjectId(externalId);
+        subject.setPhoneNumber(subjectPhoneNumber);
+        subject.setLanguage(Language.English);
+        subject.setDateOfBirth(LocalDate.now().minusYears(40));
+        when(subjectService.findSubjectBySubjectId(externalId)).thenReturn(subject);
+
+        Enrollment enrollment = new Enrollment(externalId, campaignName, LocalDate.now(), 1L);
+        when(enrollmentDataService.findBySubjectIdAndCampaignName(externalId, campaignName)).thenReturn(enrollment);
+
+        Config config = new Config();
+        config.setSendIvrCalls(true);
+        config.setIvrSettingsName("Voto");
+        config.setApiKey("apiKey");
+        config.setStatusCallbackUrl("url");
+        config.setSendSmsIfVoiceFails(true);
+        config.setDetectVoiceMail(true);
+        config.setRetryAttempts(RETRY_ATTEMPTS);
+        config.setRetryDelay(RETRY_DELAY);
+        config.setSubjectAgeRangeList(Collections.singletonList(new SubjectAgeRange(2, 17, 1L)));
+        when(configService.getConfig()).thenReturn(config);
+
+        VotoLanguage votoLanguage = new VotoLanguage();
+        votoLanguage.setLanguage(Language.English);
+        votoLanguage.setVotoId(votoLanguageId);
+        when(votoLanguageDataService.findByLanguage(subject.getLanguage())).thenReturn(votoLanguage);
+
+        VotoMessage votoMessage = new VotoMessage();
+        votoMessage.setMessageKey(messageKey);
+        votoMessage.setVotoIvrId(votoMessageId);
+        when(votoMessageDataService.findByMessageKey(messageKey)).thenReturn(votoMessage);
+
+        ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
+
+        verify(votoMessageDataService, times(1)).findByMessageKey(messageKey);
     }
 }

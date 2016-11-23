@@ -411,6 +411,8 @@
     });
 
     directives.directive('enrollmentAdvancedGrid', function($http, $compile) {
+        var gridDataExtension;
+
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -445,7 +447,7 @@
                         index: 'externalId',
                         align: 'center'
                     }, {
-                        name: 'campaignName',
+                        name: 'campaignNameWithBoostVacDayAndStageId',
                         index: 'campaignName',
                         align: 'center'
                     }, {
@@ -476,6 +478,11 @@
                         align: 'center',
                         sortable: false,
                         formatter: function(cellValue, options, rowObject) {
+                                       var extraRowData = {};
+
+                                       extraRowData.campaignName = rowObject.campaignName;
+                                       gridDataExtension[options.rowId] = extraRowData;
+
                                        if (rowObject.action !== undefined &&  rowObject.action.startsWith("<button")) {
                                            return rowObject.action;
                                        } else if (rowObject.status === 'Enrolled') {
@@ -506,15 +513,19 @@
                         elem.jqGrid('setGridWidth', '100%');
                         $compile($('.compileBtn'))(scope);
                     },
+                    beforeRequest: function() {
+                        gridDataExtension = [];
+                    },
                     beforeSaveCell: function (rowId, name, val, iRow, iCol) {
-                        var rowData = elem.jqGrid('getRowData', rowId);
+                        var rowData = elem.jqGrid('getRowData', rowId),
+                            extraRowData = gridDataExtension[rowId];
                         var action = '';
                         if (rowData.status === 'Enrolled') {
-                            action = "<button ng-click='reenroll(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
+                            action = "<button ng-click='reenroll(\"" + extraRowData.campaignName + "\", \"" + val + "\")'" +
                                      " type='button' class='btn btn-primary compileBtn' ng-disabled='enrollInProgress'>" +
                                      scope.msg('ebodac.web.enrollment.btn.reenroll') + "</button>"
                         } else if (rowData.status === 'Unenrolled' || rowData.status === 'Initial') {
-                            action = "<button ng-click='enrollWithNewDate(\"" + rowData.campaignName + "\", \"" + val + "\")'" +
+                            action = "<button ng-click='enrollWithNewDate(\"" + extraRowData.campaignName + "\", \"" + val + "\")'" +
                                      " type='button' class='btn btn-primary compileBtn' ng-disabled='enrollInProgress'>" +
                                      scope.msg('ebodac.web.enrollment.btn.enroll') + "</button>"
                         }

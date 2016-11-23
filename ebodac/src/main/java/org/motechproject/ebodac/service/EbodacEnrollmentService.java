@@ -34,8 +34,6 @@ public interface EbodacEnrollmentService {
 
     boolean isEnrolled(String subjectId);
 
-    void changeDuplicatedEnrollmentsForNewPhoneNumber(Subject subject);
-
     void createEnrollmentRecordsForSubject(Subject subject);
 
     void updateEnrollmentsWhenSubjectDataChanged(Subject newSubject, Subject oldSubject, boolean subjectImported);

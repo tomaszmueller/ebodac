@@ -295,6 +295,20 @@
             }, 5000);
         }
 
+        $scope.deleteAgeRange = function(index) {
+            $scope.config.subjectAgeRangeList.splice(index, 1);
+        };
+
+        $scope.addAgeRange = function () {
+            var newAgeRange = {
+                'minAge': null,
+                'maxAge': null,
+                'stageId': null
+            };
+
+            $scope.config.subjectAgeRangeList.push(newAgeRange);
+        };
+
         $scope.submit = function () {
             $http.post('../ebodac/ebodac-config', $scope.config)
                 .success(function (response) {

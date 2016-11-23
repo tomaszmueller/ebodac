@@ -30,6 +30,18 @@
   "boosterRelatedMessages": ["Boost Vaccination First Follow-up visit - stage 2", "Boost Vaccination Second Follow-up visit - stage 2",
     "Boost Vaccination Third Follow-up visit - stage 2", "First Long-term Follow-up visit - stage 2"],
   "activeStageId": null,
+  "subjectAgeRangeList": [
+    {
+      "minAge": null,
+      "maxAge": 1,
+      "stageId": 2
+    },
+    {
+      "minAge": 2,
+      "maxAge": 17,
+      "stageId": 2
+    }
+  ],
   "availableLookupsForDailyClinicVisitScheduleReport" : ["Find By Planned Visit Date Range", "Find By Planned Visit Date Range And Type",
     "Find By Type", "Find By Participant Id", "Find By Participant Name", "Find By Participant Address", "Find By Planned Visit Date Range And Site Name"],
   "availableLookupsForFollowupsAfterPrimeInjectionReport" : ["Find By Participant Primer Vaccination Date Range",
