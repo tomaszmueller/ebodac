@@ -209,6 +209,7 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
         if (subjectEnrollments != null) {
             Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(campaignName);
             if (enrollment != null) {
+                completeCampaignForDuplicatedEnrollments(enrollment);
                 enrollment.setStatus(EnrollmentStatus.COMPLETED);
                 enrollment.setDuplicatedEnrollments(null);
                 updateSubjectEnrollments(subjectEnrollments);
@@ -346,6 +347,20 @@ public class EbodacEnrollmentServiceImpl implements EbodacEnrollmentService {
 
             if (subjectEnrollments.getEnrollments().isEmpty()) {
                 subjectEnrollmentsDataService.delete(subjectEnrollments);
+            }
+        }
+    }
+
+    private void completeCampaignForDuplicatedEnrollments(Enrollment parentEnrollment) {
+        for (Enrollment e : parentEnrollment.getDuplicatedEnrollments()) {
+            SubjectEnrollments subjectEnrollments = subjectEnrollmentsDataService.findBySubjectId(e.getExternalId());
+            if (subjectEnrollments != null) {
+                Enrollment enrollment = subjectEnrollments.findEnrolmentByCampaignName(e.getCampaignName());
+                if (enrollment != null && EnrollmentStatus.ENROLLED.equals(enrollment.getStatus())
+                        && e.getParentEnrollment().equals(enrollment.getParentEnrollment())) {
+                    enrollment.setStatus(EnrollmentStatus.COMPLETED);
+                    updateSubjectEnrollments(subjectEnrollments);
+                }
             }
         }
     }
