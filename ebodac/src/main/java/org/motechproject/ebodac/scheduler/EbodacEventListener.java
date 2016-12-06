@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.motechproject.ebodac.client.EbodacEmailClient;
 import org.motechproject.ebodac.constants.EbodacConstants;
 import org.motechproject.ebodac.domain.Config;
+import org.motechproject.ebodac.domain.enums.VisitType;
 import org.motechproject.ebodac.exception.EbodacInitiateCallException;
 import org.motechproject.ebodac.helper.IvrCallHelper;
 import org.motechproject.ebodac.service.ConfigService;
@@ -90,6 +91,7 @@ public class EbodacEventListener {
         String campaignName = (String) event.getParameters().get(EventKeys.CAMPAIGN_NAME_KEY);
         String messageKey = (String) event.getParameters().get(EventKeys.MESSAGE_KEY);
         String externalId = (String) event.getParameters().get(EventKeys.EXTERNAL_ID_KEY);
+        campaignName = removeBoostVacDayAndStageIdFromCampaignName(campaignName);
 
         try {
             ivrCallHelper.initiateIvrCall(campaignName, messageKey, externalId);
@@ -104,5 +106,11 @@ public class EbodacEventListener {
 
         Long reportId = (Long) event.getParameters().get(EbodacConstants.SEND_EMAIL_REPORT_EVENT_REPORT_ID);
         emailReportService.sendEmailReport(reportId);
+    }
+
+    private String removeBoostVacDayAndStageIdFromCampaignName(String campaignNameWithStageId) {
+        String campaignName = campaignNameWithStageId.split(EbodacConstants.STAGE)[0];
+        campaignName = campaignName.startsWith(VisitType.BOOST_VACCINATION_DAY.getMotechValue()) ? VisitType.BOOST_VACCINATION_DAY.getMotechValue() : campaignName;
+        return campaignName;
     }
 }
