@@ -2,6 +2,10 @@ language: java
 jdk:
   - oraclejdk8
 
+env:
+  - TEST=it
+  - TEST=ui
+
 services:
   - mysql
 
