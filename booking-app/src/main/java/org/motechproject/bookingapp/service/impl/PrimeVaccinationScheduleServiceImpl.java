@@ -5,8 +5,8 @@ import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.motechproject.bookingapp.constants.BookingAppConstants;
 import org.motechproject.bookingapp.domain.Clinic;
-import org.motechproject.bookingapp.dto.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.domain.VisitBookingDetails;
+import org.motechproject.bookingapp.dto.PrimeVaccinationScheduleDto;
 import org.motechproject.bookingapp.exception.LimitationExceededException;
 import org.motechproject.bookingapp.helper.VisitLimitationHelper;
 import org.motechproject.bookingapp.repository.ClinicDataService;
@@ -195,28 +195,33 @@ public class PrimeVaccinationScheduleServiceImpl implements PrimeVaccinationSche
         return null;
     }
 
-    private void createEmptyVisitsForSubjectWithoutPrimeVacDate() {
+    private synchronized void createEmptyVisitsForSubjectWithoutPrimeVacDate() {
         List<Subject> subjects = subjectDataService.findByPrimerVaccinationDate(null);
         for (Subject subject : subjects) {
             Visit screeningVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.SCREENING);
             Visit primeVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.PRIME_VACCINATION_DAY);
             Visit followUpVisit = visitDataService.findBySubjectIdAndType(subject.getSubjectId(), VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
+
+            List<Visit> visits = subject.getVisits();
             if (screeningVisit == null) {
                 screeningVisit = new Visit();
                 screeningVisit.setType(VisitType.SCREENING);
                 screeningVisit.setSubject(subject);
+                visits.add(screeningVisit);
                 visitDataService.create(screeningVisit);
             }
             if (primeVisit == null) {
                 primeVisit = new Visit();
                 primeVisit.setSubject(subject);
                 primeVisit.setType(VisitType.PRIME_VACCINATION_DAY);
+                visits.add(primeVisit);
                 visitDataService.create(primeVisit);
             }
             if (followUpVisit == null) {
                 followUpVisit = new Visit();
                 followUpVisit.setSubject(subject);
                 followUpVisit.setType(VisitType.PRIME_VACCINATION_FIRST_FOLLOW_UP_VISIT);
+                visits.add(followUpVisit);
                 visitDataService.create(followUpVisit);
             }
         }

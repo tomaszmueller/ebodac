@@ -415,6 +415,9 @@ public class Subject {
     }
 
     public List<Visit> getVisits() {
+        if (visits == null) {
+            visits = new ArrayList<>();
+        }
         return visits;
     }
 
