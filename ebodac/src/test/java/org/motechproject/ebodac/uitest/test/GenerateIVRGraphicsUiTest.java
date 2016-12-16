@@ -50,7 +50,7 @@ public class GenerateIVRGraphicsUiTest extends TestBase {
     }
 
 
-    @Test //EBODAC-1000
+    @Test //EBODAC-1004
     public void generateIVRGraphicsTest() throws Exception {
         try {
             homePage.openEBODACModule();
@@ -60,11 +60,11 @@ public class GenerateIVRGraphicsUiTest extends TestBase {
             ivrkpiPage.showStatsFromLastYear();
             assertTrue(ivrkpiPage.checkGraphs());
         } catch (AssertionError e) {
-            getLogger().error("generateIVRTableTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("generateIVRGraphicsTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            getLogger().error("generateIVRTableTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("generateIVRGraphicsTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("generateIVRTableTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("generateIVRGraphicsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

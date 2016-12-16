@@ -11,8 +11,10 @@ import org.motechproject.ebodac.uitest.page.IVRKPIPage;
 import org.motechproject.uitest.TestBase;
 import org.motechproject.uitest.page.LoginPage;
 
+import static org.junit.Assert.assertTrue;
 
-public class GenerateSMSTableUiTest extends TestBase {
+
+public class GenerateSMSGraphicsUiTest extends TestBase {
 
     private LoginPage loginPage;
     private HomePage homePage;
@@ -48,19 +50,21 @@ public class GenerateSMSTableUiTest extends TestBase {
     }
 
 
-    @Test //EBODAC-1005
-    public void generateSMSTableTest() throws Exception {
+    @Test //EBODAC-1006
+    public void generateSMSGraphicsTest() throws Exception {
         try {
             homePage.openEBODACModule();
             homePage.resizePage();
             ebodacPage.showStatistics();
-            ivrkpiPage.showSMSKPIs();
-            ivrkpiPage.showStatsFromLast30Days();
-            ivrkpiPage.checkSMSColumns();
+            ivrkpiPage.showSMSGraphs();
+            ivrkpiPage.showStatsFromLastYear();
+            assertTrue(ivrkpiPage.checkGraphs());
+        } catch (AssertionError e) {
+            getLogger().error("generateSMSGraphicsTest - AssertionError . Reason : " + e.getLocalizedMessage(), e);
         } catch (NumberFormatException e) {
-            getLogger().error("generateSMSTableTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("generateSMSGraphicsTest - NumberFormatException . Reason : " + e.getLocalizedMessage(), e);
         } catch (Exception e) {
-            getLogger().error("generateSMSTableTest - Exception . Reason : " + e.getLocalizedMessage(), e);
+            getLogger().error("generateSMSGraphicsTest - Exception . Reason : " + e.getLocalizedMessage(), e);
         }
 
     }

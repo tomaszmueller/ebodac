@@ -16,6 +16,7 @@ public class IVRKPIPage extends AbstractBasePage {
     static final By POPUP_OK = By.id("popup_ok");
     static final By POPUP_CONTENT = By.id("popup_content");
     static final By IVR_GRAPHS = By.linkText("IVR Graphs");
+    static final By SMS_GRAPHS = By.linkText("SMS Graphs");
     static final By IVR_KPIS = By.linkText("IVR KPIs");
     static final By SMS_KPIS = By.linkText("SMS KPIs");
     static final By STAT_PERIOD_BUTTON = By.xpath("(//button[@type='button'])[4]");
@@ -39,7 +40,7 @@ public class IVRKPIPage extends AbstractBasePage {
     static final By SMS_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='SMS To Women']");
     static final By SUCCESSFULL_SMS_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Men']");
     static final By SUCCESSFULL_SMS_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Women']");
-    static final int SLEEP_3SEC = 3000;
+    static final int SLEEP_2SEC = 2000;
     static final By STATUS_GRAPH = By.id("statsGraph");
     static final By GENDER_GRAPH = By.id("genderGraph");
     static final By SUCCESSFUL_GENDER_GRAPH = By.id("successfulGenderGraph");
@@ -59,6 +60,10 @@ public class IVRKPIPage extends AbstractBasePage {
         clickWhenVisible(IVR_GRAPHS);
     }
 
+    public void showSMSGraphs() throws InterruptedException {
+        clickWhenVisible(SMS_GRAPHS);
+    }
+
     public void showStatsFromLast30Days() throws InterruptedException {
         clickWhenVisible(STAT_PERIOD_BUTTON);
         clickWhenVisible(LAST_30_DAYS);
@@ -71,7 +76,7 @@ public class IVRKPIPage extends AbstractBasePage {
         while (error()) {
             clickWhenVisible(POPUP_OK);
         }
-        sleep(SLEEP_3SEC);
+        sleep(SLEEP_2SEC);
         findElement(END_DATE).sendKeys(LocalDate.now().toString(DateTimeFormat.forPattern(YYYY_MM_DD)));
         while (error()) {
             clickWhenVisible(POPUP_OK);
