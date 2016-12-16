@@ -10,6 +10,10 @@ public class IVRKPIPage extends AbstractBasePage {
 
     public static final String URL_PATH = "/home#/ebodac/subjects";
 
+    static final By POPUP_OK = By.id("popup_ok");
+    static final By POPUP_CONTENT = By.id("popup_content");
+    static final By IVR_GRAPHS = By.linkText("IVR Graphs");
+    static final By SMS_GRAPHS = By.linkText("SMS Graphs");
     static final By IVR_KPIS = By.linkText("IVR KPIs");
     static final By SMS_KPIS = By.linkText("SMS KPIs");
     static final By STAT_PERIOD_BUTTON = By.xpath("(//button[@type='button'])[4]");
@@ -29,6 +33,10 @@ public class IVRKPIPage extends AbstractBasePage {
     static final By SUCCESSFULL_SMS_TO_MEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Men']");
     static final By SUCCESSFULL_SMS_TO_WOMEN_COLUMN = By.xpath("//th[@ng-repeat='header in tableHeaders'][text()='Successful SMS To Women']");
 
+    static final int SLEEP_2SEC = 2000;
+    static final By STATUS_GRAPH = By.id("statsGraph");
+    static final By GENDER_GRAPH = By.id("genderGraph");
+    static final By SUCCESSFUL_GENDER_GRAPH = By.id("successfulGenderGraph");
     public IVRKPIPage(WebDriver driver) {
         super(driver);
     }
@@ -41,9 +49,48 @@ public class IVRKPIPage extends AbstractBasePage {
         clickWhenVisible(SMS_KPIS);
     }
 
+    public void showIVRGraphs() throws InterruptedException {
+        clickWhenVisible(IVR_GRAPHS);
+    }
+
+    public void showSMSGraphs() throws InterruptedException {
+        clickWhenVisible(SMS_GRAPHS);
+    }
     public void showStatsFromLast30Days() throws InterruptedException {
         clickWhenVisible(STAT_PERIOD_BUTTON);
         clickWhenVisible(LAST_30_DAYS);
+    }
+
+    public void showStatsFromLastYear() throws InterruptedException {
+        clickWhenVisible(GRAPH_PERIOD_BUTTON);
+        clickWhenVisible(DATE_RANGE);
+        findElement(START_DATE).sendKeys("2016-01-01");
+        while (error()) {
+            clickWhenVisible(POPUP_OK);
+        }
+        sleep(SLEEP_2SEC);
+        findElement(END_DATE).sendKeys(LocalDate.now().toString(DateTimeFormat.forPattern(YYYY_MM_DD)));
+        while (error()) {
+            clickWhenVisible(POPUP_OK);
+        }
+
+    }
+
+    public boolean checkGraphs() {
+        try {
+            if (findElement(STATUS_GRAPH) == null) {
+                return false;
+            }
+            if (findElement(GENDER_GRAPH) == null) {
+                return false;
+            }
+            if (findElement(SUCCESSFUL_GENDER_GRAPH) == null) {
+                return false;
+            }
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
 
     public void checkIVRColumns() {
