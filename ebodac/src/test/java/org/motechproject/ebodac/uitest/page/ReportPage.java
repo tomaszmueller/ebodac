@@ -41,6 +41,8 @@ public class ReportPage extends AbstractBasePage {
 
     static final By PRIME_FOLLOW_AND_BOOST_REPORT = By.linkText("Prime Vac 1st Follow-up and Boost Vac Day Report");
 
+    static final By NUMBER_OF_TIMES_LISTENED_REPORT = By.linkText("Number of times participants listened to each message Report");
+
     public static final int DEFAULT_VALUE_OF_FAILUIRE_SEARCH = 0;
 
     private static final long WAIT_2SEC = 2000;
@@ -85,6 +87,10 @@ public class ReportPage extends AbstractBasePage {
 
     public void showFollowUpsAfterPrimeInjectionReport() throws InterruptedException {
         clickWhenVisible(FOLLOW_UPS_AFTER_PRIME_INJECTION_REPORT);
+    }
+
+    public void showNumberOfTimesListenedReport() throws InterruptedException {
+        clickWhenVisible(NUMBER_OF_TIMES_LISTENED_REPORT);
     }
 
     public void showCallDetailRecord() throws InterruptedException {
